@@ -17,19 +17,32 @@ export type Meta = {
   totalPages: number;
 };
 
-export type User = Entity<{
+/* export type User = Entity<{
   firstName: string;
   lastName: string;
   email: string;
   role: 'ADMIN' | 'USER';
   teamId: string;
   bio: string;
+}>; */
+
+export type User = Entity<{
+  username: string;
+  email: string;
+  password: string;
 }>;
 
 export type AuthResponse = {
   jwt: string;
   user: User;
 };
+
+/*==========Testing zone==========*/
+export type RegisterResponse = {
+  success: boolean;
+  message: string;
+};
+/*==========End Testing zone==========*/
 
 export type Team = Entity<{
   name: string;

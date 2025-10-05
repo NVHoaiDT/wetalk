@@ -36,6 +36,14 @@ export const createAppRouter = (queryClient: QueryClient) =>
       lazy: () => import('./routes/auth/login').then(convert(queryClient)),
     },
     {
+      path: paths.auth.verify.path,
+      lazy: () => import('./routes/auth/verify').then(convert(queryClient)),
+    },
+    {
+      path: paths.auth.notify.path,
+      lazy: () => import('./routes/auth/notify').then(convert(queryClient)),
+    },
+    {
       path: paths.app.root.path,
       element: (
         <ProtectedRoute>

@@ -3,17 +3,18 @@ import { Navigate, useLocation } from 'react-router';
 import { z } from 'zod';
 
 import { paths } from '@/config/paths';
-import { AuthResponse, User } from '@/types/api';
+import { AuthResponse, RegisterResponse, User } from '@/types/api';
 
 import { api } from './api-client';
 
 // api call definitions for auth (types, schemas, requests):
 // these are not part of features as this is a module shared across features
 
-const getUser = async (): Promise<User> => {
-  const response = await api.get('/auth/me');
+const getUser = async (): Promise<User | null> => {
+  /*const response = await api.get('/auth/me');
 
-  return response.data;
+  return response.data; */
+  return null;
 };
 
 const logout = (): Promise<void> => {
@@ -26,36 +27,22 @@ export const loginInputSchema = z.object({
 });
 
 export type LoginInput = z.infer<typeof loginInputSchema>;
+
 const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
   return api.post('/auth/login', data);
 };
 
-export const registerInputSchema = z
-  .object({
-    email: z.string().min(1, 'Required'),
-    firstName: z.string().min(1, 'Required'),
-    lastName: z.string().min(1, 'Required'),
-    password: z.string().min(5, 'Required'),
-  })
-  .and(
-    z
-      .object({
-        teamId: z.string().min(1, 'Required'),
-        teamName: z.null().default(null),
-      })
-      .or(
-        z.object({
-          teamName: z.string().min(1, 'Required'),
-          teamId: z.null().default(null),
-        }),
-      ),
-  );
+export const registerInputSchema = z.object({
+  username: z.string().min(1, 'Required'),
+  email: z.string().min(3, 'Required'),
+  password: z.string().min(5, 'Required'),
+});
 
 export type RegisterInput = z.infer<typeof registerInputSchema>;
 
 const registerWithEmailAndPassword = (
   data: RegisterInput,
-): Promise<AuthResponse> => {
+): Promise<RegisterResponse> => {
   return api.post('/auth/register', data);
 };
 
@@ -67,7 +54,9 @@ const authConfig = {
   },
   registerFn: async (data: RegisterInput) => {
     const response = await registerWithEmailAndPassword(data);
-    return response.user;
+    console.log('============Register Response', response);
+    /* return response.user; */
+    return null;
   },
   logoutFn: logout,
 };

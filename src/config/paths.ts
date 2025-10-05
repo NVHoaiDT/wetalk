@@ -15,6 +15,16 @@ export const paths = {
       getHref: (redirectTo?: string | null | undefined) =>
         `/auth/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
     },
+    verify: {
+      path: '/auth/verify-result',
+      getHref: (redirectTo?: string | null | undefined) =>
+        `/auth/verify-result${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+    },
+    notify: {
+      path: '/auth/notify',
+      getHref: (email?: string | null | undefined) =>
+        `/auth/notify${email ? `?email=${encodeURIComponent(email)}` : ''}`,
+    },
   },
 
   app: {
