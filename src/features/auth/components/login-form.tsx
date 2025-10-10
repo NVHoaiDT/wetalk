@@ -5,8 +5,14 @@ import { Form, Input } from '@/components/ui/form';
 import { paths } from '@/config/paths';
 import { useLogin, loginInputSchema } from '@/lib/auth';
 
-export const LoginForm = () => {
-  const login = useLogin();
+type LoginFormProps = {
+  onSuccess: () => void;
+};
+
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const login = useLogin({
+    onSuccess,
+  });
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
 

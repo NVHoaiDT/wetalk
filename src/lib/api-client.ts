@@ -37,10 +37,19 @@ api.interceptors.response.use(
     });
 
     if (error.response?.status === 401) {
-      const searchParams = new URLSearchParams();
-      const redirectTo =
-        searchParams.get('redirectTo') || window.location.pathname;
-      window.location.href = paths.auth.login.getHref(redirectTo);
+      localStorage.removeItem('access_token');
+
+      const currentPath = window.location.pathname;
+
+      if (!currentPath.startsWith('/auth')) {
+        window.location.href = paths.auth.login.getHref(currentPath);
+      }
+    } else {
+      useNotifications.getState().addNotification({
+        type: 'error',
+        title: 'Error',
+        message,
+      });
     }
 
     return Promise.reject(error);

@@ -19,7 +19,6 @@ export const useUser = () => {
     enabled: !!token,
     queryKey: ['user'],
     queryFn: getUser,
-    retry: false,
   });
 };
 
@@ -35,7 +34,7 @@ export const useLogout = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.setQueryData(['user'], null);
-      queryClient.clear();
+      queryClient.removeQueries({ queryKey: ['user'] });
       window.location.href = paths.auth.login.getHref();
     },
   });
@@ -54,7 +53,11 @@ const loginWithEmailAndPassword = (
   return api.post('/auth/login', data);
 };
 
-export const useLogin = () => {
+type UseLoginOptions = {
+  onSuccess?: (data: LoginResponse) => void;
+};
+
+export const useLogin = ({ onSuccess }: UseLoginOptions = {}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -62,11 +65,11 @@ export const useLogin = () => {
     mutationFn: loginWithEmailAndPassword,
     retry: false,
     onSuccess: (response) => {
-      console.log('============Login-Response-Values: ', response);
       if (response.data?.access_token) {
         localStorage.setItem('access_token', response.data.access_token);
       }
-      queryClient.setQueryData(['user'], response.data);
+      queryClient.setQueryData(['user-login'], response);
+      onSuccess?.(response);
     },
   });
 };
@@ -93,7 +96,6 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions = {}) => {
   return useMutation({
     mutationFn: registerWithEmailAndPassword,
     onSuccess: (response) => {
-      console.log('============Register-Response-Values: ', response);
       onSuccess?.(response);
     },
   });
