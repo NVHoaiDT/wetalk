@@ -7,9 +7,14 @@ import { paths } from '@/config/paths';
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   if (config.headers) {
     config.headers.Accept = 'application/json';
-  }
 
-  config.withCredentials = true;
+    const token = localStorage.getItem('access_token');
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  config.withCredentials = false;
   return config;
 }
 
@@ -18,6 +23,7 @@ export const api = Axios.create({
 });
 
 api.interceptors.request.use(authRequestInterceptor);
+
 api.interceptors.response.use(
   (response) => {
     return response.data;
@@ -31,10 +37,19 @@ api.interceptors.response.use(
     });
 
     if (error.response?.status === 401) {
-      const searchParams = new URLSearchParams();
-      const redirectTo =
-        searchParams.get('redirectTo') || window.location.pathname;
-      window.location.href = paths.auth.login.getHref(redirectTo);
+      localStorage.removeItem('access_token');
+
+      const currentPath = window.location.pathname;
+
+      if (!currentPath.startsWith('/auth')) {
+        window.location.href = paths.auth.login.getHref(currentPath);
+      }
+    } else {
+      useNotifications.getState().addNotification({
+        type: 'error',
+        title: 'Error',
+        message,
+      });
     }
 
     return Promise.reject(error);

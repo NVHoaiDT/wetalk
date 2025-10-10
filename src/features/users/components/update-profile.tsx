@@ -1,4 +1,4 @@
-import { Pen } from 'lucide-react';
+import { Edit2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
@@ -28,7 +28,11 @@ export const UpdateProfile = () => {
     <FormDrawer
       isDone={updateProfileMutation.isSuccess}
       triggerButton={
-        <Button icon={<Pen className="size-4" />} size="sm">
+        <Button
+          className="group relative inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-2.5 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-blue-700 hover:shadow-xl hover:shadow-blue-500/30"
+          icon={<Edit2 className="size-4" />}
+          size="lg"
+        >
           Update Profile
         </Button>
       }

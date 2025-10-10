@@ -17,19 +17,58 @@ export type Meta = {
   totalPages: number;
 };
 
-export type User = Entity<{
+/* export type User = Entity<{
   firstName: string;
   lastName: string;
   email: string;
   role: 'ADMIN' | 'USER';
   teamId: string;
   bio: string;
+}>; */
+
+export type User = Entity<{
+  username: string;
+  email: string;
+  password: string;
 }>;
 
 export type AuthResponse = {
   jwt: string;
   user: User;
 };
+
+/*==========Testing zone==========*/
+export type UserResponse = {
+  succcess: boolean;
+  message: string;
+  data: {
+    id: string;
+    username: string;
+    email: string;
+    karma: number;
+    bio: string;
+    avatar: string;
+    role: string;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
+export type RegisterResponse = {
+  success: boolean;
+  message: string;
+};
+
+export type LoginResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    username: string;
+    avatar: string;
+    access_token: string;
+  };
+};
+/*==========End Testing zone==========*/
 
 export type Team = Entity<{
   name: string;
