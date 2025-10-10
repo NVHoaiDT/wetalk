@@ -38,9 +38,35 @@ export type AuthResponse = {
 };
 
 /*==========Testing zone==========*/
+export type UserResponse = {
+  succcess: boolean;
+  message: string;
+  data: {
+    id: string;
+    username: string;
+    email: string;
+    karma: number;
+    bio: string;
+    avatar: string;
+    role: string;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
 export type RegisterResponse = {
   success: boolean;
   message: string;
+};
+
+export type LoginResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    username: string;
+    avatar: string;
+    access_token: string;
+  };
 };
 /*==========End Testing zone==========*/
 

@@ -7,9 +7,14 @@ import { paths } from '@/config/paths';
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   if (config.headers) {
     config.headers.Accept = 'application/json';
-  }
 
-  config.withCredentials = true;
+    const token = localStorage.getItem('access_token');
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  config.withCredentials = false;
   return config;
 }
 
@@ -18,6 +23,7 @@ export const api = Axios.create({
 });
 
 api.interceptors.request.use(authRequestInterceptor);
+
 api.interceptors.response.use(
   (response) => {
     return response.data;
