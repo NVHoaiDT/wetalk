@@ -4,6 +4,8 @@ import { Spinner } from '@/components/ui/spinner';
 
 import { useCommunities } from '../api/get-communities';
 
+import { CommunityCard } from './ui/community-card';
+
 const CommunitiesList = () => {
   const [searchParams] = useSearchParams();
   const communitiesQuery = useCommunities({
@@ -26,7 +28,28 @@ const CommunitiesList = () => {
 
   if (!communities) return null;
 
-  return <h1>Test</h1>;
+  return (
+    <div>
+      {/* Header */}
+      <div className="mb-8 text-center">
+        <h1 className="mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent">
+          Top Communities
+        </h1>
+        <p className="text-gray-600">
+          Discover the most popular communities on Wetalk
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {/* List of communities */}
+        {communities.map(
+          (community) => (
+            console.log('============Community: ', community),
+            (<CommunityCard key={community.id} {...community} />)
+          ),
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default CommunitiesList;
