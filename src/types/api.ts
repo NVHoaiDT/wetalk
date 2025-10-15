@@ -17,14 +17,12 @@ export type Meta = {
   totalPages: number;
 };
 
-/* export type User = Entity<{
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: 'ADMIN' | 'USER';
-  teamId: string;
-  bio: string;
-}>; */
+export type Pagination = {
+  total: number;
+  page: number;
+  limit: number;
+  nextUrl: string;
+};
 
 export type User = Entity<{
   username: string;
@@ -66,6 +64,24 @@ export type LoginResponse = {
     username: string;
     avatar: string;
     access_token: string;
+  };
+};
+
+export type CommunityResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    id: string;
+    name: string;
+    shortDescription: string;
+    isPrivate: boolean;
+    totalMembers: string;
+  };
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    nextUrl: string;
   };
 };
 /*==========End Testing zone==========*/
