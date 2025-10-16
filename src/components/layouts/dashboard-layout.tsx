@@ -29,9 +29,7 @@ const Logo = () => {
   return (
     <Link className="flex items-center text-white" to={paths.home.getHref()}>
       <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-sm font-semibold text-white">
-        Bulletproof React
-      </span>
+      <span className="text-sm font-semibold text-white">Wetalk</span>
     </Link>
   );
 };
@@ -78,17 +76,16 @@ const Progress = () => {
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const logout = useLogout({
-    onSuccess: () => navigate(paths.auth.login.getHref(location.pathname)),
-  });
+  const logout = useLogout();
   const { checkAccess } = useAuthorization();
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
     { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
+    { name: 'Communities', to: paths.app.communities.getHref(), icon: Users },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
       name: 'Users',
       to: paths.app.users.getHref(),
-      icon: Users,
+      icon: User2,
     },
   ].filter(Boolean) as SideNavigationItem[];
 
@@ -189,7 +186,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className={cn('block px-4 py-2 text-sm text-gray-700 w-full')}
-                onClick={() => logout.mutate({})}
+                onClick={() => logout.mutate()}
               >
                 Sign Out
               </DropdownMenuItem>

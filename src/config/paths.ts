@@ -44,6 +44,10 @@ export const paths = {
       path: 'discussions/:discussionId',
       getHref: (id: string) => `/app/discussions/${id}`,
     },
+    communities: {
+      path: 'communities',
+      getHref: () => '/app/communities',
+    },
     users: {
       path: 'users',
       getHref: () => '/app/users',
