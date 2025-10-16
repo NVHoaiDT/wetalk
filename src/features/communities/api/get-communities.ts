@@ -2,12 +2,12 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
-import { CommunityResponse, Pagination } from '@/types/api';
+import { Community, Pagination } from '@/types/api';
 
 export const getCommunities = (
   page = 1,
 ): Promise<{
-  data: CommunityResponse[];
+  data: Community[];
   pagination: Pagination;
 }> => {
   return api.get(`/communities/filter`, {

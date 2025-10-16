@@ -1,21 +1,17 @@
 import { TrendingUp, Users } from 'lucide-react';
 
 interface CommunityCardProps {
-  rank: number;
   name: string;
   shortDescription: string;
+  isPrivate: boolean;
   totalMembers: number;
-  imageUrl: string;
-  category?: string;
 }
 
 const CommunityCard = ({
-  rank,
   name,
   shortDescription,
+  isPrivate,
   totalMembers,
-  imageUrl,
-  category = 'Community',
 }: CommunityCardProps) => {
   // Format member count (e.g., 67000000 -> 67M)
   const formatMembers = (count: number) => {

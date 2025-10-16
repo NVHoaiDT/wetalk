@@ -67,22 +67,17 @@ export type LoginResponse = {
   };
 };
 
+export type Community = {
+  id: string;
+  name: string;
+  shortDescription: string;
+  isPrivate: boolean;
+  totalMembers: number;
+};
 export type CommunityResponse = {
   success: boolean;
   message: string;
-  data: {
-    id: string;
-    name: string;
-    shortDescription: string;
-    isPrivate: boolean;
-    totalMembers: string;
-  };
-  pagination: {
-    total: number;
-    page: number;
-    limit: number;
-    nextUrl: string;
-  };
+  data: Community[];
 };
 /*==========End Testing zone==========*/
 
