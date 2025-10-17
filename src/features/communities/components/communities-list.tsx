@@ -21,10 +21,6 @@ const CommunitiesList = () => {
   }
 
   const communities = communitiesQuery.data?.data;
-  const pagination = communitiesQuery.data?.pagination;
-
-  console.log('============Communities: ', communities);
-  console.log('============Pagination: ', pagination);
 
   if (!communities) return null;
 

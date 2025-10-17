@@ -79,6 +79,11 @@ export type CommunityResponse = {
   message: string;
   data: Community[];
 };
+
+export type CreateCommunityResponse = {
+  success: boolean;
+  message: string;
+};
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{

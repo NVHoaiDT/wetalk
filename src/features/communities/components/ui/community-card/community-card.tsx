@@ -1,4 +1,4 @@
-import { TrendingUp, Users } from 'lucide-react';
+import { TrendingUp, Users, ShieldBan } from 'lucide-react';
 
 interface CommunityCardProps {
   name: string;
@@ -52,13 +52,15 @@ const CommunityCard = ({
 
         {/* Content */}
         <div className="min-w-0 flex-1">
-          <div className="mb-1 flex items-center gap-2">
-            <h3 className="truncate text-base font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600">
-              {name}
-            </h3>
-            <TrendingUp className="size-3.5 text-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="mb-1 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <h3 className="truncate text-base font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600">
+                {name}
+              </h3>
+              <TrendingUp className="size-3.5 text-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            </div>
+            {isPrivate && <ShieldBan className="size-3.5 text-blue-500" />}
           </div>
-
           <p className="mb-2 line-clamp-2 text-sm leading-snug text-gray-600">
             {shortDescription}
           </p>
@@ -83,7 +85,7 @@ const CommunityCard = ({
 
         {/* Hover arrow */}
         <div className="shrink-0 translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-          <div className="flex size-8 items-center justify-center rounded-full bg-blue-500 shadow-lg">
+          <div className="flex size-6 items-center justify-center rounded-full bg-blue-500 shadow-lg">
             <svg
               className="size-4 text-white"
               fill="none"
