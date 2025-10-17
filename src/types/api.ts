@@ -4,7 +4,6 @@
 
 export type BaseEntity = {
   id: string;
-  createdAt: number;
 };
 
 export type Entity<T> = {
@@ -71,6 +70,8 @@ export type Community = {
   id: string;
   name: string;
   shortDescription: string;
+  description: string;
+  coverImage: string;
   isPrivate: boolean;
   totalMembers: number;
 };

@@ -3,6 +3,8 @@ import { TrendingUp, Users, ShieldBan } from 'lucide-react';
 interface CommunityCardProps {
   name: string;
   shortDescription: string;
+  description: string;
+  coverImage: string;
   isPrivate: boolean;
   totalMembers: number;
 }
@@ -10,6 +12,8 @@ interface CommunityCardProps {
 const CommunityCard = ({
   name,
   shortDescription,
+  description,
+  coverImage,
   isPrivate,
   totalMembers,
 }: CommunityCardProps) => {
@@ -23,6 +27,7 @@ const CommunityCard = ({
     return count.toString();
   };
 
+  console.log('==========Cover-Image: ', coverImage);
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-blue-100/50 bg-gradient-to-br from-white to-blue-50/30 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
       {/* Animated background gradient on hover */}
@@ -33,13 +38,14 @@ const CommunityCard = ({
         <span className="text-sm font-bold text-white">{1}</span>
       </div>
 
-      <div className="relative flex items-center gap-4 p-4">
+      <div className="relative flex items-center gap-2 p-4">
         {/* Avatar with glow effect */}
         <div className="relative shrink-0">
           <div className="absolute inset-0 rounded-full bg-blue-400 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-40" />
           <div className="relative size-14 overflow-hidden rounded-full ring-2 ring-blue-200 transition-all duration-300 group-hover:ring-4 group-hover:ring-blue-300">
             <img
               src={
+                coverImage ||
                 'https://styles.redditmedia.com/t5_2qh4j/styles/communityIcon_jxbrkfsppv481.png?width=64&height=64&frame=1&auto=webp&crop=64:64,smart&s=4e1ef144d22357320d937c4218f90381d07c04d6'
               }
               alt={name}
@@ -54,14 +60,14 @@ const CommunityCard = ({
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <h3 className="truncate text-base font-bold text-gray-900 transition-colors duration-300 group-hover:text-blue-600">
-                {name}
-              </h3>
+              <h5 className="truncate text-sm font-bold text-gray-700 transition-colors duration-300 group-hover:text-blue-600">
+                w/{name}
+              </h5>
               <TrendingUp className="size-3.5 text-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </div>
             {isPrivate && <ShieldBan className="size-3.5 text-blue-500" />}
           </div>
-          <p className="mb-2 line-clamp-2 text-sm leading-snug text-gray-600">
+          <p className="mb-2 line-clamp-2 text-xs leading-snug text-gray-600">
             {shortDescription}
           </p>
 
