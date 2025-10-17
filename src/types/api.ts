@@ -4,7 +4,7 @@
 
 export type BaseEntity = {
   id: string;
-  createdAt: number;
+  createdAt: string;
 };
 
 export type Entity<T> = {
@@ -71,6 +71,8 @@ export type Community = {
   id: string;
   name: string;
   shortDescription: string;
+  description: string;
+  coverImage: string;
   isPrivate: boolean;
   totalMembers: number;
 };
@@ -78,6 +80,11 @@ export type CommunityResponse = {
   success: boolean;
   message: string;
   data: Community[];
+};
+
+export type CreateCommunityResponse = {
+  success: boolean;
+  message: string;
 };
 /*==========End Testing zone==========*/
 

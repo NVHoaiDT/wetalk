@@ -5,6 +5,7 @@ import { QueryConfig } from '@/lib/react-query';
 import { Community, Pagination } from '@/types/api';
 
 export const getCommunities = (
+  sortBy?: string,
   page = 1,
 ): Promise<{
   data: Community[];
@@ -12,31 +13,35 @@ export const getCommunities = (
 }> => {
   return api.get(`/communities/filter`, {
     params: {
+      sortBy,
       page,
     },
   });
 };
 
 export const getCommunitiesQueryOptions = ({
+  sortBy,
   page,
-}: { page?: number } = {}) => {
+}: { sortBy?: string; page?: number } = {}) => {
   return queryOptions({
-    queryKey: page ? ['communities', { page }] : ['communities'],
-    queryFn: () => getCommunities(page),
+    queryKey: page ? ['communities', { sortBy }, { page }] : ['communities'],
+    queryFn: () => getCommunities(sortBy, page),
   });
 };
 
 type UseCommunitiesQueryOptions = {
+  sortBy?: string;
   page?: number;
   queryConfig?: QueryConfig<typeof getCommunitiesQueryOptions>;
 };
 
 export const useCommunities = ({
+  sortBy,
   page,
   queryConfig,
 }: UseCommunitiesQueryOptions) => {
   return useQuery({
-    ...getCommunitiesQueryOptions({ page }),
+    ...getCommunitiesQueryOptions({ sortBy, page }),
     ...queryConfig,
   });
 };
