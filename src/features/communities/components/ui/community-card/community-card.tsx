@@ -91,7 +91,7 @@ const CommunityCard = ({
 
         {/* Hover arrow */}
         <div className="shrink-0 translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-          <div className="flex size-6 items-center justify-center rounded-full bg-blue-500 shadow-lg">
+          <div className="flex size-4 items-center justify-center rounded-full bg-blue-500 shadow-lg">
             <svg
               className="size-4 text-white"
               fill="none"

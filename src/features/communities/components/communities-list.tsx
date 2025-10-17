@@ -1,17 +1,28 @@
 import { useSearchParams } from 'react-router';
 
-import { Grid } from '@/components/ui/grid';
 import { Spinner } from '@/components/ui/spinner';
 
 import { useCommunities } from '../api/get-communities';
 
 import { CommunityCard } from './ui/community-card';
 
-/* const communitiyListTypes = ['top', 'new', 'hot', 'trending']; */
+const communitiySections = [
+  {
+    filter: 'member_count',
+    title: 'Top Communities',
+    shortDescription: 'Discover the most popular communities on Wetalk',
+  },
+  {
+    filter: 'newest',
+    title: 'Latest Communities',
+    shortDescription: 'Discover the latest communities on Wetalk',
+  },
+];
 
 const CommunitiesList = () => {
   const [searchParams] = useSearchParams();
   const communitiesQuery = useCommunities({
+    sortBy: searchParams.get('sortBy') || 'member_count',
     page: +(searchParams.get('page') || 1),
   });
 
@@ -23,15 +34,32 @@ const CommunitiesList = () => {
     );
   }
 
-  const pagination = communitiesQuery.data?.pagination;
+  /* const pagination = communitiesQuery.data?.pagination; */
   const communities = communitiesQuery.data?.data;
 
   console.log(communities);
   if (!communities) return null;
 
   return (
-    <div>
-      <div className="mb-8">
+    <div className="flex flex-col gap-8">
+      {communitiySections.map((section) => (
+        <div key={section.filter}>
+          <div className="mb-8">
+            <h1 className="mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent">
+              {section.title}
+            </h1>
+            <p className="text-gray-600">{section.shortDescription}</p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
+            {communities.map((community) => (
+              <CommunityCard key={community.id} {...community} />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* <div className="mb-8">
         <h1 className="mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent">
           Top Communities
         </h1>
@@ -40,11 +68,11 @@ const CommunitiesList = () => {
         </p>
       </div>
 
-      <Grid
-        data={communities}
-        renderItem={(community) => <CommunityCard {...community} />}
-        gridClassName="grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2"
-      />
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
+        {communities.map((community) => (
+          <CommunityCard key={community.id} {...community} />
+        ))}
+      </div> */}
     </div>
   );
 };

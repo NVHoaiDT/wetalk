@@ -15,6 +15,14 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
     }
   }
   config.withCredentials = false;
+
+  //Testing purposes
+  const url = `${config.baseURL || ''}${config.url}`;
+  const params = config.params
+    ? `?${new URLSearchParams(config.params as Record<string, string>).toString()}`
+    : '';
+
+  console.log('[API Request]:', `${url}${params}`);
   return config;
 }
 
