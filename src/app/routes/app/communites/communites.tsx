@@ -1,5 +1,5 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
-import { data, LoaderFunctionArgs } from 'react-router';
+import { LoaderFunctionArgs } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
 import { getCommunitiesQueryOptions } from '@/features/communities/api/get-communities';

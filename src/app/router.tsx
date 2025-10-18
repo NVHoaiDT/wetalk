@@ -65,6 +65,13 @@ export const createAppRouter = (queryClient: QueryClient) =>
             ),
         },
         {
+          path: paths.app.community.path,
+          lazy: () =>
+            import('./routes/app/communites/community').then(
+              convert(queryClient),
+            ),
+        },
+        {
           path: paths.app.discussions.path,
           lazy: () =>
             import('./routes/app/discussions/discussions').then(
