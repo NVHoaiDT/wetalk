@@ -38,8 +38,9 @@ const CommunitiesList = () => {
   /* const pagination = communitiesQuery.data?.pagination; */
   const communities = communitiesQuery.data?.data;
 
-  console.log(communities);
   if (!communities) return null;
+
+  console.log(communities);
 
   return (
     <div className="flex flex-col gap-8">
@@ -54,7 +55,10 @@ const CommunitiesList = () => {
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
             {communities.map((community) => (
-              <Link to={paths.app.community.getHref('1')} key={community.id}>
+              <Link
+                to={paths.app.community.getHref(community.id)}
+                key={community.id}
+              >
                 <CommunityCard {...community} />
               </Link>
             ))}

@@ -22,15 +22,13 @@ export const clientLoader =
   };
 
 const CommunitesRoute = () => {
-  const queryClient = useQueryClient();
-
   return (
     <ContentLayout title="Communites">
       <div className="flex justify-end">
         <CreateCommunity />
       </div>
       <div className="mt-4">
-        <CommunitiesList></CommunitiesList>
+        <CommunitiesList />
       </div>
     </ContentLayout>
   );

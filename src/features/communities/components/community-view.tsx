@@ -10,78 +10,89 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
-export const CommunityView = () => {
-  const mockCommunity = {
-    name: 'SideProject',
-    shortDescription: 'A community for sharing side projects',
-    description:
-      'r/SideProject is a subreddit for sharing and receiving constructive feedback on side projects.',
-    coverImage:
-      'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=300&fit=crop',
-    avatar:
-      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=100&h=100&fit=crop',
-    isPrivate: false,
-    totalMembers: 330000,
-    weeklyContributions: 10000,
-    createdDate: 'Jan 17, 2013',
+import { Spinner } from '@/components/ui/spinner';
+import { formatBigNumber } from '@/utils/format';
 
-    posts: [
-      {
-        id: 1,
-        userName: 'u/officer_KD6-3-7',
-        timeAgo: '4 mo. ago',
-        title:
-          'I wrote a 680-page Interactive Book on Computer Science Algorithms',
-        coverImage:
-          'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=500&fit=crop',
-        upvotes: 6100,
-        comments: 867,
-        awards: 7,
-      },
-      {
-        id: 2,
-        userName: 'u/alexandro',
-        timeAgo: '2 days ago',
-        title: 'Built a real-time collaboration tool for remote teams',
-        coverImage:
-          'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop',
-        upvotes: 4200,
-        comments: 523,
-        awards: 4,
-      },
-      {
-        id: 3,
-        userName: 'u/developer_jane',
-        timeAgo: '1 week ago',
-        title: 'Launched my indie SaaS - From idea to $10K MRR',
-        coverImage:
-          'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
-        upvotes: 8900,
-        comments: 1240,
-        awards: 12,
-      },
-    ],
+import { useCommunity } from '../api/get-community';
 
-    moderators: [
-      {
-        name: 'u/MurtzaM',
-        avatar:
-          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop',
-      },
-      {
-        name: 'u/walruswilderness',
-        avatar:
-          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop',
-      },
-    ],
-  };
+const mockCommunity = {
+  name: 'SideProject',
+  shortDescription: 'A community for sharing side projects',
+  description:
+    'r/SideProject is a subreddit for sharing and receiving constructive feedback on side projects.',
+  coverImage:
+    'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=300&fit=crop',
+  avatar:
+    'https://images.unsplash.com/photo-1558655146-d09347e92766?w=100&h=100&fit=crop',
+  isPrivate: false,
+  totalMembers: 330000,
+  weeklyContributions: 10000,
+  createdDate: 'Jan 17, 2013',
 
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
+  posts: [
+    {
+      id: 1,
+      userName: 'u/officer_KD6-3-7',
+      timeAgo: '4 mo. ago',
+      title:
+        'I wrote a 680-page Interactive Book on Computer Science Algorithms',
+      coverImage:
+        'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=500&fit=crop',
+      upvotes: 6100,
+      comments: 867,
+      awards: 7,
+    },
+    {
+      id: 2,
+      userName: 'u/alexandro',
+      timeAgo: '2 days ago',
+      title: 'Built a real-time collaboration tool for remote teams',
+      coverImage:
+        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop',
+      upvotes: 4200,
+      comments: 523,
+      awards: 4,
+    },
+    {
+      id: 3,
+      userName: 'u/developer_jane',
+      timeAgo: '1 week ago',
+      title: 'Launched my indie SaaS - From idea to $10K MRR',
+      coverImage:
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
+      upvotes: 8900,
+      comments: 1240,
+      awards: 12,
+    },
+  ],
 
+  moderators: [
+    {
+      name: 'u/MurtzaM',
+      avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop',
+    },
+    {
+      name: 'u/walruswilderness',
+      avatar:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop',
+    },
+  ],
+};
+
+export const CommunityView = ({ communityId }: { communityId: string }) => {
+  const communityQuery = useCommunity({ communityId });
+
+  if (communityQuery.isLoading) {
+    <div className="flex h-48 w-full items-center justify-center">
+      <Spinner size="lg" />
+    </div>;
+  }
+
+  const community = communityQuery?.data?.data;
+  console.log('==================Community: ', community);
+
+  if (!community) return null;
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
       {/* Cover Banner */}
@@ -89,7 +100,7 @@ export const CommunityView = () => {
         <div className="absolute inset-0 opacity-20">
           <img
             src={mockCommunity.coverImage}
-            alt="Cover"
+            alt="W/"
             className="size-full object-cover"
           />
         </div>
@@ -116,10 +127,10 @@ export const CommunityView = () => {
             <div className="flex flex-1 items-end justify-between pb-1">
               <div>
                 <h1 className="mb-1 text-3xl font-bold text-gray-900">
-                  r/{mockCommunity.name}
+                  w/{community.name}
                 </h1>
                 <p className="text-sm text-gray-600">
-                  {mockCommunity.shortDescription}
+                  {community.shortDescription}
                 </p>
               </div>
 
@@ -176,7 +187,7 @@ export const CommunityView = () => {
                       </svg>
                     </button>
                     <span className="text-xs font-bold text-gray-700">
-                      {formatNumber(post.upvotes)}
+                      {formatBigNumber(post.upvotes)}
                     </span>
                     <button className="rounded p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600">
                       <svg
@@ -260,20 +271,29 @@ export const CommunityView = () => {
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <Globe className="size-4" />
-                  <span>Public</span>
+                  {community.isPrivate ? (
+                    <>
+                      <Globe className="size-4" />
+                      <span>Private</span>
+                    </>
+                  ) : (
+                    <>
+                      <Globe className="size-4" />
+                      <span>Public</span>
+                    </>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-4">
                   <div>
                     <div className="text-xl font-bold text-gray-900">
-                      {formatNumber(mockCommunity.totalMembers)}
+                      {formatBigNumber(community.totalMembers)}
                     </div>
                     <div className="text-xs text-gray-500">Members</div>
                   </div>
                   <div>
                     <div className="flex items-center gap-1 text-xl font-bold text-gray-900">
-                      {formatNumber(mockCommunity.weeklyContributions)}
+                      {formatBigNumber(mockCommunity.weeklyContributions)}
                       <TrendingUp className="size-4 text-green-500" />
                     </div>
                     <div className="text-xs text-gray-500">Weekly posts</div>
