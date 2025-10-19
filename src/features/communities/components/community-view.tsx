@@ -15,6 +15,8 @@ import { formatBigNumber } from '@/utils/format';
 
 import { useCommunity } from '../api/get-community';
 
+import { JoinCommunity } from './join-community';
+
 const mockCommunity = {
   name: 'SideProject',
   shortDescription: 'A community for sharing side projects',
@@ -135,13 +137,14 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
               </div>
 
               <div className="flex items-center gap-3">
-                <button className="group relative flex items-center gap-2 rounded-full border-2 border-blue-600 bg-white px-5 py-2.5 font-semibold text-blue-600 shadow-sm transition-all duration-300 hover:bg-blue-50 hover:shadow-md">
+                <button className="group relative flex items-center gap-2 rounded-full border-2 border-blue-600 bg-white px-5 py-2 font-semibold text-blue-600 shadow-sm transition-all duration-300 hover:bg-blue-50 hover:shadow-md">
                   <Plus className="size-4" />
                   Create Post
                 </button>
-                <button className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40">
+                {/* <button className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40">
                   Join
-                </button>
+                </button> */}
+                <JoinCommunity id={community.id}></JoinCommunity>
                 <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
                   <MoreHorizontal className="size-5 text-gray-600" />
                 </button>
