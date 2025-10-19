@@ -27,7 +27,6 @@ const CommunityCard = ({
     return count.toString();
   };
 
-  console.log('==========Cover-Image: ', coverImage);
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-blue-100/50 bg-gradient-to-br from-white to-blue-50/30 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
       {/* Animated background gradient on hover */}

@@ -1,5 +1,5 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
-import { data, LoaderFunctionArgs } from 'react-router';
+import { LoaderFunctionArgs } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
 import { getCommunitiesQueryOptions } from '@/features/communities/api/get-communities';
@@ -22,15 +22,13 @@ export const clientLoader =
   };
 
 const CommunitesRoute = () => {
-  const queryClient = useQueryClient();
-
   return (
     <ContentLayout title="Communites">
       <div className="flex justify-end">
         <CreateCommunity />
       </div>
       <div className="mt-4">
-        <CommunitiesList></CommunitiesList>
+        <CommunitiesList />
       </div>
     </ContentLayout>
   );

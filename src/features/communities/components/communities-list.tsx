@@ -1,6 +1,7 @@
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 import { Spinner } from '@/components/ui/spinner';
+import { paths } from '@/config/paths';
 
 import { useCommunities } from '../api/get-communities';
 
@@ -37,8 +38,9 @@ const CommunitiesList = () => {
   /* const pagination = communitiesQuery.data?.pagination; */
   const communities = communitiesQuery.data?.data;
 
-  console.log(communities);
   if (!communities) return null;
+
+  console.log(communities);
 
   return (
     <div className="flex flex-col gap-8">
@@ -53,7 +55,12 @@ const CommunitiesList = () => {
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
             {communities.map((community) => (
-              <CommunityCard key={community.id} {...community} />
+              <Link
+                to={paths.app.community.getHref(community.id)}
+                key={community.id}
+              >
+                <CommunityCard {...community} />
+              </Link>
             ))}
           </div>
         </div>
