@@ -1,5 +1,7 @@
 import { TrendingUp, Users, ShieldBan } from 'lucide-react';
 
+import { formatBigNumber } from '@/utils/format';
+
 interface CommunityCardProps {
   name: string;
   shortDescription: string;
@@ -17,16 +19,6 @@ const CommunityCard = ({
   isPrivate,
   totalMembers,
 }: CommunityCardProps) => {
-  // Format member count (e.g., 67000000 -> 67M)
-  const formatMembers = (count: number) => {
-    if (count >= 1000000) {
-      return `${(count / 1000000).toFixed(1)}M`;
-    } else if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)}K`;
-    }
-    return count.toString();
-  };
-
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-blue-100/50 bg-gradient-to-br from-white to-blue-50/30 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
       {/* Animated background gradient on hover */}
@@ -75,7 +67,7 @@ const CommunityCard = ({
             <div className="flex items-center gap-1.5 text-gray-500">
               <Users className="size-3.5 text-blue-500" />
               <span className="font-semibold text-gray-700">
-                {formatMembers(totalMembers)}
+                {formatBigNumber(totalMembers)}
               </span>
               <span>members</span>
             </div>
