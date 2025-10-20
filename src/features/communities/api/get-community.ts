@@ -14,7 +14,7 @@ export const getCommunity = ({
 
 export const getCommunityQueryOptions = (communityId: string) => {
   return {
-    queryKey: ['communities', communityId],
+    queryKey: ['communitiy', communityId],
     queryFn: () => getCommunity({ communityId }),
   };
 };

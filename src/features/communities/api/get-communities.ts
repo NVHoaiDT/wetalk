@@ -24,7 +24,7 @@ export const getCommunitiesQueryOptions = ({
   page,
 }: { sortBy?: string; page?: number } = {}) => {
   return queryOptions({
-    queryKey: page ? ['communities', { sortBy }, { page }] : ['communities'],
+    queryKey: ['communities', { sortBy, page }],
     queryFn: () => getCommunities(sortBy, page),
   });
 };
