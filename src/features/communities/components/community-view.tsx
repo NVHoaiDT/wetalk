@@ -11,6 +11,7 @@ import {
 import React from 'react';
 
 import { Spinner } from '@/components/ui/spinner';
+import { PostsList } from '@/features/posts/components/posts-list';
 import { formatBigNumber } from '@/utils/format';
 
 import { useCommunity } from '../api/get-community';
@@ -92,7 +93,6 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
   }
 
   const community = communityQuery?.data?.data;
-  console.log('==================Community: ', community);
 
   if (!community) return null;
   return (
@@ -172,88 +172,7 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
         <div className="flex gap-6">
           {/* Posts Area */}
           <div className="flex-1 space-y-4">
-            {mockCommunity.posts.map((post) => (
-              <article
-                key={post.id}
-                className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg"
-              >
-                <div className="flex">
-                  {/* Vote Section */}
-                  <div className="flex w-12 flex-col items-center gap-1 border-r border-gray-200 bg-gray-50 py-3">
-                    <button className="rounded p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600">
-                      <svg
-                        className="size-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M10 3l6 6H4l6-6z" />
-                      </svg>
-                    </button>
-                    <span className="text-xs font-bold text-gray-700">
-                      {formatBigNumber(post.upvotes)}
-                    </span>
-                    <button className="rounded p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600">
-                      <svg
-                        className="size-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M10 17l-6-6h12l-6 6z" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="p-4">
-                      <div className="mb-2 flex items-center gap-2 text-xs text-gray-500">
-                        <span className="cursor-pointer font-medium text-gray-900 hover:text-blue-600">
-                          {post.userName}
-                        </span>
-                        <span>•</span>
-                        <span>{post.timeAgo}</span>
-                      </div>
-
-                      <h2 className="mb-3 cursor-pointer text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
-                        {post.title}
-                      </h2>
-
-                      {post.coverImage && (
-                        <div className="mb-3 overflow-hidden rounded-lg">
-                          <img
-                            src={post.coverImage}
-                            alt={post.title}
-                            className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        </div>
-                      )}
-
-                      {/* Post Actions */}
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
-                          <MessageCircle className="size-4" />
-                          <span>{post.comments} Comments</span>
-                        </button>
-                        <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
-                          <Share2 className="size-4" />
-                          <span>Share</span>
-                        </button>
-                        <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
-                          <Bookmark className="size-4" />
-                          <span>Save</span>
-                        </button>
-                        {post.awards > 0 && (
-                          <div className="ml-auto flex items-center gap-1">
-                            <span className="text-yellow-500">🏆</span>
-                            <span className="font-medium">{post.awards}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
+            <PostsList communityId={community.id}></PostsList>
           </div>
 
           {/* Sidebar */}
@@ -265,7 +184,7 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
               </div>
               <div className="space-y-4 p-4">
                 <p className="text-sm leading-relaxed text-gray-700">
-                  {mockCommunity.description}
+                  {community.shortDescription}
                 </p>
 
                 <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -320,18 +239,21 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
                   Message Mods
                 </button>
                 <div className="space-y-3">
-                  {mockCommunity.moderators.map((mod, idx) => (
+                  {community.moderators.map((mod, idx) => (
                     <div
                       key={idx}
                       className="flex cursor-pointer items-center gap-3 rounded-lg p-2 transition-colors hover:bg-blue-50"
                     >
                       <img
-                        src={mod.avatar}
-                        alt={mod.name}
+                        src={
+                          mod.avatar ||
+                          'https://avatar.iran.liara.run/public/17'
+                        }
+                        alt={mod.username}
                         className="size-8 rounded-full"
                       />
                       <span className="text-sm font-medium text-gray-900">
-                        {mod.name}
+                        {mod.username}
                       </span>
                     </div>
                   ))}

@@ -22,7 +22,7 @@ export const useUser = () => {
   });
 };
 
-/* Logout */
+/* ____________________Logout____________________ */
 const logout = async (): Promise<void> => {
   localStorage.removeItem('access_token');
 };
@@ -34,13 +34,13 @@ export const useLogout = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.setQueryData(['user'], null);
-      queryClient.removeQueries({ queryKey: ['user'] });
+      queryClient.setQueryData(['user-login'], null);
       window.location.href = paths.auth.login.getHref();
     },
   });
 };
 
-/* Login */
+/* ____________________Login____________________ */
 export const loginInputSchema = z.object({
   email: z.string().min(5, 'Required').email('Invalid email'),
   password: z.string().min(1, 'Required'),

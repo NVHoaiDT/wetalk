@@ -22,7 +22,6 @@ export const CreateCommunity = () => {
   const createCommunityMutation = useCreateCommunity({
     mutationConfig: {
       onSuccess: () => {
-        console.log('CREATED COMMUNITY SUCCESSFULLY');
         addNotification({
           type: 'success',
           title: 'Community Created',
