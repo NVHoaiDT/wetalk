@@ -19,7 +19,6 @@ const RegisterRoute = () => {
               replace: true,
             },
           );
-          console.log('navigating to ', paths.auth.verify.getHref());
         }}
       />
     </AuthLayout>

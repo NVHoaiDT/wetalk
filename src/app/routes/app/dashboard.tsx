@@ -6,20 +6,15 @@ import { useUser } from '@/lib/auth';
 const DashboardRoute = () => {
   const { data, status } = useUser();
 
-  console.log('Fetching-Status: ', status);
-
   if (status === 'pending') {
-    console.log('pending');
     return <Spinner />;
   }
 
   if (status === 'error') {
-    console.log('error');
     return <MainErrorFallback />;
   }
 
   const user = data?.data;
-  console.log('user: ', user);
   if (!user) {
     return null;
   }

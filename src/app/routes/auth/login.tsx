@@ -13,10 +13,6 @@ const LoginRoute = () => {
     <AuthLayout title="Log in to your account">
       <LoginForm
         onSuccess={() => {
-          console.log(
-            '============Navigating-To ',
-            paths.app.dashboard.getHref(),
-          );
           navigate(
             `${redirectTo ? `${redirectTo}` : paths.app.dashboard.getHref()}`,
             {

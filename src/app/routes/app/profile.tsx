@@ -34,12 +34,10 @@ const ProfileRoute = () => {
   const { data, status } = useUser();
 
   if (status === 'pending') {
-    console.log('pending');
     return <Spinner />;
   }
 
   if (status === 'error') {
-    console.log('error');
     return <MainErrorFallback />;
   }
 

@@ -17,13 +17,6 @@ export type Meta = {
   totalPages: number;
 };
 
-export type Pagination = {
-  total: number;
-  page: number;
-  limit: number;
-  nextUrl: string;
-};
-
 export type User = Entity<{
   username: string;
   email: string;
@@ -36,6 +29,13 @@ export type AuthResponse = {
 };
 
 /*==========Testing zone==========*/
+export type Pagination = {
+  total: number;
+  page: number;
+  limit: number;
+  nextUrl: string;
+};
+
 export type UserResponse = {
   succcess: boolean;
   message: string;
@@ -57,6 +57,10 @@ export type RegisterResponse = {
   message: string;
 };
 
+type ModeratedCommunity = {
+  communityId: number;
+  role: string;
+};
 export type LoginResponse = {
   success: boolean;
   message: string;
@@ -64,9 +68,17 @@ export type LoginResponse = {
     username: string;
     avatar: string;
     access_token: string;
+    moderatedCommunities: ModeratedCommunity[];
   };
 };
 
+/* ____________________Community____________________ */
+type Moderators = {
+  userId: number;
+  username: string;
+  avatar: string;
+  role: string;
+};
 export type Community = {
   id: string;
   name: string;
@@ -74,8 +86,12 @@ export type Community = {
   description: string;
   coverImage: string;
   isPrivate: boolean;
+  createdAt: string;
   totalMembers: number;
+  moderators: Moderators[];
 };
+/* ____________________End Community____________________ */
+
 export type CommunityResponse = {
   success: boolean;
   message: string;
@@ -86,6 +102,31 @@ export type CreateCommunityResponse = {
   success: boolean;
   message: string;
 };
+
+/* ____________________Post____________________ */
+export type Post = {
+  id: number;
+  communityId: number;
+  community: {
+    id: number;
+    name: string;
+  };
+  authorId: number;
+  author: {
+    id: number;
+    username: string;
+  };
+  type: string;
+  title: string;
+  content: string;
+  mediaUrls: string[];
+  tags: string[];
+  vote: number;
+  createdAt: string;
+  updatedAt: string;
+};
+/* ____________________End Post____________________ */
+
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{

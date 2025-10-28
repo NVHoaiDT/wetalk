@@ -6,7 +6,6 @@ const VerifyRoute = () => {
   const isSuccess = searchParams.get('success');
   const message = searchParams.get('message');
 
-  console.log(isSuccess);
   return (
     <div>
       <h2>Verify</h2>

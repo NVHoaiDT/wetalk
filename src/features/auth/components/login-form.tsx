@@ -20,7 +20,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     <div>
       <Form
         onSubmit={(values) => {
-          console.log('============Login-Values: ', values);
           login.mutate(values);
         }}
         schema={loginInputSchema}
