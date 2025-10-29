@@ -4,9 +4,16 @@ import {
   MoreHorizontal,
   TrendingUp,
   MessageCircle,
+  Trash,
 } from 'lucide-react';
 import React from 'react';
 
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown';
 import { Spinner } from '@/components/ui/spinner';
 import { CreatePost } from '@/features/posts/components/create-post';
 import { PostsList } from '@/features/posts/components/posts-list';
@@ -15,6 +22,7 @@ import { formatBigNumber } from '@/utils/format';
 import { useCommunity } from '../api/get-community';
 
 import { JoinCommunity } from './join-community';
+import { UpdateCommunity } from './update-community';
 
 const mockCommunity = {
   name: 'SideProject',
@@ -137,8 +145,26 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
               <div className="flex items-center gap-3">
                 <CreatePost communityId={community.id} />
                 <JoinCommunity id={community.id}></JoinCommunity>
+
+                {/* Moderation Actions */}
                 <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
-                  <MoreHorizontal className="size-5 text-gray-600" />
+                  {/* <MoreHorizontal className="size-5 text-gray-600" /> */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <MoreHorizontal className="size-5 text-gray-600" />
+                    </DropdownMenuTrigger>
+
+                    {/* DropdownMenuContent for moderation actions */}
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <UpdateCommunity communityId={community.id} />
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Trash className="size-5 text-gray-600" />
+                        Delete Community
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </button>
               </div>
             </div>
