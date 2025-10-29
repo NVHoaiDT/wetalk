@@ -6,7 +6,7 @@ import { useNotifications } from '@/components/ui/notifications';
 import { useJoinCommunity } from '../api/join-community';
 
 type JoinCommunityProps = {
-  id: string;
+  id: number;
 };
 
 export const JoinCommunity = ({ id }: JoinCommunityProps) => {

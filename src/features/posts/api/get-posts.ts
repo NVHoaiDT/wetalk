@@ -8,7 +8,7 @@ export const getPosts = ({
   communityId,
   page = 1,
 }: {
-  communityId: string;
+  communityId: number;
   page?: number;
 }): Promise<{ data: Post[]; pagination: Pagination }> => {
   return api.get(`/communities/${communityId}/posts`, {
@@ -18,7 +18,7 @@ export const getPosts = ({
   });
 };
 
-export const getInfinitePostsQueryOptions = (communityId: string) => {
+export const getInfinitePostsQueryOptions = (communityId: number) => {
   return infiniteQueryOptions({
     queryKey: ['posts', communityId],
     queryFn: ({ pageParam = 1 }) => {
@@ -35,7 +35,7 @@ export const getInfinitePostsQueryOptions = (communityId: string) => {
 };
 
 type UsePostsOptions = {
-  communityId: string;
+  communityId: number;
   page?: number;
   queryConfig?: QueryConfig<typeof getPosts>;
 };

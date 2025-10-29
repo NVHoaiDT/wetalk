@@ -9,7 +9,7 @@ import { formatBigNumber } from '@/utils/format';
 import { useInfinitePosts } from '../api/get-posts';
 
 type PostsListProps = {
-  communityId: string;
+  communityId: number;
 };
 
 export const PostsList = ({ communityId }: PostsListProps) => {

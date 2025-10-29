@@ -7,12 +7,12 @@ import { Community } from '@/types/api';
 export const getCommunity = ({
   communityId,
 }: {
-  communityId: string;
+  communityId: number;
 }): Promise<{ data: Community }> => {
   return api.get(`/communities/${communityId}`);
 };
 
-export const getCommunityQueryOptions = (communityId: string) => {
+export const getCommunityQueryOptions = (communityId: number) => {
   return {
     queryKey: ['communitiy', communityId],
     queryFn: () => getCommunity({ communityId }),
@@ -20,7 +20,7 @@ export const getCommunityQueryOptions = (communityId: string) => {
 };
 
 type UseCommunityQueryOptions = {
-  communityId: string;
+  communityId: number;
   queryConfig?: QueryConfig<typeof getCommunityQueryOptions>;
 };
 

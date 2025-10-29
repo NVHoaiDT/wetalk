@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
 /* import { Authorization, ROLES } from '@/lib/authorization'; */
+import { fancyLog } from '@/helper/fancy-log';
 
 import {
   createCommunityInputSchema,
@@ -25,6 +26,13 @@ export const CreateCommunity = () => {
         addNotification({
           type: 'success',
           title: 'Community Created',
+        });
+      },
+      onError: (error) => {
+        addNotification({
+          type: 'error',
+          title: 'Error Creating Community',
+          message: error.message,
         });
       },
     },
@@ -59,6 +67,7 @@ export const CreateCommunity = () => {
         id="create-community"
         onSubmit={(values) => {
           createCommunityMutation.mutate({ data: values });
+          fancyLog('create-Community-Values', values);
         }}
         schema={createCommunityInputSchema}
         options={{
