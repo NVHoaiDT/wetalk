@@ -67,9 +67,9 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
       isDone={createPostMutation.isSuccess}
       triggerButton={
         <Button
-          size="sm"
+          size="lg"
           icon={<Plus className="size-4" />}
-          className="border-0 bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
+          className="group relative flex items-center gap-2 rounded-full border-2 border-blue-600 bg-white px-5 py-2 font-semibold text-blue-600 shadow-sm transition-all duration-300 hover:bg-blue-50 hover:shadow-md"
         >
           Create Post
         </Button>

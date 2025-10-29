@@ -67,7 +67,7 @@ export type LoginResponse = {
   data: {
     username: string;
     avatar: string;
-    access_token: string;
+    accessToken: string;
     moderatedCommunities: ModeratedCommunity[];
   };
 };
