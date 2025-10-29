@@ -58,7 +58,7 @@ export type RegisterResponse = {
 };
 
 type ModeratedCommunity = {
-  communityId: number;
+  communityId: string;
   role: string;
 };
 export type LoginResponse = {
@@ -67,7 +67,7 @@ export type LoginResponse = {
   data: {
     username: string;
     avatar: string;
-    access_token: string;
+    accessToken: string;
     moderatedCommunities: ModeratedCommunity[];
   };
 };
@@ -80,7 +80,7 @@ type Moderators = {
   role: string;
 };
 export type Community = {
-  id: string;
+  id: number;
   name: string;
   shortDescription: string;
   description: string;

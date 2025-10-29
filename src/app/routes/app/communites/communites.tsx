@@ -1,4 +1,4 @@
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { LoaderFunctionArgs } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';

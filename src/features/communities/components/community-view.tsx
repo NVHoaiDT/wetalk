@@ -1,16 +1,14 @@
 import {
-  Plus,
   Calendar,
   Globe,
   MoreHorizontal,
   TrendingUp,
   MessageCircle,
-  Share2,
-  Bookmark,
 } from 'lucide-react';
 import React from 'react';
 
 import { Spinner } from '@/components/ui/spinner';
+import { CreatePost } from '@/features/posts/components/create-post';
 import { PostsList } from '@/features/posts/components/posts-list';
 import { formatBigNumber } from '@/utils/format';
 
@@ -83,7 +81,7 @@ const mockCommunity = {
   ],
 };
 
-export const CommunityView = ({ communityId }: { communityId: string }) => {
+export const CommunityView = ({ communityId }: { communityId: number }) => {
   const communityQuery = useCommunity({ communityId });
 
   if (communityQuery.isLoading) {
@@ -91,10 +89,10 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
       <Spinner size="lg" />
     </div>;
   }
-
   const community = communityQuery?.data?.data;
 
   if (!community) return null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
       {/* Cover Banner */}
@@ -137,13 +135,7 @@ export const CommunityView = ({ communityId }: { communityId: string }) => {
               </div>
 
               <div className="flex items-center gap-3">
-                <button className="group relative flex items-center gap-2 rounded-full border-2 border-blue-600 bg-white px-5 py-2 font-semibold text-blue-600 shadow-sm transition-all duration-300 hover:bg-blue-50 hover:shadow-md">
-                  <Plus className="size-4" />
-                  Create Post
-                </button>
-                {/* <button className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40">
-                  Join
-                </button> */}
+                <CreatePost communityId={community.id} />
                 <JoinCommunity id={community.id}></JoinCommunity>
                 <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
                   <MoreHorizontal className="size-5 text-gray-600" />

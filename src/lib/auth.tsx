@@ -3,17 +3,18 @@ import { Navigate, useLocation } from 'react-router';
 import { z } from 'zod';
 
 import { paths } from '@/config/paths';
+import { fancyLog } from '@/helper/fancy-log';
 import { RegisterResponse, LoginResponse, UserResponse } from '@/types/api';
 
 import { api } from './api-client';
 
-/* User */
+/* ____________________User____________________ */
 const getUser = async (): Promise<UserResponse | null> => {
   return api.get('/users/me');
 };
 
 export const useUser = () => {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('accessToken');
 
   return useQuery({
     enabled: !!token,
@@ -24,7 +25,7 @@ export const useUser = () => {
 
 /* ____________________Logout____________________ */
 const logout = async (): Promise<void> => {
-  localStorage.removeItem('access_token');
+  localStorage.removeItem('accessToken');
 };
 
 export const useLogout = () => {
@@ -63,10 +64,11 @@ export const useLogin = ({ onSuccess }: UseLoginOptions = {}) => {
   return useMutation({
     mutationKey: ['login'],
     mutationFn: loginWithEmailAndPassword,
-    retry: false,
+
     onSuccess: (response) => {
-      if (response.data?.access_token) {
-        localStorage.setItem('access_token', response.data.access_token);
+      fancyLog('Response', response);
+      if (response.data?.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
       }
       queryClient.setQueryData(['user-login'], response);
       onSuccess?.(response);
@@ -74,7 +76,7 @@ export const useLogin = ({ onSuccess }: UseLoginOptions = {}) => {
   });
 };
 
-/* Register */
+/* ____________________Register____________________ */
 export const registerInputSchema = z.object({
   username: z.string().min(1, 'Required'),
   email: z.string().min(3, 'Required'),
@@ -114,7 +116,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
-/* Auth Loader */
+/* ____________________AuthLoader____________________ */
 type AuthLoaderProps = {
   children: React.ReactNode;
   renderLoading: () => React.ReactElement;
