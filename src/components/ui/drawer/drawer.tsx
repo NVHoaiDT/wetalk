@@ -61,6 +61,14 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(drawerVariants({ side }), className)}
+      onKeyDown={(e) => {
+        if (
+          (e.key === ' ' && e.target instanceof HTMLInputElement) ||
+          e.target instanceof HTMLTextAreaElement
+        ) {
+          e.stopPropagation();
+        }
+      }}
       {...props}
     >
       {children}

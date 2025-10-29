@@ -13,6 +13,7 @@ import { useNotifications } from '@/components/ui/notifications';
 /* import { Authorization, ROLES } from '@/lib/authorization'; */
 import { fancyLog } from '@/helper/fancy-log';
 
+import { useCommunity } from '../api/get-community';
 import {
   updateCommunityInputSchema,
   useUpdateCommunity,
@@ -20,6 +21,7 @@ import {
 
 export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
   const { addNotification } = useNotifications();
+
   const updateCommunityMutation = useUpdateCommunity({
     mutationConfig: {
       onSuccess: () => {
@@ -37,6 +39,11 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
       },
     },
   });
+
+  const communityQuery = useCommunity({ communityId });
+  const community = communityQuery?.data?.data;
+  if (!community) return null;
+
   return (
     /* <Authorization allowedRoles={[ROLES.ADMIN]}> */
     <FormDrawer
@@ -72,10 +79,10 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
         schema={updateCommunityInputSchema}
         options={{
           defaultValues: {
-            name: 'Test',
-            shortDescription: 'Test',
-            description: 'Test',
-            isPrivate: false,
+            name: community.name,
+            shortDescription: community.shortDescription,
+            description: community.description,
+            isPrivate: community.isPrivate,
           },
         }}
       >
@@ -92,6 +99,12 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
               label="Short Description"
               error={formState.errors['shortDescription']}
               registration={register('shortDescription')}
+              className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+            />
+            <Textarea
+              label="Description"
+              error={formState.errors['description']}
+              registration={register('description')}
               className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
             />
 

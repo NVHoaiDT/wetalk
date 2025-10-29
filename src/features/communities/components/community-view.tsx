@@ -148,16 +148,19 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
                 {/* Moderation Actions */}
                 <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
-                  {/* <MoreHorizontal className="size-5 text-gray-600" /> */}
                   <DropdownMenu>
                     <DropdownMenuTrigger>
                       <MoreHorizontal className="size-5 text-gray-600" />
                     </DropdownMenuTrigger>
 
-                    {/* DropdownMenuContent for moderation actions */}
                     <DropdownMenuContent>
-                      <DropdownMenuItem>
-                        <UpdateCommunity communityId={community.id} />
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        asChild
+                      >
+                        <div>
+                          <UpdateCommunity communityId={community.id} />
+                        </div>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Trash className="size-5 text-gray-600" />
