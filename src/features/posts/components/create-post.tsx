@@ -101,12 +101,12 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
         schema={createPostInputSchema}
         options={{
           defaultValues: {
-            community_id: communityId,
+            communityId: communityId,
             type: 'text',
             title: '',
             content: '',
             tags: [],
-            media_urls: [],
+            mediaUrls: [],
           },
         }}
       >

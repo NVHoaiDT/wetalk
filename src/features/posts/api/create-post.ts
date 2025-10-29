@@ -8,14 +8,14 @@ import { MutationConfig } from '@/lib/react-query';
 import { getInfinitePostsQueryOptions } from './get-posts';
 
 export const createPostInputSchema = z.object({
-  community_id: z.number().min(1, 'Required'),
+  communityId: z.number().min(1, 'Required'),
   type: z.string().min(1, 'Required'),
   title: z.string().min(1, 'Required'),
   content: z.string().min(1, 'Required'),
   tags: z.array(z.string()),
 
   /* for type meadia */
-  media_urls: z.array(z.string()),
+  mediaUrls: z.array(z.string()),
 });
 
 export type CreatePostInput = z.infer<typeof createPostInputSchema>;
