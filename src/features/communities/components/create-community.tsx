@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
 /* import { Authorization, ROLES } from '@/lib/authorization'; */
-import { fancyLog } from '@/helper/fancy-log';
 
 import {
   createCommunityInputSchema,
@@ -67,7 +66,6 @@ export const CreateCommunity = () => {
         id="create-community"
         onSubmit={(values) => {
           createCommunityMutation.mutate({ data: values });
-          fancyLog('create-Community-Values', values);
         }}
         schema={createCommunityInputSchema}
         options={{

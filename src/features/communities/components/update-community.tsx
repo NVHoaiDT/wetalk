@@ -73,8 +73,8 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
       <Form
         id="create-community"
         onSubmit={(values) => {
+          fancyLog('Update-Community-Values', values);
           updateCommunityMutation.mutate({ data: values, communityId });
-          fancyLog('create-Community-Values', values);
         }}
         schema={updateCommunityInputSchema}
         options={{

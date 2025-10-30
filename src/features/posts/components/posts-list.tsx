@@ -18,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
 import { Spinner } from '@/components/ui/spinner';
-import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { useInfinitePosts } from '../api/get-sorted-posts';
@@ -51,7 +50,6 @@ export const PostsList = ({ communityId }: PostsListProps) => {
   }
 
   const posts = postsQuery.data?.pages.flatMap((page) => page.data);
-  fancyLog('Posts', posts);
 
   const handleSortChange = (newSortType: string) => {
     setSortType(newSortType);

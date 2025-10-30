@@ -23,7 +23,7 @@ export const updateCommunity = ({
   data: UpdateCommunityInput;
   communityId: number;
 }): Promise<Community> => {
-  return api.patch(`/communities/${communityId}`, data);
+  return api.put(`/communities/${communityId}`, data);
 };
 
 type UseUpdateCommunityOptions = {

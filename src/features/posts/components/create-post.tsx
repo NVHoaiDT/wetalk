@@ -5,7 +5,6 @@ import { Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
-import { fancyLog } from '@/helper/fancy-log';
 
 import { createPostInputSchema, useCreatePost } from '../api/create-post';
 
@@ -96,7 +95,6 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
               type: activeTab,
             },
           });
-          fancyLog('Create-Post-Values', values);
         }}
         schema={createPostInputSchema}
         options={{

@@ -3,7 +3,6 @@ import { Navigate, useLocation } from 'react-router';
 import { z } from 'zod';
 
 import { paths } from '@/config/paths';
-import { fancyLog } from '@/helper/fancy-log';
 import { RegisterResponse, LoginResponse, UserResponse } from '@/types/api';
 
 import { api } from './api-client';
@@ -66,7 +65,6 @@ export const useLogin = ({ onSuccess }: UseLoginOptions = {}) => {
     mutationFn: loginWithEmailAndPassword,
 
     onSuccess: (response) => {
-      fancyLog('Response', response);
       if (response.data?.accessToken) {
         localStorage.setItem('accessToken', response.data.accessToken);
       }

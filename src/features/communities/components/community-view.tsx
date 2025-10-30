@@ -158,9 +158,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                         onSelect={(e) => e.preventDefault()}
                         asChild
                       >
-                        <div>
-                          <UpdateCommunity communityId={community.id} />
-                        </div>
+                        <UpdateCommunity communityId={community.id} />
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Trash className="size-5 text-gray-600" />
