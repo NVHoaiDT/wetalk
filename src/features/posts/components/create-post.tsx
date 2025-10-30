@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
+import { Form, FormDrawer, Input } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
+import { TextEditor } from '@/components/ui/text-editor/text-editor';
 
 import { createPostInputSchema, useCreatePost } from '../api/create-post';
 
@@ -258,14 +259,25 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                 </div>
               )}
 
-              {/* Content Textarea */}
-              <Textarea
-                label="Body text (optional)"
-                placeholder="What are your thoughts?"
-                error={formState.errors['content']}
-                registration={register('content')}
-                className="min-h-[120px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-              />
+              {/* Rich Text Editor */}
+              <div className="space-y-2">
+                <Controller
+                  name="content"
+                  control={control}
+                  render={({ field }) => (
+                    <TextEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                      error={formState.errors['content']}
+                    />
+                  )}
+                />
+                {formState.errors['content'] && (
+                  <p className="text-sm text-red-500">
+                    {formState.errors['content'].message}
+                  </p>
+                )}
+              </div>
 
               {/* Tags Input */}
               <div className="space-y-2">
