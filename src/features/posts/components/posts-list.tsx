@@ -22,6 +22,9 @@ import { formatBigNumber } from '@/utils/format';
 
 import { useInfinitePosts } from '../api/get-sorted-posts';
 
+import { DownVotePost } from './downvote-post';
+import { UpVotePost } from './upvote-post';
+
 const sortOptions = [
   { value: 'hot', label: 'Hot', icon: Flame, color: 'text-orange-500' },
   { value: 'new', label: 'New', icon: Clock, color: 'text-blue-500' },
@@ -119,27 +122,11 @@ export const PostsList = ({ communityId }: PostsListProps) => {
             <div className="flex">
               {/* Vote Section */}
               <div className="flex w-12 flex-col items-center gap-1 border-r border-gray-200 bg-gray-50 py-3">
-                <button className="rounded p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600">
-                  <svg
-                    className="size-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 3l6 6H4l6-6z" />
-                  </svg>
-                </button>
+                <UpVotePost postId={post.id} />
                 <span className="text-xs font-bold text-gray-700">
                   {formatBigNumber(post.vote)}
                 </span>
-                <button className="rounded p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600">
-                  <svg
-                    className="size-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 17l-6-6h12l-6 6z" />
-                  </svg>
-                </button>
+                <DownVotePost postId={post.id} />
               </div>
 
               {/* Content */}

@@ -4,14 +4,15 @@ import {
   MoreHorizontal,
   TrendingUp,
   MessageCircle,
+  Trash,
 } from 'lucide-react';
 import React from 'react';
 
 import {
   DropdownMenu,
+  DropdownMenuItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuItem,
 } from '@/components/ui/dropdown';
 import { Spinner } from '@/components/ui/spinner';
 import { CreatePost } from '@/features/posts/components/create-post';
@@ -20,7 +21,6 @@ import { formatBigNumber } from '@/utils/format';
 
 import { useCommunity } from '../api/get-community';
 
-import { DeleteCommunity } from './delete-community';
 import { JoinCommunity } from './join-community';
 import { UpdateCommunity } from './update-community';
 
@@ -154,11 +154,17 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <UpdateCommunity communityId={community.id} />
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        asChild
+                      >
+                        <div>
+                          <UpdateCommunity communityId={community.id} />
+                        </div>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <DeleteCommunity communityId={community.id} />
+                      <DropdownMenuItem>
+                        <Trash className="size-5 text-gray-600" />
+                        Delete Community
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
