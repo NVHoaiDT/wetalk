@@ -38,7 +38,7 @@ import z from 'zod';
 
 import { UploadImageResponse } from '@/types/api';
 
-import { api } from './api-client';
+import { apiMedia } from './api-client';
 import { MutationConfig } from './react-query';
 
 export const uploadImagesInput = z.object({
@@ -53,7 +53,19 @@ export const uploadImages = async ({
 }: {
   data: UploadImagesInput;
 }): Promise<UploadImageResponse> => {
-  return api.post('/images/upload', data);
+  const formData = new FormData();
+
+  formData.append('type', data.type);
+
+  data.files.forEach((file) => {
+    formData.append('images', file);
+  });
+
+  return apiMedia.post('/images/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
 
 type UseUploadImagesOptions = {
@@ -81,7 +93,7 @@ export const uploadVideosInput = z.object({
       'All files must be videos',
     )
     .refine(
-      (files) => files.every((file) => file.size < 100 * 1024 * 1024), // 100MB
+      (files) => files.every((file) => file.size < 100 * 1024 * 1024),
       'Videos must be less than 100MB',
     ),
 });
@@ -103,12 +115,11 @@ export const uploadVideos = async ({
 }): Promise<UploadVideoResponse> => {
   const formData = new FormData();
 
-  // Append each video file to the FormData
   data.files.forEach((file) => {
     formData.append('video', file);
   });
 
-  return api.post('/videos/upload', formData, {
+  return apiMedia.post('/videos/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

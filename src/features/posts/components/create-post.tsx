@@ -1,4 +1,4 @@
-import { Plus, Upload, X, Image as ImageIcon, Video } from 'lucide-react';
+import { Plus, X, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -34,34 +34,6 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
       },
     },
   });
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    setMediaFiles((prev) => [...prev, ...files]);
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setMediaFiles((prev) => [...prev, ...files]);
-    }
-  };
-
-  const removeFile = (index: number) => {
-    setMediaFiles((prev) => prev.filter((_, i) => i !== index));
-  };
 
   return (
     <FormDrawer
@@ -110,9 +82,9 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
           },
         }}
       >
-        {({ register, formState, control, watch, setValue }) => {
+        {({ register, formState, control, watch, setValue, getValues }) => {
           console.log('form errors', formState.errors);
-
+          console.log('form values', getValues());
           return (
             <div className="space-y-6">
               {/* Tabs */}
