@@ -20,7 +20,6 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
     'text' | 'media' | 'link' | 'poll'
   >('text');
   const [mediaFiles, setMediaFiles] = useState<File[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
 
   const createPostMutation = useCreatePost({
     communityId,
@@ -77,8 +76,8 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
             type: 'text',
             title: '',
             content: '',
-            tags: [],
-            mediaUrls: [''],
+            tags: [] as string[],
+            mediaUrls: [] as string[],
           },
         }}
       >
