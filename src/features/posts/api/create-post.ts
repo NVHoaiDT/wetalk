@@ -25,7 +25,6 @@ export const createPost = ({
 }: {
   data: CreatePostInput;
 }): Promise<Post> => {
-  console.log('Create post called', data);
   return api.post('/posts', data);
 };
 

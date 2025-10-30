@@ -4,6 +4,7 @@ import { Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input } from '@/components/ui/form';
+import { MediaUploader } from '@/components/ui/media-uploader/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { TextEditor } from '@/components/ui/text-editor/text-editor';
 
@@ -105,11 +106,11 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
             title: '',
             content: '',
             tags: [],
-            mediaUrls: [],
+            mediaUrls: [''],
           },
         }}
       >
-        {({ register, formState, control, watch }) => {
+        {({ register, formState, control, watch, setValue }) => {
           console.log('form errors', formState.errors);
 
           return (
@@ -168,95 +169,32 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                   label="Title"
                   placeholder="An interesting title..."
                   error={formState.errors['title']}
-                  registration={register('title')}
                   className="rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  registration={register('title')}
                 />
                 <div className="mt-1 text-right text-xs text-gray-500">
                   {watch('title')?.length || 0}/300
                 </div>
               </div>
 
-              {/* Media Upload Section (only for Images & Video tab) */}
               {activeTab === 'media' && (
-                <div className="space-y-4">
-                  <div
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    className={`relative rounded-lg border-2 border-dashed transition-all duration-200 ${
-                      isDragging
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50/50'
-                    }`}
-                  >
-                    <input
-                      type="file"
-                      id="media-upload"
-                      multiple
-                      accept="image/*,video/*"
-                      onChange={handleFileSelect}
-                      className="hidden"
-                    />
-                    <label
-                      htmlFor="media-upload"
-                      className="flex cursor-pointer flex-col items-center justify-center py-12"
-                    >
-                      <Upload className="mb-3 size-10 text-gray-400" />
-                      <p className="mb-1 text-sm font-medium text-gray-700">
-                        Drag and Drop or upload media
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Images and videos supported
-                      </p>
-                    </label>
-                  </div>
-                  {mediaFiles.length > 0 && (
-                    <div className="grid grid-cols-3 gap-3">
-                      {mediaFiles.map((file, index) => (
-                        <div
-                          key={index}
-                          className="group relative overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
-                        >
-                          {file.type.startsWith('image/') ? (
-                            <>
-                              <ImageIcon className="absolute left-2 top-2 z-10 size-4 text-white" />
-                              <img
-                                src={URL.createObjectURL(file)}
-                                alt={file.name}
-                                className="h-24 w-full object-cover"
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <Video className="absolute left-2 top-2 z-10 size-4 text-white" />
-                              <video
-                                src={URL.createObjectURL(file)}
-                                className="h-24 w-full object-cover"
-                              >
-                                {' '}
-                                <track
-                                  kind="captions"
-                                  src="/captions/example.vtt"
-                                  srcLang="en"
-                                  label="English"
-                                  default
-                                />
-                                Your browser does not support the video tag.
-                              </video>
-                            </>
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => removeFile(index)}
-                            className="absolute right-1 top-1 flex size-6 items-center justify-center rounded-full bg-red-500 opacity-0 shadow-lg transition-opacity hover:bg-red-600 group-hover:opacity-100"
-                          >
-                            <X className="size-4 text-white" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <MediaUploader
+                  onChange={(urls) => {
+                    // Update form field
+                    setValue('mediaUrls', urls);
+                  }}
+                  onError={(error) => {
+                    addNotification({
+                      type: 'error',
+                      title: 'Upload Failed',
+                      message: error.message,
+                    });
+                  }}
+                  value={watch('mediaUrls')}
+                  maxFiles={10}
+                  accept={{ images: true, videos: true }}
+                  className="space-y-4"
+                />
               )}
 
               {/* Rich Text Editor */}

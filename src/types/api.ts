@@ -127,6 +127,16 @@ export type Post = {
 };
 /* ____________________End Post____________________ */
 
+/* ____________________Image Response____________________ */
+
+export type UploadImageResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    url: string;
+  }[];
+};
+
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{
