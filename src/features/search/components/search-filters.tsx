@@ -25,8 +25,8 @@ export const SearchFilters = ({
   onSortChange,
 }: SearchFiltersProps) => {
   return (
-    <div className="sticky top-0 z-10 mb-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex items-center gap-4 border-b py-4 shadow-sm">
+    <div className="sticky top-0 z-10 mb-4 rounded-md bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex items-center gap-4 rounded-md border-b p-4 shadow-sm">
         <div className="flex items-center justify-center gap-2">
           {['posts', 'communities'].map((t) => (
             <button

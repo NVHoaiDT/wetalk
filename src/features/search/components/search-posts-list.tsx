@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { MessageCircle, Share2 } from 'lucide-react';
 
 import { Spinner } from '@/components/ui/spinner';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
@@ -47,7 +48,7 @@ export const SearchPostsList = ({ query, sortType }: SearchPostsListProps) => {
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>Posted by {post.author.username}</span>
                 <span>•</span>
-                <span>{formatDistanceToNow(new Date(post.createdAt))}</span>
+                <span>{formatDistanceToNow(new Date(post.createdAt))} ago</span>
               </div>
               <h3 className="text-lg font-medium leading-tight group-hover:text-blue-700">
                 {post.title}
@@ -59,10 +60,10 @@ export const SearchPostsList = ({ query, sortType }: SearchPostsListProps) => {
               )}
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <button className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700">
-                  💬 {0} Comments
+                  <MessageCircle className="size-4" /> {0} Comments
                 </button>
                 <button className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700">
-                  ↗️ Share
+                  <Share2 className="size-4" /> Share
                 </button>
               </div>
             </div>

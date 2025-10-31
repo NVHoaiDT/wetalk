@@ -45,10 +45,17 @@ export const SearchCommunitiesList = ({
       {communities.map((community: SearchedCommunity) => (
         <div
           key={community.id}
-          className="flex items-start gap-4 rounded-md border p-4 hover:bg-accent hover:text-accent-foreground"
+          className="flex items-start gap-4 rounded-md border-y p-4 hover:bg-accent hover:text-accent-foreground"
         >
+          <img
+            src={
+              'https://images.pexels.com/photos/1983037/pexels-photo-1983037.jpeg'
+            }
+            alt={community.name}
+            className="size-16 rounded-full object-cover"
+          />
           <div className="flex-1">
-            <h3 className="text-lg font-medium">{community.name}</h3>
+            <h3 className="text-lg font-medium">w/{community.name}</h3>
             <p className="text-sm text-muted-foreground">
               {community.shortDescription}
             </p>
