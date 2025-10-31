@@ -5,7 +5,7 @@ import { CommunityView } from '@/features/communities/components/community-view'
 
 const CommunityRoute = () => {
   const params = useParams();
-  const communityId = params.communityId as string;
+  const communityId = Number(params.communityId);
   return (
     <ContentLayout title="Community">
       <CommunityView communityId={communityId}></CommunityView>

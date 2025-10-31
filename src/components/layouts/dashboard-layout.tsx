@@ -6,6 +6,7 @@ import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { paths } from '@/config/paths';
+import { Search } from '@/features/search/components/search';
 import { useLogout } from '@/lib/auth';
 import { ROLES, useAuthorization } from '@/lib/authorization';
 import { cn } from '@/utils/cn';
@@ -122,8 +123,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </nav>
       </aside>
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Progress />
+          <div className="flex-1 sm:max-w-md">
+            <Search />
+          </div>
           <Drawer>
             <DrawerTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
