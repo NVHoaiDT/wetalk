@@ -10,6 +10,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import * as React from 'react';
+import { Link } from 'react-router';
 
 import {
   DropdownMenu,
@@ -18,6 +19,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
 import { Spinner } from '@/components/ui/spinner';
+import { paths } from '@/config/paths';
+import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { useInfinitePosts } from '../api/get-sorted-posts';
@@ -62,6 +65,7 @@ export const PostsList = ({ communityId }: PostsListProps) => {
   const currentSort = sortOptions.find((opt) => opt.value === sortType);
   const CurrentSortIcon = currentSort?.icon || Flame;
 
+  fancyLog('PostsList-Posts:', posts);
   return (
     <div className="space-y-4">
       {/* ____________________SortBar____________________ */}
@@ -116,8 +120,8 @@ export const PostsList = ({ communityId }: PostsListProps) => {
       <div className="flex-1 space-y-4">
         {posts?.map((post) => (
           <article
+            className="group mb-4 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg"
             key={post.id}
-            className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg"
           >
             <div className="flex">
               {/* Vote Section */}
@@ -140,9 +144,11 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                     <span>{formatDistanceToNow(new Date(post.createdAt))}</span>
                   </div>
 
-                  <h2 className="mb-3 cursor-pointer text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
-                    {post.title}
-                  </h2>
+                  <Link to={paths.app.post.getHref(post.id)} key={post.id}>
+                    <h2 className="mb-3 cursor-pointer text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
+                      {post.title}
+                    </h2>
+                  </Link>
 
                   {/* For type media */}
                   {post.type === 'media' && post.mediaUrls.length > 0 && (

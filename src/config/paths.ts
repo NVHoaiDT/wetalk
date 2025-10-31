@@ -42,7 +42,7 @@ export const paths = {
     },
     discussion: {
       path: 'discussions/:discussionId',
-      getHref: (id: string) => `/app/discussions/${id}`,
+      getHref: (id: string | number) => `/app/discussions/${id}`,
     },
     communities: {
       path: 'communities',
@@ -50,11 +50,11 @@ export const paths = {
     },
     community: {
       path: 'communities/:communityId',
-      getHref: (id: string) => `/app/communities/${id}`,
+      getHref: (id: string | number) => `/app/communities/${id}`,
     },
     post: {
       path: 'posts/:postId',
-      getHref: (id: string) => `/app/posts/${id}`,
+      getHref: (id: string | number) => `/app/posts/${id}`,
     },
     search: {
       path: 'search/:query',

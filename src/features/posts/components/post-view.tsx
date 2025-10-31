@@ -1,7 +1,15 @@
+import { formatDistanceToNow } from 'date-fns';
+import { Bookmark, MessageCircle, Share2 } from 'lucide-react';
+
+import { MDPreview } from '@/components/ui/md-preview';
+import { MediaViewer } from '@/components/ui/media-viewer';
 import { Spinner } from '@/components/ui/spinner';
-import { fancyLog } from '@/helper/fancy-log';
+import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
+
+import { DownVotePost } from './downvote-post';
+import { UpVotePost } from './upvote-post';
 
 export const PostView = ({ id }: { id: number }) => {
   const postQuery = usePost({ id });
@@ -17,41 +25,93 @@ export const PostView = ({ id }: { id: number }) => {
   const post = postQuery?.data?.data;
 
   if (!post) return null;
-  fancyLog('PostView-Post:', post);
-  /* 
-    {
-        "id": 25,
-        "community": {
-            "id": 31,
-            "name": "Code Review Club"
-        },
-        "author": {
-            "id": 25,
-            "username": "tranthib",
-            "avatar": "https://i.pravatar.cc/150?img=2"
-        },
-        "title": "Code Review Checklist - Visual Guide",
-        "type": "media",
-        "content": "<h2>📋 Comprehensive Code Review Checklist</h2>\r\n<p>Mình tạo một bộ visual checklist cho code review process, cover:</p>\r\n<ol>\r\n<li><strong>Code Quality:</strong> Readability, naming conventions, complexity</li>\r\n<li><strong>Logic & Bugs:</strong> Edge cases, error handling, race conditions</li>\r\n<li><strong>Performance:</strong> Algorithm efficiency, database queries, memory leaks</li>\r\n<li><strong>Security:</strong> Input validation, authentication, data exposure</li>\r\n<li><strong>Testing:</strong> Test coverage, test quality, edge case handling</li>\r\n<li><strong>Documentation:</strong> Comments, README, API docs</li>\r\n</ol>\r\n<p>Print ra dán tường hoặc save làm reference nhé! 📌</p>",
-        "mediaUrls": [
-            "https://picsum.photos/seed/checklist1/800/1200",
-            "https://picsum.photos/seed/checklist2/800/1200"
-        ],
-        "tags": [
-            "code-review",
-            "best-practices",
-            "quality",
-            "checklist"
-        ],
-        "vote": 6,
-        "createdAt": "2025-10-20T03:59:01.860759Z",
-        "updatedAt": "2025-10-21T03:59:01.860759Z"
-    }
-  */
+
+  const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
+
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-    </div>
+    <article className="mx-auto max-w-4xl space-y-4 p-4">
+      {/* Post Header */}
+      <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+        <div className="flex">
+          {/* Content Section */}
+          <div className="flex-1 p-4">
+            {/* Post Info */}
+            <div className="mb-3 flex items-center gap-2 text-sm">
+              <img
+                src={post.author.avatar}
+                alt={post.author.username}
+                className="size-6 rounded-full"
+              />
+              <span className="cursor-pointer font-medium text-gray-900 hover:text-blue-600">
+                w/{post.community.name}
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="text-gray-500">
+                <span className="cursor-pointer hover:text-blue-600">
+                  u/{post.author.username}
+                </span>
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="text-gray-500">
+                {formatDistanceToNow(new Date(post.createdAt))}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h1 className="mb-4 text-2xl font-semibold text-gray-900">
+              {post.title}
+            </h1>
+
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="mb-4 flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Media Content */}
+            {hasMedia && (
+              <div className="mb-6">
+                <MediaViewer mediaUrls={post.mediaUrls} title={post.title} />
+              </div>
+            )}
+
+            {/* Text Content */}
+            <MDPreview value={post.content} />
+
+            {/* Post Actions */}
+            <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
+              {/* Vote Section */}
+              <div className="flex flex-row items-center gap-2 rounded-full bg-input p-2">
+                <UpVotePost postId={post.id} />
+                <span className="text-xs font-bold text-gray-600">
+                  {formatBigNumber(post.vote)}
+                </span>
+                <DownVotePost postId={post.id} />
+              </div>
+              <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+                <MessageCircle className="size-4" />
+                <span>10 Comments</span>
+              </button>
+              <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+                <Share2 className="size-4" />
+                <span>Share</span>
+              </button>
+              <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+                <Bookmark className="size-4" />
+                <span>Save</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 };

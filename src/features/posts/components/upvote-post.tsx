@@ -18,7 +18,7 @@ export const UpVotePost = ({ postId }: { postId: number }) => {
   });
   return (
     <button
-      className="rounded p-1 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
+      className="rounded text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
       onClick={() => votePostMutation.mutate({ postId, vote: true })}
     >
       <ChevronUp className="size-5" />
