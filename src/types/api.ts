@@ -115,9 +115,10 @@ export type Post = {
   author: {
     id: number;
     username: string;
+    avatar: string;
   };
-  type: string;
   title: string;
+  type: string;
   content: string;
   mediaUrls: string[];
   tags: string[];
@@ -125,8 +126,6 @@ export type Post = {
   createdAt: string;
   updatedAt: string;
 };
-/* ____________________End Post____________________ */
-
 /* ____________________Image Response____________________ */
 
 export type UploadImageResponse = {

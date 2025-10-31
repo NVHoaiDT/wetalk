@@ -52,6 +52,10 @@ export const paths = {
       path: 'communities/:communityId',
       getHref: (id: string) => `/app/communities/${id}`,
     },
+    post: {
+      path: 'posts/:postId',
+      getHref: (id: string) => `/app/posts/${id}`,
+    },
     search: {
       path: 'search/:query',
       /* Encode the query string latter */
