@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -11,11 +10,6 @@ import {
 } from '@/features/search/components/search-filters';
 import { SearchPostsList } from '@/features/search/components/search-posts-list';
 
-export const clientLoader = (queryClient: QueryClient) => async () => {
-  // No data to preload for now
-  return null;
-};
-
 const SearchRoute = () => {
   const params = useParams();
   const query = params.query as string;
@@ -24,7 +18,7 @@ const SearchRoute = () => {
 
   return (
     <ContentLayout title={`Search results for "${query}"`}>
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <SearchFilters
           type={searchType}
           sortType={sortType}
@@ -32,7 +26,7 @@ const SearchRoute = () => {
           onSortChange={setSortType}
         />
 
-        <div className="min-h-[200px]">
+        <div className="min-h-[200px] max-w-4xl">
           {searchType === 'posts' && (
             <SearchPostsList query={query} sortType={sortType} />
           )}

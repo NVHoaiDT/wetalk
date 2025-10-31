@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { MessageCircle, Share2 } from 'lucide-react';
 
+import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
@@ -36,7 +37,7 @@ export const SearchPostsList = ({ query, sortType }: SearchPostsListProps) => {
       {posts.map((post) => (
         <div
           key={post.id}
-          className="group rounded-md border bg-card transition-colors hover:border-blue-200 hover:bg-blue-50/50"
+          className="group rounded-md border-b bg-card transition-colors hover:border-blue-200 hover:bg-blue-50/50"
         >
           <div className="flex gap-4 p-4">
             <div className="flex min-w-[40px] flex-col items-center gap-1 text-sm text-muted-foreground">
@@ -53,11 +54,12 @@ export const SearchPostsList = ({ query, sortType }: SearchPostsListProps) => {
               <h3 className="text-lg font-medium leading-tight group-hover:text-blue-700">
                 {post.title}
               </h3>
-              {post.content && (
-                <p className="line-clamp-2 text-sm text-muted-foreground">
+              {/* 
+              <p className="line-clamp-2 text-sm text-muted-foreground">
                   {post.content}
                 </p>
-              )}
+               */}
+              {post.content && <MDPreview value={post.content} maxLines={2} />}
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <button className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700">
                   <MessageCircle className="size-4" /> {0} Comments

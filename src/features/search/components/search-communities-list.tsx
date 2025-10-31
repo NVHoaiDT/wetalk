@@ -45,7 +45,7 @@ export const SearchCommunitiesList = ({
       {communities.map((community: SearchedCommunity) => (
         <div
           key={community.id}
-          className="flex items-start gap-4 rounded-md border-y p-4 hover:bg-accent hover:text-accent-foreground"
+          className="flex items-start gap-4 rounded-md border-y p-4 hover:border-blue-200 hover:bg-blue-50/50"
         >
           <img
             src={
