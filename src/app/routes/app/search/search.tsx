@@ -23,20 +23,24 @@ const SearchRoute = () => {
   const [sortType, setSortType] = useState<SortType>('new');
 
   return (
-    <ContentLayout title="Search">
-      <SearchFilters
-        type={searchType}
-        sortType={sortType}
-        onTypeChange={setSearchType}
-        onSortChange={setSortType}
-      />
+    <ContentLayout title={`Search results for "${query}"`}>
+      <div className="mx-auto max-w-5xl">
+        <SearchFilters
+          type={searchType}
+          sortType={sortType}
+          onTypeChange={setSearchType}
+          onSortChange={setSortType}
+        />
 
-      {searchType === 'posts' && (
-        <SearchPostsList query={query} sortType={sortType} />
-      )}
-      {searchType === 'communities' && (
-        <SearchCommunitiesList query={query} sortType={sortType} />
-      )}
+        <div className="min-h-[200px]">
+          {searchType === 'posts' && (
+            <SearchPostsList query={query} sortType={sortType} />
+          )}
+          {searchType === 'communities' && (
+            <SearchCommunitiesList query={query} sortType={sortType} />
+          )}
+        </div>
+      </div>
     </ContentLayout>
   );
 };
