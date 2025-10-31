@@ -126,6 +126,78 @@ export type Post = {
   createdAt: string;
   updatedAt: string;
 };
+/* ____________________Comment____________________ */
+/* API RESPONSE:
+{
+    "success": true,
+    "message": "Comments retrieved successfully",
+    "data": [
+        {
+            "id": 66,
+            "postId": 12,
+            "author": {
+                "id": 20,
+                "username": "Ha Phat Dep Trai",
+                "avatar": "http://media_service_base_url/avatar.jpg"
+            },
+            "content": "ducphat rep comment bài viết của bạn nè",
+            "mediaUrl": "media-url-url",
+            "createdAt": "2025-10-30T08:58:47.333024Z",
+            "updatedAt": "2025-10-30T09:20:11.185004Z",
+            "replies": [
+                {
+                    "id": 67,
+                    "postId": 12,
+                    "author": {
+                        "id": 20,
+                        "username": "Ha Phat Dep Trai",
+                        "avatar": "http://media_service_base_url/avatar.jpg"
+                    },
+                    "parentCommentId": 66,
+                    "content": "nguyen van a rep comment của bạn nè",
+                    "mediaUrl": "media-url",
+                    "createdAt": "2025-10-30T09:30:50.197951Z",
+                    "updatedAt": "2025-10-30T09:30:50.197951Z"
+                }
+            ]
+        },
+        {
+            "id": 65,
+            "postId": 12,
+            "author": {
+                "id": 20,
+                "username": "Ha Phat Dep Trai",
+                "avatar": "http://media_service_base_url/avatar.jpg"
+            },
+            "content": "ducphat rep comment bài viết của bạn nè - edit 3",
+            "mediaUrl": "media-url-url",
+            "createdAt": "2025-10-30T08:43:45.500399Z",
+            "updatedAt": "2025-10-30T09:24:09.577802Z"
+        }
+    ],
+    "pagination": {
+        "total": 2,
+        "page": 1,
+        "limit": 12
+    }
+}
+
+*/
+export type Comment = {
+  id: number;
+  postId: number;
+  author: {
+    id: number;
+    username: string;
+    avatar: string;
+  };
+  content: string;
+  mediaUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  replies: Comment[];
+};
+
 /* ____________________Image Response____________________ */
 
 export type UploadImageResponse = {
@@ -147,11 +219,5 @@ export type Discussion = Entity<{
   title: string;
   body: string;
   teamId: string;
-  author: User;
-}>;
-
-export type Comment = Entity<{
-  body: string;
-  discussionId: string;
   author: User;
 }>;

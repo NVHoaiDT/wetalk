@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
 import { Spinner } from '@/components/ui/spinner';
+import { PostCommentsList } from '@/features/post-comments/components/post-comments-list';
 import { usePost } from '@/features/posts/api/get-post';
 import { PostView } from '@/features/posts/components/post-view';
 
@@ -33,6 +34,7 @@ const PostRoute = () => {
           <ErrorBoundary
             fallback={<div>Failed to load post. Try to refresh the page.</div>}
           ></ErrorBoundary>
+          <PostCommentsList postId={post.id} />
         </div>
       </ContentLayout>
     </>
