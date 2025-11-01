@@ -18,6 +18,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
+import { useUser } from '@/lib/auth';
+import { Authorization, POLICIES } from '@/lib/authorization';
+import { User } from '@/types/api';
 
 import { useInfinitePostComments } from '../api/get-post-comments';
 
@@ -40,6 +44,10 @@ const Comment = ({
   const [isReplying, setIsReplying] = useState(false);
   const maxNestedLevel = 3;
 
+  const userQuery = useUser();
+  const user = userQuery.data?.data;
+  fancyLog('USER: ', user);
+  fancyLog('COMMENT: ', comment);
   return (
     <Card
       className={`border-l-2 ${level === 0 ? 'border-l-transparent' : 'border-l-blue-200'}`}
@@ -138,22 +146,28 @@ const Comment = ({
                   <DropdownMenuItem
                     className="cursor-pointer text-blue-600 hover:text-blue-700"
                     onClick={() => {
-                      // TODO: Add edit functionality
                       console.log('Edit clicked');
                     }}
                   >
                     <Pencil className="mr-2 size-4" />
                     <span>Edit</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onSelect={(e) => {
-                      // Prevent the dropdown from closing when clicking the delete button
-                      e.preventDefault();
-                    }}
-                    className="text-red-600 hover:text-red-700"
+
+                  <Authorization
+                    policyCheck={POLICIES['comment:delete'](
+                      user as User,
+                      comment,
+                    )}
                   >
-                    <DeletePostComment id={comment.id} postId={postId} />
-                  </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={(e) => {
+                        e.preventDefault();
+                      }}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <DeletePostComment id={comment.id} postId={postId} />
+                    </DropdownMenuItem>
+                  </Authorization>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}

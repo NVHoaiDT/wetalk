@@ -3,12 +3,12 @@ import { Navigate, useLocation } from 'react-router';
 import { z } from 'zod';
 
 import { paths } from '@/config/paths';
-import { RegisterResponse, LoginResponse, UserResponse } from '@/types/api';
+import { RegisterResponse, LoginResponse, User } from '@/types/api';
 
 import { api } from './api-client';
 
 /* ____________________User____________________ */
-const getUser = async (): Promise<UserResponse | null> => {
+const getUser = async (): Promise<{ data: User | null }> => {
   return api.get('/users/me');
 };
 

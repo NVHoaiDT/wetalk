@@ -5,8 +5,8 @@ import { Comment, User } from '@/types/api';
 import { useUser } from './auth';
 
 export enum ROLES {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
+  admin = 'admin',
+  user = 'user',
 }
 
 type RoleTypes = keyof typeof ROLES;
@@ -35,7 +35,7 @@ export const useAuthorization = () => {
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
       if (allowedRoles && allowedRoles.length > 0 && user.data) {
-        return allowedRoles?.includes(user.data.role);
+        return allowedRoles?.includes(user.data.role as RoleTypes);
       }
 
       return true;

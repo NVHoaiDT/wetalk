@@ -17,10 +17,12 @@ export type Meta = {
   totalPages: number;
 };
 
-export type User = Entity<{
+/* Delete this when testing is done */
+export type UserOld = Entity<{
   username: string;
   email: string;
   password: string;
+  role: string;
 }>;
 
 export type AuthResponse = {
@@ -36,20 +38,16 @@ export type Pagination = {
   nextUrl: string;
 };
 
-export type UserResponse = {
-  succcess: boolean;
-  message: string;
-  data: {
-    id: string;
-    username: string;
-    email: string;
-    karma: number;
-    bio: string;
-    avatar: string;
-    role: string;
-    created_at: string;
-    updated_at: string;
-  };
+export type User = {
+  id: number;
+  username: string;
+  email: string;
+  karma: number;
+  bio: string;
+  avatar: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type RegisterResponse = {
@@ -58,7 +56,7 @@ export type RegisterResponse = {
 };
 
 type ModeratedCommunity = {
-  communityId: string;
+  communityId: number;
   role: string;
 };
 export type LoginResponse = {
