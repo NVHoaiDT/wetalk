@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
+import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
 import { fancyLog } from '@/helper/fancy-log';
 import { useUser } from '@/lib/auth';
@@ -75,12 +76,7 @@ const Comment = ({
 
         {/* Comment Content */}
         <div className={level === 0 ? 'pl-8' : 'pl-6'}>
-          <p
-            className={`whitespace-pre-wrap ${level === 0 ? 'text-gray-800' : 'text-sm text-gray-800'}`}
-          >
-            {comment.content}
-          </p>
-
+          <MDPreview value={comment.content} />
           {comment.mediaUrl && (
             <div className="mt-2">
               <img

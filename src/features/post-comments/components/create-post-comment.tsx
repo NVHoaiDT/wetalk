@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
+import { TextEditor } from '@/components/ui/text-editor';
 
 import { useCreatePostComment } from '../api/create-post-comment';
 
@@ -61,12 +62,13 @@ export const CreatePostComment = ({
       <div
         className={`relative rounded-lg border bg-white ${minimized ? 'border-transparent hover:border-gray-200' : 'border-gray-200'}`}
       >
-        <textarea
+        <TextEditor value={content} onChange={setContent} />
+        {/* <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder={placeholder}
           className={`min-h-[80px] w-full resize-none border-none bg-transparent p-4 focus:ring-0 ${minimized ? 'h-10 min-h-0 py-2' : ''}`}
-        />
+        /> */}
         {mediaUrl && (
           <div className="mx-4 mb-4 mt-2">
             <img
