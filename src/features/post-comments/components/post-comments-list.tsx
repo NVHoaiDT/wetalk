@@ -5,16 +5,24 @@ import {
   ThumbsDown,
   Reply,
   MoreVertical,
+  Pencil,
 } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown';
 import { Spinner } from '@/components/ui/spinner';
 
 import { useInfinitePostComments } from '../api/get-post-comments';
 
 import { CreatePostComment } from './create-post-comment';
+import { DeletePostComment } from './delete-post-comment';
 
 type PostCommentsListProps = {
   postId: number;
@@ -58,7 +66,7 @@ const Comment = ({
         </div>
 
         {/* Comment Content */}
-        <div className={`pl-${level === 0 ? '10' : '8'}`}>
+        <div className={level === 0 ? 'pl-8' : 'pl-6'}>
           <p
             className={`whitespace-pre-wrap ${level === 0 ? 'text-gray-800' : 'text-sm text-gray-800'}`}
           >
@@ -116,13 +124,38 @@ const Comment = ({
               </Button>
             )}
             {level === 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 px-2 text-gray-600 hover:text-blue-600"
-              >
-                <MoreVertical className="size-4" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-2 text-gray-600 hover:text-blue-600"
+                  >
+                    <MoreVertical className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" side="top">
+                  <DropdownMenuItem
+                    className="cursor-pointer text-blue-600 hover:text-blue-700"
+                    onClick={() => {
+                      // TODO: Add edit functionality
+                      console.log('Edit clicked');
+                    }}
+                  >
+                    <Pencil className="mr-2 size-4" />
+                    <span>Edit</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      // Prevent the dropdown from closing when clicking the delete button
+                      e.preventDefault();
+                    }}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    <DeletePostComment id={comment.id} postId={postId} />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
 

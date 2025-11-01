@@ -1,19 +1,3 @@
-/* 
-POST /api/v1/comments
-BODY {
-    "postId": 12,
-    "content": "nguyen van a rep comment của bạn nè",
-    "parentCommentId": 66, // option
-    "mediaUrl": "media-url" //option
-}
-parentCommentId and mediaUrl are optional, if comment does not have image then no need mediaUrl; if comment is root then no need parentCommentId
-
-RESPONSE {
-    "success": true,
-    "message": "Comment created successfully"
-}
-*/
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
