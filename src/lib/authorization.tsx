@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { fancyLog } from '@/helper/fancy-log';
 import { Comment, User } from '@/types/api';
 
 import { useUser } from './auth';
@@ -13,11 +14,14 @@ type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
   'comment:delete': (user: User, comment: Comment) => {
-    if (user.role === 'ADMIN') {
+    fancyLog('POLICY CHECK - comment:delete', user.id);
+    fancyLog('POLICY CHECK - comment:delete', comment.author?.id);
+
+    if (user.role === ROLES.admin) {
       return true;
     }
 
-    if (user.role === 'USER' && comment.author?.id === user.id) {
+    if (user.role === ROLES.user && comment.author?.id === user.id) {
       return true;
     }
 
@@ -26,24 +30,25 @@ export const POLICIES = {
 };
 
 export const useAuthorization = () => {
-  const user = useUser();
+  const userQuery = useUser();
+  const user = userQuery.data?.data;
 
-  if (!user.data) {
+  if (!user) {
     throw Error('User does not exist!');
   }
 
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
-      if (allowedRoles && allowedRoles.length > 0 && user.data) {
-        return allowedRoles?.includes(user.data.role as RoleTypes);
+      if (allowedRoles && allowedRoles.length > 0 && user) {
+        return allowedRoles?.includes(user.role as RoleTypes);
       }
 
       return true;
     },
-    [user.data],
+    [user],
   );
 
-  return { checkAccess, role: user.data.role };
+  return { checkAccess, role: user.role };
 };
 
 type AuthorizationProps = {
