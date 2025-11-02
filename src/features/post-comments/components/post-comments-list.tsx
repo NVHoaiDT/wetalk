@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
-import { ArchiveX, Reply, MoreVertical, Pencil } from 'lucide-react';
+import { ArchiveX, Reply, MoreVertical } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,7 @@ import { useInfinitePostComments } from '../api/get-post-comments';
 import { CreatePostComment } from './create-post-comment';
 import { DeletePostComment } from './delete-post-comment';
 import { DownVotePostComment } from './downvote-post-comment';
+import { EditPostComment } from './edit-post-comment';
 import { UpVotePostComment } from './upvote-post-comment';
 
 type PostCommentsListProps = {
@@ -83,7 +84,7 @@ const Comment = ({
           )}
 
           {/* Comment Actions */}
-          <div className="mt-2 flex items-center space-x-4">
+          <div className="mt-2 flex items-center space-x-2">
             <div className="flex items-center space-x-1">
               {/* Vote buttons */}
               <UpVotePostComment commentId={comment.id} />
@@ -91,19 +92,13 @@ const Comment = ({
               <DownVotePostComment commentId={comment.id} />
             </div>
             {level < maxNestedLevel && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`${
-                  level === 0 ? 'h-8 px-2' : 'h-6 px-2 text-sm'
-                } text-gray-600 hover:text-blue-600`}
+              <button
+                className="flex h-8 flex-row content-center items-center px-2 text-gray-600 hover:text-blue-600"
                 onClick={() => setIsReplying(!isReplying)}
               >
-                <Reply
-                  className={`mr-1 ${level === 0 ? 'size-4' : 'size-3'}`}
-                />
+                <Reply className={'mr-1 size-4'} />
                 {isReplying ? 'Cancel' : 'Reply'}
-              </Button>
+              </button>
             )}
             {level === 0 && (
               <DropdownMenu>
@@ -117,22 +112,26 @@ const Comment = ({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" side="top">
-                  <DropdownMenuItem
-                    className="cursor-pointer text-blue-600 hover:text-blue-700"
-                    onClick={() => {
-                      console.log('Edit clicked');
-                    }}
-                  >
-                    <Pencil className="mr-2 size-4" />
-                    <span>Edit</span>
-                  </DropdownMenuItem>
-
                   <Authorization
                     policyCheck={POLICIES['comment:delete'](
                       user as User,
                       comment,
                     )}
                   >
+                    <DropdownMenuItem
+                      onSelect={(e) => {
+                        e.preventDefault();
+                      }}
+                      className="cursor-pointer text-blue-600 hover:text-blue-700"
+                    >
+                      <EditPostComment
+                        id={comment.id}
+                        postId={postId}
+                        initialContent={comment.content}
+                        initialMediaUrl={comment.mediaUrl}
+                      />
+                    </DropdownMenuItem>
+
                     <DropdownMenuItem
                       onSelect={(e) => {
                         e.preventDefault();
