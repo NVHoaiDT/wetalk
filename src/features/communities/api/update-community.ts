@@ -11,6 +11,7 @@ export const updateCommunityInputSchema = z.object({
   name: z.string().min(1, 'Required'),
   shortDescription: z.string().min(1, 'Required'),
   description: z.string().min(1, 'Required'),
+  communityAvatar: z.string().url().optional(),
   isPrivate: z.boolean(),
 });
 

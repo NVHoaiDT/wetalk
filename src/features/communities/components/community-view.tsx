@@ -24,71 +24,6 @@ import { useCommunity } from '../api/get-community';
 import { JoinCommunity } from './join-community';
 import { UpdateCommunity } from './update-community';
 
-const mockCommunity = {
-  name: 'SideProject',
-  shortDescription: 'A community for sharing side projects',
-  description:
-    'r/SideProject is a subreddit for sharing and receiving constructive feedback on side projects.',
-  coverImage:
-    'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=300&fit=crop',
-  avatar:
-    'https://images.unsplash.com/photo-1558655146-d09347e92766?w=100&h=100&fit=crop',
-  isPrivate: false,
-  totalMembers: 330000,
-  weeklyContributions: 10000,
-  createdDate: 'Jan 17, 2013',
-
-  posts: [
-    {
-      id: 1,
-      userName: 'u/officer_KD6-3-7',
-      timeAgo: '4 mo. ago',
-      title:
-        'I wrote a 680-page Interactive Book on Computer Science Algorithms',
-      coverImage:
-        'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=500&fit=crop',
-      upvotes: 6100,
-      comments: 867,
-      awards: 7,
-    },
-    {
-      id: 2,
-      userName: 'u/alexandro',
-      timeAgo: '2 days ago',
-      title: 'Built a real-time collaboration tool for remote teams',
-      coverImage:
-        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop',
-      upvotes: 4200,
-      comments: 523,
-      awards: 4,
-    },
-    {
-      id: 3,
-      userName: 'u/developer_jane',
-      timeAgo: '1 week ago',
-      title: 'Launched my indie SaaS - From idea to $10K MRR',
-      coverImage:
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
-      upvotes: 8900,
-      comments: 1240,
-      awards: 12,
-    },
-  ],
-
-  moderators: [
-    {
-      name: 'u/MurtzaM',
-      avatar:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop',
-    },
-    {
-      name: 'u/walruswilderness',
-      avatar:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop',
-    },
-  ],
-};
-
 export const CommunityView = ({ communityId }: { communityId: number }) => {
   const communityQuery = useCommunity({ communityId });
 
@@ -107,7 +42,9 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
       <div className="relative h-48 overflow-hidden bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
         <div className="absolute inset-0 opacity-20">
           <img
-            src={mockCommunity.coverImage}
+            src={
+              'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=300&fit=crop'
+            }
             alt="W/"
             className="size-full object-cover"
           />
@@ -123,8 +60,8 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
             <div className="relative">
               <div className="size-24 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl">
                 <img
-                  src={mockCommunity.avatar}
-                  alt={mockCommunity.name}
+                  src={community.communityAvatar}
+                  alt={community.name}
                   className="size-full object-cover"
                 />
               </div>
@@ -210,7 +147,8 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
                 <div className="flex items-center gap-2 text-xs text-gray-500">
                   <Calendar className="size-4" />
-                  <span>Created {mockCommunity.createdDate}</span>
+                  {/* 2025-10-29T05:42:19.919581Z */}
+                  <span>Created {community.createdAt}</span>
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -236,7 +174,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                   </div>
                   <div>
                     <div className="flex items-center gap-1 text-xl font-bold text-gray-900">
-                      {formatBigNumber(mockCommunity.weeklyContributions)}
+                      {formatBigNumber(12000)}
                       <TrendingUp className="size-4 text-green-500" />
                     </div>
                     <div className="text-xs text-gray-500">Weekly posts</div>

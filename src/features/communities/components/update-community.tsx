@@ -9,6 +9,7 @@ import {
   Switch,
   Textarea,
 } from '@/components/ui/form';
+import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 /* import { Authorization, ROLES } from '@/lib/authorization'; */
 import { fancyLog } from '@/helper/fancy-log';
@@ -60,7 +61,7 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
       title="Update Community"
       submitButton={
         <Button
-          form="create-community"
+          form="update-community"
           type="submit"
           size="sm"
           isLoading={updateCommunityMutation.isPending}
@@ -71,7 +72,7 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
       }
     >
       <Form
-        id="create-community"
+        id="update-community"
         onSubmit={(values) => {
           fancyLog('Update-Community-Values', values);
           updateCommunityMutation.mutate({ data: values, communityId });
@@ -82,11 +83,12 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
             name: community.name,
             shortDescription: community.shortDescription,
             description: community.description,
+            communityAvatar: community.communityAvatar || undefined,
             isPrivate: community.isPrivate,
           },
         }}
       >
-        {({ register, control, formState }) => (
+        {({ register, control, formState, setValue, watch }) => (
           <>
             {formState.errors && fancyLog('Error ?', formState.errors)}
             <Input
@@ -107,6 +109,61 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
               registration={register('description')}
               className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
             />
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-700">
+                Community Avatar
+              </p>
+              <MediaUploader
+                onChange={(urls) => {
+                  setValue('communityAvatar', urls[0], {
+                    shouldValidate: true,
+                  });
+                }}
+                onError={(error) => {
+                  addNotification({
+                    type: 'error',
+                    title: 'Avatar Upload Failed',
+                    message:
+                      error.message || 'Failed to upload community avatar',
+                  });
+                }}
+                value={
+                  watch('communityAvatar')
+                    ? [watch('communityAvatar') as string]
+                    : undefined
+                }
+                maxFiles={1}
+                accept={{ images: true, videos: false }}
+                className="space-y-4"
+              />
+              {formState.errors['communityAvatar'] && (
+                <span className="text-xs text-red-500">
+                  {formState.errors['communityAvatar'].message}
+                </span>
+              )}
+              {watch('communityAvatar') && (
+                <div className="mt-2 flex items-center gap-2">
+                  <img
+                    src={watch('communityAvatar')}
+                    alt="Community Avatar Preview"
+                    className="size-16 rounded-full border-2 border-blue-200 object-cover"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setValue('communityAvatar', undefined, {
+                        shouldValidate: true,
+                      });
+                    }}
+                    className="text-red-500 hover:text-red-600"
+                  >
+                    Remove Avatar
+                  </Button>
+                </div>
+              )}
+            </div>
 
             {/* Private Community Toggle */}
             <div className="group relative overflow-hidden rounded-xl border-2 border-blue-200/80 bg-gradient-to-br from-blue-50 via-white to-indigo-50/50 p-5 transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/10">

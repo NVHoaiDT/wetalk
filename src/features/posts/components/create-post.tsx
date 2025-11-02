@@ -1,4 +1,4 @@
-import { Plus, X, Image as ImageIcon } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
