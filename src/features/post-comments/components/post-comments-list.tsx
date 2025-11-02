@@ -1,12 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
-import {
-  ArchiveX,
-  ThumbsUp,
-  ThumbsDown,
-  Reply,
-  MoreVertical,
-  Pencil,
-} from 'lucide-react';
+import { ArchiveX, Reply, MoreVertical, Pencil } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -28,6 +21,8 @@ import { useInfinitePostComments } from '../api/get-post-comments';
 
 import { CreatePostComment } from './create-post-comment';
 import { DeletePostComment } from './delete-post-comment';
+import { DownVotePostComment } from './downvote-post-comment';
+import { UpVotePostComment } from './upvote-post-comment';
 
 type PostCommentsListProps = {
   postId: number;
@@ -90,27 +85,10 @@ const Comment = ({
           {/* Comment Actions */}
           <div className="mt-2 flex items-center space-x-4">
             <div className="flex items-center space-x-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`${
-                  level === 0 ? 'h-8 px-2' : 'h-6 px-2 text-sm'
-                } hover:text-blue-600`}
-              >
-                <ThumbsUp
-                  className={`mr-1 ${level === 0 ? 'size-4' : 'size-3'}`}
-                />
-                <span>0</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`${
-                  level === 0 ? 'h-8 px-2' : 'h-6 px-2 text-sm'
-                } hover:text-blue-600`}
-              >
-                <ThumbsDown className={level === 0 ? 'size-4' : 'size-3'} />
-              </Button>
+              {/* Vote buttons */}
+              <UpVotePostComment commentId={comment.id} />
+              <span>{comment.vote}</span>
+              <DownVotePostComment commentId={comment.id} />
             </div>
             {level < maxNestedLevel && (
               <Button
