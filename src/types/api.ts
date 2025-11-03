@@ -152,6 +152,74 @@ export type UploadImageResponse = {
   }[];
 };
 
+/* ____________________Messages____________________ */
+export type Message = {
+  id: number;
+  conversationId: number;
+  sender: {
+    id: number;
+    username: string;
+    avatar: string;
+  };
+  type: string;
+  content: string;
+  isRead: boolean;
+  readAt: string | null;
+  createdAt: string;
+  attachments: string[];
+};
+
+export type Conversation = {
+  id: number;
+  otherUser: {
+    id: number;
+    username: string;
+    avatar: string;
+  };
+  lastMessage: {
+    content: string;
+    isRead: boolean;
+    sentAt: string;
+    readAt: string | null;
+  } | null;
+  unreadCount: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ConversationsResponse = {
+  success: boolean;
+  message: string;
+  data: Conversation[];
+  pagination: Pagination;
+};
+
+export type MessagesResponse = {
+  success: boolean;
+  message: string;
+  data: Message[];
+  pagination: Pagination;
+};
+
+export type SendMessageResponse = {
+  success: boolean;
+  message: string;
+  data: Message & {
+    conversationId: number;
+  };
+};
+
+// SSE Event types
+export type SSEMessageEvent = {
+  conversationId: number;
+  message: Message;
+};
+
+export type SSEConversationUpdatedEvent = {
+  conversation: Conversation;
+};
+/* ____________________End Messages____________________ */
+
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{

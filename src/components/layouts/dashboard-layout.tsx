@@ -1,4 +1,11 @@
-import { Home, PanelLeft, Folder, Users, User2 } from 'lucide-react';
+import {
+  Home,
+  PanelLeft,
+  Folder,
+  Users,
+  User2,
+  MessageCircle,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
 
@@ -6,6 +13,7 @@ import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { paths } from '@/config/paths';
+import { useMessages } from '@/features/messages/stores/messages-store';
 import { Search } from '@/features/search/components/search';
 import { useLogout } from '@/lib/auth';
 import { ROLES, useAuthorization } from '@/lib/authorization';
@@ -79,11 +87,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const logout = useLogout();
   const { checkAccess } = useAuthorization();
+  const { openMessages, unreadCount } = useMessages();
+
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
     { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
     { name: 'Communities', to: paths.app.communities.getHref(), icon: Users },
-    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+    checkAccess({ allowedRoles: [ROLES.admin] }) && {
       name: 'Users',
       to: paths.app.users.getHref(),
       icon: User2,
@@ -170,6 +180,21 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           <div className="flex flex-1 justify-center px-4 sm:px-6">
             <Search />
           </div>
+
+          {/* Messages Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="relative"
+            onClick={openMessages}
+          >
+            <MessageCircle className="size-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs font-semibold text-white">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
