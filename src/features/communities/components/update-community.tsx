@@ -115,9 +115,10 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
               </p>
               <MediaUploader
                 onChange={(urls) => {
-                  setValue('communityAvatar', urls[0], {
+                  setValue('communityAvatar', urls[1], {
                     shouldValidate: true,
                   });
+                  fancyLog('Uploaded Avatar URLS', urls);
                 }}
                 onError={(error) => {
                   addNotification({

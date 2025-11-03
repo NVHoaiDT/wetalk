@@ -3,6 +3,7 @@ import { ArchiveX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 import { useUser } from '@/lib/auth';
 import { POLICIES, Authorization } from '@/lib/authorization';
 import { User } from '@/types/api';
@@ -18,6 +19,7 @@ type CommentsListProps = {
 
 export const CommentsList = ({ discussionId }: CommentsListProps) => {
   const user = useUser();
+  fancyLog('USER DATA IN COMMENTS LIST:', user.data);
   const commentsQuery = useInfiniteComments({ discussionId });
 
   if (commentsQuery.isLoading) {
