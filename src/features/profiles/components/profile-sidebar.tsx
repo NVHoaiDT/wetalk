@@ -1,4 +1,11 @@
-import { TrendingUp, MessageSquare, Calendar, Award, Edit } from 'lucide-react';
+import {
+  TrendingUp,
+  MessageSquare,
+  Calendar,
+  Award,
+  Edit,
+  Share2,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { User } from '@/types/api';
@@ -9,14 +16,29 @@ type ProfileSidebarProps = {
 };
 
 export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
+  const handleShare = () => {
+    // TODO: Implement share functionality
+    navigator.clipboard.writeText(window.location.href);
+  };
+
   return (
     <div className="space-y-4">
       {/* User Info Card */}
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-bold text-gray-900">
+        <h2 className="mb-2 text-lg font-bold text-gray-900">
           {user.username}
         </h2>
 
+        {/* Share Button */}
+        <Button
+          onClick={handleShare}
+          variant="outline"
+          size="sm"
+          className="my-1 rounded-full bg-gray-100 py-2 hover:bg-gray-200"
+          icon={<Share2 className="size-4" />}
+        >
+          Share
+        </Button>
         {/* Stats Grid */}
         <div className="mb-6 grid grid-cols-2 gap-4">
           <div>
@@ -62,7 +84,7 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
       {/* Achievements Card */}
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-bold text-gray-900">Achievements</h3>
+          <h3 className="font-bold text-gray-600">ACHIEVEMENTS</h3>
           <Award className="size-5 text-amber-500" />
         </div>
 

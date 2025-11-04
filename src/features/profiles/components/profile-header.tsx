@@ -1,6 +1,5 @@
-import { Share2, Camera } from 'lucide-react';
+import { Camera } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { User } from '@/types/api';
 
 type ProfileHeaderProps = {
@@ -9,11 +8,6 @@ type ProfileHeaderProps = {
 };
 
 export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
-  const handleShare = () => {
-    // TODO: Implement share functionality
-    navigator.clipboard.writeText(window.location.href);
-  };
-
   return (
     <div className="relative mb-6 overflow-hidden rounded-2xl bg-white shadow-lg">
       {/* Banner Background */}
@@ -22,19 +16,6 @@ export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
         <div className="absolute inset-0 opacity-10">
           <div className="absolute left-0 top-0 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"></div>
           <div className="absolute bottom-0 right-0 size-64 translate-x-1/2 translate-y-1/2 rounded-full bg-white"></div>
-        </div>
-
-        {/* Share Button */}
-        <div className="absolute right-4 top-4">
-          <Button
-            onClick={handleShare}
-            variant="outline"
-            size="sm"
-            className="bg-white/90 backdrop-blur-sm hover:bg-white"
-            icon={<Share2 className="size-4" />}
-          >
-            Share
-          </Button>
         </div>
       </div>
 

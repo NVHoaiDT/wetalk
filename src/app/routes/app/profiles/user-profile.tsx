@@ -42,7 +42,7 @@ const UserProfileRoute = () => {
   const isOwnProfile = currentUserId === user.id;
 
   return (
-    <ContentLayout title={`${user.username}'s Profile`}>
+    <ContentLayout>
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Main Content - Left */}

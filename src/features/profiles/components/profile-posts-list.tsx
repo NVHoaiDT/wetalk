@@ -1,9 +1,12 @@
-import { ArrowBigUp, MessageSquare, ChevronDown, Eye } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { MessageSquare, ChevronDown, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
+import { DownVotePost } from '@/features/posts/components/downvote-post';
+import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { useInfiniteUserPosts } from '@/features/profiles/api/get-user-posts';
 import { cn } from '@/utils/cn';
 
@@ -82,64 +85,63 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
       {/* Posts List */}
       <div className="space-y-3">
         {posts.map((post) => (
-          <Link
+          <div
             key={post.id}
-            to={paths.app.post.getHref(post.id)}
             className="block rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
           >
             <div className="flex space-x-3">
               {/* Vote Section */}
               <div className="flex flex-col items-center space-y-1">
-                <button className="text-gray-400 hover:text-blue-600">
-                  <ArrowBigUp className="size-6" />
-                </button>
+                <UpVotePost postId={post.id} />
                 <span className="text-sm font-semibold text-gray-900">
                   {post.vote}
                 </span>
+                <DownVotePost postId={post.id} />
               </div>
 
-              {/* Content */}
-              <div className="min-w-0 flex-1">
-                <div className="mb-1 flex items-center space-x-2 text-xs text-gray-600">
-                  <Link
-                    to={paths.app.community.getHref(post.community.id)}
-                    className="font-semibold hover:underline"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    r/{post.community.name}
-                  </Link>
-                  <span>•</span>
-                  <span>
-                    {new Date(post.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </span>
-                </div>
-                <h3 className="mb-2 line-clamp-2 text-base font-semibold text-gray-900">
-                  {post.title}
-                </h3>
-                {post.tags.length > 0 && (
-                  <div className="mb-2 flex flex-wrap gap-1">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+              <Link to={paths.app.post.getHref(post.id)}>
+                {/* Content */}
+                <div className="min-w-0 flex-1">
+                  <div className="mb-1 flex items-center space-x-2 text-xs text-gray-600">
+                    <Link
+                      to={paths.app.community.getHref(post.community.id)}
+                      className="font-semibold hover:underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      r/{post.community.name}
+                    </Link>
+                    <span>•</span>
+                    <span>
+                      {formatDistanceToNow(new Date(post.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
                   </div>
-                )}
-                <div className="flex items-center space-x-4 text-xs text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <MessageSquare className="size-4" />
-                    <span>Comments</span>
+                  <h3 className="mb-2 line-clamp-2 text-base font-semibold text-gray-900">
+                    {post.title}
+                  </h3>
+                  {post.tags.length > 0 && (
+                    <div className="mb-2 flex flex-wrap gap-1">
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex items-center space-x-4 text-xs text-gray-600">
+                    <div className="flex items-center space-x-1">
+                      <MessageSquare className="size-4" />
+                      <span>Comments</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
 
