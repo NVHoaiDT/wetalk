@@ -38,16 +38,33 @@ export type Pagination = {
   nextUrl: string;
 };
 
+/* 
+        "id": 1,
+        "username": "nguyenvana",
+        "email": "nguyenvana@example.com",
+        "bio": "Lập trình viên Backend, yêu thích Golang và microservices",
+        "avatar": "https://i.pravatar.cc/150?img=1",
+        "achievement": {
+            "karma": 140,
+            "badge": "Gold",
+            "totalPosts": 8,
+            "totalComments": 9
+        },
+        "createdAt": "2025-08-01T03:48:00.067211Z"
+*/
 export type User = {
   id: number;
   username: string;
   email: string;
-  karma: number;
   bio: string;
   avatar: string;
-  role: string;
-  created_at: string;
-  updated_at: string;
+  achievement: {
+    karma: number;
+    badge: string;
+    totalPosts: number;
+    totalComments: number;
+  };
+  createdAt: string;
 };
 
 export type RegisterResponse = {

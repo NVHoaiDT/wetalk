@@ -1,8 +1,9 @@
 import { X } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 import { useUser } from '@/lib/auth';
 
 import { useMessages as useMessagesAPI } from '../api/get-messages';
@@ -28,12 +29,40 @@ export const ChatPanel = () => {
   const sendMessageMutation = useSendMessage();
   const markAsReadMutation = useMarkConversationAsRead();
 
-  const messages = messagesQuery.data?.data || [];
+  if (sendMessageMutation.isError) {
+    fancyLog('SEND MESSAGE ERROR', sendMessageMutation.error);
+  }
+
+  const messages = useMemo(
+    () => messagesQuery.data?.data || [],
+    [messagesQuery.data],
+  );
+
+  fancyLog('MESSAGES', messages);
+  /* 
+    [
+      {
+          "id": 1,
+          "conversationId": 1,
+          "sender": {
+              "id": 1,
+              "username": "nguyenvana",
+              "avatar": "https://i.pravatar.cc/150?img=1"
+          },
+          "type": "text",
+          "content": "Yo",
+          "isRead": false,
+          "createdAt": "2025-11-03T09:27:08.914529Z"
+      }
+    ]
+  */
 
   // Get other user info from first message
-  const otherUser = messages.find(
+  const recipient = messages.find(
     (msg) => msg.sender.id !== currentUserId,
   )?.sender;
+
+  fancyLog('RECIPIENT', recipient); // undefined here
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -48,10 +77,10 @@ export const ChatPanel = () => {
   }, [selectedConversationId]);
 
   const handleSendMessage = (content: string) => {
-    if (!selectedConversationId || !otherUser) return;
+    if (!selectedConversationId || !recipient) return;
 
     sendMessageMutation.mutate({
-      recipientId: otherUser.id,
+      recipientId: recipient.id,
       content,
     });
   };
@@ -76,22 +105,22 @@ export const ChatPanel = () => {
       {/* Chat Header */}
       <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
         <div className="flex items-center gap-3">
-          {otherUser ? (
+          {recipient ? (
             <>
-              {otherUser.avatar ? (
+              {recipient.avatar ? (
                 <img
-                  src={otherUser.avatar}
-                  alt={otherUser.username}
+                  src={recipient.avatar}
+                  alt={recipient.username}
                   className="size-10 rounded-full object-cover"
                 />
               ) : (
                 <div className="flex size-10 items-center justify-center rounded-full bg-gray-300 text-lg font-semibold text-gray-600">
-                  {otherUser.username.charAt(0).toUpperCase()}
+                  {recipient.username.charAt(0).toUpperCase()}
                 </div>
               )}
               <div>
                 <h3 className="font-semibold text-gray-900">
-                  {otherUser.username}
+                  {recipient.username}
                 </h3>
                 <p className="text-xs text-gray-500">Active</p>
               </div>
@@ -141,7 +170,7 @@ export const ChatPanel = () => {
       <div className="border-t border-gray-200 p-4">
         <MessageInput
           onSend={handleSendMessage}
-          disabled={sendMessageMutation.isPending || !otherUser}
+          disabled={sendMessageMutation.isPending || !recipient}
           placeholder="Type a message..."
         />
       </div>
