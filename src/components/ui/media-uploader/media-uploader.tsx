@@ -127,7 +127,6 @@ export const MediaUploader = ({
 
       setMediaFiles((prev) => [...prev, ...newFiles]);
 
-      // Start upload
       const images = newFiles
         .filter((f) => f.type === 'image')
         .map((f) => f.file);
@@ -145,7 +144,6 @@ export const MediaUploader = ({
       }
 
       if (videos.length > 0) {
-        // Upload videos one by one
         videos.forEach((video) => {
           uploadVideosMutation.mutate({
             data: {

@@ -3,12 +3,13 @@ import {
   MessageSquare,
   Calendar,
   Award,
-  Edit,
   Share2,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { User } from '@/types/api';
+
+import { UpdateProfile } from './update-profile';
 
 type ProfileSidebarProps = {
   user: User;
@@ -137,14 +138,15 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           <h3 className="mb-4 font-bold text-gray-900">Settings</h3>
           <div className="space-y-2">
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               className="w-full justify-start"
               icon={<Edit className="size-4" />}
             >
               Edit Profile
-            </Button>
+            </Button> */}
+            <UpdateProfile />
             <Button
               variant="outline"
               size="sm"
