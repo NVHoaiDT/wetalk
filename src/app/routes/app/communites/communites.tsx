@@ -23,7 +23,7 @@ export const clientLoader =
 
 const CommunitesRoute = () => {
   return (
-    <ContentLayout title="Communites">
+    <ContentLayout>
       <div className="flex justify-end">
         <CreateCommunity />
       </div>
