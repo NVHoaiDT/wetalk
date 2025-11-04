@@ -1,4 +1,5 @@
-import { Edit } from 'lucide-react';
+import { Edit, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
@@ -14,6 +15,7 @@ import {
 } from '../api/update-profile';
 
 export const UpdateProfile = () => {
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const { addNotification } = useNotifications();
   const updateProfileMutation = useUpdateProfile({
     mutationConfig: {
@@ -58,8 +60,9 @@ export const UpdateProfile = () => {
           type="submit"
           size="sm"
           isLoading={updateProfileMutation.isPending}
+          disabled={isUploadingAvatar || updateProfileMutation.isPending}
         >
-          Submit
+          {isUploadingAvatar ? 'Uploading Avatar...' : 'Submit'}
         </Button>
       }
     >
@@ -97,19 +100,43 @@ export const UpdateProfile = () => {
               <div className="space-y-2">
                 <div className="text-sm font-medium text-gray-700">Avatar</div>
 
+                {/* Avatar Preview */}
+                {avatarUrl && (
+                  <div className="relative mb-3 flex justify-center">
+                    <div className="group relative size-32 overflow-hidden rounded-full border-4 border-gray-200 shadow-lg transition-all duration-300 hover:border-blue-400">
+                      <img
+                        key={avatarUrl}
+                        src={avatarUrl}
+                        alt="Profile Avatar"
+                        className="size-full object-cover transition-all duration-500 group-hover:scale-110"
+                        style={{
+                          animation: 'fadeIn 0.5s ease-in',
+                        }}
+                      />
+                      {isUploadingAvatar && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                          <Loader2 className="size-8 animate-spin text-white" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <MediaUploader
+                  mode="replace"
                   maxFiles={1}
                   accept={{ images: true, videos: false }}
                   maxSize={5 * 1024 * 1024}
                   value={avatarUrl ? [avatarUrl] : []}
                   onChange={(urls) => {
                     if (urls.length > 0) {
-                      fancyLog('All-Avatar-URLs:', urls);
-                      fancyLog('New-Avatar-URL:', urls[urls.length - 1]);
-                      setValue('avatar', urls[urls.length - 1], {
+                      setValue('avatar', urls[0], {
                         shouldValidate: true,
                       });
                     }
+                  }}
+                  onUploadStateChange={(isUploading) => {
+                    setIsUploadingAvatar(isUploading);
                   }}
                   onError={(error) => {
                     addNotification({

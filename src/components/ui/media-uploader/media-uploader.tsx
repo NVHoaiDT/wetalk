@@ -10,11 +10,13 @@ import type { MediaFile, MediaUploaderProps } from './types';
 export const MediaUploader = ({
   onChange,
   onError,
+  onUploadStateChange,
   maxFiles = 10,
   maxSize = 100 * 1024 * 1024,
   accept = { images: true, videos: true },
   value = [],
   className,
+  mode = 'append',
 }: MediaUploaderProps) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -30,7 +32,8 @@ export const MediaUploader = ({
               : file,
           ),
         );
-        onChange([...value, ...urls]);
+        onChange(mode === 'replace' ? urls : [...value, ...urls]);
+        onUploadStateChange?.(false);
       },
       onError: (error) => {
         setMediaFiles((prev) =>
@@ -41,6 +44,7 @@ export const MediaUploader = ({
           ),
         );
         onError?.(error);
+        onUploadStateChange?.(false);
       },
     },
   });
@@ -55,7 +59,12 @@ export const MediaUploader = ({
               : file,
           ),
         );
-        onChange([...value, response.data.url]);
+        onChange(
+          mode === 'replace'
+            ? [response.data.url]
+            : [...value, response.data.url],
+        );
+        onUploadStateChange?.(false);
       },
       onError: (error) => {
         setMediaFiles((prev) =>
@@ -66,6 +75,7 @@ export const MediaUploader = ({
           ),
         );
         onError?.(error);
+        onUploadStateChange?.(false);
       },
     },
   });
@@ -133,6 +143,10 @@ export const MediaUploader = ({
       const videos = newFiles
         .filter((f) => f.type === 'video')
         .map((f) => f.file);
+
+      if (images.length > 0 || videos.length > 0) {
+        onUploadStateChange?.(true);
+      }
 
       if (images.length > 0) {
         uploadImagesMutation.mutate({

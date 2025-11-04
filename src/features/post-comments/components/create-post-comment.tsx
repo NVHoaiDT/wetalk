@@ -20,7 +20,6 @@ export const CreatePostComment = ({
   postId,
   parentCommentId,
   onSuccess,
-  placeholder = 'What are your thoughts?',
   minimized = false,
 }: CreateCommentProps) => {
   const [content, setContent] = useState('');
@@ -118,9 +117,9 @@ export const CreatePostComment = ({
       {isUploaderOpen && (
         <div className="mt-4">
           <MediaUploader
+            mode="replace"
             onChange={(urls) => {
               if (urls.length > 0) {
-                /* Only use the first image for comments */
                 setMediaUrl(urls[0]);
               }
               setIsUploaderOpen(false);

@@ -94,8 +94,10 @@ export const EditPostComment = ({
             </div>
 
             <MediaUploader
+              mode="replace"
               value={mediaUrl ? [mediaUrl] : []}
               onChange={(urls) => setMediaUrl(urls[0] || '')}
+              maxFiles={1}
               maxSize={5}
             />
 

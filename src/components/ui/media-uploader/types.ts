@@ -13,6 +13,8 @@ export type MediaUploaderProps = {
   onChange: (urls: string[]) => void;
   /** Callback for handling errors */
   onError?: (error: Error) => void;
+  /** Callback when upload state changes */
+  onUploadStateChange?: (isUploading: boolean) => void;
   /** Maximum number of files allowed */
   maxFiles?: number;
   /** Maximum file size in bytes */
@@ -26,4 +28,6 @@ export type MediaUploaderProps = {
   value?: string[];
   /** Additional className for the container */
   className?: string;
+  /** Upload mode: 'append' accumulates files (default), 'replace' overwrites existing */
+  mode?: 'append' | 'replace';
 };

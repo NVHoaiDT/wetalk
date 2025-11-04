@@ -114,8 +114,9 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
                 Community Avatar
               </p>
               <MediaUploader
+                mode="replace"
                 onChange={(urls) => {
-                  setValue('communityAvatar', urls[1], {
+                  setValue('communityAvatar', urls[0], {
                     shouldValidate: true,
                   });
                   fancyLog('Uploaded Avatar URLS', urls);
