@@ -22,6 +22,17 @@ export const useCurrentUser = () => {
   });
 };
 
+const getUserById = async (userId: number): Promise<{ data: User }> => {
+  return api.get(`/users/${userId}`);
+};
+
+export const useUser = (userId: number) => {
+  return useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => getUserById(userId),
+  });
+};
+
 /* ____________________Logout____________________ */
 const logout = async (): Promise<void> => {
   localStorage.removeItem('accessToken');
