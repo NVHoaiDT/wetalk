@@ -152,8 +152,10 @@ export type Comment = {
     username: string;
     avatar: string;
   };
+  parentCommentId?: number;
   content: string;
   mediaUrl: string;
+  vote: number;
   createdAt: string;
   updatedAt: string;
   replies: Comment[];

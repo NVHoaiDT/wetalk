@@ -69,5 +69,9 @@ export const paths = {
       path: 'profile',
       getHref: () => '/app/profile',
     },
+    userProfile: {
+      path: 'profiles/:userId',
+      getHref: (userId: string | number) => `/app/profiles/${userId}`,
+    },
   },
 } as const;

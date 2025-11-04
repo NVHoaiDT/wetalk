@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router';
 
 import { MainErrorFallback } from '@/components/errors/main';
 import { ContentLayout } from '@/components/layouts';
@@ -10,11 +11,16 @@ import {
   ProfileTabs,
   TabType,
 } from '@/features/profiles/components/profile-tabs';
-import { useCurrentUser } from '@/lib/auth';
+import { useUser, useCurrentUser } from '@/lib/auth';
 
-const ProfileRoute = () => {
+const UserProfileRoute = () => {
+  const { userId } = useParams<{ userId: string }>();
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const { data, status } = useCurrentUser();
+
+  const { data: currentUserData } = useCurrentUser();
+  const currentUserId = currentUserData?.data?.id;
+
+  const { data, status } = useUser(Number(userId));
 
   if (status === 'pending') {
     return (
@@ -33,18 +39,20 @@ const ProfileRoute = () => {
     return null;
   }
 
+  const isOwnProfile = currentUserId === user.id;
+
   return (
-    <ContentLayout title={`My Profile`}>
+    <ContentLayout title={`${user.username}'s Profile`}>
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Main Content - Left */}
           <div className="lg:col-span-2">
-            <ProfileHeader user={user} isOwnProfile={true} />
+            <ProfileHeader user={user} isOwnProfile={isOwnProfile} />
             <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
               <ProfileTabs
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
-                isOwnProfile={true}
+                isOwnProfile={isOwnProfile}
               />
               <div className="p-4">
                 <ProfileContent userId={user.id} activeTab={activeTab} />
@@ -54,7 +62,7 @@ const ProfileRoute = () => {
 
           {/* Sidebar - Right */}
           <div className="lg:col-span-1">
-            <ProfileSidebar user={user} isOwnProfile={true} />
+            <ProfileSidebar user={user} isOwnProfile={isOwnProfile} />
           </div>
         </div>
       </div>
@@ -62,4 +70,4 @@ const ProfileRoute = () => {
   );
 };
 
-export default ProfileRoute;
+export default UserProfileRoute;
