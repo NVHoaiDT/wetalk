@@ -8,17 +8,17 @@ import { RegisterResponse, LoginResponse, User } from '@/types/api';
 import { api } from './api-client';
 
 /* ____________________User____________________ */
-const getUser = async (): Promise<{ data: User | null }> => {
+const getCurrentUser = async (): Promise<{ data: User | null }> => {
   return api.get('/users/me');
 };
 
-export const useUser = () => {
+export const useCurrentUser = () => {
   const token = localStorage.getItem('accessToken');
 
   return useQuery({
     enabled: !!token,
     queryKey: ['user'],
-    queryFn: getUser,
+    queryFn: getCurrentUser,
   });
 };
 
@@ -102,7 +102,7 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions = {}) => {
 };
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const user = useUser();
+  const user = useCurrentUser();
   const location = useLocation();
 
   if (!user.data) {
@@ -121,7 +121,7 @@ type AuthLoaderProps = {
 };
 
 export const AuthLoader = ({ children, renderLoading }: AuthLoaderProps) => {
-  const { isLoading } = useUser();
+  const { isLoading } = useCurrentUser();
 
   if (isLoading) {
     return renderLoading();

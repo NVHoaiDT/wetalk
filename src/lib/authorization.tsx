@@ -3,7 +3,7 @@ import * as React from 'react';
 import { fancyLog } from '@/helper/fancy-log';
 import { Comment, User } from '@/types/api';
 
-import { useUser } from './auth';
+import { useCurrentUser } from './auth';
 
 export enum ROLES {
   admin = 'admin',
@@ -30,7 +30,7 @@ export const POLICIES = {
 };
 
 export const useAuthorization = () => {
-  const userQuery = useUser();
+  const userQuery = useCurrentUser();
   const user = userQuery.data?.data;
 
   if (!user) {

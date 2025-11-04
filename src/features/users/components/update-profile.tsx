@@ -3,7 +3,7 @@ import { Edit2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 
 import {
   updateProfileInputSchema,
@@ -11,7 +11,7 @@ import {
 } from '../api/update-profile';
 
 export const UpdateProfile = () => {
-  const user = useUser();
+  const user = useCurrentUser();
   const { addNotification } = useNotifications();
   const updateProfileMutation = useUpdateProfile({
     mutationConfig: {

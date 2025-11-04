@@ -4,7 +4,7 @@ import { MainErrorFallback } from '@/components/errors/main';
 import { ContentLayout } from '@/components/layouts';
 import { Spinner } from '@/components/ui/spinner';
 import { UpdateProfile } from '@/features/users/components/update-profile';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 
 type EntryProps = {
   label: string;
@@ -31,7 +31,7 @@ const Entry = ({ label, value, icon }: EntryProps) => (
 );
 
 const ProfileRoute = () => {
-  const { data, status } = useUser();
+  const { data, status } = useCurrentUser();
 
   if (status === 'pending') {
     return <Spinner />;

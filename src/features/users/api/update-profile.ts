@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 
 import { api } from '@/lib/api-client';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 import { MutationConfig } from '@/lib/react-query';
 
 export const updateProfileInputSchema = z.object({
@@ -25,7 +25,7 @@ type UseUpdateProfileOptions = {
 export const useUpdateProfile = ({
   mutationConfig,
 }: UseUpdateProfileOptions = {}) => {
-  const { refetch: refetchUser } = useUser();
+  const { refetch: refetchUser } = useCurrentUser();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 

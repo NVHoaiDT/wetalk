@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ConfirmationDialog } from '@/components/ui/dialog';
 import { useNotifications } from '@/components/ui/notifications';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 
 import { useDeleteUser } from '../api/delete-user';
 
@@ -10,7 +10,7 @@ type DeleteUserProps = {
 };
 
 export const DeleteUser = ({ id }: DeleteUserProps) => {
-  const user = useUser();
+  const user = useCurrentUser();
   const { addNotification } = useNotifications();
   const deleteUserMutation = useDeleteUser({
     mutationConfig: {

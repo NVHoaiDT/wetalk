@@ -4,7 +4,7 @@ import { useEffect, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { fancyLog } from '@/helper/fancy-log';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 
 import { useMessages as useMessagesAPI } from '../api/get-messages';
 import { useMarkConversationAsRead } from '../api/mark-conversation-read';
@@ -17,8 +17,11 @@ import { MessageItem } from './message-item';
 export const ChatPanel = () => {
   const { selectedConversationId, selectConversation } = useMessages();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const userQuery = useUser();
+
+  const userQuery = useCurrentUser();
   const currentUserId = userQuery.data?.data?.id;
+
+  const recipientId = selectedConversationId;
 
   const messagesQuery = useMessagesAPI({
     conversationId: selectedConversationId!,
@@ -32,12 +35,14 @@ export const ChatPanel = () => {
   if (sendMessageMutation.isError) {
     fancyLog('SEND MESSAGE ERROR', sendMessageMutation.error);
   }
+  if (markAsReadMutation.isError) {
+    fancyLog('MARK AS READ ERROR', markAsReadMutation.error);
+  }
 
   const messages = useMemo(
     () => messagesQuery.data?.data || [],
     [messagesQuery.data],
   );
-
   fancyLog('MESSAGES', messages);
   /* 
     [

@@ -13,7 +13,7 @@ import {
 import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
 import { fancyLog } from '@/helper/fancy-log';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 import { Authorization, POLICIES } from '@/lib/authorization';
 import { User } from '@/types/api';
 
@@ -41,7 +41,7 @@ const Comment = ({
   const [isReplying, setIsReplying] = useState(false);
   const maxNestedLevel = 3;
 
-  const userQuery = useUser();
+  const userQuery = useCurrentUser();
   const user = userQuery.data?.data;
   fancyLog('USER: ', user);
   fancyLog('COMMENT: ', comment);

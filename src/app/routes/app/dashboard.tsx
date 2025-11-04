@@ -2,10 +2,10 @@ import { MainErrorFallback } from '@/components/errors/main';
 import { ContentLayout } from '@/components/layouts';
 import { Spinner } from '@/components/ui/spinner';
 import { fancyLog } from '@/helper/fancy-log';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 
 const DashboardRoute = () => {
-  const userQuery = useUser();
+  const userQuery = useCurrentUser();
   if (userQuery.isLoading) {
     return <Spinner />;
   }

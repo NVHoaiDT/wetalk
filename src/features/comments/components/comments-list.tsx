@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
 import { fancyLog } from '@/helper/fancy-log';
-import { useUser } from '@/lib/auth';
+import { useCurrentUser } from '@/lib/auth';
 import { POLICIES, Authorization } from '@/lib/authorization';
 import { User } from '@/types/api';
 import { formatDate } from '@/utils/format';
@@ -18,7 +18,7 @@ type CommentsListProps = {
 };
 
 export const CommentsList = ({ discussionId }: CommentsListProps) => {
-  const user = useUser();
+  const user = useCurrentUser();
   fancyLog('USER DATA IN COMMENTS LIST:', user.data);
   const commentsQuery = useInfiniteComments({ discussionId });
 
