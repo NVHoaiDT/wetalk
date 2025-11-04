@@ -10,7 +10,8 @@ import { useMessages } from '../stores/messages-store';
 import { ConversationItem } from './conversation-item';
 
 export const ConversationsPanel = () => {
-  const { selectedConversationId, selectConversation } = useMessages();
+  const { selectedConversationId, selectConversation, selectRecipient } =
+    useMessages();
   const [searchQuery, setSearchQuery] = useState('');
 
   const conversationsQuery = useConversations({
@@ -78,7 +79,10 @@ export const ConversationsPanel = () => {
                 key={conversation.id}
                 conversation={conversation}
                 isActive={selectedConversationId === conversation.id}
-                onClick={() => selectConversation(conversation.id)}
+                onClick={() => {
+                  selectConversation(conversation.id);
+                  selectRecipient(conversation.otherUser);
+                }}
               />
             ))}
           </div>

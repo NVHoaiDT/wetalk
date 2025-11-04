@@ -15,13 +15,12 @@ import { MessageInput } from './message-input';
 import { MessageItem } from './message-item';
 
 export const ChatPanel = () => {
-  const { selectedConversationId, selectConversation } = useMessages();
+  const { selectedConversationId, selectConversation, selectedRecipient } =
+    useMessages();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const userQuery = useCurrentUser();
   const currentUserId = userQuery.data?.data?.id;
-
-  const recipientId = selectedConversationId;
 
   const messagesQuery = useMessagesAPI({
     conversationId: selectedConversationId!,
@@ -62,13 +61,6 @@ export const ChatPanel = () => {
     ]
   */
 
-  // Get other user info from first message
-  const recipient = messages.find(
-    (msg) => msg.sender.id !== currentUserId,
-  )?.sender;
-
-  fancyLog('RECIPIENT', recipient); // undefined here
-
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -82,10 +74,10 @@ export const ChatPanel = () => {
   }, [selectedConversationId]);
 
   const handleSendMessage = (content: string) => {
-    if (!selectedConversationId || !recipient) return;
+    if (!selectedConversationId || !selectedRecipient) return;
 
     sendMessageMutation.mutate({
-      recipientId: recipient.id,
+      recipientId: selectedRecipient.id,
       content,
     });
   };
@@ -110,22 +102,22 @@ export const ChatPanel = () => {
       {/* Chat Header */}
       <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
         <div className="flex items-center gap-3">
-          {recipient ? (
+          {selectedRecipient ? (
             <>
-              {recipient.avatar ? (
+              {selectedRecipient.avatar ? (
                 <img
-                  src={recipient.avatar}
-                  alt={recipient.username}
+                  src={selectedRecipient.avatar}
+                  alt={selectedRecipient.username}
                   className="size-10 rounded-full object-cover"
                 />
               ) : (
                 <div className="flex size-10 items-center justify-center rounded-full bg-gray-300 text-lg font-semibold text-gray-600">
-                  {recipient.username.charAt(0).toUpperCase()}
+                  {selectedRecipient.username.charAt(0).toUpperCase()}
                 </div>
               )}
               <div>
                 <h3 className="font-semibold text-gray-900">
-                  {recipient.username}
+                  {selectedRecipient.username}
                 </h3>
                 <p className="text-xs text-gray-500">Active</p>
               </div>
@@ -175,7 +167,7 @@ export const ChatPanel = () => {
       <div className="border-t border-gray-200 p-4">
         <MessageInput
           onSend={handleSendMessage}
-          disabled={sendMessageMutation.isPending || !recipient}
+          disabled={sendMessageMutation.isPending || !selectedRecipient}
           placeholder="Type a message..."
         />
       </div>
