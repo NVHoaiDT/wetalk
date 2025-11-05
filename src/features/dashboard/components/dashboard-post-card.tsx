@@ -20,6 +20,7 @@ import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { paths } from '@/config/paths';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
+import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
@@ -191,10 +192,12 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                 <MessageCircle className="size-4" />
                 <span>10 Comments</span>
               </Link>
-              <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
-                <Share2 className="size-4" />
-                <span>Share</span>
-              </button>
+              <SharePost link={paths.app.post.getHref(post.id)}>
+                <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
+                  <Share2 className="size-4" />
+                  <span>Share</span>
+                </button>
+              </SharePost>
               <button
                 onClick={handleSave}
                 className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100"
