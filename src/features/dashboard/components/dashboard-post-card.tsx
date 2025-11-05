@@ -24,6 +24,8 @@ import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
+import { CommunityHoverCard } from './community-hover-card';
+
 type DashboardPostCardProps = {
   post: Post;
 };
@@ -75,12 +77,17 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
 
                 {/* Community Name & Post Date */}
                 <div className="flex flex-col">
-                  <Link
-                    to={paths.app.community.getHref(post.community.id)}
-                    className="text-sm font-semibold text-gray-900 hover:text-blue-600"
+                  <CommunityHoverCard
+                    communityId={post.community.id}
+                    communityName={post.community.name}
                   >
-                    r/{post.community.name}
-                  </Link>
+                    <Link
+                      to={paths.app.community.getHref(post.community.id)}
+                      className="text-sm font-semibold text-gray-900 hover:text-blue-600"
+                    >
+                      w/{post.community.name}
+                    </Link>
+                  </CommunityHoverCard>
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <span>
                       Posted by u/{post.author.username} •{' '}
