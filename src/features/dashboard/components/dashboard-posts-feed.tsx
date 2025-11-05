@@ -29,7 +29,6 @@ export const DashboardPostsFeed = () => {
     useInfiniteAllPosts({ sortBy });
 
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
-
   const currentSort = sortOptions.find((opt) => opt.value === sortBy);
   const CurrentSortIcon = currentSort?.icon || Star;
 
