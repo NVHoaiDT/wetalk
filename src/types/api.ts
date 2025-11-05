@@ -107,6 +107,14 @@ export type Community = {
   totalMembers: number;
   moderators: Moderators[];
 };
+
+export type CommunityMember = {
+  userId: number;
+  username: string;
+  avatar: string;
+  karma: number;
+  subscribedAt: string;
+};
 /* ____________________End Community____________________ */
 
 export type CommunityResponse = {
