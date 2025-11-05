@@ -3,8 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
-import { getCommunityMembersQueryOptions } from './get-community-members';
-
 export const banCommunityMember = ({
   communityId,
   memberId,
@@ -30,10 +28,9 @@ export const useBanCommunityMember = ({
 
   return useMutation({
     onSuccess: (...args) => {
+      // Invalidate all community members queries for this community
       queryClient.invalidateQueries({
-        queryKey: getCommunityMembersQueryOptions({
-          communityId,
-        }).queryKey,
+        queryKey: ['community-members', communityId],
       });
       onSuccess?.(...args);
     },

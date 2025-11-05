@@ -32,10 +32,9 @@ export const ManageCommunityMembers = ({
   const membersQuery = useCommunityMembers({
     communityId,
     search: searchQuery,
-    queryConfig: {
-      enabled: isOpen, // Only fetch when dialog is open
-    },
   });
+
+  const members = membersQuery.data?.data || [];
 
   const tabs: { id: TabType; label: string }[] = [
     { id: 'member', label: 'Member' },
@@ -136,7 +135,7 @@ export const ManageCommunityMembers = ({
         {/* Members Table */}
         <div className="max-h-[calc(90vh-300px)] overflow-y-auto px-8 py-6">
           <MembersTable
-            members={membersQuery.data?.data || []}
+            members={members}
             communityId={communityId}
             isLoading={membersQuery.isLoading}
           />
