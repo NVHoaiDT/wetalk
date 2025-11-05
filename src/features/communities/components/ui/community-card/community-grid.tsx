@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { useCommunities } from '@/features/communities/api/get-communities';
+import { fancyLog } from '@/helper/fancy-log';
 
 import { CommunityCard } from './community-card';
 
@@ -24,6 +25,7 @@ const CommunityGrid = ({ filter }: CommunityGridProps) => {
   const communities = communityQuery.data?.data;
   if (!communities) return null;
 
+  fancyLog('CommunityGrid communities:', communities);
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
       {communities.map((community) => (

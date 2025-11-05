@@ -14,7 +14,6 @@ interface CommunityCardProps {
 const CommunityCard = ({
   name,
   shortDescription,
-  description,
   coverImage,
   isPrivate,
   totalMembers,
