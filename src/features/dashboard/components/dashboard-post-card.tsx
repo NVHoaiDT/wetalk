@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from 'date-fns';
 import {
   MessageCircle,
   Share2,
@@ -22,6 +21,7 @@ import { paths } from '@/config/paths';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
+import { UserHoverCard } from '@/features/users/components/user-hover-card';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
@@ -90,12 +90,14 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                     </Link>
                   </CommunityHoverCard>
                   <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <span>
-                      Posted by u/{post.author.username} •{' '}
-                      {formatDistanceToNow(new Date(post.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </span>
+                    <UserHoverCard userId={post.author.id}>
+                      <Link
+                        to={paths.app.userProfile.getHref(post.author.id)}
+                        className="hover:text-blue-600"
+                      >
+                        u/{post.author.username}
+                      </Link>
+                    </UserHoverCard>
                   </div>
                 </div>
               </div>

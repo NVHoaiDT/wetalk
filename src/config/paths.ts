@@ -63,7 +63,7 @@ export const paths = {
     },
     users: {
       path: 'users',
-      getHref: () => '/app/users',
+      getHref: (userId: string | number) => `/app/users/${userId}`,
     },
     profile: {
       path: 'profile',
