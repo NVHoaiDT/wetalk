@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ConfirmationDialog } from '@/components/ui/dialog';
 import { useNotifications } from '@/components/ui/notifications';
-/* import { Authorization, ROLES } from '@/lib/authorization'; */
 
 import { useJoinCommunity } from '../api/join-community';
 
@@ -23,7 +22,6 @@ export const JoinCommunity = ({ id }: JoinCommunityProps) => {
   });
 
   return (
-    /* <Authorization allowedRoles={[ROLES.ADMIN]}> */
     <ConfirmationDialog
       icon="info"
       title="Join this community"
@@ -47,6 +45,5 @@ export const JoinCommunity = ({ id }: JoinCommunityProps) => {
         </Button>
       }
     ></ConfirmationDialog>
-    /* </Authorization> */
   );
 };
