@@ -1,5 +1,5 @@
 import { Clock, Flame, Star, TrendingUp, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   DropdownMenu,
@@ -23,6 +23,7 @@ type SortType = (typeof sortOptions)[number]['value'];
 
 export const DashboardPostsFeed = () => {
   const [sortBy, setSortBy] = useState<SortType>('best');
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteAllPosts({ sortBy });
@@ -31,6 +32,29 @@ export const DashboardPostsFeed = () => {
 
   const currentSort = sortOptions.find((opt) => opt.value === sortBy);
   const CurrentSortIcon = currentSort?.icon || Star;
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading) {
     return (
@@ -101,23 +125,24 @@ export const DashboardPostsFeed = () => {
         )}
       </div>
 
-      {/* Load More Button */}
+      {/* Infinite Scroll Sentinel & Loading Indicator */}
       {hasNextPage && (
-        <div className="flex justify-center py-6">
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition-all duration-200 hover:bg-blue-700 hover:shadow-xl disabled:opacity-50"
-          >
-            {isFetchingNextPage ? (
-              <div className="flex items-center gap-2">
-                <Spinner size="sm" />
-                <span>Loading...</span>
-              </div>
-            ) : (
-              'Load More Posts'
-            )}
-          </button>
+        <div ref={observerTarget} className="flex justify-center py-8">
+          {isFetchingNextPage && (
+            <div className="flex flex-col items-center gap-3">
+              <Spinner size="lg" />
+              <p className="text-sm text-gray-600">Loading more posts...</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* End of feed message */}
+      {!hasNextPage && posts.length > 0 && (
+        <div className="rounded-xl border border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-8 text-center">
+          <p className="text-sm font-medium text-gray-700">
+            🎉 You have reached the end! No more posts to load.
+          </p>
         </div>
       )}
     </div>
