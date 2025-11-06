@@ -147,6 +147,7 @@ export type Post = {
   content: string;
   mediaUrls: string[];
   tags: string[];
+  status: string;
   vote: number;
   createdAt: string;
   updatedAt: string;

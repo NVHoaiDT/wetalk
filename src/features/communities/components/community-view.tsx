@@ -21,7 +21,7 @@ import { formatBigNumber } from '@/utils/format';
 import { useCommunity } from '../api/get-community';
 
 import { JoinCommunity } from './join-community';
-import { ManageCommunityMembers } from './manage-community-members';
+import { ModToolsDialog } from './mod-tools/mod-tools-dialog';
 import { UpdateCommunity } from './update-community';
 
 export const CommunityView = ({ communityId }: { communityId: number }) => {
@@ -82,7 +82,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
               <div className="flex items-center gap-3">
                 <CreatePost communityId={community.id} />
                 <JoinCommunity id={community.id}></JoinCommunity>
-                <ManageCommunityMembers communityId={community.id} />
+                <ModToolsDialog communityId={community.id} />
 
                 {/* Moderation Actions */}
                 <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
