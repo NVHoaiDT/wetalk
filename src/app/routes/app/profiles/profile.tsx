@@ -14,9 +14,9 @@ import { useCurrentUser } from '@/lib/auth';
 
 const ProfileRoute = () => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const { data, status } = useCurrentUser();
+  const userQuery = useCurrentUser();
 
-  if (status === 'pending') {
+  if (userQuery.isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Spinner />
@@ -24,11 +24,11 @@ const ProfileRoute = () => {
     );
   }
 
-  if (status === 'error') {
+  if (userQuery.isError) {
     return <MainErrorFallback />;
   }
 
-  const user = data?.data;
+  const user = userQuery.data?.data;
   if (!user) {
     return null;
   }
