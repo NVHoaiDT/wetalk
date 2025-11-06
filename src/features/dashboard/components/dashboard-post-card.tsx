@@ -19,6 +19,7 @@ import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { paths } from '@/config/paths';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
+import { SavePost } from '@/features/posts/components/save-post';
 import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { UserHoverCard } from '@/features/users/components/user-hover-card';
@@ -200,13 +201,14 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                   <span>Share</span>
                 </button>
               </SharePost>
-              <button
+              {/* <button
                 onClick={handleSave}
                 className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100"
               >
                 <Bookmark className="size-4" />
                 <span>Save</span>
-              </button>
+              </button> */}
+              <SavePost postId={post.id} />
             </div>
           </div>
         </div>

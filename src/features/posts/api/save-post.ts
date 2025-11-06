@@ -4,7 +4,7 @@
     Body: 
     {
         "postId": 9,
-        "isFollowed": true
+        "isFollowed": true   //save: false, follow: true
     }
     Response: 
     {
@@ -21,13 +21,12 @@ import { MutationConfig } from '@/lib/react-query';
 
 export const savePostInputSchema = z.object({
   postId: z.number(),
-  isFollowed: z.boolean(),
 });
 
 export type SavePostInput = z.infer<typeof savePostInputSchema>;
 
-export const savePost = ({ postId, isFollowed }: SavePostInput) => {
-  return api.post(`/users/saved-posts`, { postId, isFollowed });
+export const savePost = ({ postId }: SavePostInput) => {
+  return api.post(`/users/saved-posts`, { postId, isFollowed: false });
 };
 
 type UseSavePostOptions = {
