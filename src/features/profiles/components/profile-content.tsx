@@ -1,6 +1,7 @@
 import { ProfileCommentsList } from './profile-comments-list';
 import { ProfileOverview } from './profile-overview';
 import { ProfilePostsList } from './profile-posts-list';
+import { ProfileSavedPostsList } from './profile-saved-posts-list';
 import { TabType } from './profile-tabs';
 
 type ProfileContentProps = {
@@ -18,8 +19,9 @@ export const ProfileContent = ({ userId, activeTab }: ProfileContentProps) => {
       case 'comments':
         return <ProfileCommentsList userId={userId} />;
       case 'saved':
+        return <ProfileSavedPostsList />;
       case 'history':
-      case 'hidden':
+      case 'followed':
       case 'upvoted':
       case 'downvoted':
         return (

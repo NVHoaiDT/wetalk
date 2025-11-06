@@ -151,6 +151,20 @@ export type Post = {
   createdAt: string;
   updatedAt: string;
 };
+
+/* ____________________Saved Post____________________ */
+export type SavedPost = {
+  postId: number;
+  title: string;
+  author: {
+    id: number;
+    username: string;
+    avatar: string;
+  };
+  isFollowed: boolean;
+  createdAt: string;
+};
+
 /* ____________________Comment____________________ */
 export type Comment = {
   id: number;
@@ -170,7 +184,6 @@ export type Comment = {
 };
 
 /* ____________________Image Response____________________ */
-
 export type UploadImageResponse = {
   success: boolean;
   message: string;
@@ -236,7 +249,7 @@ export type SendMessageResponse = {
   };
 };
 
-// SSE Event types
+/* ____________________SSE Messages Event____________________ */
 export type SSEMessageEvent = {
   conversationId: number;
   message: Message;
@@ -245,7 +258,6 @@ export type SSEMessageEvent = {
 export type SSEConversationUpdatedEvent = {
   conversation: Conversation;
 };
-/* ____________________End Messages____________________ */
 
 /*==========End Testing zone==========*/
 

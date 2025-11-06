@@ -6,7 +6,7 @@ type TabType =
   | 'comments'
   | 'saved'
   | 'history'
-  | 'hidden'
+  | 'followed'
   | 'upvoted'
   | 'downvoted';
 
@@ -21,8 +21,8 @@ const tabs: { id: TabType; label: string; requiresOwn?: boolean }[] = [
   { id: 'posts', label: 'Posts' },
   { id: 'comments', label: 'Comments' },
   { id: 'saved', label: 'Saved', requiresOwn: true },
+  { id: 'followed', label: 'Followed', requiresOwn: true },
   { id: 'history', label: 'History', requiresOwn: true },
-  { id: 'hidden', label: 'Hidden', requiresOwn: true },
   { id: 'upvoted', label: 'Upvoted', requiresOwn: true },
   { id: 'downvoted', label: 'Downvoted', requiresOwn: true },
 ];
