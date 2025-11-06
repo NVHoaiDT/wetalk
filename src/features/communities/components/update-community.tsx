@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import { Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -51,11 +51,12 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
       isDone={updateCommunityMutation.isSuccess}
       triggerButton={
         <Button
+          variant="outline"
           size="sm"
-          icon={<Plus className="size-4" />}
-          className="border-0 bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
+          className="w-full justify-start"
+          icon={<Edit className="size-4" />}
         >
-          Update Community
+          Appearance
         </Button>
       }
       title="Update Community"

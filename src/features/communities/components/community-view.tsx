@@ -6,7 +6,6 @@ import {
   MessageCircle,
   Trash,
 } from 'lucide-react';
-import React from 'react';
 
 import {
   DropdownMenu,
@@ -92,14 +91,13 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                       <MoreHorizontal className="size-5 text-gray-600" />
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent>
+                    <DropdownMenuContent sideOffset={12}>
+                      {/* Update Community's Appearance */}
                       <DropdownMenuItem
                         onSelect={(e) => e.preventDefault()}
                         asChild
                       >
-                        <div>
-                          <UpdateCommunity communityId={community.id} />
-                        </div>
+                        <UpdateCommunity communityId={community.id} />
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Trash className="size-5 text-gray-600" />
