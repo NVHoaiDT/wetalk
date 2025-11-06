@@ -2,9 +2,9 @@ import { infiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
-import { Pagination, CollectedPost } from '@/types/api';
+import { CollectedPost, Pagination } from '@/types/api';
 
-export const getUserSavedPosts = ({
+export const getUserFollowedPosts = ({
   sortBy = 'new',
   page = 1,
 }: {
@@ -15,18 +15,18 @@ export const getUserSavedPosts = ({
     params: {
       sortBy,
       page,
-      isFollowed: false,
+      isFollowed: true,
     },
   });
 };
 
-export const getInfiniteUserSavedPostsQueryOptions = (
+export const getInfiniteUserFollowedPostsQueryOptions = (
   sortBy: 'new' | 'top' | 'hot',
 ) => {
   return infiniteQueryOptions({
-    queryKey: ['user-saved-posts', sortBy],
+    queryKey: ['user-followed-posts', sortBy],
     queryFn: ({ pageParam = 1 }) => {
-      return getUserSavedPosts({ sortBy, page: pageParam as number });
+      return getUserFollowedPosts({ sortBy, page: pageParam as number });
     },
     getNextPageParam: (lastPage) => {
       if (!lastPage?.pagination?.nextUrl) return undefined;
@@ -37,15 +37,15 @@ export const getInfiniteUserSavedPostsQueryOptions = (
   });
 };
 
-type UseUserSavedPostsOptions = {
+type UseUserFollowedPostsOptions = {
   sortBy?: 'new' | 'top' | 'hot';
-  queryConfig?: QueryConfig<typeof getUserSavedPosts>;
+  queryConfig?: QueryConfig<typeof getUserFollowedPosts>;
 };
 
-export const useInfiniteUserSavedPosts = ({
+export const useInfiniteUserFollowedPosts = ({
   sortBy = 'new',
-}: UseUserSavedPostsOptions) => {
+}: UseUserFollowedPostsOptions) => {
   return useInfiniteQuery({
-    ...getInfiniteUserSavedPostsQueryOptions(sortBy),
+    ...getInfiniteUserFollowedPostsQueryOptions(sortBy),
   });
 };

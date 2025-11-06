@@ -1,4 +1,5 @@
 import { ProfileCommentsList } from './profile-comments-list';
+import { ProfileFollowedPostsList } from './profile-followed-posts-list';
 import { ProfileOverview } from './profile-overview';
 import { ProfilePostsList } from './profile-posts-list';
 import { ProfileSavedPostsList } from './profile-saved-posts-list';
@@ -20,8 +21,9 @@ export const ProfileContent = ({ userId, activeTab }: ProfileContentProps) => {
         return <ProfileCommentsList userId={userId} />;
       case 'saved':
         return <ProfileSavedPostsList />;
-      case 'history':
       case 'followed':
+        return <ProfileFollowedPostsList />;
+      case 'history':
       case 'upvoted':
       case 'downvoted':
         return (

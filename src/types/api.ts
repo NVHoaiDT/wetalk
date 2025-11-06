@@ -152,8 +152,8 @@ export type Post = {
   updatedAt: string;
 };
 
-/* ____________________Saved Post____________________ */
-export type SavedPost = {
+/* ____________________Collected Post (Saved/Followed Post)____________________ */
+export type CollectedPost = {
   postId: number;
   title: string;
   author: {
