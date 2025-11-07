@@ -1,13 +1,11 @@
-import {
-  TrendingUp,
-  MessageSquare,
-  Calendar,
-  Award,
-  Share2,
-} from 'lucide-react';
+import { MessageSquare, Calendar, Award, Share2, Diamond } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 import { User } from '@/types/api';
+
+import { useUserBadget } from '../api/get-user-badget';
 
 import { UpdateProfile } from './update-profile';
 
@@ -17,6 +15,19 @@ type ProfileSidebarProps = {
 };
 
 export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
+  const userBadgetQuery = useUserBadget({ userId: user.id });
+
+  if (userBadgetQuery.isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  const userBadget = userBadgetQuery.data?.data;
+  fancyLog('User-Badget:', userBadget);
+
   const handleShare = () => {
     // TODO: Implement share functionality
     navigator.clipboard.writeText(window.location.href);
@@ -40,6 +51,7 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
         >
           Share
         </Button>
+
         {/* Stats Grid */}
         <div className="mb-6 grid grid-cols-2 gap-4">
           <div>
@@ -90,34 +102,41 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
         </div>
 
         <div className="space-y-3">
-          {/* Badge */}
-          <div className="flex items-center space-x-3">
-            <div className="flex size-12 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-md">
-              <Award className="size-6" />
-            </div>
-            <div>
-              <div className="font-semibold text-gray-900">
-                {user.achievement.badge}
-              </div>
-              <div className="text-xs text-gray-600">Badge</div>
-            </div>
-          </div>
-
-          {/* Karma Badge */}
-          {user.achievement.karma > 100 && (
+          {/* Badges */}
+          {userBadget && userBadget.length > 0 && (
             <div className="flex items-center space-x-3">
               <div className="flex size-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-md">
-                <TrendingUp className="size-6" />
+                <img
+                  src={userBadget[0].iconUrl}
+                  alt={userBadget[0].badgeName}
+                  className="size-6"
+                />
               </div>
               <div>
-                <div className="font-semibold text-gray-900">High Karma</div>
-                <div className="text-xs text-gray-600">100+ Karma Points</div>
+                <div className="font-semibold text-gray-900">
+                  {userBadget[0].badgeName}
+                </div>
+                <div className="text-xs text-gray-600">
+                  {userBadget[0].monthYear}
+                </div>
               </div>
             </div>
           )}
 
+          {/* Karma Hunter */}
+          {user.achievement.karma > 50 && (
+            <div className="flex items-center space-x-3">
+              <div className="flex size-12 items-center justify-center rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 text-white shadow-md">
+                <MessageSquare className="size-6" />
+              </div>
+              <div>
+                <div className="font-semibold text-gray-900">Karma Hunter</div>
+                <div className="text-xs text-gray-600">50+ Karma</div>
+              </div>
+            </div>
+          )}
           {/* Active Contributor */}
-          {user.achievement.totalComments > 10 && (
+          {user.achievement.totalComments > 5 && (
             <div className="flex items-center space-x-3">
               <div className="flex size-12 items-center justify-center rounded-lg bg-gradient-to-br from-green-400 to-green-600 text-white shadow-md">
                 <MessageSquare className="size-6" />

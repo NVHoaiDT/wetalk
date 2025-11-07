@@ -38,20 +38,6 @@ export type Pagination = {
   nextUrl: string;
 };
 
-/* 
-        "id": 1,
-        "username": "nguyenvana",
-        "email": "nguyenvana@example.com",
-        "bio": "Lập trình viên Backend, yêu thích Golang và microservices",
-        "avatar": "https://i.pravatar.cc/150?img=1",
-        "achievement": {
-            "karma": 140,
-            "badge": "Gold",
-            "totalPosts": 8,
-            "totalComments": 9
-        },
-        "createdAt": "2025-08-01T03:48:00.067211Z"
-*/
 export type User = {
   id: number;
   username: string;
@@ -281,6 +267,14 @@ export type SSEMessageEvent = {
 
 export type SSEConversationUpdatedEvent = {
   conversation: Conversation;
+};
+
+/* ____________________SSE Messages Event____________________ */
+export type Badget = {
+  badgeName: string;
+  iconUrl: string;
+  karma: number;
+  monthYear: string; // "2025-11"
 };
 
 /*==========End Testing zone==========*/
