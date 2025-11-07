@@ -92,16 +92,6 @@ export const PostsTable = ({
     );
   };
 
-  const getPostTypeIcon = (type: string) => {
-    const icons = {
-      text: '📝',
-      media: '🖼️',
-      link: '🔗',
-      poll: '📊',
-    };
-    return icons[type as keyof typeof icons] || '📄';
-  };
-
   return (
     <div className="flex flex-col">
       <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
@@ -166,9 +156,7 @@ export const PostsTable = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">
-                    {getPostTypeIcon(post.type)} {post.type}
-                  </span>
+                  <span className="text-sm">{post.type}</span>
                 </TableCell>
                 <TableCell>{getStatusBadge(post.status)}</TableCell>
                 <TableCell>
