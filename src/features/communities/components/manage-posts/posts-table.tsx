@@ -14,9 +14,9 @@ import { paths } from '@/config/paths';
 import { Post } from '@/types/api';
 import { formatDate } from '@/utils/format';
 
-import { ApprovePostButton } from './approve-post';
-import { RejectPostButton } from './reject-post';
-import { RemovePostButton } from './remove-post';
+import { ApprovePost } from './approve-post';
+import { RejectPost } from './reject-post';
+import { RemovePost } from './remove-post';
 
 type PostsTableProps = {
   posts: Post[];
@@ -167,20 +167,20 @@ export const PostsTable = ({
                 <TableCell>
                   <div className="flex items-center justify-end gap-2">
                     {currentStatus !== 'approved' && (
-                      <ApprovePostButton
+                      <ApprovePost
                         communityId={communityId}
                         postId={post.id}
                         postTitle={post.title}
                       />
                     )}
                     {currentStatus !== 'rejected' && (
-                      <RejectPostButton
+                      <RejectPost
                         communityId={communityId}
                         postId={post.id}
                         postTitle={post.title}
                       />
                     )}
-                    <RemovePostButton
+                    <RemovePost
                       communityId={communityId}
                       postId={post.id}
                       postTitle={post.title}

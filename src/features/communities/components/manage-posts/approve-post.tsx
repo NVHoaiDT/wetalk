@@ -6,17 +6,17 @@ import { useNotifications } from '@/components/ui/notifications';
 
 import { useUpdatePostStatus } from '../../api/update-post-status';
 
-type ApprovePostButtonProps = {
+type ApprovePostProps = {
   communityId: number;
   postId: number;
   postTitle: string;
 };
 
-export const ApprovePostButton = ({
+export const ApprovePost = ({
   communityId,
   postId,
   postTitle,
-}: ApprovePostButtonProps) => {
+}: ApprovePostProps) => {
   const { addNotification } = useNotifications();
   const approvePostMutation = useUpdatePostStatus({
     communityId,

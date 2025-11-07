@@ -6,17 +6,17 @@ import { useNotifications } from '@/components/ui/notifications';
 
 import { useRemoveCommunityPost } from '../../api/remove-community-post';
 
-type RemovePostButtonProps = {
+type RemovePostProps = {
   communityId: number;
   postId: number;
   postTitle: string;
 };
 
-export const RemovePostButton = ({
+export const RemovePost = ({
   communityId,
   postId,
   postTitle,
-}: RemovePostButtonProps) => {
+}: RemovePostProps) => {
   const { addNotification } = useNotifications();
   const removePostMutation = useRemoveCommunityPost({
     communityId,
