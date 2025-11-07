@@ -1,4 +1,4 @@
-import { Users, FileText } from 'lucide-react';
+import { Users, FileText, Flag } from 'lucide-react';
 
 type ModSection = 'members' | 'posts';
 
@@ -14,6 +14,7 @@ export const ModSidebar = ({
   const sections = [
     { id: 'members' as ModSection, label: 'Members', icon: Users },
     { id: 'posts' as ModSection, label: 'Posts', icon: FileText },
+    { id: 'reported-posts' as ModSection, label: 'Reported Posts', icon: Flag },
   ];
 
   return (
