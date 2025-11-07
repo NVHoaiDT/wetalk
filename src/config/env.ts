@@ -9,6 +9,7 @@ const createEnv = () => {
       .refine((s) => s === 'true' || s === 'false')
       .transform((s) => s === 'true')
       .optional(),
+    GOOGLE_CLIENT_ID: z.string().optional(),
     APP_URL: z.string().optional().default('http://localhost:3000'),
     APP_MOCK_API_PORT: z.string().optional().default('8080'),
   });

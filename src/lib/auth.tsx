@@ -51,24 +51,28 @@ export const useLogout = () => {
   });
 };
 
-/* ____________________Login____________________ */
-export const loginInputSchema = z.object({
+/* ____________________Login with email and password____________________ */
+export const loginWithEmailAndPasswordInputSchema = z.object({
   email: z.string().min(5, 'Required').email('Invalid email'),
   password: z.string().min(1, 'Required'),
 });
-export type LoginInput = z.infer<typeof loginInputSchema>;
+export type LoginWithEmailAndPasswordInput = z.infer<
+  typeof loginWithEmailAndPasswordInputSchema
+>;
 
 const loginWithEmailAndPassword = (
-  data: LoginInput,
+  data: LoginWithEmailAndPasswordInput,
 ): Promise<LoginResponse> => {
   return api.post('/auth/login', data);
 };
 
-type UseLoginOptions = {
+type UseLoginWithEmailAndPasswordOptions = {
   onSuccess?: (data: LoginResponse) => void;
 };
 
-export const useLogin = ({ onSuccess }: UseLoginOptions = {}) => {
+export const useLoginWithEmailAndPassword = ({
+  onSuccess,
+}: UseLoginWithEmailAndPasswordOptions = {}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -81,6 +85,46 @@ export const useLogin = ({ onSuccess }: UseLoginOptions = {}) => {
       }
       queryClient.setQueryData(['user-login'], response);
       onSuccess?.(response);
+    },
+  });
+};
+
+/* ____________________Login with Google____________________ */
+export const loginWithGoogleInputSchema = z.object({
+  idToken: z.string().min(1, 'Required'),
+});
+
+type LoginWithGoogleInput = z.infer<typeof loginWithGoogleInputSchema>;
+
+const loginWithGoogle = (
+  data: LoginWithGoogleInput,
+): Promise<LoginResponse> => {
+  return api.post('/auth/google-login', data);
+};
+
+type UseLoginWithGoogleOptions = {
+  onSuccess?: (data: LoginResponse) => void;
+};
+
+export const useLoginWithGoogle = ({
+  onSuccess,
+}: UseLoginWithGoogleOptions = {}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['login-google'],
+    mutationFn: loginWithGoogle,
+
+    onSuccess: (response) => {
+      if (response.data?.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+      }
+      queryClient.setQueryData(['user-login'], response);
+      onSuccess?.(response);
+    },
+    onError: (error: any) => {
+      console.error('Google login error:', error);
+      console.error('Error response:', error?.response?.data);
     },
   });
 };
@@ -125,7 +169,6 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
-/* ____________________AuthLoader____________________ */
 type AuthLoaderProps = {
   children: React.ReactNode;
   renderLoading: () => React.ReactElement;

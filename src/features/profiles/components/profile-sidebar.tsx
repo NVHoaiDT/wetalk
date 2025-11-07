@@ -1,4 +1,4 @@
-import { MessageSquare, Calendar, Award, Share2, Diamond } from 'lucide-react';
+import { MessageSquare, Calendar, Award, Share2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
