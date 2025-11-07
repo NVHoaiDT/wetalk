@@ -3,7 +3,6 @@ import {
   Share2,
   Bookmark,
   MoreHorizontal,
-  Flag,
   EyeOff,
 } from 'lucide-react';
 import { Link } from 'react-router';
@@ -20,6 +19,7 @@ import { MediaViewer } from '@/components/ui/media-viewer';
 import { paths } from '@/config/paths';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { FollowPost } from '@/features/posts/components/follow-post';
+import { ReportPost } from '@/features/posts/components/report-post';
 import { SavePost } from '@/features/posts/components/save-post';
 import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
@@ -140,8 +140,7 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                       onClick={handleReport}
                       className="flex items-center gap-2 text-red-600"
                     >
-                      <Flag className="size-4" />
-                      <span>Report</span>
+                      {/* <ReportPost/> */}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

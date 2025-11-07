@@ -9,6 +9,7 @@ import { formatBigNumber } from '@/utils/format';
 import { usePost } from '../api/get-post';
 
 import { DownVotePost } from './downvote-post';
+import { ReportPost } from './report-post';
 import { UpVotePost } from './upvote-post';
 
 export const PostView = ({ id }: { id: number }) => {
@@ -108,6 +109,7 @@ export const PostView = ({ id }: { id: number }) => {
                 <Bookmark className="size-4" />
                 <span>Save</span>
               </button>
+              <ReportPost postId={post.id} />
             </div>
           </div>
         </div>

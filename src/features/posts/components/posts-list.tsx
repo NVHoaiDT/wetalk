@@ -26,6 +26,7 @@ import { formatBigNumber } from '@/utils/format';
 import { useInfinitePosts } from '../api/get-sorted-posts';
 
 import { DownVotePost } from './downvote-post';
+import { ReportPost } from './report-post';
 import { UpVotePost } from './upvote-post';
 
 const sortOptions = [
@@ -294,6 +295,7 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                       <Bookmark className="size-4" />
                       <span>Save</span>
                     </button>
+                    <ReportPost postId={post.id} />
                     {true && (
                       <div className="ml-auto flex items-center gap-1">
                         <span className="text-yellow-500">🏆</span>
