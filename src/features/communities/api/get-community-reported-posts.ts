@@ -69,7 +69,7 @@ import { infiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
-import { Post, Pagination } from '@/types/api';
+import { ReportedPost, Pagination } from '@/types/api';
 
 export const getCommunityReportedPosts = ({
   communityId,
@@ -77,8 +77,8 @@ export const getCommunityReportedPosts = ({
 }: {
   communityId: number;
   page?: number;
-}): Promise<{ data: Post[]; pagination: Pagination }> => {
-  return api.get(`/communities/${communityId}/manage/report`, {
+}): Promise<{ data: ReportedPost[]; pagination: Pagination }> => {
+  return api.get(`/communities/${communityId}/manage/reports`, {
     params: {
       page,
     },

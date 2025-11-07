@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
-export const removeCommunityReportedPost = ({
+export const removeCommunityPostReport = ({
   communityId,
   reportId,
 }: {
@@ -13,15 +13,17 @@ export const removeCommunityReportedPost = ({
   return api.delete(`/communities/${communityId}/manage/reports/${reportId}`);
 };
 
-type UseRemoveCommunityReportedPostOptions = {
+type UseRemoveCommunityPostReportOptions = {
   communityId: number;
-  mutationConfig?: MutationConfig<typeof removeCommunityReportedPost>;
+  reportId: number;
+  mutationConfig?: MutationConfig<typeof removeCommunityPostReport>;
 };
 
-export const useRemoveCommunityReportedPost = ({
+export const useRemoveCommunityPostReport = ({
   communityId,
+  reportId,
   mutationConfig,
-}: UseRemoveCommunityReportedPostOptions) => {
+}: UseRemoveCommunityPostReportOptions) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
@@ -30,11 +32,11 @@ export const useRemoveCommunityReportedPost = ({
     onSuccess: (...args) => {
       // Invalidate all community reported posts queries for this community
       queryClient.invalidateQueries({
-        queryKey: ['community-reported-posts', communityId],
+        queryKey: ['community-reported-posts', communityId, reportId],
       });
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: removeCommunityReportedPost,
+    mutationFn: removeCommunityPostReport,
   });
 };

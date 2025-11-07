@@ -20,6 +20,7 @@ export const RemovePostButton = ({
   const { addNotification } = useNotifications();
   const removePostMutation = useRemoveCommunityPost({
     communityId,
+    postId,
     mutationConfig: {
       onSuccess: () => {
         addNotification({

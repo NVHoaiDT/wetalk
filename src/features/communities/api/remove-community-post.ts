@@ -15,11 +15,13 @@ export const removeCommunityPost = ({
 
 type UseRemoveCommunityPostOptions = {
   communityId: number;
+  postId: number;
   mutationConfig?: MutationConfig<typeof removeCommunityPost>;
 };
 
 export const useRemoveCommunityPost = ({
   communityId,
+  postId,
   mutationConfig,
 }: UseRemoveCommunityPostOptions) => {
   const queryClient = useQueryClient();
@@ -30,7 +32,7 @@ export const useRemoveCommunityPost = ({
     onSuccess: (...args) => {
       // Invalidate all community posts queries for this community
       queryClient.invalidateQueries({
-        queryKey: ['community-posts', communityId],
+        queryKey: ['community-posts', communityId, postId],
       });
       onSuccess?.(...args);
     },

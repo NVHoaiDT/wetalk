@@ -1,6 +1,6 @@
 import { Users, FileText, Flag } from 'lucide-react';
 
-type ModSection = 'members' | 'posts';
+type ModSection = 'members' | 'posts' | 'reported-posts';
 
 type ModSidebarProps = {
   activeSection: ModSection;

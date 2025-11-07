@@ -153,6 +153,29 @@ export type Post = {
   updatedAt: string;
 };
 
+/* ____________________Reported Post____________________ */
+export type Reporter = {
+  id: number;
+  username: string;
+  avatar: string;
+  reasons: string[];
+  note: string;
+  reportedAt?: string;
+};
+
+export type ReportedPost = {
+  postId: number;
+  postTitle: string;
+  author: {
+    id: number;
+    username: string;
+    avatar: string;
+  };
+  reporters: Reporter[];
+  totalReports: number;
+  lastReportedAt?: string;
+};
+
 /* ____________________Collected Post (Saved/Followed Post)____________________ */
 export type CollectedPost = {
   postId: number;
