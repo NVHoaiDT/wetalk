@@ -211,18 +211,18 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
         </DialogHeader>
 
         {/* Content */}
-        <div className="max-h-[calc(90vh-200px)] overflow-y-auto">
+        <div className="h-[calc(90vh-200px)] overflow-y-auto">
           {step === 'reasons' ? (
             /* Step 1: Reasons Selection */
             <div className="p-6">
-              <div className="space-y-2">
+              <div className="flex flex-wrap gap-3">
                 {REPORT_REASONS.map((reason) => {
                   const isSelected = selectedReasons.includes(reason.id);
                   return (
                     <button
                       key={reason.id}
                       onClick={() => toggleReason(reason.id)}
-                      className={`w-full rounded-lg border px-4 py-2.5 text-left text-sm font-medium transition-all ${
+                      className={`rounded-lg border px-4 py-2.5 text-left text-sm font-medium transition-all ${
                         isSelected
                           ? 'border-blue-500 bg-blue-50 text-blue-700'
                           : 'border-gray-300 bg-gray-50 text-gray-700 hover:border-gray-400 hover:bg-gray-100'
