@@ -15,7 +15,8 @@ import { paths } from '@/config/paths';
 import { ReportedPost } from '@/types/api';
 import { formatDate } from '@/utils/format';
 
-import { RemovePostButton } from './remove-post-button';
+import { RemovePost } from '../manage-posts/remove-post';
+
 import { RemoveReportButton } from './remove-report-button';
 
 type ReportedPostsTableProps = {
@@ -174,7 +175,7 @@ export const ReportedPostsTable = ({
                           reportId={reportedPost.reportId}
                           postTitle={reportedPost.postTitle}
                         />
-                        <RemovePostButton
+                        <RemovePost
                           communityId={communityId}
                           postId={reportedPost.postId}
                           postTitle={reportedPost.postTitle}
