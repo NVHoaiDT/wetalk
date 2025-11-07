@@ -16,6 +16,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { CreatePost } from '@/features/posts/components/create-post';
 import { PostsList } from '@/features/posts/components/posts-list';
+import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { useCommunity } from '../api/get-community';
@@ -36,15 +37,14 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
   if (!community) return null;
 
+  fancyLog('Community Data:', community);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
       {/* Cover Banner */}
       <div className="relative h-48 overflow-hidden bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
         <div className="absolute inset-0 opacity-20">
           <img
-            src={
-              'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=300&fit=crop'
-            }
+            src={community.coverImage}
             alt="W/"
             className="size-full object-cover"
           />
