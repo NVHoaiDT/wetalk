@@ -1,4 +1,18 @@
+import {
+  MediaController,
+  MediaControlBar,
+  MediaTimeRange,
+  MediaTimeDisplay,
+  MediaVolumeRange,
+  MediaPlaybackRateButton,
+  MediaPlayButton,
+  MediaSeekBackwardButton,
+  MediaSeekForwardButton,
+  MediaMuteButton,
+  MediaFullscreenButton,
+} from 'media-chrome/react';
 import { useState } from 'react';
+import ReactPlayer from 'react-player';
 
 type MediaViewerProps = {
   mediaUrls: string[];
@@ -19,7 +33,7 @@ export const MediaViewer = ({
     <div className={`group/carousel relative ${className}`}>
       <div className="overflow-hidden rounded-lg">
         {mediaUrls[currentIndex].endsWith('.mp4') ? (
-          <video
+          /*           <video
             src={mediaUrls[currentIndex]}
             controls
             className="h-[480px] w-full bg-black/5 object-contain"
@@ -33,7 +47,37 @@ export const MediaViewer = ({
               default
             />
             Your browser does not support the video tag.
-          </video>
+          </video> */
+
+          <MediaController
+            style={{
+              width: '100%',
+              aspectRatio: '16/9',
+            }}
+            className="rounded-lg"
+          >
+            <ReactPlayer
+              slot="media"
+              src={mediaUrls[currentIndex]}
+              controls={false}
+              className="rounded-lg object-contain"
+              style={{
+                width: '100%',
+                height: '480px',
+              }}
+            ></ReactPlayer>
+            <MediaControlBar>
+              <MediaPlayButton />
+              <MediaSeekBackwardButton seekOffset={10} />
+              <MediaSeekForwardButton seekOffset={10} />
+              <MediaTimeRange />
+              <MediaTimeDisplay showDuration />
+              <MediaMuteButton />
+              <MediaVolumeRange />
+              <MediaPlaybackRateButton />
+              <MediaFullscreenButton />
+            </MediaControlBar>
+          </MediaController>
         ) : (
           <img
             src={mediaUrls[currentIndex]}
@@ -43,7 +87,7 @@ export const MediaViewer = ({
         )}
       </div>
 
-      {/* Image counter */}
+      {/* Media counter */}
       {mediaUrls.length > 1 && (
         <div className="absolute right-3 top-3 rounded-full bg-black/70 px-2 py-1 text-xs font-medium text-white">
           {currentIndex + 1} / {mediaUrls.length}

@@ -86,10 +86,14 @@ export const CreatePoll = ({ setValue, errors }: CreatePollProps) => {
     <div className="space-y-6">
       {/* Poll Question */}
       <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">
+        <label
+          className="mb-2 block text-sm font-medium text-gray-700"
+          htmlFor="question"
+        >
           Poll Question
         </label>
         <input
+          id="question"
           type="text"
           placeholder="Ask a question..."
           value={pollQuestion}
@@ -105,9 +109,9 @@ export const CreatePoll = ({ setValue, errors }: CreatePollProps) => {
 
       {/* Poll Options */}
       <div className="space-y-3">
-        <label className="block text-sm font-medium text-gray-700">
+        <legend className="block text-sm font-medium text-gray-700">
           Poll Options
-        </label>
+        </legend>
         {pollOptions.map((option, index) => (
           <div key={option.id} className="flex items-center gap-2">
             <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-600">
@@ -157,9 +161,9 @@ export const CreatePoll = ({ setValue, errors }: CreatePollProps) => {
         {/* Multiple Choice Toggle */}
         <div className="flex items-center justify-between">
           <div>
-            <label className="text-sm font-medium text-gray-700">
+            <legend className="text-sm font-medium text-gray-700">
               Multiple Choice
-            </label>
+            </legend>
             <p className="text-xs text-gray-500">
               Allow users to select multiple options
             </p>
@@ -172,10 +176,14 @@ export const CreatePoll = ({ setValue, errors }: CreatePollProps) => {
 
         {/* Expiration Date */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-700">
+          <label
+            className="mb-2 block text-sm font-medium text-gray-700"
+            htmlFor="expiresAt"
+          >
             Expiration Date (Optional)
           </label>
           <input
+            id="expiresAt"
             type="datetime-local"
             value={expiresAt}
             onChange={(e) => handleExpiresAtChange(e.target.value)}

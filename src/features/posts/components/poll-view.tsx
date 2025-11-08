@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useNotifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
@@ -43,6 +44,7 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
   const { question, options, multipleChoice, expiresAt, totalVotes } =
     post.pollData;
 
+  fancyLog('Total Vote type', totalVotes);
   const hasExpired = expiresAt && new Date(expiresAt) < new Date();
   const canVote = !hasExpired;
 
