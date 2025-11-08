@@ -1,10 +1,14 @@
 import {
   Home,
   PanelLeft,
-  Folder,
   Users,
   User2,
   MessageCircle,
+  Clock,
+  ChevronDown,
+  ChevronUp,
+  Hash,
+  TrendingUp,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
@@ -13,6 +17,7 @@ import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { paths } from '@/config/paths';
+import { useRecentCommunities } from '@/features/communities/api/get-recent-community';
 import { useMessages } from '@/features/messages/stores/messages-store';
 import { Search } from '@/features/search/components/search';
 import { useLogout } from '@/lib/auth';
@@ -86,23 +91,50 @@ const Progress = () => {
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const logout = useLogout();
-  const { checkAccess } = useAuthorization();
+  /* const { checkAccess } = useAuthorization(); */
   const { openMessages, unreadCount } = useMessages();
+
+  // State for dropdown sections
+  const [isRecentOpen, setIsRecentOpen] = useState(true);
+  const [isRecentCommunitiesOpen, setIsRecentCommunitiesOpen] = useState(true);
+
+  const recentCommunitiesQuery = useRecentCommunities();
+  const recentCommunities = recentCommunitiesQuery.data || [];
+
+  const recentPosts = [
+    {
+      id: 1,
+      title: 'Getting started with React',
+      community: 'r/reactjs',
+      time: '2h ago',
+    },
+    {
+      id: 2,
+      title: 'TypeScript best practices',
+      community: 'r/typescript',
+      time: '5h ago',
+    },
+    {
+      id: 3,
+      title: 'Tailwind CSS tips',
+      community: 'r/webdev',
+      time: '1d ago',
+    },
+  ];
 
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
-    { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
     { name: 'Communities', to: paths.app.communities.getHref(), icon: Users },
-    checkAccess({ allowedRoles: [ROLES.admin] }) && {
+    /* checkAccess({ allowedRoles: [ROLES.admin] }) && {
       name: 'Users',
       to: paths.app.users.getHref(),
       icon: User2,
-    },
+    }, */
   ].filter(Boolean) as SideNavigationItem[];
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r sm:flex">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 py-4">
           <div className="flex h-16 shrink-0 items-center px-4">
             <Logo />
@@ -130,6 +162,112 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               {item.name}
             </NavLink>
           ))}
+
+          {/* RECENT POSTS SECTION */}
+          <div className="mt-4 w-full">
+            <button
+              onClick={() => setIsRecentOpen(!isRecentOpen)}
+              className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wider text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+            >
+              <div className="flex items-center gap-2">
+                <Clock className="size-4" />
+                <span>RECENT POSTS</span>
+              </div>
+              {isRecentOpen ? (
+                <ChevronUp className="size-4 transition-transform" />
+              ) : (
+                <ChevronDown className="size-4 transition-transform" />
+              )}
+            </button>
+
+            {isRecentOpen && (
+              <div className="mt-2 space-y-1 overflow-hidden">
+                {recentPosts.map((post) => (
+                  <button
+                    key={post.id}
+                    className="group flex w-full flex-col gap-1 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50"
+                  >
+                    <div className="flex items-start gap-2">
+                      <Hash className="mt-0.5 size-3 shrink-0 text-gray-400 group-hover:text-blue-500" />
+                      <div className="flex-1 overflow-hidden">
+                        <p className="truncate text-sm font-medium text-gray-700 group-hover:text-blue-700">
+                          {post.title}
+                        </p>
+                        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500">
+                          <span className="text-blue-600">
+                            {post.community}
+                          </span>
+                          <span>•</span>
+                          <span>{post.time}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+                {recentPosts.length === 0 && (
+                  <div className="px-3 py-4 text-center text-xs text-gray-500">
+                    No recent posts
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* RECENT COMMUNITIES SECTION */}
+          <div className="w-full">
+            <button
+              onClick={() =>
+                setIsRecentCommunitiesOpen(!isRecentCommunitiesOpen)
+              }
+              className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wider text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+            >
+              <div className="flex items-center gap-2">
+                <TrendingUp className="size-4" />
+                <span>Recent Communities</span>
+              </div>
+              {isRecentCommunitiesOpen ? (
+                <ChevronUp className="size-4 transition-transform" />
+              ) : (
+                <ChevronDown className="size-4 transition-transform" />
+              )}
+            </button>
+
+            {isRecentCommunitiesOpen && (
+              <div className="overflow-hidden">
+                {recentCommunities.map((community) => (
+                  <NavLink
+                    to={paths.app.community.getHref(community.id)}
+                    key={community.id}
+                    className="group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 transition-all duration-200 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
+                  >
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 text-sm">
+                      <img
+                        src={
+                          community.communityAvatar ||
+                          'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                        }
+                        alt={community.name}
+                        className="size-full rounded-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1 overflow-hidden text-left">
+                      <p className="truncate text-sm font-semibold text-gray-700 group-hover:text-purple-700">
+                        r/{community.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {community.totalMembers} members
+                      </p>
+                    </div>
+                  </NavLink>
+                ))}
+                {recentCommunities.length === 0 && (
+                  <div className="px-3 py-4 text-center text-xs text-gray-500">
+                    Explore communities to see them here
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </nav>
       </aside>
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
@@ -174,6 +312,99 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     {item.name}
                   </NavLink>
                 ))}
+
+                {/* RECENT POSTS SECTION - MOBILE */}
+                <div className="mt-4 w-full px-2">
+                  <button
+                    onClick={() => setIsRecentOpen(!isRecentOpen)}
+                    className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-400 transition-all duration-200 hover:bg-gray-800 hover:text-gray-200"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Clock className="size-4" />
+                      <span>Recent</span>
+                    </div>
+                    {isRecentOpen ? (
+                      <ChevronUp className="size-4 transition-transform" />
+                    ) : (
+                      <ChevronDown className="size-4 transition-transform" />
+                    )}
+                  </button>
+
+                  {isRecentOpen && (
+                    <div className="mt-2 space-y-1 overflow-hidden">
+                      {recentPosts.map((post) => (
+                        <button
+                          key={post.id}
+                          className="group flex w-full flex-col gap-1 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-gray-800"
+                        >
+                          <div className="flex items-start gap-2">
+                            <Hash className="mt-0.5 size-3 shrink-0 text-gray-500 group-hover:text-blue-400" />
+                            <div className="flex-1 overflow-hidden">
+                              <p className="truncate text-xs font-medium text-gray-300 group-hover:text-blue-300">
+                                {post.title}
+                              </p>
+                              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500">
+                                <span className="text-blue-400">
+                                  {post.community}
+                                </span>
+                                <span>•</span>
+                                <span>{post.time}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* MY COMMUNITIES SECTION - MOBILE */}
+                <div className="mt-2 w-full px-2">
+                  <button
+                    onClick={() =>
+                      setIsRecentCommunitiesOpen(!isRecentCommunitiesOpen)
+                    }
+                    className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-400 transition-all duration-200 hover:bg-gray-800 hover:text-gray-200"
+                  >
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="size-4" />
+                      <span>My Communities</span>
+                    </div>
+                    {isRecentCommunitiesOpen ? (
+                      <ChevronUp className="size-4 transition-transform" />
+                    ) : (
+                      <ChevronDown className="size-4 transition-transform" />
+                    )}
+                  </button>
+
+                  {isRecentCommunitiesOpen && (
+                    <div className="mt-2 space-y-1 overflow-hidden">
+                      {recentCommunities.map((community) => (
+                        <button
+                          key={community.id}
+                          className="group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 transition-all duration-200 hover:bg-gray-800"
+                        >
+                          <div className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full">
+                            <img
+                              src={community.communityAvatar}
+                              alt={community.name}
+                              className="size-full rounded-full object-cover"
+                            />
+                          </div>
+
+                          <div className="flex-1 overflow-hidden text-left">
+                            <p className="truncate text-xs font-semibold text-gray-300 group-hover:text-purple-300">
+                              r/{community.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {community.totalMembers} members
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </nav>
             </DrawerContent>
           </Drawer>

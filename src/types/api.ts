@@ -101,6 +101,14 @@ export type CommunityMember = {
   karma: number;
   subscribedAt: string;
 };
+
+export type RecentCommunity = {
+  id: number;
+  name: string;
+  communityAvatar: string;
+  isPrivate: boolean;
+  totalMembers: number;
+};
 /* ____________________End Community____________________ */
 
 export type CommunityResponse = {
