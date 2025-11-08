@@ -4,12 +4,13 @@ const createEnv = () => {
   const EnvSchema = z.object({
     API_URL: z.string(),
     API_MEDIA_URL: z.string().optional(),
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    JSONLINK_API_KEY: z.string().optional(),
     ENABLE_API_MOCKING: z
       .string()
       .refine((s) => s === 'true' || s === 'false')
       .transform((s) => s === 'true')
       .optional(),
-    GOOGLE_CLIENT_ID: z.string().optional(),
     APP_URL: z.string().optional().default('http://localhost:3000'),
     APP_MOCK_API_PORT: z.string().optional().default('8080'),
   });

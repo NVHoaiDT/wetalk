@@ -4,6 +4,7 @@ import { Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input } from '@/components/ui/form';
+import { LinkPreview } from '@/components/ui/link-preview';
 import { MediaUploader } from '@/components/ui/media-uploader/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { TextEditor } from '@/components/ui/text-editor/text-editor';
@@ -179,10 +180,13 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                     className="rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     registration={register('url')}
                   />
-                  {/* TODO: Create a LinkPreview component */}
-                  {/* <LinkPreview link={watch('url')} /> */}
+
+                  <LinkPreview link={watch('url')} />
                 </div>
               )}
+
+              {/* Scaffold for poll */}
+              <div>{/* <CreatePoll {...}/> */}</div>
 
               {/* Rich Text Editor for content */}
               <div className="space-y-2">

@@ -277,6 +277,18 @@ export type Badget = {
   monthYear: string; // "2025-11"
 };
 
+/* ____________________Link Metadata____________________ */
+export type LinkMetadata = {
+  title: string;
+  description: string;
+  images: string[];
+  sitename: string;
+  favicon: string;
+  duration: number;
+  domain: string;
+  url: string;
+  source: string;
+};
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{

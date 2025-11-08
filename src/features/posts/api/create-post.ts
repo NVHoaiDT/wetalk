@@ -51,7 +51,27 @@ export const createPostInputSchema = z.object({
   url: z.string().url().optional(),
 
   /* for type meadia */
-  mediaUrls: z.array(z.string()),
+  mediaUrls: z.array(z.string()).optional(),
+
+  /* for type poll */
+  pollData: z
+    .object({
+      question: z.string().min(1, 'Required'),
+      options: z
+        .array(
+          z.object({
+            id: z.number().min(1, 'Required'),
+            text: z.string().min(1, 'Required'),
+            votes: z.number().min(0),
+            voters: z.array(z.number()),
+          }),
+        )
+        .min(2, 'At least two options are required'),
+      multipleChoice: z.boolean(),
+      expiresAt: z.string().optional(),
+      totalVotes: z.number().min(0),
+    })
+    .optional(),
 });
 
 export type CreatePostInput = z.infer<typeof createPostInputSchema>;
