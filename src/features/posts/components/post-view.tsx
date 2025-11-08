@@ -9,6 +9,7 @@ import { formatBigNumber } from '@/utils/format';
 import { usePost } from '../api/get-post';
 
 import { DownVotePost } from './downvote-post';
+import { PollView } from './poll-view';
 import { ReportPost } from './report-post';
 import { UpVotePost } from './upvote-post';
 
@@ -74,6 +75,13 @@ export const PostView = ({ id }: { id: number }) => {
                     {tag}
                   </span>
                 ))}
+              </div>
+            )}
+
+            {/* Poll Content */}
+            {post.type === 'poll' && post.pollData && (
+              <div className="mb-6">
+                <PollView post={post} />
               </div>
             )}
 

@@ -137,6 +137,18 @@ export type Post = {
   vote: number;
   createdAt: string;
   updatedAt: string;
+  pollData?: {
+    question: string;
+    options: Array<{
+      id: number;
+      text: string;
+      votes: number;
+      voters: number[];
+    }>;
+    multipleChoice: boolean;
+    expiresAt?: string;
+    totalVotes: number;
+  };
 };
 
 /* ____________________Reported Post____________________ */

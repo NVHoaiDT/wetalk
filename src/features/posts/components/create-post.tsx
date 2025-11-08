@@ -11,6 +11,8 @@ import { TextEditor } from '@/components/ui/text-editor/text-editor';
 
 import { createPostInputSchema, useCreatePost } from '../api/create-post';
 
+import { CreatePoll } from './create-poll';
+
 type CreatePostProps = {
   communityId: number;
 };
@@ -78,8 +80,9 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
             title: '',
             content: '',
             tags: [] as string[],
-            url: '',
-            mediaUrls: [] as string[],
+            url: undefined,
+            mediaUrls: undefined,
+            pollData: undefined,
           },
         }}
       >
@@ -154,7 +157,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                 <MediaUploader
                   onChange={(urls) => {
                     // Update form field
-                    setValue('mediaUrls', urls);
+                    setValue('mediaUrls', urls as any);
                   }}
                   onError={(error) => {
                     addNotification({
@@ -181,12 +184,17 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                     registration={register('url')}
                   />
 
-                  <LinkPreview link={watch('url')} />
+                  <LinkPreview link={watch('url') || ''} />
                 </div>
               )}
 
-              {/* Scaffold for poll */}
-              <div>{/* <CreatePoll {...}/> */}</div>
+              {/* Poll Tab */}
+              {activeTab === 'poll' && (
+                <CreatePoll
+                  setValue={setValue as any}
+                  errors={formState.errors}
+                />
+              )}
 
               {/* Rich Text Editor for content */}
               <div className="space-y-2">

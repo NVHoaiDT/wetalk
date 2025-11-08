@@ -26,6 +26,7 @@ import { formatBigNumber } from '@/utils/format';
 import { useInfinitePosts } from '../api/get-sorted-posts';
 
 import { DownVotePost } from './downvote-post';
+import { PollView } from './poll-view';
 import { ReportPost } from './report-post';
 import { UpVotePost } from './upvote-post';
 
@@ -150,6 +151,13 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                       {post.title}
                     </h2>
                   </Link>
+
+                  {/* For type poll */}
+                  {post.type === 'poll' && post.pollData && (
+                    <div className="mb-3">
+                      <PollView post={post} isCompact={true} />
+                    </div>
+                  )}
 
                   {/* For type media */}
                   {post.type === 'media' && post.mediaUrls.length > 0 && (
