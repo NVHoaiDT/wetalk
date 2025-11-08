@@ -7,7 +7,7 @@ const CommunityRoute = () => {
   const params = useParams();
   const communityId = Number(params.communityId);
   return (
-    <ContentLayout title="Community">
+    <ContentLayout>
       <CommunityView communityId={communityId}></CommunityView>
     </ContentLayout>
   );

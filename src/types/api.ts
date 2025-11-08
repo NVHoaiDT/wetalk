@@ -159,6 +159,15 @@ export type Post = {
   };
 };
 
+export type RecentPost = {
+  id: number;
+  title: string;
+  community: {
+    id: number;
+    name: string;
+  };
+  createdAt: string;
+};
 /* ____________________Reported Post____________________ */
 export type Reporter = {
   id: number;

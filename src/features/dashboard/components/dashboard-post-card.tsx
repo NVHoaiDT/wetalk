@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router';
 
+import community from '@/app/routes/app/communites/community';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -17,6 +18,7 @@ import {
 import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { paths } from '@/config/paths';
+import { useAddRecentPost } from '@/features/posts/api/add-recent-post';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { FollowPost } from '@/features/posts/components/follow-post';
 import { ReportPost } from '@/features/posts/components/report-post';
@@ -34,6 +36,8 @@ type DashboardPostCardProps = {
 };
 
 export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
+  const addRecentPostMutation = useAddRecentPost();
+
   const handleJoinCommunity = () => {
     console.log('Join community:', post.community.id);
   };
@@ -148,7 +152,22 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
             </div>
 
             {/* Post Title */}
-            <Link to={paths.app.post.getHref(post.id)}>
+            <Link
+              to={paths.app.post.getHref(post.id)}
+              onClick={() =>
+                addRecentPostMutation.mutate({
+                  data: {
+                    id: post.id,
+                    title: post.title,
+                    community: {
+                      id: post.community.id,
+                      name: post.community.name,
+                    },
+                    createdAt: post.createdAt,
+                  },
+                })
+              }
+            >
               <h2 className="mb-3 cursor-pointer text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
                 {post.title}
               </h2>

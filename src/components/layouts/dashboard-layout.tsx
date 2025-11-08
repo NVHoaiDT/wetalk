@@ -1,3 +1,4 @@
+import { formatDistanceToNow } from 'date-fns';
 import {
   Home,
   PanelLeft,
@@ -19,10 +20,12 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { paths } from '@/config/paths';
 import { useRecentCommunities } from '@/features/communities/api/get-recent-community';
 import { useMessages } from '@/features/messages/stores/messages-store';
+import { useRecentPosts } from '@/features/posts/api/get-recent-posts';
 import { Search } from '@/features/search/components/search';
 import { useLogout } from '@/lib/auth';
 import { ROLES, useAuthorization } from '@/lib/authorization';
 import { cn } from '@/utils/cn';
+import { formatDate } from '@/utils/format';
 
 import {
   DropdownMenu,
@@ -101,26 +104,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const recentCommunitiesQuery = useRecentCommunities();
   const recentCommunities = recentCommunitiesQuery.data || [];
 
-  const recentPosts = [
-    {
-      id: 1,
-      title: 'Getting started with React',
-      community: 'r/reactjs',
-      time: '2h ago',
-    },
-    {
-      id: 2,
-      title: 'TypeScript best practices',
-      community: 'r/typescript',
-      time: '5h ago',
-    },
-    {
-      id: 3,
-      title: 'Tailwind CSS tips',
-      community: 'r/webdev',
-      time: '1d ago',
-    },
-  ];
+  const recentPostsQuery = useRecentPosts();
+  const recentPosts = recentPostsQuery.data || [];
 
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
@@ -183,26 +168,30 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             {isRecentOpen && (
               <div className="mt-2 space-y-1 overflow-hidden">
                 {recentPosts.map((post) => (
-                  <button
-                    key={post.id}
-                    className="group flex w-full flex-col gap-1 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50"
-                  >
-                    <div className="flex items-start gap-2">
-                      <Hash className="mt-0.5 size-3 shrink-0 text-gray-400 group-hover:text-blue-500" />
-                      <div className="flex-1 overflow-hidden">
-                        <p className="truncate text-sm font-medium text-gray-700 group-hover:text-blue-700">
-                          {post.title}
-                        </p>
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500">
-                          <span className="text-blue-600">
-                            {post.community}
-                          </span>
-                          <span>•</span>
-                          <span>{post.time}</span>
+                  <NavLink to={paths.app.post.getHref(post.id)} key={post.id}>
+                    <button className="group flex w-full flex-col gap-1 rounded-lg px-3 py-2 text-left transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50">
+                      <div className="flex items-start gap-2">
+                        <Hash className="mt-0.5 size-3 shrink-0 text-gray-400 group-hover:text-blue-500" />
+                        <div className="flex-1 overflow-hidden">
+                          <p className="truncate text-sm font-medium text-gray-700 group-hover:text-blue-700">
+                            {post.title}
+                          </p>
+                          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500">
+                            <span className="text-blue-600">
+                              r/{post.community.name}
+                            </span>
+                            {/* <span>•</span>
+                          <span>
+                            {' '}
+                            {formatDistanceToNow(new Date(post.createdAt), {
+                              addSuffix: true,
+                            })}
+                          </span> */}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </button>
+                    </button>
+                  </NavLink>
                 ))}
                 {recentPosts.length === 0 && (
                   <div className="px-3 py-4 text-center text-xs text-gray-500">
@@ -270,6 +259,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </div>
         </nav>
       </aside>
+
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Progress />
@@ -345,10 +335,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                               </p>
                               <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500">
                                 <span className="text-blue-400">
-                                  {post.community}
+                                  r/{post.community.name}
                                 </span>
                                 <span>•</span>
-                                <span>{post.time}</span>
+                                <span>{formatDate(post.createdAt)}</span>
                               </div>
                             </div>
                           </div>
