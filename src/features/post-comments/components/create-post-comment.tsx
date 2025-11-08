@@ -100,15 +100,15 @@ export const CreatePostComment = ({
             type="submit"
             disabled={!content.trim() || createPostCommentMutation.isPending}
             size="sm"
-            className="rounded-full px-4"
+            className="rounded-full bg-gray-600 px-4"
           >
             {createPostCommentMutation.isPending ? (
               'Posting...'
             ) : (
-              <>
+              <div className="flex items-center">
                 <Send className="mr-2 size-4" />
                 Post
-              </>
+              </div>
             )}
           </Button>
         </div>

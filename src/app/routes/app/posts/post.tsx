@@ -2,7 +2,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
-import { Card } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { CreatePostComment } from '@/features/post-comments/components/create-post-comment';
 import { PostCommentsList } from '@/features/post-comments/components/post-comments-list';
@@ -30,12 +29,12 @@ const PostRoute = () => {
 
   return (
     <>
-      <ContentLayout title={post.title}>
-        <PostView id={post.id} />
-        <div className="mt-8 space-y-6">
-          <Card className="p-4">
-            <CreatePostComment postId={post.id} />
-          </Card>
+      <ContentLayout>
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+          <PostView id={post.id} />
+
+          <CreatePostComment postId={post.id} />
+
           <ErrorBoundary
             fallback={
               <div>Failed to load comments. Try to refresh the page.</div>
