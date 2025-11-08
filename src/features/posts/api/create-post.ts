@@ -1,3 +1,36 @@
+/* 
+POST `/posts`
+REQUEST BODY
+{
+  "communityId": 1,
+  "title": "Sample title",
+  "type": "text|link|media|poll",
+  "content": "Sample content",
+
+  // Optional
+  "tags": ["golang", "programming", "backend"],
+
+  // For type="link"
+  "url": "https://example.com",
+
+  // For type="media"
+  "mediaUrls": ["https://image1.jpg", "https://image2.jpg"],
+
+  // For type="poll"
+  "pollData": {
+    "question": "Your favorite programming language?",
+    "options": [
+      { "id": 1, "text": "Go", "votes": 0, "voters": [] },
+      { "id": 2, "text": "Python", "votes": 0, "voters": [] },
+      { "id": 3, "text": "Rust", "votes": 0, "voters": [] }
+    ],
+    "multipleChoice": true,
+    "expiresAt": "2025-10-20T00:00:00Z",
+    "totalVotes": 0
+  }
+}
+*/
+
 import { Post } from '@ngneat/falso';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
@@ -13,6 +46,9 @@ export const createPostInputSchema = z.object({
   title: z.string().min(1, 'Required'),
   content: z.string().min(1, 'Required'),
   tags: z.array(z.string()),
+
+  /* for type link */
+  url: z.string().url().optional(),
 
   /* for type meadia */
   mediaUrls: z.array(z.string()),

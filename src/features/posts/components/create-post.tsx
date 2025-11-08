@@ -77,6 +77,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
             title: '',
             content: '',
             tags: [] as string[],
+            url: '',
             mediaUrls: [] as string[],
           },
         }}
@@ -168,7 +169,22 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                 />
               )}
 
-              {/* Rich Text Editor */}
+              {/* Scaffold for link*/}
+              {activeTab === 'link' && (
+                <div>
+                  <Input
+                    label="Link URL"
+                    placeholder="https://example.com"
+                    error={formState.errors['url']}
+                    className="rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    registration={register('url')}
+                  />
+                  {/* TODO: Create a LinkPreview component */}
+                  {/* <LinkPreview link={watch('url')} /> */}
+                </div>
+              )}
+
+              {/* Rich Text Editor for content */}
               <div className="space-y-2">
                 <Controller
                   name="content"
