@@ -99,8 +99,8 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
                 <DownVotePost postId={post.id} />
               </div>
 
+              {/* Content */}
               <Link to={paths.app.post.getHref(post.id)}>
-                {/* Content */}
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center space-x-2 text-xs text-gray-600">
                     <Link
