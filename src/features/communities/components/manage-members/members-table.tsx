@@ -1,5 +1,3 @@
-import { Edit2 } from 'lucide-react';
-
 import { Spinner } from '@/components/ui/spinner';
 import {
   TableElement,
@@ -13,6 +11,7 @@ import { CommunityMember } from '@/types/api';
 import { formatDate } from '@/utils/format';
 
 import { BanMemberButton } from './ban-member-button';
+import { SetModeratorButton } from './set-moderator-button';
 
 type MembersTableProps = {
   members: CommunityMember[];
@@ -106,12 +105,11 @@ export const MembersTable = ({
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end gap-2">
-                  <button
-                    className="flex size-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 transition-all hover:bg-gray-100 hover:shadow-md"
-                    aria-label="Edit member"
-                  >
-                    <Edit2 className="size-4" />
-                  </button>
+                  <SetModeratorButton
+                    communityId={communityId}
+                    memberId={member.userId}
+                    memberName={member.username}
+                  />
                   <BanMemberButton
                     communityId={communityId}
                     memberId={member.userId}
