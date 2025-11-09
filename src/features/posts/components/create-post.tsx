@@ -1,4 +1,4 @@
-import { Plus, X } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -12,6 +12,7 @@ import { TextEditor } from '@/components/ui/text-editor/text-editor';
 import { createPostInputSchema, useCreatePost } from '../api/create-post';
 
 import { CreatePoll } from './create-poll';
+import { SelectPostTags } from './select-post-tags';
 
 type CreatePostProps = {
   communityId: number;
@@ -33,6 +34,13 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
           title: 'Post Created',
         });
         setMediaFiles([]);
+      },
+      onError: (error) => {
+        addNotification({
+          type: 'error',
+          title: 'Failed to Create Post',
+          message: error.message,
+        });
       },
     },
   });
@@ -217,42 +225,18 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
               </div>
 
               {/* Tags Input */}
-              <div className="space-y-2">
-                <button
-                  type="button"
-                  className="text-sm font-medium text-gray-700 transition-colors hover:text-blue-600"
-                >
-                  + Add tags
-                </button>
-                <Controller
-                  name="tags"
-                  control={control}
-                  render={({ field }) => (
-                    <div className="flex flex-wrap gap-2">
-                      {field.value?.map((tag: string, index: number) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
-                        >
-                          <span>{tag}</span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newTags = field.value.filter(
-                                (_: string, i: number) => i !== index,
-                              );
-                              field.onChange(newTags);
-                            }}
-                            className="hover:text-blue-900"
-                          >
-                            <X className="size-3" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                />
-              </div>
+              <Controller
+                name="tags"
+                control={control}
+                render={({ field }) => (
+                  <SelectPostTags
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={formState.errors['tags'] as any}
+                    label="Tags"
+                  />
+                )}
+              />
 
               {/* Info Box */}
               <div className="flex items-start gap-3 rounded-lg border border-blue-100 bg-blue-50/50 p-4">

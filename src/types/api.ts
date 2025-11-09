@@ -205,6 +205,12 @@ export type CollectedPost = {
   createdAt: string;
 };
 
+/* ____________________Tag____________________ */
+export type Tag = {
+  id: number;
+  name: string;
+};
+
 /* ____________________Comment____________________ */
 export type Comment = {
   id: number;
