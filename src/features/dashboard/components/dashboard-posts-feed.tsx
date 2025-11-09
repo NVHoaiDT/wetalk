@@ -69,7 +69,7 @@ export const DashboardPostsFeed = () => {
       <div className="rounded-xl bg-white p-3 shadow-sm">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="group flex items-center gap-2.5 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm transition-all duration-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md">
+            <button className="group flex items-center gap-2.5 rounded-lg bg-white px-4 py-2 shadow-sm transition-all duration-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md">
               <CurrentSortIcon className={`size-4 ${currentSort?.color}`} />
               <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-700">
                 {currentSort?.label}

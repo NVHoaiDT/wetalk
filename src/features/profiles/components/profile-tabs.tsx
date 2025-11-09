@@ -2,10 +2,10 @@ import { cn } from '@/utils/cn';
 
 type TabType =
   | 'overview'
+  | 'communities'
   | 'posts'
   | 'comments'
   | 'saved'
-  | 'history'
   | 'followed'
   | 'upvoted'
   | 'downvoted';
@@ -17,12 +17,12 @@ type ProfileTabsProps = {
 };
 
 const tabs: { id: TabType; label: string; requiresOwn?: boolean }[] = [
-  { id: 'overview', label: 'Overview' },
+  /* { id: 'overview', label: 'Overview' }, */
+  { id: 'communities', label: 'Communities' },
   { id: 'posts', label: 'Posts' },
   { id: 'comments', label: 'Comments' },
   { id: 'saved', label: 'Saved', requiresOwn: true },
   { id: 'followed', label: 'Followed', requiresOwn: true },
-  { id: 'history', label: 'History', requiresOwn: true },
   { id: 'upvoted', label: 'Upvoted', requiresOwn: true },
   { id: 'downvoted', label: 'Downvoted', requiresOwn: true },
 ];
