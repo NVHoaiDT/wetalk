@@ -143,6 +143,7 @@ export type Post = {
   tags: string[];
   status: string;
   vote: number;
+  isVoted: boolean;
   createdAt: string;
   updatedAt: string;
   pollData?: {
