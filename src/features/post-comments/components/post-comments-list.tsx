@@ -45,6 +45,7 @@ const Comment = ({
   const user = userQuery.data?.data;
   fancyLog('USER: ', user);
   fancyLog('COMMENT: ', comment);
+
   return (
     <Card
       className={`border-l-2 ${level === 0 ? 'border-l-transparent' : 'border-l-blue-200'}`}
@@ -181,16 +182,15 @@ const Comment = ({
 export const PostCommentsList = ({ postId }: PostCommentsListProps) => {
   const postCommentsQuery = useInfinitePostComments({ postId });
 
-  if (postCommentsQuery.isLoading)
+  if (postCommentsQuery.isLoading) {
     return (
       <div className="flex h-48 w-full items-center justify-center">
         <Spinner size="lg" />
       </div>
     );
+  }
 
-  const comments = postCommentsQuery.data?.pages.flatMap((page) => page.data);
-
-  if (!comments?.length)
+  if (!postCommentsQuery.data || postCommentsQuery.data.pages.length === 0) {
     return (
       <div
         role="list"
@@ -204,6 +204,10 @@ export const PostCommentsList = ({ postId }: PostCommentsListProps) => {
         </p>
       </div>
     );
+  }
+
+  const comments = postCommentsQuery.data?.pages.flatMap((page) => page.data);
+  fancyLog('Post Comments:', comments);
 
   return (
     <div className="max-w-4xl space-y-4">

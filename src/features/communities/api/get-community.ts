@@ -29,12 +29,13 @@ import { Community } from '@/types/api';
 export const getCommunity = ({
   communityId,
 }: {
-  communityId: number;
+  /* Messy code to handle get community in post page, change later. */
+  communityId: number | undefined;
 }): Promise<{ data: Community }> => {
   return api.get(`/communities/${communityId}`);
 };
 
-export const getCommunityQueryOptions = (communityId: number) => {
+export const getCommunityQueryOptions = (communityId: number | undefined) => {
   return {
     queryKey: ['communitiy', communityId],
     queryFn: () => getCommunity({ communityId }),
@@ -42,7 +43,7 @@ export const getCommunityQueryOptions = (communityId: number) => {
 };
 
 type UseCommunityQueryOptions = {
-  communityId: number;
+  communityId: number | undefined;
   queryConfig?: QueryConfig<typeof getCommunityQueryOptions>;
 };
 
