@@ -30,7 +30,7 @@ const CommunityGrid = ({ filter }: CommunityGridProps) => {
   fancyLog('CommunityGrid communities:', communities);
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
-      {communities.map((community) => (
+      {communities.map((community, index) => (
         <Link
           to={paths.app.community.getHref(community.id)}
           key={community.id}
@@ -46,7 +46,7 @@ const CommunityGrid = ({ filter }: CommunityGridProps) => {
             })
           }
         >
-          <CommunityCard {...community} />
+          <CommunityCard rank={index + 1} {...community} />
         </Link>
       ))}
     </div>
