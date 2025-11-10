@@ -1,4 +1,3 @@
-import { ErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
@@ -35,13 +34,7 @@ const PostRoute = () => {
 
           <CreatePostComment postId={post.id} />
 
-          <ErrorBoundary
-            fallback={
-              <div>Failed to load comments. Try to refresh the page.</div>
-            }
-          >
-            <PostCommentsList postId={post.id} />
-          </ErrorBoundary>
+          <PostCommentsList postId={post.id} />
         </div>
       </ContentLayout>
     </>

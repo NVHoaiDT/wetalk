@@ -31,7 +31,7 @@ export const PostView = ({ id }: { id: number }) => {
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
 
   return (
-    <article className="mx-auto max-w-4xl space-y-4 p-4">
+    <article className="w-full space-y-4">
       {/* Post Header */}
       <div className="overflow-hidden rounded-xl bg-white shadow-sm">
         <div className="flex">
