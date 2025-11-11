@@ -1,3 +1,22 @@
+/* 
+[
+    {
+        "id": 14,
+        "name": "Startup Tech",
+        "shortDescription": "Technical for startups",
+        "isPrivate": false,
+        "totalMembers": 4
+    },
+    {
+        "id": 13,
+        "name": "Tech Career",
+        "shortDescription": "IT career and development",
+        "isPrivate": false,
+        "totalMembers": 6
+    }
+]
+*/
+
 import { infiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';

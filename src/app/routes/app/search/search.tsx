@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
+import { SearchAllList } from '@/features/search/components/search-all-list';
 import { SearchCommunitiesList } from '@/features/search/components/search-communities-list';
 import {
   SearchFilters,
@@ -13,7 +14,7 @@ import { SearchPostsList } from '@/features/search/components/search-posts-list'
 const SearchRoute = () => {
   const params = useParams();
   const query = params.query as string;
-  const [searchType, setSearchType] = useState<SearchType>('posts');
+  const [searchType, setSearchType] = useState<SearchType>('all');
   const [sortType, setSortType] = useState<SortType>('new');
 
   return (
@@ -26,7 +27,10 @@ const SearchRoute = () => {
           onSortChange={setSortType}
         />
 
-        <div className="min-h-[200px] max-w-4xl">
+        <div className="min-h-[200px]">
+          {searchType === 'all' && (
+            <SearchAllList query={query} sortType={sortType} />
+          )}
           {searchType === 'posts' && (
             <SearchPostsList query={query} sortType={sortType} />
           )}

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select/select';
 import { cn } from '@/utils/cn';
 
-export type SearchType = 'posts' | 'communities';
+export type SearchType = 'all' | 'posts' | 'communities';
 export type SortType = 'relevance' | 'hot' | 'new' | 'top';
 
 type SearchFiltersProps = {
@@ -28,7 +28,7 @@ export const SearchFilters = ({
     <div className="sticky top-0 z-10 mb-4 rounded-md bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-4 rounded-md border-b p-4 shadow-sm">
         <div className="flex items-center justify-center gap-2">
-          {['posts', 'communities'].map((t) => (
+          {['all', 'posts', 'communities'].map((t) => (
             <button
               key={t}
               onClick={() => onTypeChange(t as SearchType)}
