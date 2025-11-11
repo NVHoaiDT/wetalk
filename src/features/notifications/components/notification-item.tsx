@@ -7,13 +7,26 @@ import {
   CheckCircle2,
   Trash2,
   AlertTriangle,
+  Archive,
+  X,
 } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { paths } from '@/config/paths';
 import { Notification } from '@/types/api';
 import { cn } from '@/utils/cn';
 
+import { useDeleteNotification } from '../api/delete-notification';
 import { useMarkNotificationAsRead } from '../api/mark-notification';
 
 type NotificationItemProps = {
@@ -23,6 +36,8 @@ type NotificationItemProps = {
 export const NotificationItem = ({ notification }: NotificationItemProps) => {
   const navigate = useNavigate();
   const markAsRead = useMarkNotificationAsRead();
+  const deleteNotification = useDeleteNotification();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleClick = () => {
     // Mark as read if unread
@@ -187,80 +202,165 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
     );
   };
 
+  const handleArchive = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Mark as read (archive functionality)
+    if (!notification.isRead) {
+      markAsRead.mutate({ notificationId: notification.id });
+    }
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // If notification is unread, show confirmation dialog
+    if (!notification.isRead) {
+      setShowDeleteDialog(true);
+    } else {
+      // If already read, delete immediately
+      deleteNotification.mutate({ notificationId: notification.id });
+    }
+  };
+
+  const confirmDelete = () => {
+    deleteNotification.mutate(
+      { notificationId: notification.id },
+      {
+        onSuccess: () => {
+          setShowDeleteDialog(false);
+        },
+      },
+    );
+  };
+
   return (
-    <button
-      onClick={handleClick}
-      className={cn(
-        'group relative flex w-full items-start gap-3 rounded-lg border p-4 text-left transition-all duration-200',
-        'hover:shadow-md',
-        notification.isRead
-          ? 'border-gray-200 bg-white hover:bg-gray-50'
-          : cn('bg-opacity-50', bgColor, borderColor, 'hover:bg-opacity-70'),
-      )}
-    >
-      {/* Icon with background circle */}
-      <div
+    <>
+      <button
+        onClick={handleClick}
         className={cn(
-          'flex size-10 shrink-0 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-110',
-          notification.isRead ? 'bg-gray-100' : bgColor,
+          'group relative flex w-full items-start gap-3 rounded-lg border p-4 text-left transition-all duration-200',
+          'hover:shadow-md',
+          notification.isRead
+            ? 'border-gray-200 bg-white hover:bg-gray-50'
+            : cn('bg-opacity-50', bgColor, borderColor, 'hover:bg-opacity-70'),
         )}
       >
-        {icon}
-      </div>
-
-      {/* Content */}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex-1">
-            <p
-              className={cn(
-                'text-sm leading-relaxed text-gray-800',
-                !notification.isRead && 'font-medium text-gray-900',
-              )}
-            >
-              {renderBody()}
-            </p>
-            {/* Description */}
-            <p className="mt-1 text-xs leading-relaxed text-gray-600">
-              {description}
-            </p>
-          </div>
-          {!notification.isRead && (
-            <span className="mt-1 size-2 shrink-0 animate-pulse rounded-full bg-blue-500" />
-          )}
+        {/* Action buttons - visible on hover */}
+        <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <button
+            onClick={handleArchive}
+            disabled={notification.isRead}
+            className={cn(
+              'rounded-md p-1.5 transition-colors',
+              notification.isRead
+                ? 'cursor-not-allowed text-gray-300'
+                : 'text-gray-400 hover:bg-gray-200 hover:text-gray-600',
+            )}
+            title="Archive (Mark as read)"
+          >
+            <Archive className="size-4" />
+          </button>
+          <button
+            onClick={handleDelete}
+            disabled={deleteNotification.isPending}
+            className="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-red-100 hover:text-red-600"
+            title="Delete notification"
+          >
+            <X className="size-4" />
+          </button>
         </div>
-
-        {/* Timestamp with better styling */}
-        <div className="mt-2 flex items-center gap-2">
-          <span className="text-xs font-medium text-gray-500">
-            {formatDistanceToNow(new Date(notification.createdAt), {
-              addSuffix: true,
-            })}
-          </span>
-          {!notification.isRead && (
-            <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">
-              New
-            </span>
+        {/* Icon with background circle */}
+        <div
+          className={cn(
+            'flex size-10 shrink-0 items-center justify-center rounded-full transition-transform duration-200 group-hover:scale-110',
+            notification.isRead ? 'bg-gray-100' : bgColor,
           )}
-        </div>
-      </div>
-
-      {/* Subtle arrow indicator */}
-      <div className="flex shrink-0 items-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        <svg
-          className="size-4 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </div>
-    </button>
+          {icon}
+        </div>
+
+        {/* Content */}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1">
+              <p
+                className={cn(
+                  'text-sm leading-relaxed text-gray-800',
+                  !notification.isRead && 'font-medium text-gray-900',
+                )}
+              >
+                {renderBody()}
+              </p>
+              {/* Description */}
+              <p className="mt-1 text-xs leading-relaxed text-gray-600">
+                {description}
+              </p>
+            </div>
+            {!notification.isRead && (
+              <span className="mt-1 size-2 shrink-0 animate-pulse rounded-full bg-blue-500" />
+            )}
+          </div>
+
+          {/* Timestamp with better styling */}
+          <div className="mt-2 flex items-center gap-2">
+            <span className="text-xs font-medium text-gray-500">
+              {formatDistanceToNow(new Date(notification.createdAt), {
+                addSuffix: true,
+              })}
+            </span>
+            {!notification.isRead && (
+              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">
+                New
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Subtle arrow indicator */}
+        <div className="flex shrink-0 items-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <svg
+            className="size-4 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </div>
+      </button>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Unread Notification?</DialogTitle>
+            <DialogDescription>
+              This notification is unread. Are you sure you want to delete it?
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              isLoading={deleteNotification.isPending}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
