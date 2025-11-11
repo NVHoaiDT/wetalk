@@ -331,13 +331,17 @@ export type NotificationAction =
   | 'get_post_new_comment'
   | 'get_comment_vote'
   | 'get_comment_reply'
-  | 'get_post_vote';
+  | 'get_post_vote'
+  | 'post_approved'
+  | 'post_deleted'
+  | 'post_reported';
 
 export type NotificationPayload = {
   postId?: number;
   commentId?: number;
   userName?: string;
   voteType?: boolean;
+  userId?: number;
 };
 
 export type Notification = {

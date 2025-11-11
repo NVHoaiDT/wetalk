@@ -59,36 +59,49 @@ export const NotificationsList = () => {
 
   if (notifications.length === 0) {
     return (
-      <div className="flex min-h-[400px] flex-col items-center justify-center gap-3 text-gray-500">
-        <Bell className="size-12" />
-        <p className="text-center font-medium">No notifications yet</p>
-        <p className="text-sm text-gray-400">
-          You&apos;ll be notified when someone interacts with your posts
-        </p>
+      <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 text-gray-500">
+        <div className="rounded-full bg-gray-100 p-6">
+          <Bell className="size-16 text-gray-400" />
+        </div>
+        <div className="text-center">
+          <p className="text-lg font-semibold text-gray-700">
+            No notifications yet
+          </p>
+          <p className="mt-1 text-sm text-gray-500">
+            You&apos;ll be notified when someone interacts with your posts
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Header with Mark All as Read */}
-      <div className="flex items-center justify-between border-b pb-3">
-        <div className="flex items-center gap-2">
-          <Bell className="size-5 text-gray-700" />
-          <h2 className="text-lg font-semibold text-gray-900">Notifications</h2>
-          {hasUnread && (
-            <span className="rounded-full bg-blue-500 px-2 py-0.5 text-xs font-semibold text-white">
-              New
-            </span>
-          )}
+      <div className="flex items-center justify-between border-b pb-4">
+        <div className="flex items-center gap-3">
+          <div className="rounded-lg bg-blue-100 p-2">
+            <Bell className="size-5 text-blue-600" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
+            {hasUnread && (
+              <p className="text-sm text-gray-500">
+                You have {notifications.filter((n) => !n.isRead).length} unread
+                notification
+                {notifications.filter((n) => !n.isRead).length > 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
         </div>
         {hasUnread && (
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleMarkAllAsRead}
             isLoading={markAllAsRead.isPending}
             icon={<Check className="size-4" />}
+            className="shadow-sm"
           >
             Mark all as read
           </Button>
@@ -96,7 +109,7 @@ export const NotificationsList = () => {
       </div>
 
       {/* Notifications List */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         {notifications.map((notification) => (
           <NotificationItem key={notification.id} notification={notification} />
         ))}
@@ -104,25 +117,33 @@ export const NotificationsList = () => {
 
       {/* Pagination */}
       {pagination && pagination.total > 1 && (
-        <div className="flex items-center justify-between border-t pt-4">
+        <div className="flex items-center justify-between border-t pt-6">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
+            className="min-w-[100px]"
           >
             Previous
           </Button>
 
-          <span className="text-sm text-gray-600">
-            Page {pagination.page} of {pagination.total}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-700">
+              Page {pagination.page}
+            </span>
+            <span className="text-sm text-gray-500">of</span>
+            <span className="text-sm font-medium text-gray-700">
+              {pagination.total}
+            </span>
+          </div>
 
           <Button
             variant="outline"
             size="sm"
             onClick={() => setPage((p) => p + 1)}
             disabled={!pagination.nextUrl}
+            className="min-w-[100px]"
           >
             Next
           </Button>
