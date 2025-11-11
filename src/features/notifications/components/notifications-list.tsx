@@ -1,22 +1,29 @@
 import { Bell, BellOff, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 
 import { useUserNotifications } from '../api/get-user-notifications';
 import { useMarkAllNotificationsAsRead } from '../api/mark-all-notifications';
+import { useNotifications } from '../stores/notifications-store';
 
 import { NotificationItem } from './notification-item';
 
 export const NotificationsList = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
+  const { resetUnreadCount } = useNotifications();
 
   const { data, isLoading, error } = useUserNotifications({
     page,
     limit,
   });
+
+  // Reset unread count when component mounts (user viewing notifications page)
+  useEffect(() => {
+    resetUnreadCount();
+  }, [resetUnreadCount]);
 
   const markAllAsRead = useMarkAllNotificationsAsRead();
 

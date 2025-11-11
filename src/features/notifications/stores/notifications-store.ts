@@ -1,0 +1,17 @@
+import { create } from 'zustand';
+
+type NotificationsStore = {
+  unreadCount: number;
+  setUnreadCount: (count: number) => void;
+  incrementUnreadCount: () => void;
+  resetUnreadCount: () => void;
+};
+
+export const useNotifications = create<NotificationsStore>((set) => ({
+  unreadCount: 0,
+
+  setUnreadCount: (count) => set({ unreadCount: count }),
+  incrementUnreadCount: () =>
+    set((state) => ({ unreadCount: state.unreadCount + 1 })),
+  resetUnreadCount: () => set({ unreadCount: 0 }),
+}));

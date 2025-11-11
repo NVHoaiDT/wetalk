@@ -10,6 +10,7 @@ import {
   ChevronUp,
   Hash,
   TrendingUp,
+  Bell,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
@@ -18,10 +19,10 @@ import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { paths } from '@/config/paths';
-
 /* Still find the way to handle these stuffs */
 import { useRecentCommunities } from '@/features/communities/api/get-recent-community';
 import { useMessages } from '@/features/messages/stores/messages-store';
+import { useNotifications } from '@/features/notifications/stores/notifications-store';
 import { useRecentPosts } from '@/features/posts/api/get-recent-posts';
 import { Search } from '@/features/search/components/search';
 import { useLogout } from '@/lib/auth';
@@ -97,7 +98,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const logout = useLogout();
   /* const { checkAccess } = useAuthorization(); */
-  const { openMessages, unreadCount } = useMessages();
+  const { openMessages, unreadCount: messagesUnreadCount } = useMessages();
+  const { unreadCount: notificationsUnreadCount } = useNotifications();
 
   // State for dropdown sections
   const [isRecentOpen, setIsRecentOpen] = useState(true);
@@ -404,6 +406,21 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <Search />
           </div>
 
+          {/* Notifications Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="relative"
+            onClick={() => navigate(paths.app.notifications.getHref())}
+          >
+            <Bell className="size-5" />
+            {notificationsUnreadCount > 0 && (
+              <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs font-semibold text-white">
+                {notificationsUnreadCount > 9 ? '9+' : notificationsUnreadCount}
+              </span>
+            )}
+          </Button>
+
           {/* Messages Button */}
           <Button
             variant="outline"
@@ -412,14 +429,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             onClick={openMessages}
           >
             <MessageCircle className="size-5" />
-            {unreadCount > 0 && (
+            {messagesUnreadCount > 0 && (
               <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs font-semibold text-white">
-                {unreadCount > 9 ? '9+' : unreadCount}
+                {messagesUnreadCount > 9 ? '9+' : messagesUnreadCount}
               </span>
             )}
           </Button>
-
-          {/* Notifications Button */}
 
           {/* Profile button */}
           <DropdownMenu>
