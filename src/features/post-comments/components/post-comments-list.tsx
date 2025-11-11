@@ -190,7 +190,14 @@ export const PostCommentsList = ({ postId }: PostCommentsListProps) => {
     );
   }
 
-  if (!postCommentsQuery.data || postCommentsQuery.data.pages.length === 0) {
+  /* 
+    Backend API retrn [null] when there are no comments 
+    So we also check for that case
+   */
+  if (
+    !postCommentsQuery.data ||
+    postCommentsQuery.data.pages[0].data === null
+  ) {
     return (
       <div
         role="list"

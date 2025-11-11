@@ -32,23 +32,7 @@ export const MediaViewer = ({
   return (
     <div className={`group/carousel relative ${className}`}>
       <div className="overflow-hidden rounded-lg">
-        {mediaUrls[currentIndex].endsWith('.mp4') ? (
-          /*           <video
-            src={mediaUrls[currentIndex]}
-            controls
-            className="h-[480px] w-full bg-black/5 object-contain"
-            preload="metadata"
-          >
-            <track
-              kind="captions"
-              src="/captions/example.vtt"
-              srcLang="en"
-              label="English"
-              default
-            />
-            Your browser does not support the video tag.
-          </video> */
-
+        {mediaUrls[currentIndex].startsWith('videos/') ? (
           <MediaController
             style={{
               width: '100%',
@@ -56,9 +40,25 @@ export const MediaViewer = ({
             }}
             className="rounded-lg"
           >
+            {/* 
+            ### Cloudinary URL Structure
+            ```
+            https://res.cloudinary.com/{cloud_name}/video/upload/q_auto,f_auto,h_360,br_500k/{public_id}
+            ```
+
+            **Transformations:**
+
+            -  360p: `q_auto,f_auto,h_360,br_500k`
+            -  480p: `q_auto,f_auto,h_480,br_1000k`
+            -  720p: `q_auto,f_auto,h_720,br_2000k`
+            -  1080p: `q_auto,f_auto,h_1080,br_3500k`
+
+            ---
+            */}
             <ReactPlayer
               slot="media"
-              src={mediaUrls[currentIndex]}
+              /* src={`https://res.cloudinary.com/dd2dhsems/video/upload/{transformations}/${mediaUrls[currentIndex]}`} */
+              src={`https://res.cloudinary.com/dd2dhsems/video/upload/${mediaUrls[currentIndex]}`}
               controls={false}
               className="rounded-lg object-contain"
               style={{

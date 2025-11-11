@@ -32,7 +32,11 @@ export const CommentsList = ({ discussionId }: CommentsListProps) => {
 
   const comments = commentsQuery.data?.pages.flatMap((page) => page.data);
 
-  if (!comments?.length)
+  /* 
+    Backend API return an array [null] when there are no comments 
+    So we also check for that case
+  */
+  if (!comments?.length || comments[0] === null)
     return (
       <div
         role="list"
