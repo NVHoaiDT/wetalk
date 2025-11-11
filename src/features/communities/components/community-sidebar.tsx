@@ -5,7 +5,7 @@ import { formatBigNumber } from '@/utils/format';
 
 export const CommunitySidebar = ({ community }: { community: Community }) => {
   return (
-    <aside className="sticky top-6 w-80 space-y-4 self-start">
+    <aside className="w-80 space-y-4 self-start">
       {/* About Community */}
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">

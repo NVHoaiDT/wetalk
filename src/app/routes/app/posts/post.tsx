@@ -62,10 +62,17 @@ const PostRoute = () => {
   return (
     <>
       <ContentLayout>
-        <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
           <div className="flex w-full justify-between gap-6">
-            <PostView id={post.id} />
-            <CommunitySidebar community={community} />
+            <div className="flex-1">
+              <PostView id={post.id} />
+            </div>
+
+            <div className="w-64 lg:block">
+              <div className="sticky top-6">
+                <CommunitySidebar community={community} />
+              </div>
+            </div>
           </div>
 
           <CreatePostComment postId={post.id} />

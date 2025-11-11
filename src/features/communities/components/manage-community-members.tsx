@@ -70,7 +70,7 @@ export const ManageCommunityMembers = ({
 
       <DialogContent className="h-[90vh] max-w-5xl overflow-hidden p-0">
         {/* Header Section */}
-        <div className="border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+        <div className="border-b border-gray-200 bg-gradient-to-r from-blue-500 to-indigo-500 px-8 py-6">
           <DialogHeader>
             <DialogTitle className="text-3xl font-bold text-white">
               {tabs.find((tab) => tab.id === activeTab)?.label || 'Members'}

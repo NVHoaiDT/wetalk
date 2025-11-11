@@ -98,7 +98,7 @@ export const PostsTable = ({
         <TableElement>
           <TableHeader>
             <TableRow className="bg-gray-50">
-              <TableHead className="w-1/2 font-semibold text-gray-700">
+              <TableHead className="w-1/3 font-semibold text-gray-700">
                 POST
               </TableHead>
               <TableHead className="font-semibold text-gray-700">
@@ -124,7 +124,7 @@ export const PostsTable = ({
                 key={post.id}
                 className="transition-colors hover:bg-gray-50"
               >
-                <TableCell>
+                <TableCell className="px-2">
                   <Link
                     to={paths.app.post.getHref(post.id)}
                     className="group block"
@@ -143,7 +143,8 @@ export const PostsTable = ({
                     )}
                   </Link>
                 </TableCell>
-                <TableCell>
+
+                <TableCell className="px-4">
                   <div className="flex items-center gap-2">
                     <img
                       src={post.author.avatar}
@@ -155,11 +156,16 @@ export const PostsTable = ({
                     </span>
                   </div>
                 </TableCell>
-                <TableCell>
+
+                <TableCell className="px-4">
                   <span className="text-sm">{post.type}</span>
                 </TableCell>
-                <TableCell>{getStatusBadge(post.status)}</TableCell>
-                <TableCell>
+
+                <TableCell className="px-4">
+                  {getStatusBadge(post.status)}
+                </TableCell>
+
+                <TableCell className="px-4">
                   <div className="text-sm text-gray-600">
                     {formatDate(post.createdAt)}
                   </div>
