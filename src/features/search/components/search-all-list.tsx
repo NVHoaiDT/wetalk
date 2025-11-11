@@ -1,6 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
 import { MessageCircle, Share2 } from 'lucide-react';
-import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { MDPreview } from '@/components/ui/md-preview';
@@ -9,7 +8,6 @@ import { paths } from '@/config/paths';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { fancyLog } from '@/helper/fancy-log';
-import { cn } from '@/utils/cn';
 
 import { useInfiniteSearchCommunities } from '../api/get-search-communites';
 import { useInfiniteSearchPosts } from '../api/get-search-posts';
@@ -19,11 +17,7 @@ type SearchAllListProps = {
   sortType: string;
 };
 
-type TabType = 'media' | 'posts' | 'communities';
-
 export const SearchAllList = ({ query, sortType }: SearchAllListProps) => {
-  const [activeTab, setActiveTab] = useState<TabType>('posts');
-
   const searchPostsQuery = useInfiniteSearchPosts({ query, sortType });
   const searchCommunitiesQuery = useInfiniteSearchCommunities({
     query,
@@ -63,7 +57,43 @@ export const SearchAllList = ({ query, sortType }: SearchAllListProps) => {
   fancyLog('SearchAllList-MediaPosts:', mediaPosts);
   fancyLog('SearchAllList-Communities:', communities);
 
-  const renderPost = (post: (typeof allPosts)[0]) => (
+  const renderMediaPost = (post: (typeof allPosts)[0]) => (
+    <Link
+      key={post.id}
+      to={paths.app.post.getHref(post.id)}
+      className="group block overflow-hidden rounded-md border bg-card transition-colors hover:border-blue-200 hover:shadow-md"
+    >
+      {/* Media thumbnail */}
+      {post.mediaUrls && post.mediaUrls.length > 0 && (
+        <div className="aspect-video w-full overflow-hidden bg-muted">
+          <img
+            src={post.mediaUrls[0]}
+            alt={post.title}
+            className="size-full object-cover transition-transform group-hover:scale-105"
+          />
+        </div>
+      )}
+
+      {/* Post info */}
+      <div className="space-y-1 p-3">
+        <Link
+          to={paths.app.community.getHref(post.communityId)}
+          className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-blue-600"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <span className="inline-flex size-4 items-center justify-center rounded-full bg-blue-100 text-[10px] text-blue-600">
+            w
+          </span>
+          {post.community.name}
+        </Link>
+        <h3 className="line-clamp-2 text-sm font-medium leading-tight group-hover:text-blue-700">
+          {post.title}
+        </h3>
+      </div>
+    </Link>
+  );
+
+  const renderTextPost = (post: (typeof allPosts)[0]) => (
     <Link
       key={post.id}
       to={paths.app.post.getHref(post.id)}
@@ -93,17 +123,6 @@ export const SearchAllList = ({ query, sortType }: SearchAllListProps) => {
             {post.title}
           </h3>
           {post.content && <MDPreview value={post.content} maxLines={2} />}
-          {post.type === 'media' &&
-            post.mediaUrls &&
-            post.mediaUrls.length > 0 && (
-              <div className="mt-2">
-                <img
-                  src={post.mediaUrls[0]}
-                  alt={post.title}
-                  className="max-h-48 rounded-md object-cover"
-                />
-              </div>
-            )}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <button className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700">
               <MessageCircle className="size-4" /> {0} Comments
@@ -149,80 +168,41 @@ export const SearchAllList = ({ query, sortType }: SearchAllListProps) => {
 
   return (
     <div className="flex gap-6">
-      {/* Main content area - Media and Posts */}
-      <div className="flex-1 space-y-4">
-        {/* Tabs */}
-        <div className="flex gap-2 border-b">
-          <button
-            onClick={() => setActiveTab('media')}
-            className={cn(
-              'px-4 py-2 font-medium transition-colors',
-              activeTab === 'media'
-                ? 'border-b-2 border-blue-600 text-blue-600'
-                : 'text-muted-foreground hover:text-foreground',
-            )}
-          >
-            Media ({mediaPosts.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('posts')}
-            className={cn(
-              'px-4 py-2 font-medium transition-colors',
-              activeTab === 'posts'
-                ? 'border-b-2 border-blue-600 text-blue-600'
-                : 'text-muted-foreground hover:text-foreground',
-            )}
-          >
-            Posts ({textPosts.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('communities')}
-            className={cn(
-              'px-4 py-2 font-medium transition-colors md:hidden',
-              activeTab === 'communities'
-                ? 'border-b-2 border-blue-600 text-blue-600'
-                : 'text-muted-foreground hover:text-foreground',
-            )}
-          >
-            Communities ({communities.length})
-          </button>
-        </div>
+      {/* Main content area - Media and Posts combined */}
+      <div className="flex-1 space-y-6">
+        {/* Media Section */}
+        {mediaPosts.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">Media</h2>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {mediaPosts.map(renderMediaPost)}
+            </div>
+          </div>
+        )}
 
-        {/* Tab content */}
-        <div className="space-y-4">
-          {activeTab === 'media' && (
-            <>
-              {mediaPosts.length > 0 ? (
-                mediaPosts.map(renderPost)
-              ) : (
-                <div className="py-8 text-center text-muted-foreground">
-                  No media posts found
-                </div>
-              )}
-            </>
-          )}
+        {/* Posts Section */}
+        {textPosts.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">Posts</h2>
+            {textPosts.map(renderTextPost)}
+          </div>
+        )}
 
-          {activeTab === 'posts' && (
-            <>
-              {textPosts.length > 0 ? (
-                textPosts.map(renderPost)
-              ) : (
-                <div className="py-8 text-center text-muted-foreground">
-                  No posts found
-                </div>
-              )}
-            </>
-          )}
+        {/* Empty state */}
+        {mediaPosts.length === 0 && textPosts.length === 0 && (
+          <div className="py-8 text-center text-muted-foreground">
+            No posts found
+          </div>
+        )}
 
-          {activeTab === 'communities' && (
-            <div className="md:hidden">
-              {communities.length > 0 ? (
-                communities.map(renderCommunity)
-              ) : (
-                <div className="py-8 text-center text-muted-foreground">
-                  No communities found
-                </div>
-              )}
+        {/* Communities section - Mobile only */}
+        <div className="space-y-4 md:hidden">
+          <h2 className="text-lg font-semibold">Communities</h2>
+          {communities.length > 0 ? (
+            communities.map(renderCommunity)
+          ) : (
+            <div className="py-8 text-center text-sm text-muted-foreground">
+              No communities found
             </div>
           )}
         </div>
