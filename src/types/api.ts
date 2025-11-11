@@ -366,6 +366,11 @@ export type SSENotificationEvent = {
   unreadCount: number;
 };
 
+/* ____________________Recent Search____________________ */
+export type RecentSearch = {
+  keyword: string;
+  searchAt: string;
+};
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{
