@@ -325,6 +325,43 @@ export type LinkMetadata = {
   url: string;
   source: string;
 };
+
+/* ____________________Notifications____________________ */
+export type NotificationAction =
+  | 'get_post_new_comment'
+  | 'get_comment_vote'
+  | 'get_comment_reply'
+  | 'get_post_vote';
+
+export type NotificationPayload = {
+  postId?: number;
+  commentId?: number;
+  userName?: string;
+  voteType?: boolean;
+};
+
+export type Notification = {
+  id: number;
+  body: string;
+  action: NotificationAction;
+  payload: NotificationPayload;
+  isRead: boolean;
+  createdAt: string;
+};
+
+export type NotificationsResponse = {
+  success: boolean;
+  message: string;
+  data: Notification[];
+  pagination: Pagination;
+};
+
+/* ____________________SSE Notification Event____________________ */
+export type SSENotificationEvent = {
+  notification: Notification;
+  unreadCount: number;
+};
+
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{

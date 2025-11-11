@@ -18,12 +18,13 @@ import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { paths } from '@/config/paths';
+
+/* Still find the way to handle these stuffs */
 import { useRecentCommunities } from '@/features/communities/api/get-recent-community';
 import { useMessages } from '@/features/messages/stores/messages-store';
 import { useRecentPosts } from '@/features/posts/api/get-recent-posts';
-import { useUserCommunities } from '@/features/profiles/api/get-user-community';
 import { Search } from '@/features/search/components/search';
-import { useCurrentUser, useLogout } from '@/lib/auth';
+import { useLogout } from '@/lib/auth';
 import { ROLES, useAuthorization } from '@/lib/authorization';
 import { cn } from '@/utils/cn';
 import { formatDate } from '@/utils/format';
@@ -418,6 +419,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             )}
           </Button>
 
+          {/* Notifications Button */}
+
+          {/* Profile button */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

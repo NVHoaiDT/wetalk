@@ -111,6 +111,13 @@ export const createAppRouter = (queryClient: QueryClient) =>
               convert(queryClient),
             ),
         },
+        {
+          path: paths.app.notifications.path,
+          lazy: () =>
+            import('./routes/app/notifications/notifications').then(
+              convert(queryClient),
+            ),
+        },
       ],
     },
     {

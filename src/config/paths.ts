@@ -73,5 +73,9 @@ export const paths = {
       path: 'profiles/:userId',
       getHref: (userId: string | number) => `/app/profiles/${userId}`,
     },
+    notifications: {
+      path: 'notifications',
+      getHref: () => '/app/notifications',
+    },
   },
 } as const;

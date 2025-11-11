@@ -15,6 +15,7 @@ type SSEConnection = {
   active: boolean;
 };
 
+/* WRONG IMPLEMENT HERE, WE NEED TO USE pre-built api-client instead of fetch */
 export const useMessagesSSE = () => {
   const queryClient = useQueryClient();
   const { isOpen, setUnreadCount } = useMessages();
