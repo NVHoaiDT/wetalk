@@ -96,11 +96,10 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
               type: 'standard',
               size: 'large',
               theme: 'outline',
-              text: 'signin_with',
+              text: 'continue_with',
               shape: 'rectangular',
-              logo_alignment: 'left',
-              width: buttonContainer.offsetWidth || 300,
-              locale: 'en',
+              logo_alignment: 'center',
+              width: buttonContainer.offsetWidth || 400,
             });
             fancyLog('Google button rendered successfully', '✓');
           }
@@ -126,8 +125,8 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
   }
 
   return (
-    <div className="w-full">
-      <div id="google-button-container" className="w-full"></div>
+    <div className="flex w-full justify-center">
+      <div id="google-button-container" className="w-full max-w-md"></div>
       {loginWithGoogle.isError && (
         <div className="mt-2 text-sm text-red-600">
           Google login failed. Please try again or contact support.
