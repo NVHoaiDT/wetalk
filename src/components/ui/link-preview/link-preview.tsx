@@ -10,7 +10,7 @@
   source: string;
 */
 
-import { useLinkMetadata } from '@/lib/get-meta-data';
+import { useLinkMetadata } from '@/lib/get-metadata';
 
 import { Spinner } from '../spinner';
 

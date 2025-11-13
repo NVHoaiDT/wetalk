@@ -28,15 +28,16 @@ export const UpVotePost = ({ postId }: { postId: number }) => {
       </div>
     );
   }
-  const isVoted = postQuery.data?.data.isVoted;
+  /* const isVoted = postQuery.data?.data.isVoted; */
 
   return (
     <button
-      disabled={isVoted}
+      /* disabled={isVoted} */
       className={cn(
         'rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500',
-        isVoted && 'bg-green-50 text-green-500',
+        /* isVoted && 'bg-green-50 text-green-500', */
       )}
+      /* Change to unvote if already voted */
       onClick={() => votePostMutation.mutate({ postId, vote: true })}
     >
       <ChevronUp className="size-5" />

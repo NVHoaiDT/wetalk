@@ -16,8 +16,7 @@
 
 import { useQuery, queryOptions } from '@tanstack/react-query';
 
-import { env } from '@/config/env';
-import { api } from '@/lib/api-client';
+import { apiMedia } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 import { LinkMetadata } from '@/types/api';
 
@@ -26,9 +25,7 @@ export const getLinkMetadata = ({
 }: {
   url: string;
 }): Promise<{ data: LinkMetadata }> => {
-  return api.get(`https://jsonlink.io/api/extract`, {
-    params: { url, apiKey: env.JSONLINK_API_KEY },
-  });
+  return apiMedia.get(`/link-preview?url=${url}`);
 };
 
 export const getLinkMetadataQueryOptions = ({ url }: { url: string }) => {
