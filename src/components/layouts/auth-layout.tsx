@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams, useLocation } from 'react-router';
 
 import logo from '@/assets/logo.svg';
 import { Head } from '@/components/seo';
@@ -17,6 +17,7 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
   const user = useCurrentUser();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -28,28 +29,45 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
     }
   }, [user.data, navigate, redirectTo]);
 
+  // Determine if we're on the register page
+  const isRegisterPage = location.pathname.includes('register');
+
   return (
     <>
       <Head title={title} />
-      <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="flex justify-center">
-            <Link
-              className="flex items-center text-white"
-              to={paths.home.getHref()}
-            >
-              <img className="h-24 w-auto" src={logo} alt="Workflow" />
-            </Link>
+      <div className="flex min-h-screen bg-white">
+        {/* Left side - Form or Image (swap based on page) */}
+        <div
+          className={`flex w-full items-center justify-center transition-all duration-500 lg:w-1/2 ${
+            isRegisterPage ? 'order-2' : 'order-1'
+          }`}
+        >
+          <div className="w-full max-w-md px-8 py-12">
+            <div className="mb-8">
+              {/* <Link className="mb-6 inline-block" to={paths.home.getHref()}>
+                <img className="h-8 w-auto" src={logo} alt="Maze" />
+              </Link> */}
+              <h2 className="mt-6 text-3xl font-bold text-gray-900">{title}</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                {isRegisterPage ? 'Create your account' : 'Have we met before?'}
+              </p>
+            </div>
+            {children}
           </div>
-
-          <h2 className="mt-3 text-center text-3xl font-extrabold text-gray-900">
-            {title}
-          </h2>
         </div>
 
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
-            {children}
+        {/* Right side - Image or Form (swap based on page) */}
+        <div
+          className={`hidden w-1/2 items-center justify-center bg-gray-50 transition-all duration-500 lg:flex ${
+            isRegisterPage ? 'order-1' : 'order-2'
+          }`}
+        >
+          <div className="w-full p-8">
+            <img
+              src="/login-decor-image.png"
+              alt="Decorative illustration"
+              className="rounded-3xl object-cover"
+            />
           </div>
         </div>
       </div>

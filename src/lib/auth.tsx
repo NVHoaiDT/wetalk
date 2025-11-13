@@ -46,6 +46,8 @@ export const useLogout = () => {
     onSuccess: () => {
       queryClient.setQueryData(['user'], null);
       queryClient.setQueryData(['user-login'], null);
+
+      /* TODO:Add config onSuccess in consumers and remove this */
       window.location.href = paths.auth.login.getHref();
     },
   });
