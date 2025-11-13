@@ -30,13 +30,14 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         schema={loginWithEmailAndPasswordInputSchema}
       >
         {({ register, formState }) => (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <Input
               type="email"
               label="Email"
               placeholder="name@email.com"
               error={formState.errors['email']}
               registration={register('email')}
+              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
             <Input
               type="password"
@@ -44,12 +45,13 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               placeholder="••••••••"
               error={formState.errors['password']}
               registration={register('password')}
+              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
-            <div>
+            <div className="pt-2">
               <Button
                 isLoading={login.isPending}
                 type="submit"
-                className="w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 py-6 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="h-12 w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 Log in
               </Button>
@@ -63,20 +65,30 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-200"></div>
         </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-white px-2 text-gray-500">OR</span>
+        <div className="relative flex justify-center text-xs font-medium">
+          <span className="bg-white px-3 text-gray-500">OR</span>
         </div>
       </div>
 
       {/* Login with Google */}
       <LoginGoogleForm onSuccess={onSuccess} />
 
+      {/* Forgot password link */}
+      <div className="text-center text-sm">
+        <button
+          type="button"
+          className="font-semibold text-gray-700 underline underline-offset-2 transition-colors hover:text-gray-900"
+        >
+          Forgot my password
+        </button>
+      </div>
+
       {/* Sign up link */}
       <div className="text-center text-sm text-gray-600">
         Don&apos;t have an account?{' '}
         <Link
           to={paths.auth.register.getHref(redirectTo)}
-          className="font-medium text-gray-900 underline hover:text-gray-700"
+          className="font-semibold text-gray-900 underline underline-offset-2 transition-colors hover:text-gray-700"
         >
           Sign up
         </Link>

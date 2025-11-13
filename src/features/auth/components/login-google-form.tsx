@@ -29,6 +29,7 @@ declare global {
               shape?: string;
               logo_alignment?: string;
               width?: number;
+              locale?: string;
             },
           ) => void;
         };
@@ -95,10 +96,11 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
               type: 'standard',
               size: 'large',
               theme: 'outline',
-              text: 'sign_in_with',
+              text: 'signin_with',
               shape: 'rectangular',
               logo_alignment: 'left',
               width: buttonContainer.offsetWidth || 300,
+              locale: 'en',
             });
             fancyLog('Google button rendered successfully', '✓');
           }

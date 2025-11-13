@@ -27,13 +27,14 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         }}
       >
         {({ register, formState }) => (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <Input
               type="text"
               label="User Name"
               placeholder="johndoe"
               error={formState.errors['username']}
               registration={register('username')}
+              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
             <Input
               type="text"
@@ -41,6 +42,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               placeholder="name@email.com"
               error={formState.errors['email']}
               registration={register('email')}
+              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
             <Input
               type="password"
@@ -48,13 +50,14 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               placeholder="••••••••"
               error={formState.errors['password']}
               registration={register('password')}
+              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
 
-            <div>
+            <div className="pt-2">
               <Button
                 isLoading={registering.isPending}
                 type="submit"
-                className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="h-12 w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 Register
               </Button>
@@ -68,7 +71,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         Already have an account?{' '}
         <Link
           to={paths.auth.login.getHref(redirectTo)}
-          className="font-medium text-gray-900 underline hover:text-gray-700"
+          className="font-semibold text-gray-900 underline underline-offset-2 transition-colors hover:text-gray-700"
         >
           Log in
         </Link>

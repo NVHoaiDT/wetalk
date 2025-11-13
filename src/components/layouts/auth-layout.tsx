@@ -67,7 +67,7 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
             opacity: isAnimating ? 0.7 : 1,
           }}
         >
-          <div className="w-full max-w-md px-8 py-12">
+          <div className="w-full max-w-lg px-8 py-12">
             <div
               className="mb-8 transition-all duration-500"
               style={{
