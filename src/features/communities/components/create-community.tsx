@@ -17,6 +17,8 @@ import {
   useCreateCommunity,
 } from '../api/create-community';
 
+import { SearchTopics } from './search-topics';
+
 export const CreateCommunity = () => {
   const { addNotification } = useNotifications();
   const createCommunityMutation = useCreateCommunity({
@@ -73,6 +75,7 @@ export const CreateCommunity = () => {
             name: 'Test',
             shortDescription: 'Test',
             isPrivate: false,
+            topics: [],
           },
         }}
       >
@@ -89,6 +92,20 @@ export const CreateCommunity = () => {
               error={formState.errors['shortDescription']}
               registration={register('shortDescription')}
               className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+            />
+
+            {/* Topics Selection */}
+            <Controller
+              name="topics"
+              control={control}
+              render={({ field }) => (
+                <SearchTopics
+                  value={field.value || []}
+                  onChange={field.onChange}
+                  error={formState.errors['topics'] as any}
+                  label="Topics"
+                />
+              )}
             />
 
             {/* Private Community Toggle */}

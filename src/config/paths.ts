@@ -25,6 +25,10 @@ export const paths = {
       getHref: (email?: string | null | undefined) =>
         `/auth/notify${email ? `?email=${encodeURIComponent(email)}` : ''}`,
     },
+    forgotPassword: {
+      path: '/auth/forgot-password',
+      getHref: () => '/auth/forgot-password',
+    },
   },
 
   app: {

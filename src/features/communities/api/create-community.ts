@@ -11,6 +11,7 @@ export const createCommunityInputSchema = z.object({
   name: z.string().min(1, 'Required'),
   shortDescription: z.string().min(1, 'Required'),
   isPrivate: z.boolean(),
+  topics: z.array(z.string()).optional(),
 });
 
 export type CreateCommunityInput = z.infer<typeof createCommunityInputSchema>;

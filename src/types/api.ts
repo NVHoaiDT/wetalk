@@ -144,6 +144,7 @@ export type Post = {
   status: string;
   vote: number;
   isVoted: boolean;
+  commentCount: number;
   createdAt: string;
   updatedAt: string;
   pollData?: {

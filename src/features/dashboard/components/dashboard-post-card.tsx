@@ -212,7 +212,7 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                 className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100"
               >
                 <MessageCircle className="size-4" />
-                <span>10 Comments</span>
+                <span>{post.commentCount} Comments</span>
               </Link>
               <SharePost link={paths.app.post.getHref(post.id)}>
                 <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">

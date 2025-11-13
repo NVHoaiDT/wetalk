@@ -28,8 +28,7 @@ export const getInfiniteAllPostsQueryOptions = (
       return getAllPosts({ sortBy, page: pageParam as number });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage?.pagination?.page === lastPage?.pagination?.total)
-        return undefined;
+      if (!lastPage?.pagination?.nextUrl) return undefined;
       const nextPage = lastPage.pagination.page + 1;
       return nextPage;
     },

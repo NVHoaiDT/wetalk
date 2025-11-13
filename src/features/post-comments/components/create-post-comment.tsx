@@ -59,15 +59,9 @@ export const CreatePostComment = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div
-        className={`relative rounded-lg border bg-white ${minimized ? 'border-transparent hover:border-gray-200' : 'border-gray-200'}`}
+        className={`relative rounded-lg border ${minimized ? 'border-transparent hover:border-gray-200' : 'border-gray-200'}`}
       >
         <TextEditor value={content} onChange={setContent} />
-        {/* <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder={placeholder}
-          className={`min-h-[80px] w-full resize-none border-none bg-transparent p-4 focus:ring-0 ${minimized ? 'h-10 min-h-0 py-2' : ''}`}
-        /> */}
         {mediaUrl && (
           <div className="mx-4 mb-4 mt-2">
             <img

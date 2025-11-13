@@ -17,7 +17,7 @@ export const ContentLayout = ({ children, title }: ContentLayoutProps) => {
             <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
           </div>
         )}
-        <div className="mx-auto max-w-full px-8 py-6 sm:px-10 md:px-12">
+        <div className="mx-auto max-w-full px-4 py-6 sm:px-10 md:px-12">
           {children}
         </div>
       </div>
