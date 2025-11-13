@@ -10,25 +10,27 @@ BODY:
 */
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import z from 'zod';
 
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 import { SendMessageResponse } from '@/types/api';
 
-export type SendMessageDTO = {
-  recipientId: number;
-  content: string;
-  type?: string;
-  attachments?: string[];
-};
+export const sendMessageDTOInputSchema = z.object({
+  recipientId: z.number(),
+  content: z.string(),
+  type: z.string(),
+  attachments: z.array(z.string()).optional(),
+});
+
+export type SendMessageInput = z.infer<typeof sendMessageDTOInputSchema>;
 
 export const sendMessage = ({
   recipientId,
   content,
-  /* Buggy next line, because type will always be "text" so backend ignore the attachments */
-  type = 'text',
-  attachments = [],
-}: SendMessageDTO): Promise<SendMessageResponse> => {
+  type,
+  attachments,
+}: SendMessageInput): Promise<SendMessageResponse> => {
   return api.post('/messages', {
     recipientId,
     content,

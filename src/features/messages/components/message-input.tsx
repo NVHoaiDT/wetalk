@@ -4,6 +4,7 @@ import { FormEvent, KeyboardEvent, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
+import { fancyLog } from '@/helper/fancy-log';
 import { cn } from '@/utils/cn';
 
 type MessageInputProps = {
@@ -30,6 +31,8 @@ export const MessageInput = ({
     // Allow sending if there's either content or attachments
     if ((!trimmed && attachments.length === 0) || disabled || isUploading)
       return;
+
+    fancyLog('Submitting message:', { trimmed, attachments });
 
     onSend(trimmed, attachments);
     setContent('');

@@ -77,9 +77,19 @@ export const ChatPanel = () => {
   const handleSendMessage = (content: string, attachments?: string[]) => {
     if (!selectedConversationId || !selectedRecipient) return;
 
+    const type = attachments && attachments.length > 0 ? 'image' : 'text';
+
+    fancyLog('SENDING MESSAGE', {
+      recipientId: selectedRecipient.id,
+      content,
+      type,
+      attachments,
+    });
+
     sendMessageMutation.mutate({
       recipientId: selectedRecipient.id,
       content,
+      type,
       attachments: attachments || [],
     });
   };
