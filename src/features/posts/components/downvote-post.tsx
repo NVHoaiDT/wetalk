@@ -1,7 +1,10 @@
 import { ChevronDown } from 'lucide-react';
 
 import { useNotifications } from '@/components/ui/notifications';
+import { cn } from '@/utils/cn';
 
+import { usePost } from '../api/get-post';
+import { useUnvotePost } from '../api/unvote-posts';
 import { useVotePost } from '../api/vote-post';
 
 export const DownVotePost = ({ postId }: { postId: number }) => {
@@ -16,10 +19,39 @@ export const DownVotePost = ({ postId }: { postId: number }) => {
       },
     },
   });
+  const unvotePostMutation = useUnvotePost({
+    mutationConfig: {
+      onSuccess: () => {
+        addNotification({
+          type: 'success',
+          title: 'Downvote Removed Successfully',
+        });
+      },
+    },
+  });
+
+  const postQuery = usePost({ id: postId });
+  const isVoted = postQuery.data?.data.isVoted;
+
+  const handleClick = () => {
+    if (isVoted) {
+      unvotePostMutation.mutate({ postId });
+    } else {
+      votePostMutation.mutate({ postId, vote: false });
+    }
+  };
   return (
     <button
-      className="rounded text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
-      onClick={() => votePostMutation.mutate({ postId, vote: false })}
+      className={cn(
+        'rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500',
+        isVoted && 'bg-green-50 text-red-500',
+      )}
+      onClick={handleClick}
+      disabled={
+        postQuery.isLoading ||
+        votePostMutation.isPending ||
+        unvotePostMutation.isPending
+      }
     >
       <ChevronDown className="size-5" />
     </button>
