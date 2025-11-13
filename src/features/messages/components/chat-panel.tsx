@@ -73,12 +73,14 @@ export const ChatPanel = () => {
     }
   }, [selectedConversationId]);
 
-  const handleSendMessage = (content: string) => {
+  /* TODO: Add attachments handler*/
+  const handleSendMessage = (content: string, attachments?: string[]) => {
     if (!selectedConversationId || !selectedRecipient) return;
 
     sendMessageMutation.mutate({
       recipientId: selectedRecipient.id,
       content,
+      attachments: attachments || [],
     });
   };
 

@@ -1,5 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 
+import { MessageMediaViewer } from '@/components/ui/message-media-viewer';
 import { Message } from '@/types/api';
 import { cn } from '@/utils/cn';
 
@@ -30,16 +31,35 @@ export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
       <div
         className={cn('flex max-w-[70%] flex-col gap-1', isOwn && 'items-end')}
       >
-        <div
-          className={cn(
-            'rounded-2xl px-4 py-2',
-            isOwn ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-900',
-          )}
-        >
-          <p className="whitespace-pre-wrap break-words text-sm">
-            {message.content}
-          </p>
-        </div>
+        {/* Text content (if exists) */}
+        {message.content && (
+          <div
+            className={cn(
+              'rounded-2xl px-4 py-2',
+              isOwn ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-900',
+            )}
+          >
+            <p className="whitespace-pre-wrap break-words text-sm">
+              {message.content}
+            </p>
+          </div>
+        )}
+
+        {/* Media attachments */}
+        {message.attachments && message.attachments.length > 0 && (
+          <div
+            className={cn(
+              'overflow-hidden rounded-2xl',
+              isOwn ? 'bg-blue-500' : 'bg-gray-100',
+              !message.content && 'p-1',
+            )}
+          >
+            <MessageMediaViewer
+              attachments={message.attachments}
+              className={cn(!message.content && 'rounded-xl')}
+            />
+          </div>
+        )}
 
         {/* Metadata */}
         <div

@@ -1,3 +1,14 @@
+/* 
+ENDPOINT: `POST /messages`
+BODY:
+  {
+    "recipientId": 2,
+    "content": "Hello! This is my first message",
+    "type": "text", // "text", "image", "video", "file"
+    "attachments": ["image-url", "video-url"] // optional
+  }
+*/
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
@@ -14,6 +25,7 @@ export type SendMessageDTO = {
 export const sendMessage = ({
   recipientId,
   content,
+  /* Buggy next line, because type will always be "text" so backend ignore the attachments */
   type = 'text',
   attachments = [],
 }: SendMessageDTO): Promise<SendMessageResponse> => {
