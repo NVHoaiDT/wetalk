@@ -64,7 +64,7 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
         >
           <div className="w-full p-8">
             <img
-              src="/login-decor-image.png"
+              src="/login-decor-image-1.png"
               alt="Decorative illustration"
               className="rounded-3xl object-cover"
             />
