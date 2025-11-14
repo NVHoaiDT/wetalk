@@ -10,6 +10,7 @@ import {
 import { CommunityMember } from '@/types/api';
 import { formatDate } from '@/utils/format';
 
+import { ApproveMemberButton } from './approve-member-button';
 import { BanMemberButton } from './ban-member-button';
 import { SetModeratorButton } from './set-moderator-button';
 
@@ -52,7 +53,7 @@ export const MembersTable = ({
               USERNAME
             </TableHead>
             <TableHead className="font-semibold text-gray-700">
-              PERMISSIONS
+              STATUS
             </TableHead>
             <TableHead className="font-semibold text-gray-700">
               You can edit
@@ -91,9 +92,15 @@ export const MembersTable = ({
                 </div>
               </TableCell>
               <TableCell>
-                <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                  User
-                </span>
+                {member.status === 'approved' ? (
+                  <span className="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
+                    Approved
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center rounded-full bg-yellow-50 px-3 py-1 text-xs font-medium text-yellow-600">
+                    Pending
+                  </span>
+                )}
               </TableCell>
               <TableCell>
                 <span className="text-sm text-gray-600">No</span>
@@ -105,16 +112,26 @@ export const MembersTable = ({
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end gap-2">
-                  <SetModeratorButton
-                    communityId={communityId}
-                    memberId={member.userId}
-                    memberName={member.username}
-                  />
-                  <BanMemberButton
-                    communityId={communityId}
-                    memberId={member.userId}
-                    memberName={member.username}
-                  />
+                  {member.status === 'pending' ? (
+                    <ApproveMemberButton
+                      communityId={communityId}
+                      memberId={member.userId}
+                      memberName={member.username}
+                    />
+                  ) : (
+                    <>
+                      <SetModeratorButton
+                        communityId={communityId}
+                        memberId={member.userId}
+                        memberName={member.username}
+                      />
+                      <BanMemberButton
+                        communityId={communityId}
+                        memberId={member.userId}
+                        memberName={member.username}
+                      />
+                    </>
+                  )}
                 </div>
               </TableCell>
             </TableRow>
