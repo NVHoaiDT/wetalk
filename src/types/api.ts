@@ -92,6 +92,8 @@ export type Community = {
   createdAt: string;
   totalMembers: number;
   moderators: Moderators[];
+  isRequiresMemberApproval: boolean;
+  isRequiresPostApproval: boolean;
 };
 
 export type CommunityMember = {
@@ -100,6 +102,7 @@ export type CommunityMember = {
   avatar: string;
   karma: number;
   subscribedAt: string;
+  status: string;
 };
 
 export type RecentCommunity = {

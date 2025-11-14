@@ -16,6 +16,7 @@ import { useCommunity } from '../api/get-community';
 import { CommunitySidebar } from './community-sidebar';
 import { JoinCommunity } from './join-community';
 import { ModToolsDialog } from './mod-tools/mod-tools-dialog';
+import { SettingsCommunity } from './setting-community';
 import { UpdateCommunity } from './update-community';
 
 export const CommunityView = ({ communityId }: { communityId: number }) => {
@@ -30,7 +31,8 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
   if (!community) return null;
 
-  fancyLog('Community Data:', community);
+  fancyLog('Community-Data:', community);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
       {/* Cover Banner */}
@@ -75,30 +77,46 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
               <div className="flex items-center gap-3">
                 <CreatePost communityId={community.id} />
                 <JoinCommunity id={community.id}></JoinCommunity>
-                <ModToolsDialog communityId={community.id} />
 
-                {/* Moderation Actions */}
-                <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
+                {/* More Actions */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
                       <MoreHorizontal className="size-5 text-gray-600" />
-                    </DropdownMenuTrigger>
+                    </button>
+                  </DropdownMenuTrigger>
 
-                    <DropdownMenuContent sideOffset={12}>
-                      {/* Update Community's Appearance */}
-                      <DropdownMenuItem
-                        onSelect={(e) => e.preventDefault()}
-                        asChild
-                      >
-                        <UpdateCommunity communityId={community.id} />
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Trash className="size-5 text-gray-600" />
-                        Delete Community
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </button>
+                  <DropdownMenuContent sideOffset={12} align="end">
+                    {/* Update Community's Appearance */}
+                    <DropdownMenuItem
+                      onSelect={(e) => e.preventDefault()}
+                      asChild
+                    >
+                      <UpdateCommunity communityId={community.id} />
+                    </DropdownMenuItem>
+
+                    {/* Community Settings */}
+                    <DropdownMenuItem
+                      onSelect={(e) => e.preventDefault()}
+                      asChild
+                    >
+                      <SettingsCommunity communityId={community.id} />
+                    </DropdownMenuItem>
+
+                    {/* Mod Tools */}
+                    <DropdownMenuItem
+                      onSelect={(e) => e.preventDefault()}
+                      asChild
+                    >
+                      <ModToolsDialog communityId={community.id} />
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem className="text-destructive focus:text-destructive">
+                      <Trash className="size-5" />
+                      Delete Community
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>
