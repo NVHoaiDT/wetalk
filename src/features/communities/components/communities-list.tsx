@@ -1,4 +1,4 @@
-import { CommunityGrid } from './ui/community-card/community-grid';
+import { CommunityGrid } from './community-grid';
 
 const communitiySections = [
   {
