@@ -75,12 +75,12 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
       {/* Forgot password link */}
       <div className="text-center text-sm">
-        <button
-          type="button"
+        <Link
+          to={paths.auth.forgotPassword.getHref()}
           className="font-semibold text-gray-700 underline underline-offset-2 transition-colors hover:text-gray-900"
         >
           Forgot my password
-        </button>
+        </Link>
       </div>
 
       {/* Sign up link */}

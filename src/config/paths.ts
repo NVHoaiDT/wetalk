@@ -29,6 +29,11 @@ export const paths = {
       path: '/auth/forgot-password',
       getHref: () => '/auth/forgot-password',
     },
+    resetPassword: {
+      path: '/auth/reset-password',
+      getHref: (token?: string | null | undefined) =>
+        `/auth/reset-password${token ? `?token=${encodeURIComponent(token)}` : ''}`,
+    },
   },
 
   app: {

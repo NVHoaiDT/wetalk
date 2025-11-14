@@ -3,21 +3,21 @@ import { useNavigate } from 'react-router';
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { useNotifications } from '@/components/ui/notifications';
 import { paths } from '@/config/paths';
-import { ForgotPasswordForm } from '@/features/auth/components/forgot-password-form';
+import { ResetPasswordForm } from '@/features/auth/components/reset-password-form';
 
-const ForgotPasswordRoute = () => {
+const ResetPasswordRoute = () => {
   const navigate = useNavigate();
   const { addNotification } = useNotifications();
 
   return (
-    <AuthLayout title="Forgot Password">
-      <ForgotPasswordForm
+    <AuthLayout title="Reset Password">
+      <ResetPasswordForm
         onSuccess={() => {
           addNotification({
             type: 'success',
             title: 'Success',
             message:
-              'Password reset link has been sent to your email. Please check your inbox.',
+              'Password has been reset successfully. You can now log in with your new password.',
           });
           navigate(paths.auth.login.getHref(), {
             replace: true,
@@ -28,4 +28,4 @@ const ForgotPasswordRoute = () => {
   );
 };
 
-export default ForgotPasswordRoute;
+export default ResetPasswordRoute;

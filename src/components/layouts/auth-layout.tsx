@@ -31,6 +31,16 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
   // Determine if we're on the register page
   const isRegisterPage = location.pathname.includes('register');
 
+  // Determine subtitle based on page
+  const getSubtitle = () => {
+    if (isRegisterPage) return 'Create your account';
+    if (location.pathname.includes('forgot-password'))
+      return "We'll send you a reset link";
+    if (location.pathname.includes('reset-password'))
+      return 'Enter your new password';
+    return 'Have we met before?';
+  };
+
   // Animation state - start with true to prevent flicker
   const [isAnimating, setIsAnimating] = useState(true);
   const [prevPathname, setPrevPathname] = useState(location.pathname);
@@ -79,9 +89,7 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
                 <img className="h-8 w-auto" src={logo} alt="Wetalk" />
               </Link> */}
               <h2 className="mt-6 text-3xl font-bold text-gray-900">{title}</h2>
-              <p className="mt-2 text-sm text-gray-600">
-                {isRegisterPage ? 'Create your account' : 'Have we met before?'}
-              </p>
+              <p className="mt-2 text-sm text-gray-600">{getSubtitle()}</p>
             </div>
             <div
               className="transition-all delay-100 duration-500"
