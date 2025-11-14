@@ -111,7 +111,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                       <ModToolsDialog communityId={community.id} />
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem className="text-destructive focus:text-destructive">
+                    <DropdownMenuItem className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal text-destructive focus:text-destructive">
                       <Trash className="size-5" />
                       Delete Community
                     </DropdownMenuItem>

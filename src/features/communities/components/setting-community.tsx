@@ -1,7 +1,6 @@
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -107,14 +106,10 @@ export const SettingsCommunity = ({ communityId }: SettingsCommunityProps) => {
       }}
     >
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start gap-2 px-2 py-1.5 text-sm font-normal"
-        >
+        <button className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal">
           <Settings className="size-5 text-gray-600" />
           Community Settings
-        </Button>
+        </button>
       </DialogTrigger>
 
       <DialogContent className="max-w-md">

@@ -1,7 +1,6 @@
 import { Shield } from 'lucide-react';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -52,15 +51,13 @@ export const ModToolsDialog = ({ communityId }: ModToolsDialogProps) => {
       }}
     >
       <DialogTrigger asChild>
-        <Button
+        <button
           onClick={open}
-          size="sm"
-          variant="outline"
-          icon={<Shield className="size-4" />}
-          className="border-gray-300 bg-white font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-50 hover:shadow-md"
+          className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal"
         >
+          <Shield className="size-5 text-gray-600" />
           Mod Tools
-        </Button>
+        </button>
       </DialogTrigger>
 
       <DialogContent className="h-[90vh] max-w-6xl overflow-hidden p-0">

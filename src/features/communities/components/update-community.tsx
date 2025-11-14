@@ -50,14 +50,10 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
     <FormDrawer
       isDone={updateCommunityMutation.isSuccess}
       triggerButton={
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full justify-start"
-          icon={<Edit className="size-4" />}
-        >
+        <button className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal">
+          <Edit className="size-4" />
           Appearance
-        </Button>
+        </button>
       }
       title="Update Community"
       submitButton={
