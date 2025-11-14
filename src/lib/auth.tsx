@@ -53,6 +53,63 @@ export const useLogout = () => {
   });
 };
 
+/* ____________________Forgot password____________________ */
+export const forgotPasswordInputSchema = z.object({
+  email: z.string().min(1, 'Required').email('Invalid email'),
+});
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordInputSchema>;
+
+const forgotPassword = (
+  data: ForgotPasswordInput,
+): Promise<{ message: string }> => {
+  return api.post('/auth/forgot-password', data);
+};
+
+type UseForgotPasswordOptions = {
+  onSuccess?: (data: { message: string }) => void;
+};
+
+export const useForgotPassword = ({
+  onSuccess,
+}: UseForgotPasswordOptions = {}) => {
+  return useMutation({
+    mutationKey: ['forgot-password'],
+    mutationFn: forgotPassword,
+    onSuccess: (response) => {
+      onSuccess?.(response);
+    },
+  });
+};
+
+/* ____________________Reset password____________________ */
+export const resetPasswordInputSchema = z.object({
+  token: z.string().min(1, 'Required'),
+  newPassword: z.string().min(5, 'Required'),
+});
+export type ResetPasswordInput = z.infer<typeof resetPasswordInputSchema>;
+
+const resetPassword = (
+  data: ResetPasswordInput,
+): Promise<{ message: string }> => {
+  return api.post('/auth/reset-password', data);
+};
+
+type UseResetPasswordOptions = {
+  onSuccess?: (data: { message: string }) => void;
+};
+
+export const useResetPassword = ({
+  onSuccess,
+}: UseResetPasswordOptions = {}) => {
+  return useMutation({
+    mutationKey: ['reset-password'],
+    mutationFn: resetPassword,
+    onSuccess: (response) => {
+      onSuccess?.(response);
+    },
+  });
+};
+
 /* ____________________Login with email and password____________________ */
 export const loginWithEmailAndPasswordInputSchema = z.object({
   email: z.string().min(5, 'Required').email('Invalid email'),

@@ -107,7 +107,7 @@ export const PostView = ({ id }: { id: number }) => {
               </div>
               <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
                 <MessageCircle className="size-4" />
-                <span>10 Comments</span>
+                <span>{post.commentCount}</span>
               </button>
               <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
                 <Share2 className="size-4" />
