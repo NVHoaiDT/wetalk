@@ -24,6 +24,7 @@ export const UnJoinCommunity = ({ id }: JoinCommunityProps) => {
 
   return (
     <ConfirmationDialog
+      isDone={unJoinCommunityMutation.isSuccess}
       icon="info"
       title="Leave this community"
       body="Are you sure you want to leave this community?"

@@ -11,6 +11,7 @@ type JoinCommunityProps = {
 export const JoinCommunity = ({ id }: JoinCommunityProps) => {
   const { addNotification } = useNotifications();
   const joinCommunityMutation = useJoinCommunity({
+    communityId: id,
     mutationConfig: {
       onSuccess: () => {
         addNotification({
@@ -23,6 +24,7 @@ export const JoinCommunity = ({ id }: JoinCommunityProps) => {
 
   return (
     <ConfirmationDialog
+      isDone={joinCommunityMutation.isSuccess}
       icon="info"
       title="Join this community"
       body="Are you sure you want to join this community?"
