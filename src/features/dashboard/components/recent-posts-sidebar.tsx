@@ -38,7 +38,7 @@ export const RecentPostsSidebar = () => {
             <Link
               key={post.id}
               to={paths.app.post.getHref(post.id)}
-              className="group block border-b border-gray-100 py-4 last:border-b-0 last:pb-0 hover:bg-sky-50"
+              className="group block border-b border-gray-100 pb-4 last:border-b-0 last:pb-0"
             >
               <div className="flex gap-3">
                 {/* Community Avatar */}

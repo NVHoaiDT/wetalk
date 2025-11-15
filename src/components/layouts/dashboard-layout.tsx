@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from 'date-fns';
 import {
   Home,
   PanelLeft,
@@ -124,7 +123,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r sm:flex">
-        <nav className="flex flex-col items-center gap-4 px-2 py-4">
+        <nav className="flex flex-col items-center gap-1 px-2 py-4">
           <div className="flex h-16 shrink-0 items-center px-4">
             <Logo />
           </div>
@@ -135,15 +134,15 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               end={item.name !== 'Discussions'}
               className={({ isActive }) =>
                 cn(
-                  'text-gray-900 hover:bg-gray-200',
-                  'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
-                  isActive && 'bg-gray-300',
+                  'text-gray-700 hover:bg-gray-200',
+                  'group flex flex-1 w-full items-center rounded-xl px-2 py-2 text-base font-medium',
+                  isActive && 'bg-slate-100 border border-slate-300',
                 )
               }
             >
               <item.icon
                 className={cn(
-                  'text-gray-400 group-hover:text-gray-300',
+                  'text-gray-500 group-hover:text-gray-600',
                   'mr-4 size-6 shrink-0',
                 )}
                 aria-hidden="true"
@@ -410,8 +409,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           <Button
             variant="outline"
             size="icon"
-            className="relative"
             onClick={() => navigate(paths.app.notifications.getHref())}
+            className="relative border-yellow-200 bg-yellow-50 text-yellow-500 hover:bg-yellow-100 hover:text-yellow-700"
           >
             <Bell className="size-5" />
             {notificationsUnreadCount > 0 && (
@@ -425,8 +424,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           <Button
             variant="outline"
             size="icon"
-            className="relative"
             onClick={openMessages}
+            className="relative border-sky-200 bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-700"
           >
             <MessageCircle className="size-5" />
             {messagesUnreadCount > 0 && (
@@ -435,14 +434,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </span>
             )}
           </Button>
-
           {/* Profile button */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="overflow-hidden rounded-full"
+                className="overflow-hidden rounded-full border-emerald-200 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-800"
               >
                 <span className="sr-only">Open user menu</span>
                 <User2 className="size-6 rounded-full" />
