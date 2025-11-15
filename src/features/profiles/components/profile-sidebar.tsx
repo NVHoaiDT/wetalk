@@ -36,6 +36,7 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
   return (
     <div className="space-y-4">
       {/* User Info Card */}
+
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="mb-2 text-lg font-bold text-gray-900">
           {user.username}
