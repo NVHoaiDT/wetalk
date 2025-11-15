@@ -7,7 +7,6 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router';
 
-import community from '@/app/routes/app/communites/community';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -21,7 +20,6 @@ import { paths } from '@/config/paths';
 import { useAddRecentPost } from '@/features/posts/api/add-recent-post';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { FollowPost } from '@/features/posts/components/follow-post';
-import { ReportPost } from '@/features/posts/components/report-post';
 import { SavePost } from '@/features/posts/components/save-post';
 import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
@@ -58,9 +56,9 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
     <article className="group mb-4 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg">
       <div className="flex">
         {/* Vote Section */}
-        <div className="flex w-12 flex-col items-center gap-1 border-r border-gray-200 bg-gray-50 py-3">
+        <div className="flex w-12 flex-col items-center gap-1 border-r border-gray-100 bg-gray-50 py-3">
           <UpVotePost postId={post.id} />
-          <span className="text-xs font-bold text-gray-700">
+          <span className="text-xs font-bold text-gray-600">
             {formatBigNumber(post.vote)}
           </span>
           <DownVotePost postId={post.id} />
@@ -77,9 +75,13 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                   to={paths.app.community.getHref(post.community.id)}
                   className="shrink-0"
                 >
-                  <div className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white">
-                    {post.community.name.charAt(0).toUpperCase()}
-                  </div>
+                  <img
+                    alt={post.community.name}
+                    className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white"
+                    src={
+                      'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                    }
+                  ></img>
                 </Link>
 
                 {/* Community Name & Post Date */}
@@ -113,7 +115,7 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                 <Button
                   size="sm"
                   onClick={handleJoinCommunity}
-                  className="rounded-full bg-blue-600 px-4 py-1 text-xs font-semibold text-white hover:bg-blue-700"
+                  className="rounded-xl border border-sky-300 bg-cyan-50 px-4 py-1 text-xs font-semibold text-gray-600 hover:bg-cyan-100 hover:text-gray-700"
                 >
                   Join
                 </Button>

@@ -66,10 +66,10 @@ export const DashboardPostsFeed = () => {
   return (
     <div className="space-y-4">
       {/* Sort Bar */}
-      <div className="rounded-xl bg-white p-3 shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 shadow-sm">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="group flex items-center gap-2.5 rounded-lg bg-white px-4 py-2 shadow-sm transition-all duration-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md">
+            <button className="group flex items-center gap-2.5 rounded-2xl border border-gray-200 px-4 py-2 shadow-sm transition-all duration-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md">
               <CurrentSortIcon className={`size-4 ${currentSort?.color}`} />
               <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-700">
                 {currentSort?.label}
