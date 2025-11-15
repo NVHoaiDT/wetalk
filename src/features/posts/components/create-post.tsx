@@ -52,7 +52,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
         <Button
           size="lg"
           icon={<Plus className="size-4" />}
-          className="group relative flex items-center gap-2 rounded-full border-2 border-blue-600 bg-white px-5 py-2 font-semibold text-blue-600 shadow-sm transition-all duration-300 hover:bg-blue-50 hover:shadow-md"
+          className="group relative flex w-full items-center justify-center rounded-full border-2 border-blue-600 bg-white px-5 py-2 font-semibold text-blue-600 shadow-sm transition-all duration-300 hover:bg-blue-50 hover:shadow-md"
         >
           Create Post
         </Button>

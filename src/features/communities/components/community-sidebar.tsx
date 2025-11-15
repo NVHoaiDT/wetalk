@@ -1,5 +1,8 @@
 import { Calendar, Globe, TrendingUp, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router';
 
+import { paths } from '@/config/paths';
+import { CreatePost } from '@/features/posts/components/create-post';
 import { Community } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
@@ -55,9 +58,7 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
             </div>
           </div>
 
-          <button className="w-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700">
-            Create Post
-          </button>
+          <CreatePost communityId={community.id} />
         </div>
       </div>
 
@@ -73,23 +74,21 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
           </button>
           <div className="space-y-3">
             {community.moderators.map((mod, idx) => (
-              <div
-                key={idx}
-                className="flex cursor-pointer items-center gap-3 rounded-lg p-2 transition-colors hover:bg-blue-50"
-              >
-                <img
-                  src={mod.avatar || 'https://avatar.iran.liara.run/public/17'}
-                  alt={mod.username}
-                  className="size-8 rounded-full"
-                />
-                <span className="text-sm font-medium text-gray-900">
-                  {mod.username}
-                </span>
-              </div>
+              <Link to={paths.app.userProfile.getHref(mod.userId)} key={idx}>
+                <div className="flex cursor-pointer items-center gap-3 rounded-full p-2 transition-colors hover:border hover:border-blue-200 hover:bg-blue-50">
+                  <img
+                    src={
+                      mod.avatar || 'https://avatar.iran.liara.run/public/17'
+                    }
+                    alt={mod.username}
+                    className="size-8 rounded-full"
+                  />
+                  <span className="text-sm font-medium text-gray-900">
+                    {mod.username}
+                  </span>
+                </div>
+              </Link>
             ))}
-            <button className="w-full rounded-lg py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50">
-              View all moderators
-            </button>
           </div>
         </div>
       </div>

@@ -28,7 +28,9 @@ export const PostView = ({ id }: { id: number }) => {
   const post = postQuery?.data?.data;
 
   if (!post) return null;
+
   fancyLog('POST', post);
+
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
 
   return (
