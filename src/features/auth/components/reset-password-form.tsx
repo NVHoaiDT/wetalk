@@ -40,6 +40,7 @@ export const ResetPasswordForm = ({ onSuccess }: ResetPasswordFormProps) => {
               className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
             <div className="pt-2">
+              {/* Submit button */}
               <Button
                 isLoading={resetPassword.isPending}
                 type="submit"

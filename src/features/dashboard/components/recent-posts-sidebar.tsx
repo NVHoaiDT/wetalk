@@ -11,7 +11,7 @@ import { formatBigNumber } from '@/utils/format';
 //TODO: Create a object/function to return a color base on creatAt
 
 export const RecentPostsSidebar = () => {
-  const { data, isLoading } = useInfiniteAllPosts({ sortBy: 'best' });
+  const { data, isLoading } = useInfiniteAllPosts();
 
   const posts = data?.pages.flatMap((page) => page.data).slice(0, 5) ?? [];
 

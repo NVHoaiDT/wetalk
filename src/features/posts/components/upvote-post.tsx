@@ -31,10 +31,11 @@ export const UpVotePost = ({ postId }: { postId: number }) => {
   });
 
   const postQuery = usePost({ id: postId });
-  const isVoted = postQuery.data?.data.isVoted;
+
+  const isUpVoted = postQuery.data?.data.isVoted;
 
   const handleClick = () => {
-    if (isVoted) {
+    if (isUpVoted) {
       unvotePostMutation.mutate({ postId });
     } else {
       votePostMutation.mutate({ postId, vote: true });
@@ -45,7 +46,7 @@ export const UpVotePost = ({ postId }: { postId: number }) => {
     <button
       className={cn(
         'rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500',
-        isVoted && 'bg-green-50 text-green-500',
+        isUpVoted && 'bg-green-50 text-green-500',
       )}
       onClick={handleClick}
       disabled={

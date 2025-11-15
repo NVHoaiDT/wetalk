@@ -31,10 +31,10 @@ export const DownVotePost = ({ postId }: { postId: number }) => {
   });
 
   const postQuery = usePost({ id: postId });
-  const isVoted = postQuery.data?.data.isVoted;
+  const isDownVoted = postQuery.data?.data.isVoted === false;
 
   const handleClick = () => {
-    if (isVoted) {
+    if (isDownVoted) {
       unvotePostMutation.mutate({ postId });
     } else {
       votePostMutation.mutate({ postId, vote: false });
@@ -44,7 +44,7 @@ export const DownVotePost = ({ postId }: { postId: number }) => {
     <button
       className={cn(
         'rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500',
-        isVoted && 'bg-green-50 text-red-500',
+        isDownVoted && 'bg-green-50 text-red-500',
       )}
       onClick={handleClick}
       disabled={
