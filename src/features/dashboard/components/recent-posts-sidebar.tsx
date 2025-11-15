@@ -7,6 +7,9 @@ import { paths } from '@/config/paths';
 import { useInfiniteAllPosts } from '@/features/dashboard/api/get-all-posts';
 import { formatBigNumber } from '@/utils/format';
 
+//TODO: Create a object/function to return a color base on post vote + post comments
+//TODO: Create a object/function to return a color base on creatAt
+
 export const RecentPostsSidebar = () => {
   const { data, isLoading } = useInfiniteAllPosts({ sortBy: 'best' });
 
@@ -40,9 +43,13 @@ export const RecentPostsSidebar = () => {
               <div className="flex gap-3">
                 {/* Community Avatar */}
                 <div className="shrink-0">
-                  <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-bold text-white">
-                    {post.community.name.charAt(0).toUpperCase()}
-                  </div>
+                  <img
+                    className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-bold text-white"
+                    alt={post.community.name}
+                    src={
+                      'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                    }
+                  ></img>
                 </div>
 
                 {/* Post Info */}
@@ -52,6 +59,7 @@ export const RecentPostsSidebar = () => {
                     <span className="font-semibold text-gray-900">
                       r/{post.community.name}
                     </span>
+                    {/* Apply a color base on post createdAt */}
                     <span>•</span>
                     <span>
                       {formatDistanceToNow(new Date(post.createdAt), {
@@ -66,6 +74,7 @@ export const RecentPostsSidebar = () => {
                   </h3>
 
                   {/* Post Stats */}
+                  {/* TODO: Apply a color base on post vote + post comments */}
                   <div className="flex items-center gap-3 text-xs text-gray-500">
                     <div className="flex items-center gap-1">
                       <TrendingUp className="size-3" />
