@@ -30,7 +30,7 @@ export const UnJoinCommunity = ({ id }: JoinCommunityProps) => {
       triggerButton={
         <Button
           size="lg"
-          className="rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 px-6 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
+          className="rounded-full bg-gradient-to-r from-gray-500 to-slate-500 px-6 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-gray-600 hover:to-slate-600 hover:shadow-xl hover:shadow-slate-500/40"
         >
           Leave Community
         </Button>

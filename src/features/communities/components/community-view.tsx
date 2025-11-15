@@ -18,6 +18,7 @@ import { CommunitySidebar } from './community-sidebar';
 import { JoinCommunity } from './join-community';
 import { ModToolsDialog } from './mod-tools/mod-tools-dialog';
 import { SettingsCommunity } from './setting-community';
+import { UnJoinCommunity } from './unjoin-community';
 import { UpdateCommunity } from './update-community';
 
 export const CommunityView = ({ communityId }: { communityId: number }) => {
@@ -82,7 +83,11 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                   <CreatePost communityId={community.id} />
                 </Authorization>
 
-                <JoinCommunity id={community.id}></JoinCommunity>
+                {community.isFollow ? (
+                  <UnJoinCommunity id={community.id} />
+                ) : (
+                  <JoinCommunity id={community.id} />
+                )}
 
                 {/* More Actions */}
                 <DropdownMenu>
