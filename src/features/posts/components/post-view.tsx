@@ -4,6 +4,7 @@ import { Bookmark, MessageCircle, Share2 } from 'lucide-react';
 import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
@@ -27,7 +28,7 @@ export const PostView = ({ id }: { id: number }) => {
   const post = postQuery?.data?.data;
 
   if (!post) return null;
-
+  fancyLog('POST', post);
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
 
   return (

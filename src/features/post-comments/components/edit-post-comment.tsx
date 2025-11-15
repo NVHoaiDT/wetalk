@@ -80,12 +80,6 @@ export const EditPostComment = ({
 
           <div className="mt-4 space-y-4">
             <div className="rounded-md border p-4">
-              {/* <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="min-h-[100px] w-full resize-none border-0 bg-transparent p-0 focus:outline-none focus:ring-0"
-                placeholder="Edit your comment..."
-              /> */}
               <TextEditor value={content} onChange={setContent} />
               <div className="mt-2 border-t pt-2">
                 <p className="text-sm text-gray-500">Preview:</p>

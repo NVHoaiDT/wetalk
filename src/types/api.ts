@@ -17,14 +17,6 @@ export type Meta = {
   totalPages: number;
 };
 
-/* Delete this when testing is done */
-export type UserOld = Entity<{
-  username: string;
-  email: string;
-  password: string;
-  role: string;
-}>;
-
 export type AuthResponse = {
   jwt: string;
   user: User;
@@ -51,6 +43,7 @@ export type User = {
     totalComments: number;
   };
   createdAt: string;
+  role: string;
 };
 
 export type RegisterResponse = {
@@ -94,6 +87,7 @@ export type Community = {
   moderators: Moderators[];
   isRequiresMemberApproval: boolean;
   isRequiresPostApproval: boolean;
+  isFollow: boolean;
 };
 
 export type CommunityMember = {

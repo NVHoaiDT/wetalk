@@ -10,6 +10,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { CreatePost } from '@/features/posts/components/create-post';
 import { PostsList } from '@/features/posts/components/posts-list';
 import { fancyLog } from '@/helper/fancy-log';
+import { Authorization, POLICIES } from '@/lib/authorization';
 
 import { useCommunity } from '../api/get-community';
 
@@ -75,7 +76,12 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
               </div>
 
               <div className="flex items-center gap-3">
-                <CreatePost communityId={community.id} />
+                <Authorization
+                  policyCheck={POLICIES['post:create'](community.isFollow)}
+                >
+                  <CreatePost communityId={community.id} />
+                </Authorization>
+
                 <JoinCommunity id={community.id}></JoinCommunity>
 
                 {/* More Actions */}

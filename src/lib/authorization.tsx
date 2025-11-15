@@ -14,18 +14,14 @@ type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
   'comment:delete': (user: User, comment: Comment) => {
-    fancyLog('POLICY CHECK - comment:delete', user.id);
-    fancyLog('POLICY CHECK - comment:delete', comment.author?.id);
-
-    if (user.role === ROLES.admin) {
+    if (user.role === ROLES.admin || comment.author?.id === user.id) {
       return true;
     }
-
-    if (user.role === ROLES.user && comment.author?.id === user.id) {
-      return true;
-    }
-
     return false;
+  },
+  'post:create': (isFollow: boolean) => {
+    fancyLog('Policy Check - post:create - isFollow:', isFollow);
+    return isFollow;
   },
 };
 
