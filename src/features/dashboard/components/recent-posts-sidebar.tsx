@@ -38,7 +38,7 @@ export const RecentPostsSidebar = () => {
             <Link
               key={post.id}
               to={paths.app.post.getHref(post.id)}
-              className="group block border-b border-gray-100 pb-4 last:border-b-0 last:pb-0"
+              className="group block border-b border-gray-100 py-4 last:border-b-0 last:pb-0 hover:bg-sky-50"
             >
               <div className="flex gap-3">
                 {/* Community Avatar */}
@@ -69,21 +69,19 @@ export const RecentPostsSidebar = () => {
                   </div>
 
                   {/* Post Title */}
-                  <h3 className="mb-2 line-clamp-2 text-sm font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
+                  <h3 className="mb-2 line-clamp-2 text-sm font-semibold text-gray-800 transition-colors group-hover:text-blue-600">
                     {post.title}
                   </h3>
 
                   {/* Post Stats */}
                   {/* TODO: Apply a color base on post vote + post comments */}
                   <div className="flex items-center gap-3 text-xs text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="size-3" />
-                      <span className="font-medium">
-                        {formatBigNumber(post.vote)}
-                      </span>
+                    <div className="flex items-center gap-1 rounded-xl border border-yellow-200 bg-yellow-50 px-2.5 py-1 font-medium">
+                      <TrendingUp className="size-4" />
+                      <span className="">{formatBigNumber(post.vote)}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <MessageCircle className="size-3" />
+                    <div className="flex items-center gap-1 rounded-xl border border-sky-200 bg-cyan-50 px-2.5 py-1 font-medium">
+                      <MessageCircle className="size-4" />
                       <span>10</span>
                     </div>
                   </div>
