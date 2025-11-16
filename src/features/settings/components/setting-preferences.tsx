@@ -97,10 +97,10 @@ export const SettingPreferences = () => {
           <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
             <div className="flex-1">
               <p className="text-sm font-semibold text-gray-700">
-                Show recent posts in sidebar
+                Store recent posts
               </p>
               <p className="text-xs text-gray-500">
-                Display your recently viewed posts
+                Display your recently viewed posts in sidebar
               </p>
             </div>
             <Switch
@@ -115,10 +115,10 @@ export const SettingPreferences = () => {
           <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
             <div className="flex-1">
               <p className="text-sm font-semibold text-gray-700">
-                Show recent communities
+                Store recent communities
               </p>
               <p className="text-xs text-gray-500">
-                Display your recently visited communities
+                Display your recently visited communities in sidebar
               </p>
             </div>
             <Switch
