@@ -57,7 +57,10 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
             <div className="relative">
               <div className="size-24 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl">
                 <img
-                  src={community.communityAvatar}
+                  src={
+                    community.communityAvatar ||
+                    'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                  }
                   alt={community.name}
                   className="size-full object-cover"
                 />
