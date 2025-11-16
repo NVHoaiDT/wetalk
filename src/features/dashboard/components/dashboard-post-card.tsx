@@ -20,6 +20,7 @@ import { paths } from '@/config/paths';
 import { useAddRecentPost } from '@/features/posts/api/add-recent-post';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { FollowPost } from '@/features/posts/components/follow-post';
+import { PollView } from '@/features/posts/components/poll-view';
 import { SavePost } from '@/features/posts/components/save-post';
 import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
@@ -193,6 +194,13 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
                 maxLines={3}
                 className="mb-3 text-sm"
               />
+            )}
+
+            {/* Poll View (for poll posts) */}
+            {post.type === 'poll' && post.pollData && (
+              <div className="mb-3">
+                <PollView post={post} isCompact={true} />
+              </div>
             )}
 
             {/* Media Carousel (for media posts) */}

@@ -2,32 +2,41 @@ import { formatDistanceToNow } from 'date-fns';
 import {
   MessageCircle,
   Share2,
-  Bookmark,
   Clock,
   Flame,
   Star,
   TrendingUp,
   ChevronDown,
+  MoreHorizontal,
+  EyeOff,
 } from 'lucide-react';
 import * as React from 'react';
 import { Link } from 'react-router';
 
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
+import { MDPreview } from '@/components/ui/md-preview';
+import { MediaViewer } from '@/components/ui/media-viewer';
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
+import { usePreferences } from '@/features/settings/api';
+import { UserHoverCard } from '@/features/users/components/user-hover-card';
 import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
+import { useAddRecentPost } from '../api/add-recent-post';
 import { useInfinitePosts } from '../api/get-sorted-posts';
 
 import { DownVotePost } from './downvote-post';
+import { FollowPost } from './follow-post';
 import { PollView } from './poll-view';
-import { ReportPost } from './report-post';
+import { SavePost } from './save-post';
+import { SharePost } from './share-post';
 import { UpVotePost } from './upvote-post';
 
 const sortOptions = [
@@ -43,11 +52,52 @@ type PostsListProps = {
 
 export const PostsList = ({ communityId }: PostsListProps) => {
   const [sortType, setSortType] = React.useState('new');
-  const [currentMediaIndex, setcurrentMediaIndex] = React.useState<
-    Record<string, number>
-  >({});
 
   const postsQuery = useInfinitePosts({ communityId, sortType });
+  const preferencesQueryClient = usePreferences();
+  const addRecentPostMutation = useAddRecentPost();
+
+  const preferences = preferencesQueryClient.data;
+
+  /* Check if user allow to store recent posts */
+  const handleAddToRecentPosts = (post: {
+    id: number;
+    title: string;
+    community: { id: number; name: string };
+    createdAt: string;
+  }) => {
+    if (preferences?.isStoreRecentPosts) {
+      addRecentPostMutation.mutate({
+        data: {
+          id: post.id,
+          title: post.title,
+          community: {
+            id: post.community.id,
+            name: post.community.name,
+          },
+          createdAt: post.createdAt,
+        },
+      });
+    } else {
+      console.log('User preferences do not allow to store recent posts');
+    }
+  };
+
+  const handleJoinCommunity = (communityId: number) => {
+    console.log('Join community:', communityId);
+  };
+
+  const handleReport = (postId: number) => {
+    console.log('Report post:', postId);
+  };
+
+  const handleHide = (postId: number) => {
+    console.log('Hide post:', postId);
+  };
+
+  const handleSave = (postId: number) => {
+    console.log('Save post:', postId);
+  };
 
   if (postsQuery.isLoading) {
     return (
@@ -138,19 +188,118 @@ export const PostsList = ({ communityId }: PostsListProps) => {
               {/* Content */}
               <div className="flex-1">
                 <div className="p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-gray-500">
-                    <span className="cursor-pointer font-medium text-gray-900 hover:text-blue-600">
-                      {post.author.username}
-                    </span>
-                    <span>•</span>
-                    <span>{formatDistanceToNow(new Date(post.createdAt))}</span>
+                  {/* Header: Community Info + Actions */}
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {/* Community Avatar */}
+                      <Link
+                        to={paths.app.community.getHref(post.community.id)}
+                        className="shrink-0"
+                      >
+                        <img
+                          alt={post.community.name}
+                          className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white"
+                          src={
+                            'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                          }
+                        />
+                      </Link>
+
+                      {/* Community Name & Author */}
+                      <div className="flex flex-col">
+                        <Link
+                          to={paths.app.community.getHref(post.community.id)}
+                          className="text-sm font-semibold text-gray-900 hover:text-blue-600"
+                        >
+                          w/{post.community.name}
+                        </Link>
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <UserHoverCard userId={post.author.id}>
+                            <Link
+                              to={paths.app.userProfile.getHref(post.author.id)}
+                              className="hover:text-blue-600"
+                            >
+                              u/{post.author.username}
+                            </Link>
+                          </UserHoverCard>
+                          <span>•</span>
+                          <span>
+                            {formatDistanceToNow(new Date(post.createdAt))}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => handleJoinCommunity(post.community.id)}
+                        className="rounded-xl border border-sky-300 bg-cyan-50 px-4 py-1 text-xs font-semibold text-gray-600 hover:bg-cyan-100 hover:text-gray-700"
+                      >
+                        Join
+                      </Button>
+
+                      {/* More Actions Menu */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex size-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
+                            <MoreHorizontal className="size-5" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuItem
+                            onClick={() => handleSave(post.id)}
+                            className="flex items-center gap-2"
+                          >
+                            <span>Save</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleHide(post.id)}
+                            className="flex items-center gap-2"
+                          >
+                            <EyeOff className="size-4" />
+                            <span>Hide</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleReport(post.id)}
+                            className="flex items-center gap-2 text-red-600"
+                          >
+                            <span>Report</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
 
-                  <Link to={paths.app.post.getHref(post.id)} key={post.id}>
+                  {/* Post Title */}
+                  <Link
+                    to={paths.app.post.getHref(post.id)}
+                    onClick={() =>
+                      handleAddToRecentPosts({
+                        id: post.id,
+                        title: post.title,
+                        community: {
+                          id: post.community.id,
+                          name: post.community.name,
+                        },
+                        createdAt: post.createdAt,
+                      })
+                    }
+                  >
                     <h2 className="mb-3 cursor-pointer text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
                       {post.title}
                     </h2>
                   </Link>
+
+                  {/* Post Content Preview (for text posts) */}
+                  {post.type === 'text' && post.content && (
+                    <MDPreview
+                      value={post.content}
+                      maxLines={3}
+                      className="mb-3 text-sm"
+                    />
+                  )}
 
                   {/* For type poll */}
                   {post.type === 'poll' && post.pollData && (
@@ -161,155 +310,44 @@ export const PostsList = ({ communityId }: PostsListProps) => {
 
                   {/* For type media */}
                   {post.type === 'media' && post.mediaUrls.length > 0 && (
-                    <div className="group/carousel relative mb-3">
-                      <div className="overflow-hidden rounded-lg">
-                        {post.mediaUrls[
-                          currentMediaIndex[post.id] || 0
-                        ].endsWith('.mp4') ? (
-                          <video
-                            src={
-                              post.mediaUrls[currentMediaIndex[post.id] || 0]
-                            }
-                            controls
-                            className="h-64 w-full object-cover"
-                            preload="metadata"
-                          >
-                            {' '}
-                            <track
-                              kind="captions"
-                              src="/captions/example.vtt"
-                              srcLang="en"
-                              label="English"
-                              default
-                            />
-                            Your browser does not support the video tag.
-                          </video>
-                        ) : (
-                          <img
-                            src={
-                              post.mediaUrls[currentMediaIndex[post.id] || 0]
-                            }
-                            alt={post.title}
-                            className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        )}
-                      </div>
+                    <MediaViewer
+                      mediaUrls={post.mediaUrls}
+                      title={post.title}
+                      className="mb-3"
+                    />
+                  )}
 
-                      {/* Image counter */}
-                      {post.mediaUrls.length > 1 && (
-                        <div className="absolute right-3 top-3 rounded-full bg-black/70 px-2 py-1 text-xs font-medium text-white">
-                          {(currentMediaIndex[post.id] || 0) + 1} /{' '}
-                          {post.mediaUrls.length}
-                        </div>
-                      )}
-
-                      {/* Navigation buttons */}
-                      {post.mediaUrls.length > 1 && (
-                        <>
-                          {/* Previous button */}
-                          {(currentMediaIndex[post.id] || 0) > 0 && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setcurrentMediaIndex((prev) => ({
-                                  ...prev,
-                                  [post.id]: (prev[post.id] || 0) - 1,
-                                }));
-                              }}
-                              className="absolute left-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 opacity-0 shadow-lg transition-opacity duration-200 hover:bg-white group-hover/carousel:opacity-100"
-                            >
-                              <svg
-                                className="size-5 text-gray-800"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2.5}
-                                  d="M15 19l-7-7 7-7"
-                                />
-                              </svg>
-                            </button>
-                          )}
-
-                          {/* Next button */}
-                          {(currentMediaIndex[post.id] || 0) <
-                            post.mediaUrls.length - 1 && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setcurrentMediaIndex((prev) => ({
-                                  ...prev,
-                                  [post.id]: (prev[post.id] || 0) + 1,
-                                }));
-                              }}
-                              className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 opacity-0 shadow-lg transition-opacity duration-200 hover:bg-white group-hover/carousel:opacity-100"
-                            >
-                              <svg
-                                className="size-5 text-gray-800"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2.5}
-                                  d="M9 5l7 7-7 7"
-                                />
-                              </svg>
-                            </button>
-                          )}
-                        </>
-                      )}
-
-                      {/* Dot indicators */}
-                      {post.mediaUrls.length > 1 && (
-                        <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
-                          {post.mediaUrls.map((_, idx) => (
-                            <button
-                              key={idx}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setcurrentMediaIndex((prev) => ({
-                                  ...prev,
-                                  [post.id]: idx,
-                                }));
-                              }}
-                              className={`size-1.5 rounded-full transition-all duration-200 ${
-                                idx === (currentMediaIndex[post.id] || 0)
-                                  ? 'w-4 bg-white'
-                                  : 'bg-white/60 hover:bg-white/80'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      )}
+                  {/* Post Tags */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mb-3 flex flex-wrap gap-2">
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
                     </div>
                   )}
+
                   {/* Post Actions */}
                   <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
+                    <Link
+                      to={paths.app.post.getHref(post.id)}
+                      className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100"
+                    >
                       <MessageCircle className="size-4" />
-                      <span>10 Comments</span>
-                    </button>
-                    <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
-                      <Share2 className="size-4" />
-                      <span>Share</span>
-                    </button>
-                    <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
-                      <Bookmark className="size-4" />
-                      <span>Save</span>
-                    </button>
-                    <ReportPost postId={post.id} />
-                    {true && (
-                      <div className="ml-auto flex items-center gap-1">
-                        <span className="text-yellow-500">🏆</span>
-                        <span className="font-medium">{1}</span>
-                      </div>
-                    )}
+                      <span>{post.commentCount} Comments</span>
+                    </Link>
+                    <SharePost link={paths.app.post.getHref(post.id)}>
+                      <button className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100">
+                        <Share2 className="size-4" />
+                        <span>Share</span>
+                      </button>
+                    </SharePost>
+                    <SavePost postId={post.id} />
+                    <FollowPost postId={post.id} />
                   </div>
                 </div>
               </div>
