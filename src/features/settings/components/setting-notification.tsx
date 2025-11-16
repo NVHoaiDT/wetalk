@@ -42,13 +42,13 @@ export const SettingNotification = () => {
   const updateMutation = useUpdateNotificationSettings();
 
   const handleToggle = (
-    id: number,
+    action: string,
     field: 'isPush' | 'isSendMail',
     value: boolean,
   ) => {
     updateMutation.mutate({
       data: {
-        id,
+        action,
         [field]: value,
       },
     });
@@ -63,7 +63,7 @@ export const SettingNotification = () => {
   }
 
   const settings = notificationSettingQuery?.data;
-  fancyLog('Notification-Settings:', settings);
+  fancyLog('Notification-settings:', settings);
 
   return (
     <div className="space-y-8">
@@ -122,7 +122,7 @@ export const SettingNotification = () => {
                 <Switch
                   checked={setting.isPush}
                   onCheckedChange={(checked) =>
-                    handleToggle(setting.id, 'isPush', checked)
+                    handleToggle(setting.action, 'isPush', checked)
                   }
                   className="data-[state=checked]:bg-purple-600"
                 />
@@ -131,7 +131,7 @@ export const SettingNotification = () => {
                 <Switch
                   checked={setting.isSendMail}
                   onCheckedChange={(checked) =>
-                    handleToggle(setting.id, 'isSendMail', checked)
+                    handleToggle(setting.action, 'isSendMail', checked)
                   }
                   className="data-[state=checked]:bg-orange-600"
                 />

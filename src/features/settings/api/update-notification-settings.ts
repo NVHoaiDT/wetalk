@@ -7,7 +7,7 @@ import { MutationConfig } from '@/lib/react-query';
 import { NotificationSetting } from './get-notification-settings';
 
 export const updateNotificationSettingInputSchema = z.object({
-  id: z.number(),
+  action: z.string(),
   isPush: z.boolean().optional(),
   isSendMail: z.boolean().optional(),
 });
