@@ -86,5 +86,9 @@ export const paths = {
       path: 'notifications',
       getHref: () => '/app/notifications',
     },
+    settings: {
+      path: 'settings',
+      getHref: () => '/app/settings',
+    },
   },
 } as const;

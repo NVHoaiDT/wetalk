@@ -128,6 +128,10 @@ export const createAppRouter = (queryClient: QueryClient) =>
               convert(queryClient),
             ),
         },
+        {
+          path: paths.app.settings.path,
+          lazy: () => import('./routes/app/setting').then(convert(queryClient)),
+        },
       ],
     },
     {

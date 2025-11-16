@@ -453,6 +453,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               >
                 Your Profile
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate(paths.app.settings.getHref())}
+                className={cn('block px-4 py-2 text-sm text-gray-700')}
+              >
+                Settings
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className={cn('block px-4 py-2 text-sm text-gray-700 w-full')}
