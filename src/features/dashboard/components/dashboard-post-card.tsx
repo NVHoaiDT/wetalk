@@ -27,6 +27,7 @@ import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { usePreferences } from '@/features/settings/api';
 import { UserHoverCard } from '@/features/users/components/user-hover-card';
+import { postCardColors } from '@/lib/colors';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
@@ -34,13 +35,17 @@ import { CommunityHoverCard } from './community-hover-card';
 
 type DashboardPostCardProps = {
   post: Post;
+  index: number;
 };
 
-export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
+export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
   const preferencesQueryClient = usePreferences();
   const addRecentPostMutation = useAddRecentPost();
 
   const preferences = preferencesQueryClient.data;
+
+  // Cycle through color palette
+  const colorScheme = postCardColors[index % postCardColors.length];
 
   /* Check if user allow to store recent posts */
   const handleAddToRecentPosts = () => {
@@ -74,10 +79,12 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
   };
 
   return (
-    <article className="group mb-4 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg">
+    <article
+      className={`group mb-4 overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-lg ${colorScheme.bg} ${colorScheme.border} ${colorScheme.hover}`}
+    >
       <div className="flex">
         {/* Vote Section */}
-        <div className="flex w-12 flex-col items-center gap-1 border-r border-gray-100 bg-gray-50 py-3">
+        <div className="flex w-12 flex-col items-center gap-1 py-3">
           <UpVotePost postId={post.id} />
           <span className="text-xs font-bold text-gray-600">
             {formatBigNumber(post.vote)}

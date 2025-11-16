@@ -120,7 +120,9 @@ export const DashboardPostsFeed = () => {
             <p className="text-gray-600">No posts found</p>
           </div>
         ) : (
-          posts.map((post) => <DashboardPostCard key={post.id} post={post} />)
+          posts.map((post, index) => (
+            <DashboardPostCard key={post.id} post={post} index={index} />
+          ))
         )}
       </div>
 
