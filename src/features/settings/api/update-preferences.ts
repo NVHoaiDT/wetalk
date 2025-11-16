@@ -1,31 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { MutationConfig } from '@/lib/react-query';
-
-import { Preferences } from './get-preferences';
+import { Preference } from '@/types/api';
 
 const STORAGE_KEY = 'user-preferences';
 
-export type UpdatePreferencesInput = Partial<Preferences>;
+export type UpdatePreferencesInput = Partial<Preference>;
 
 export const updatePreferences = ({
   data,
 }: {
   data: UpdatePreferencesInput;
-}): Promise<Preferences> => {
+}): Promise<Preference> => {
   return new Promise((resolve) => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    let currentPreferences: Preferences;
+    let currentPreferences: Preference;
 
     if (stored) {
       currentPreferences = JSON.parse(stored);
     } else {
       currentPreferences = {
         language: 'en-US',
-        showRecentPosts: true,
-        showRecentCommunities: true,
+        isStoreRecentPosts: true,
+        isStoreRecentCommunities: true,
         autoplayMedia: false,
-        reduceMotion: false,
       };
     }
 

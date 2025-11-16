@@ -23,6 +23,7 @@ import { FollowPost } from '@/features/posts/components/follow-post';
 import { SavePost } from '@/features/posts/components/save-post';
 import { SharePost } from '@/features/posts/components/share-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
+import { usePreferences } from '@/features/settings/api';
 import { UserHoverCard } from '@/features/users/components/user-hover-card';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
@@ -34,7 +35,29 @@ type DashboardPostCardProps = {
 };
 
 export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
+  const preferencesQueryClient = usePreferences();
   const addRecentPostMutation = useAddRecentPost();
+
+  const preferences = preferencesQueryClient.data;
+
+  /* Check if user allow to store recent posts */
+  const handleAddToRecentPosts = () => {
+    if (preferences?.isStoreRecentPosts) {
+      addRecentPostMutation.mutate({
+        data: {
+          id: post.id,
+          title: post.title,
+          community: {
+            id: post.community.id,
+            name: post.community.name,
+          },
+          createdAt: post.createdAt,
+        },
+      });
+    } else {
+      console.log('User preferences do not allow to store recent posts');
+    }
+  };
 
   const handleJoinCommunity = () => {
     console.log('Join community:', post.community.id);
@@ -156,19 +179,7 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
             {/* Post Title */}
             <Link
               to={paths.app.post.getHref(post.id)}
-              onClick={() =>
-                addRecentPostMutation.mutate({
-                  data: {
-                    id: post.id,
-                    title: post.title,
-                    community: {
-                      id: post.community.id,
-                      name: post.community.name,
-                    },
-                    createdAt: post.createdAt,
-                  },
-                })
-              }
+              onClick={handleAddToRecentPosts}
             >
               <h2 className="mb-3 cursor-pointer text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
                 {post.title}

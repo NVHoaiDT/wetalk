@@ -40,7 +40,6 @@ export const addRecentPost = ({
     */
     const STORAGE_KEY = 'recent-posts';
     const MAX_RECENT = 5;
-
     // Get existing recent posts from localStorage
     const existingData = localStorage.getItem(STORAGE_KEY);
     let recentPosts: RecentPost[] = existingData

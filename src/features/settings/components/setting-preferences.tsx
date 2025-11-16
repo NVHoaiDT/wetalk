@@ -10,11 +10,10 @@ import {
 } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/form/switch';
 import { Spinner } from '@/components/ui/spinner';
-import {
-  Preferences,
-  usePreferences,
-} from '@/features/settings/api/get-preferences';
+import { usePreferences } from '@/features/settings/api/get-preferences';
 import { useUpdatePreferences } from '@/features/settings/api/update-preferences';
+import { fancyLog } from '@/helper/fancy-log';
+import { Preference } from '@/types/api';
 
 const LANGUAGES = [
   { code: 'en-US', name: 'English (US)', nativeName: 'English' },
@@ -32,7 +31,7 @@ export const SettingPreferences = () => {
   const preferencesQueryClient = usePreferences();
   const updatePreferencesMutation = useUpdatePreferences();
 
-  const handleToggle = (key: keyof Preferences, value: boolean) => {
+  const handleToggle = (key: keyof Preference, value: boolean) => {
     updatePreferencesMutation.mutate({ data: { [key]: value } });
   };
 
@@ -56,6 +55,7 @@ export const SettingPreferences = () => {
   }
 
   const preferences = preferencesQueryClient.data;
+  fancyLog('Preferences:', preferences);
 
   const selectedLanguage = LANGUAGES.find(
     (lang) => lang.code === preferences?.language,
@@ -104,9 +104,9 @@ export const SettingPreferences = () => {
               </p>
             </div>
             <Switch
-              checked={preferences?.showRecentPosts ?? true}
+              checked={preferences?.isStoreRecentPosts ?? true}
               onCheckedChange={(checked) =>
-                handleToggle('showRecentPosts', checked)
+                handleToggle('isStoreRecentPosts', checked)
               }
               className="data-[state=checked]:bg-blue-600"
             />
@@ -122,9 +122,9 @@ export const SettingPreferences = () => {
               </p>
             </div>
             <Switch
-              checked={preferences?.showRecentCommunities ?? true}
+              checked={preferences?.isStoreRecentCommunities ?? true}
               onCheckedChange={(checked) =>
-                handleToggle('showRecentCommunities', checked)
+                handleToggle('isStoreRecentCommunities', checked)
               }
               className="data-[state=checked]:bg-blue-600"
             />
@@ -166,13 +166,6 @@ export const SettingPreferences = () => {
                 Minimize animations and transitions
               </p>
             </div>
-            <Switch
-              checked={preferences?.reduceMotion ?? false}
-              onCheckedChange={(checked) =>
-                handleToggle('reduceMotion', checked)
-              }
-              className="data-[state=checked]:bg-blue-600"
-            />
           </div>
         </div>
       </div>
