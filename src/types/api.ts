@@ -127,6 +127,8 @@ export type Post = {
   community: {
     id: number;
     name: string;
+    avatar: string;
+    shortDescription: string;
   };
   authorId: number;
   author: {

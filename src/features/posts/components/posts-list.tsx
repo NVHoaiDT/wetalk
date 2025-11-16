@@ -199,9 +199,7 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                         <img
                           alt={post.community.name}
                           className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white"
-                          src={
-                            'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
-                          }
+                          src={post.community.avatar}
                         />
                       </Link>
 
