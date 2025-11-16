@@ -4,6 +4,7 @@ import { Switch } from '@/components/ui/form/switch';
 import { Spinner } from '@/components/ui/spinner';
 import { useNotificationSettings } from '@/features/settings/api/get-notification-settings';
 import { useUpdateNotificationSettings } from '@/features/settings/api/update-notification-settings';
+import { fancyLog } from '@/helper/fancy-log';
 
 const NOTIFICATION_ACTION_LABELS: Record<
   string,
@@ -37,7 +38,7 @@ const NOTIFICATION_ACTION_LABELS: Record<
 };
 
 export const SettingNotification = () => {
-  const { data: settings, isLoading } = useNotificationSettings();
+  const notificationSettingQuery = useNotificationSettings();
   const updateMutation = useUpdateNotificationSettings();
 
   const handleToggle = (
@@ -53,13 +54,16 @@ export const SettingNotification = () => {
     });
   };
 
-  if (isLoading) {
+  if (notificationSettingQuery.isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
         <Spinner size="lg" />
       </div>
     );
   }
+
+  const settings = notificationSettingQuery?.data;
+  fancyLog('Notification-Settings:', settings);
 
   return (
     <div className="space-y-8">

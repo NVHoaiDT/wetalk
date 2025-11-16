@@ -29,7 +29,7 @@ const LANGUAGES = [
 
 export const SettingPreferences = () => {
   const [isLanguageDialogOpen, setIsLanguageDialogOpen] = useState(false);
-  const { data: preferences, isLoading } = usePreferences();
+  const preferencesQueryClient = usePreferences();
   const updatePreferencesMutation = useUpdatePreferences();
 
   const handleToggle = (key: keyof Preferences, value: boolean) => {
@@ -47,13 +47,15 @@ export const SettingPreferences = () => {
     );
   };
 
-  if (isLoading) {
+  if (preferencesQueryClient.isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
         <Spinner size="lg" />
       </div>
     );
   }
+
+  const preferences = preferencesQueryClient.data;
 
   const selectedLanguage = LANGUAGES.find(
     (lang) => lang.code === preferences?.language,

@@ -36,6 +36,7 @@ export type User = {
   email: string;
   bio: string;
   avatar: string;
+  coverImage: string;
   achievement: {
     karma: number;
     badge: string;
@@ -368,6 +369,13 @@ export type SSENotificationEvent = {
 export type RecentSearch = {
   keyword: string;
   searchAt: string;
+};
+/* ____________________Settings____________________ */
+export type Preference = {
+  language: string;
+  isStoreRecentPosts: boolean;
+  isStoreRecentCommunities: boolean;
+  autoplayMedia: boolean;
 };
 /*==========End Testing zone==========*/
 

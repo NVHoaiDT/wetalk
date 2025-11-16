@@ -13,10 +13,15 @@ export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
       {/* Banner Background */}
       <div className="relative h-32 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 sm:h-40">
         {/* Decorative Pattern */}
-        <div className="absolute inset-0 opacity-10">
+        {/* <div className="absolute inset-0 opacity-10">
           <div className="absolute left-0 top-0 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"></div>
           <div className="absolute bottom-0 right-0 size-64 translate-x-1/2 translate-y-1/2 rounded-full bg-white"></div>
-        </div>
+        </div> */}
+        <img
+          src={user.coverImage}
+          alt={`${user.username}'s cover`}
+          className="size-full object-cover"
+        />
       </div>
 
       {/* Profile Info */}
