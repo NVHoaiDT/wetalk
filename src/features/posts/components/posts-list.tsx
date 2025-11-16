@@ -35,6 +35,7 @@ import { useInfinitePosts } from '../api/get-sorted-posts';
 import { DownVotePost } from './downvote-post';
 import { FollowPost } from './follow-post';
 import { PollView } from './poll-view';
+import { ReportPost } from './report-post';
 import { SavePost } from './save-post';
 import { SharePost } from './share-post';
 import { UpVotePost } from './upvote-post';
@@ -85,10 +86,6 @@ export const PostsList = ({ communityId }: PostsListProps) => {
 
   const handleJoinCommunity = (communityId: number) => {
     console.log('Join community:', communityId);
-  };
-
-  const handleReport = (postId: number) => {
-    console.log('Report post:', postId);
   };
 
   const handleHide = (postId: number) => {
@@ -199,7 +196,10 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                         <img
                           alt={post.community.name}
                           className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white"
-                          src={post.community.avatar}
+                          src={
+                            post.community.avatar ||
+                            'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                          }
                         />
                       </Link>
 
@@ -259,12 +259,11 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                             <EyeOff className="size-4" />
                             <span>Hide</span>
                           </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleReport(post.id)}
-                            className="flex items-center gap-2 text-red-600"
-                          >
-                            <span>Report</span>
-                          </DropdownMenuItem>
+                          <ReportPost postId={post.id}>
+                            <DropdownMenuItem className="flex items-center gap-2 text-red-600">
+                              <span>Report</span>
+                            </DropdownMenuItem>
+                          </ReportPost>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>

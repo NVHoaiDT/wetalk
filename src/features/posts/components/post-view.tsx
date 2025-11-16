@@ -1,17 +1,21 @@
 import { formatDistanceToNow } from 'date-fns';
-import { Bookmark, MessageCircle, Share2 } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { Spinner } from '@/components/ui/spinner';
+import { paths } from '@/config/paths';
 import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
 
 import { DownVotePost } from './downvote-post';
+import { FollowPost } from './follow-post';
 import { PollView } from './poll-view';
-import { ReportPost } from './report-post';
+import { SavePost } from './save-post';
+import { SharePost } from './share-post';
 import { UpVotePost } from './upvote-post';
 
 export const PostView = ({ id }: { id: number }) => {
@@ -40,26 +44,53 @@ export const PostView = ({ id }: { id: number }) => {
         <div className="flex">
           {/* Content Section */}
           <div className="flex-1 p-4">
-            {/* Post Info */}
-            <div className="mb-3 flex items-center gap-2 text-sm">
-              <img
-                src={post.author.avatar}
-                alt={post.author.username}
-                className="size-6 rounded-full"
-              />
-              <span className="cursor-pointer font-medium text-gray-900 hover:text-blue-600">
+            {/* Post Info - Community Row */}
+            <div className="mb-2 flex items-center gap-2 text-sm">
+              <Link
+                to={paths.app.community.getHref(post.community.id)}
+                className="shrink-0"
+              >
+                <img
+                  src={post.community.avatar}
+                  alt={post.community.name}
+                  className="size-6 rounded-full"
+                />
+              </Link>
+              <Link
+                to={paths.app.community.getHref(post.community.id)}
+                className="cursor-pointer font-medium text-gray-900 hover:text-blue-600"
+              >
                 w/{post.community.name}
-              </span>
+              </Link>
               <span className="text-gray-500">•</span>
               <span className="text-gray-500">
-                <span className="cursor-pointer hover:text-blue-600">
-                  u/{post.author.username}
-                </span>
+                {formatDistanceToNow(new Date(post.createdAt), {
+                  addSuffix: true,
+                })}
               </span>
-              <span className="text-gray-500">•</span>
-              <span className="text-gray-500">
-                {formatDistanceToNow(new Date(post.createdAt))}
-              </span>
+            </div>
+
+            {/* Post Info - User Row */}
+            <div className="mb-3 flex items-center gap-2 text-sm">
+              <Link
+                to={paths.app.userProfile.getHref(post.author.id)}
+                className="shrink-0"
+              >
+                <img
+                  src={
+                    post.author.avatar ||
+                    'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+                  }
+                  alt={post.author.username}
+                  className="size-6 rounded-full"
+                />
+              </Link>
+              <Link
+                to={paths.app.userProfile.getHref(post.author.id)}
+                className="cursor-pointer text-gray-700 hover:text-blue-600"
+              >
+                u/{post.author.username}
+              </Link>
             </div>
 
             {/* Title */}
@@ -112,15 +143,13 @@ export const PostView = ({ id }: { id: number }) => {
                 <MessageCircle className="size-4" />
                 <span>{post.commentCount}</span>
               </button>
-              <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
-                <Share2 className="size-4" />
-                <span>Share</span>
-              </button>
-              <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
-                <Bookmark className="size-4" />
-                <span>Save</span>
-              </button>
-              <ReportPost postId={post.id} />
+              <SharePost link={paths.app.post.getHref(post.id)}>
+                <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+                  <span>Share</span>
+                </button>
+              </SharePost>
+              <SavePost postId={post.id} />
+              <FollowPost postId={post.id} />
             </div>
           </div>
         </div>
