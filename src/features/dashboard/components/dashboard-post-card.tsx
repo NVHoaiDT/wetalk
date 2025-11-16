@@ -65,10 +65,6 @@ export const DashboardPostCard = ({ post }: DashboardPostCardProps) => {
     console.log('Join community:', post.community.id);
   };
 
-  const handleReport = () => {
-    console.log('Report post:', post.id);
-  };
-
   const handleHide = () => {
     console.log('Hide post:', post.id);
   };
