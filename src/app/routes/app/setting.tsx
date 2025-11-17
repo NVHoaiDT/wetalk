@@ -3,10 +3,10 @@ import { useState } from 'react';
 
 import { ContentLayout } from '@/components/layouts';
 import {
+  SettingAccounts,
   SettingNotification,
   SettingPreferences,
 } from '@/features/settings/components';
-import { SettingAccounts } from '@/features/settings/components/setting-account';
 
 type SettingTab = 'account' | 'preferences' | 'notifications' | 'email';
 
@@ -33,10 +33,7 @@ const SettingRoute = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'account':
-        return (
-          /* <SettingAccounts /> */
-          <SettingAccounts />
-        );
+        return <SettingAccounts />;
       case 'preferences':
         return <SettingPreferences />;
       case 'notifications':

@@ -217,7 +217,7 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions = {}) => {
 
 /* ____________________Change password____________________ */
 export const changePasswordInput = z.object({
-  currentPassword: z.string().min(1, 'Required'),
+  oldPassword: z.string().min(1, 'Required'),
   newPassword: z.string().min(1, 'Required'),
 });
 export type ChangePasswordInput = z.infer<typeof changePasswordInput>;
