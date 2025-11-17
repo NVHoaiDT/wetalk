@@ -48,14 +48,14 @@ export const FormDrawer = ({
       }}
     >
       <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
-      <DrawerContent className="flex max-w-[800px] flex-col justify-between sm:max-w-[540px]">
-        <div className="flex flex-col">
-          <DrawerHeader>
+      <DrawerContent className="flex max-h-screen max-w-[800px] flex-col justify-between sm:max-w-[540px]">
+        <div className="flex min-h-0 flex-1 flex-col">
+          <DrawerHeader className="shrink-0">
             <DrawerTitle>{title}</DrawerTitle>
           </DrawerHeader>
-          <div>{children}</div>
+          <div className="flex-1 overflow-y-auto px-4">{children}</div>
         </div>
-        <DrawerFooter>
+        <DrawerFooter className="shrink-0">
           <DrawerClose asChild>
             <Button variant="outline" type="submit">
               Close
