@@ -23,56 +23,69 @@ export const AiChatbox = ({ summary, isLoading }: AiChatboxProps) => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 left-6 z-50">
       <AnimatePresence mode="wait">
         {!isOpen ? (
-          // Floating Button
-          <motion.button
+          // Floating Button with Speech Bubble
+          <motion.div
             key="button"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleToggle}
-            className="group relative flex items-center gap-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4 text-white shadow-lg transition-all hover:shadow-xl"
+            className="flex items-end gap-3"
           >
-            {/* Sparkle animation */}
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+            {/* AI Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleToggle}
+              className="relative flex size-16 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-sky-600 text-white shadow-lg transition-all hover:shadow-xl"
             >
-              <Sparkles className="size-5" />
-            </motion.div>
+              {/* Sparkle animation */}
+              <motion.div
+                animate={{
+                  rotate: [0, 360],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              >
+                <Sparkles className="size-6" />
+              </motion.div>
 
-            <div className="flex flex-col items-start">
-              <span className="text-sm font-semibold">WeTalk AI Assistant</span>
-              <span className="text-xs opacity-90">
-                Get a quick summary of this post
-              </span>
-            </div>
+              {/* Pulse animation */}
+              <motion.div
+                className="absolute inset-0 rounded-full bg-white opacity-20"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.2, 0.1, 0.2],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
+            </motion.button>
 
-            {/* Pulse animation */}
+            {/* Speech Bubble */}
             <motion.div
-              className="absolute inset-0 rounded-full bg-white opacity-20"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.2, 0.1, 0.2],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-          </motion.button>
+              initial={{ x: -10, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="relative mb-2"
+            >
+              <div className="rounded-2xl bg-white px-4 py-2 text-gray-800 shadow-md">
+                <p className="text-sm font-medium">WetalkAI can help you</p>
+                <p className="text-sm font-medium">summarize this post!</p>
+              </div>
+              {/* Speech bubble tail */}
+              <div className="absolute -left-1 bottom-3 size-3 rotate-45 bg-white" />
+            </motion.div>
+          </motion.div>
         ) : (
           // Expanded Chatbox
           <motion.div
@@ -84,7 +97,7 @@ export const AiChatbox = ({ summary, isLoading }: AiChatboxProps) => {
             className="w-96 overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-3 text-white">
+            <div className="flex items-center justify-between bg-gradient-to-r from-cyan-500 to-sky-600 px-4 py-3 text-white">
               <div className="flex items-center gap-2">
                 <Bot className="size-5" />
                 <span className="font-semibold">WeTalk AI Summary</span>

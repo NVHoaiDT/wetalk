@@ -38,6 +38,7 @@ export const PostView = ({ id }: { id: number }) => {
   if (!post) return null;
 
   fancyLog('POST', post);
+  fancyLog('Content', post.content);
 
   const summaryPost = summaryPostQuery?.data?.data;
 

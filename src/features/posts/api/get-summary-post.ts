@@ -22,6 +22,7 @@ If content lenght longer, scale up...
 
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
+import { fancyLog } from '@/helper/fancy-log';
 import { apiAI } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 import { SummayPost } from '@/types/api';
@@ -40,14 +41,37 @@ const calculateTokenLengths = (text: string) => {
   return { maxInputLength: 4096, maxSummaryLength: 1024 };
 };
 
+const getPlainTextFromHTML = (html: string): string => {
+  // Create a temporary div element to parse HTML
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+
+  // Remove script and style elements
+  const scripts = tempDiv.querySelectorAll('script, style');
+  scripts.forEach((script) => script.remove());
+
+  // Get text content and clean up whitespace
+  const text = tempDiv.textContent || tempDiv.innerText || '';
+
+  // Remove extra whitespace and newlines
+  return text
+    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .replace(/\n+/g, ' ') // Replace newlines with space
+    .trim();
+};
+
 export const getSummaryPost = ({
   text,
 }: {
   text: string;
 }): Promise<{ data: SummayPost }> => {
   const { maxInputLength, maxSummaryLength } = calculateTokenLengths(text);
+  const plainText = getPlainTextFromHTML(text);
+
+  fancyLog('Plain Text for Summarization:', plainText);
+
   return apiAI.post('/summarize', {
-    text,
+    text: plainText,
     src_lang: 'vi',
     tgt_lang: 'vi',
     max_input_length: maxInputLength,
