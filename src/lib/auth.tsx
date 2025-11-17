@@ -215,6 +215,31 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions = {}) => {
   });
 };
 
+/* ____________________Change password____________________ */
+export const changePasswordInput = z.object({
+  currentPassword: z.string().min(1, 'Required'),
+  newPassword: z.string().min(1, 'Required'),
+});
+export type ChangePasswordInput = z.infer<typeof changePasswordInput>;
+
+const changePassword = (data: ChangePasswordInput) => {
+  return api.put('/users/change-password', data);
+};
+type UseChangePasswordOptions = {
+  onSuccess?: () => void;
+};
+
+export const useChangePassword = ({
+  onSuccess,
+}: UseChangePasswordOptions = {}) => {
+  return useMutation({
+    mutationFn: changePassword,
+    onSuccess: () => {
+      onSuccess?.();
+    },
+  });
+};
+
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = useCurrentUser();
   const location = useLocation();
