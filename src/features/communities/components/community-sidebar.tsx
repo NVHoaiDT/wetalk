@@ -11,7 +11,7 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
     <aside className="w-80 space-y-4 self-start overflow-hidden rounded-2xl">
       {/* About Community */}
       <div className="border border-gray-200 bg-white shadow-sm">
-        <div className="bg-gradient-to-r from-blue-600 to-sky-600 p-4">
+        <div className="bg-gradient-to-r from-blue-500 to-sky-600 p-4">
           <h3 className="font-bold text-white">w/{community.name}</h3>
         </div>
         <div className="space-y-4 p-4">
