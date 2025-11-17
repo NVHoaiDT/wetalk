@@ -10,7 +10,9 @@ import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
+import { useSummaryPost } from '../api/get-summary-post';
 
+import { AiChatbox } from './ai-chatbox';
 import { DownVotePost } from './downvote-post';
 import { FollowPost } from './follow-post';
 import { PollView } from './poll-view';
@@ -20,6 +22,9 @@ import { UpVotePost } from './upvote-post';
 
 export const PostView = ({ id }: { id: number }) => {
   const postQuery = usePost({ id });
+  const summaryPostQuery = useSummaryPost({
+    text: postQuery.data?.data.content || '',
+  });
 
   if (postQuery.isLoading) {
     return (
@@ -30,15 +35,22 @@ export const PostView = ({ id }: { id: number }) => {
   }
 
   const post = postQuery?.data?.data;
-
   if (!post) return null;
 
   fancyLog('POST', post);
 
+  const summaryPost = summaryPostQuery?.data?.data;
+
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
 
   return (
-    <article className="w-full space-y-4">
+    <article className="w-full space-y-4 rounded-xl border border-slate-200 shadow-sm">
+      {/* AI Summary Chatbox */}
+      <AiChatbox
+        summary={summaryPost?.summary}
+        isLoading={summaryPostQuery.isLoading}
+      />
+
       {/* Post Header */}
       <div className="overflow-hidden rounded-xl bg-white shadow-sm">
         <div className="flex">

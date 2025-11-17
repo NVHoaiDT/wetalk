@@ -102,3 +102,41 @@ apiMedia.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export const apiAI = Axios.create({
+  baseURL: env.API_AI_URL,
+});
+
+apiAI.interceptors.request.use(authRequestInterceptor);
+
+apiAI.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  (error) => {
+    const message = error.response?.data?.message || error.message;
+    useNotifications.getState().addNotification({
+      type: 'error',
+      title: 'Error',
+      message,
+    });
+
+    if (error.response?.status === 401) {
+      localStorage.removeItem('accessToken');
+
+      const currentPath = window.location.pathname;
+
+      if (!currentPath.startsWith('/auth')) {
+        window.location.href = paths.auth.login.getHref(currentPath);
+      }
+    } else {
+      useNotifications.getState().addNotification({
+        type: 'error',
+        title: 'Error',
+        message,
+      });
+    }
+
+    return Promise.reject(error);
+  },
+);

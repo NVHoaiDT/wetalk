@@ -4,6 +4,7 @@ const createEnv = () => {
   const EnvSchema = z.object({
     API_URL: z.string(),
     API_MEDIA_URL: z.string().optional(),
+    API_AI_URL: z.string().optional(),
     GOOGLE_CLIENT_ID: z.string().optional(),
     JSONLINK_API_KEY: z.string().optional(),
     ENABLE_API_MOCKING: z

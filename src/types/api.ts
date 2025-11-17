@@ -379,6 +379,11 @@ export type Preference = {
   isStoreRecentCommunities: boolean;
   autoplayMedia: boolean;
 };
+
+/* ____________________Settings____________________ */
+export type SummayPost = {
+  summary: string;
+};
 /*==========End Testing zone==========*/
 
 export type Team = Entity<{
