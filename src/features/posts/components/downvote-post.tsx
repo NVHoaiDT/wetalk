@@ -44,7 +44,7 @@ export const DownVotePost = ({ postId }: { postId: number }) => {
     <button
       className={cn(
         'rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500',
-        isDownVoted && 'bg-green-50 text-red-500',
+        isDownVoted && 'text-red-500',
       )}
       onClick={handleClick}
       disabled={
