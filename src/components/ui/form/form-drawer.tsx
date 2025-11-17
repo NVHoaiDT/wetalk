@@ -48,7 +48,7 @@ export const FormDrawer = ({
       }}
     >
       <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
-      <DrawerContent className="flex max-h-screen max-w-[800px] flex-col justify-between sm:max-w-[540px]">
+      <DrawerContent className="flex max-h-screen max-w-[800px] flex-col justify-between sm:max-w-screen-sm">
         <div className="flex min-h-0 flex-1 flex-col">
           <DrawerHeader className="shrink-0">
             <DrawerTitle>{title}</DrawerTitle>
