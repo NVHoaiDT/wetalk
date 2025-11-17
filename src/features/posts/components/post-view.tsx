@@ -33,7 +33,7 @@ export const PostView = ({ id }: { id: number }) => {
       </div>
     );
   }
-  if (summaryPostQuery.isLoading) {
+  if (summaryPostQuery.isPending) {
     return (
       <div className="flex h-48 w-full items-center justify-center">
         <Spinner size="lg" />
