@@ -6,6 +6,7 @@ import {
   SettingNotification,
   SettingPreferences,
 } from '@/features/settings/components';
+import { SettingAccounts } from '@/features/settings/components/setting-account';
 
 type SettingTab = 'account' | 'preferences' | 'notifications' | 'email';
 
@@ -33,19 +34,8 @@ const SettingRoute = () => {
     switch (activeTab) {
       case 'account':
         return (
-          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-            <div className="flex h-64 items-center justify-center">
-              <div className="text-center">
-                <User className="mx-auto mb-4 size-16 text-gray-300" />
-                <h3 className="mb-2 text-lg font-semibold text-gray-900">
-                  Account Settings
-                </h3>
-                <p className="text-sm text-gray-500">
-                  Account management features coming soon
-                </p>
-              </div>
-            </div>
-          </div>
+          /* <SettingAccounts /> */
+          <SettingAccounts />
         );
       case 'preferences':
         return <SettingPreferences />;
