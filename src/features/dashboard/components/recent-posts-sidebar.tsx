@@ -7,9 +7,6 @@ import { paths } from '@/config/paths';
 import { useInfiniteAllPosts } from '@/features/dashboard/api/get-all-posts';
 import { formatBigNumber } from '@/utils/format';
 
-//TODO: Create a object/function to return a color base on post vote + post comments
-//TODO: Create a object/function to return a color base on creatAt
-
 export const RecentPostsSidebar = () => {
   const { data, isLoading } = useInfiniteAllPosts();
 
@@ -59,20 +56,18 @@ export const RecentPostsSidebar = () => {
                     <span className="font-semibold text-gray-900">
                       r/{post.community.name}
                     </span>
-                    {/* Apply a color base on post createdAt */}
-                    <span>•</span>
-                    <span>
-                      {formatDistanceToNow(new Date(post.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </span>
                   </div>
 
-                  {/* Post Title */}
-                  <h3 className="mb-2 line-clamp-2 text-sm font-semibold text-gray-800 transition-colors group-hover:text-blue-600">
-                    {post.title}
-                  </h3>
-
+                  <div className="flex items-center justify-between pb-3">
+                    {/* Post Title */}
+                    <h3 className="line-clamp-2 text-sm font-semibold leading-none text-gray-800 transition-colors group-hover:text-blue-600">
+                      {post.title}
+                    </h3>
+                    {/* Post Date */}
+                    <span className="text-xs text-gray-600">
+                      •{formatDistanceToNow(new Date(post.createdAt))}
+                    </span>
+                  </div>
                   {/* Post Stats */}
                   {/* TODO: Apply a color base on post vote + post comments */}
                   <div className="flex items-center gap-3 text-xs text-gray-500">
@@ -82,7 +77,7 @@ export const RecentPostsSidebar = () => {
                     </div>
                     <div className="flex items-center gap-1 rounded-xl border border-sky-200 bg-cyan-50 px-2.5 py-1 font-medium">
                       <MessageCircle className="size-4" />
-                      <span>10</span>
+                      <span>{post.commentCount}</span>
                     </div>
                   </div>
                 </div>

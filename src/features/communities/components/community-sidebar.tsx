@@ -8,10 +8,10 @@ import { formatBigNumber } from '@/utils/format';
 
 export const CommunitySidebar = ({ community }: { community: Community }) => {
   return (
-    <aside className="w-80 space-y-4 self-start rounded-2xl">
+    <aside className="w-80 space-y-4 self-start overflow-hidden rounded-2xl">
       {/* About Community */}
-      <div className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">
+      <div className="border border-gray-200 bg-white shadow-sm">
+        <div className="bg-gradient-to-r from-blue-600 to-sky-600 p-4">
           <h3 className="font-bold text-white">w/{community.name}</h3>
         </div>
         <div className="space-y-4 p-4">
