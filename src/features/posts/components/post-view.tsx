@@ -33,13 +33,22 @@ export const PostView = ({ id }: { id: number }) => {
       </div>
     );
   }
-
+  if (summaryPostQuery.isLoading) {
+    return (
+      <div className="flex h-48 w-full items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
   const post = postQuery?.data?.data;
   if (!post) return null;
 
   fancyLog('POST', post);
   fancyLog('Content', post.content);
-
+  fancyLog(
+    'Plain Text for Summarization:',
+    summaryPostQuery.data?.data.summary,
+  );
   const summaryPost = summaryPostQuery?.data?.data;
 
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
