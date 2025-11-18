@@ -123,7 +123,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r sm:flex">
-        <nav className="flex flex-col items-center gap-1 px-2 py-4">
+        <nav className="flex flex-col items-center gap-1 overflow-y-scroll px-2 py-4">
           <div className="flex h-16 shrink-0 items-center px-4">
             <Logo />
           </div>
@@ -155,11 +155,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           <div className="mt-4 w-full">
             <button
               onClick={() => setIsRecentOpen(!isRecentOpen)}
-              className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wider text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+              className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold tracking-wider text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-gray-800"
             >
               <div className="flex items-center gap-2">
                 <Clock className="size-4" />
-                <span>RECENT POSTS</span>
+                <span>POSTS</span>
               </div>
               {isRecentOpen ? (
                 <ChevronUp className="size-4 transition-transform" />
@@ -211,11 +211,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               onClick={() =>
                 setIsRecentCommunitiesOpen(!isRecentCommunitiesOpen)
               }
-              className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wider text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700"
+              className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold tracking-wider text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-gray-800"
             >
               <div className="flex items-center gap-2">
                 <TrendingUp className="size-4" />
-                <span>Recent Communities</span>
+                <span>COMMUNITIES</span>
               </div>
               {isRecentCommunitiesOpen ? (
                 <ChevronUp className="size-4 transition-transform" />
