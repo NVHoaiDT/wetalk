@@ -5,7 +5,14 @@ BODY:
     "recipientId": 2,
     "content": "Hello! This is my first message",
     "type": "text", // "text", "image", "video", "file"
-    "attachments": ["image-url", "video-url"] // optional
+    "attachments": [
+      {
+        fileType: 'image', fileUrl: 'https://example.com/image.jpg'
+      }, 
+      {
+        fileType: 'video', fileUrl: 'https://example.com/video.mp4'
+      }
+    ] 
   }
 */
 
@@ -16,11 +23,15 @@ import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 import { SendMessageResponse } from '@/types/api';
 
+const attachment = z.object({
+  fileType: z.enum(['image', 'video']),
+  fileUrl: z.string(),
+});
+
 export const sendMessageDTOInputSchema = z.object({
   recipientId: z.number(),
   content: z.string(),
-  type: z.string(),
-  attachments: z.array(z.string()).optional(),
+  attachments: z.array(attachment).optional(),
 });
 
 export type SendMessageInput = z.infer<typeof sendMessageDTOInputSchema>;
@@ -28,13 +39,11 @@ export type SendMessageInput = z.infer<typeof sendMessageDTOInputSchema>;
 export const sendMessage = ({
   recipientId,
   content,
-  type,
   attachments,
 }: SendMessageInput): Promise<SendMessageResponse> => {
   return api.post('/messages', {
     recipientId,
     content,
-    type,
     attachments,
   });
 };

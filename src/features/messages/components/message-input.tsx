@@ -8,7 +8,10 @@ import { fancyLog } from '@/helper/fancy-log';
 import { cn } from '@/utils/cn';
 
 type MessageInputProps = {
-  onSend: (content: string, attachments?: string[]) => void;
+  onSend: (
+    content: string,
+    attachments?: Array<{ fileType: 'image' | 'video'; fileUrl: string }>,
+  ) => void;
   disabled?: boolean;
   placeholder?: string;
 };
@@ -19,7 +22,9 @@ export const MessageInput = ({
   placeholder = 'Type a message...',
 }: MessageInputProps) => {
   const [content, setContent] = useState('');
-  const [attachments, setAttachments] = useState<string[]>([]);
+  const [attachments, setAttachments] = useState<
+    Array<{ fileType: 'image' | 'video'; fileUrl: string }>
+  >([]);
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const { addNotification } = useNotifications();
@@ -55,14 +60,14 @@ export const MessageInput = ({
       {/* Attachment Previews */}
       {attachments.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {attachments.map((url, index) => {
-            const isVideo = url.includes('videos/') || url.endsWith('.mp4');
+          {attachments.map((attachment, index) => {
+            const isVideo = attachment.fileType === 'video';
             return (
-              <div key={url} className="group relative">
+              <div key={attachment.fileUrl} className="group relative">
                 <div className="size-16 overflow-hidden rounded-lg border border-gray-200">
                   {isVideo ? (
                     <video
-                      src={url}
+                      src={attachment.fileUrl}
                       className="size-full object-cover"
                       preload="metadata"
                     >
@@ -70,7 +75,7 @@ export const MessageInput = ({
                     </video>
                   ) : (
                     <img
-                      src={url}
+                      src={attachment.fileUrl}
                       alt={`Attachment ${index + 1}`}
                       className="size-full object-cover"
                     />
@@ -104,7 +109,14 @@ export const MessageInput = ({
           </div>
           <MediaUploader
             onChange={(urls) => {
-              setAttachments(urls);
+              // Convert URLs to attachment objects with fileType
+              const newAttachments = urls.map((url) => ({
+                fileType: (url.includes('videos/') || url.endsWith('.mp4')
+                  ? 'video'
+                  : 'image') as 'image' | 'video',
+                fileUrl: url,
+              }));
+              setAttachments(newAttachments);
               setIsUploaderOpen(false);
             }}
             onError={(error) => {
@@ -116,7 +128,7 @@ export const MessageInput = ({
             }}
             onUploadStateChange={setIsUploading}
             maxFiles={5}
-            value={attachments}
+            value={attachments.map((a) => a.fileUrl)}
             accept={{ images: true, videos: true }}
             maxSize={10 * 1024 * 1024} // 10MB
           />

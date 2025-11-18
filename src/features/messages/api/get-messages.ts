@@ -7,7 +7,6 @@ import { MessagesResponse } from '@/types/api';
 export const getMessages = ({
   conversationId,
   page = 1,
-  limit = 50,
 }: {
   conversationId: number;
   page?: number;
@@ -16,7 +15,6 @@ export const getMessages = ({
   return api.get(`/messages/conversations/${conversationId}/messages`, {
     params: {
       page,
-      limit,
     },
   });
 };
@@ -24,15 +22,13 @@ export const getMessages = ({
 export const getMessagesQueryOptions = ({
   conversationId,
   page = 1,
-  limit = 50,
 }: {
   conversationId: number;
   page?: number;
-  limit?: number;
 }) => {
   return queryOptions({
-    queryKey: ['messages', conversationId, { page, limit }],
-    queryFn: () => getMessages({ conversationId, page, limit }),
+    queryKey: ['messages', conversationId, { page }],
+    queryFn: () => getMessages({ conversationId, page }),
     enabled: !!conversationId,
   });
 };
@@ -40,18 +36,16 @@ export const getMessagesQueryOptions = ({
 type UseMessagesOptions = {
   conversationId: number;
   page?: number;
-  limit?: number;
   queryConfig?: QueryConfig<typeof getMessagesQueryOptions>;
 };
 
 export const useMessages = ({
   conversationId,
   page = 1,
-  limit = 50,
   queryConfig,
 }: UseMessagesOptions) => {
   return useQuery({
-    ...getMessagesQueryOptions({ conversationId, page, limit }),
+    ...getMessagesQueryOptions({ conversationId, page }),
     ...queryConfig,
   });
 };

@@ -64,15 +64,15 @@ export const ChatPanel = () => {
     }
   }, [selectedConversationId]);
 
-  const handleSendMessage = (content: string, attachments?: string[]) => {
+  const handleSendMessage = (
+    content: string,
+    attachments?: Array<{ fileType: 'image' | 'video'; fileUrl: string }>,
+  ) => {
     if (!selectedRecipient) return;
-
-    const type = attachments && attachments.length > 0 ? 'image' : 'text';
 
     fancyLog('SENDING MESSAGE', {
       recipientId: selectedRecipient.id,
       content,
-      type,
       attachments,
     });
 
@@ -80,7 +80,6 @@ export const ChatPanel = () => {
       {
         recipientId: selectedRecipient.id,
         content,
-        type,
         attachments: attachments || [],
       },
       {
