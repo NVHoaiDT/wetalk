@@ -37,20 +37,41 @@ export const ChatPanel = () => {
 
   fancyLog('MESSAGES', messages);
   /* 
-    [
-      {
-          "id": 1,
-          "conversationId": 1,
-          "sender": {
-              "id": 1,
-              "username": "nguyenvana",
-              "avatar": "https://i.pravatar.cc/150?img=1"
-          },
-          "type": "text",
-          "content": "Yo",
-          "isRead": false,
-          "createdAt": "2025-11-03T09:27:08.914529Z"
-      }
+[
+        {
+            "id": 35,
+            "conversationId": 5,
+            "sender": {
+                "id": 5,
+                "username": "hoangthie",
+                "avatar": "https://i.pravatar.cc/150?img=5"
+            },
+            "content": "Hello! This is my second message",
+            "isRead": false,
+            "attachments": [
+                {
+                    "id": 2,
+                    "fileUrl": "file-url-demo.png",
+                    "fileType": "image"
+                },
+                ...
+            ],
+            "createdAt": "2025-11-14T08:02:49.874363Z",
+            "isDeleted": false
+        },
+        {
+            "id": 34,
+            "conversationId": 5,
+            "sender": {
+                "id": 5,
+                "username": "hoangthie",
+                "avatar": "https://i.pravatar.cc/150?img=5"
+            },
+            "content": "This message has been deleted",
+            "isRead": false,
+            "createdAt": "2025-11-14T07:59:51.897037Z",
+            "isDeleted": true
+        }
     ]
   */
 

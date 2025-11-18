@@ -75,7 +75,9 @@ export const ConversationItem = ({
             {conversation.lastMessage.content}
           </p>
         ) : (
-          <p className="text-sm italic text-gray-400">No messages yet</p>
+          <p className="text-sm italic text-gray-400">
+            This message has been deleted
+          </p>
         )}
       </div>
     </button>

@@ -254,6 +254,7 @@ export type Message = {
   readAt: string | null;
   createdAt: string;
   attachments: string[];
+  isDeleted: boolean;
 };
 
 export type Conversation = {
