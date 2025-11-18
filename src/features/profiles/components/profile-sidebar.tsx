@@ -69,7 +69,7 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
           Share
         </Button>
 
-        {/* Messages Button */}
+        {/* Messages Button - For quick test, haven't polish UI yet */}
         <Button
           variant="outline"
           size="icon"

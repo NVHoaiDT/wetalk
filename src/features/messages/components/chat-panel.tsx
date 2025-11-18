@@ -76,12 +76,25 @@ export const ChatPanel = () => {
       attachments,
     });
 
-    sendMessageMutation.mutate({
-      recipientId: selectedRecipient.id,
-      content,
-      type,
-      attachments: attachments || [],
-    });
+    sendMessageMutation.mutate(
+      {
+        recipientId: selectedRecipient.id,
+        content,
+        type,
+        attachments: attachments || [],
+      },
+      {
+        onSuccess: (response) => {
+          /* 
+            If we don't have a conversation selected yet (new conversation),
+            select it after sending the first message 
+          */
+          if (!selectedConversationId && response.data.conversationId) {
+            selectConversation(response.data.conversationId);
+          }
+        },
+      },
+    );
   };
 
   if (!selectedConversationId && !selectedRecipient) {
