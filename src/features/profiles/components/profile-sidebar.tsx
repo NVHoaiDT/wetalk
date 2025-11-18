@@ -8,6 +8,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { useConversations } from '@/features/messages/api/get-conversations';
 import { useMessages } from '@/features/messages/stores/messages-store';
 import { fancyLog } from '@/helper/fancy-log';
 import { User } from '@/types/api';
@@ -23,7 +24,8 @@ type ProfileSidebarProps = {
 
 export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
   const userBadgetQuery = useUserBadget({ userId: user.id });
-  const { openMessages, selectRecipient } = useMessages();
+  const conversationsQuery = useConversations();
+  const { openMessages, selectRecipient, selectConversation } = useMessages();
 
   if (userBadgetQuery.isLoading) {
     return (
@@ -47,6 +49,17 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
       username: user.username,
       avatar: user.avatar,
     });
+
+    // Find existing conversation with this user
+    const conversations = conversationsQuery.data?.data || [];
+    const existingConversation = conversations.find(
+      (conv) => conv.otherUser.id === user.id,
+    );
+
+    // If conversation exists, select it
+    if (existingConversation) {
+      selectConversation(existingConversation.id);
+    }
   };
 
   return (
@@ -63,21 +76,24 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
           onClick={handleShare}
           variant="outline"
           size="sm"
-          className="my-1 rounded-full bg-gray-100 py-2 hover:bg-gray-200"
+          className="my-1 mr-2 rounded-full bg-gray-100 py-2 hover:bg-gray-200"
           icon={<Share2 className="size-4" />}
         >
           Share
         </Button>
 
-        {/* Messages Button - For quick test, haven't polish UI yet */}
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleDM}
-          className="relative border-sky-200 bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-700"
-        >
-          <MessageCircle className="size-5" />
-        </Button>
+        {!isOwnProfile && (
+          <Button
+            onClick={handleDM}
+            variant="outline"
+            size="sm"
+            className="my-1 rounded-full bg-gray-100 py-2 hover:bg-gray-200"
+            icon={<MessageCircle className="size-4" />}
+          >
+            Message
+          </Button>
+        )}
+
         {/* Stats Grid */}
         <div className="mb-6 grid grid-cols-2 gap-4">
           <div>
