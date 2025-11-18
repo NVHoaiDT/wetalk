@@ -25,18 +25,10 @@ export const ChatPanel = () => {
   const messagesQuery = useMessagesAPI({
     conversationId: selectedConversationId!,
     page: 1,
-    limit: 100,
   });
 
   const sendMessageMutation = useSendMessage();
   const markAsReadMutation = useMarkConversationAsRead();
-
-  if (sendMessageMutation.isError) {
-    fancyLog('SEND MESSAGE ERROR', sendMessageMutation.error);
-  }
-  if (markAsReadMutation.isError) {
-    fancyLog('MARK AS READ ERROR', markAsReadMutation.error);
-  }
 
   const messages = useMemo(
     () => messagesQuery.data?.data || [],
@@ -65,7 +57,6 @@ export const ChatPanel = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
   // Mark conversation as read when opening
   useEffect(() => {
     if (selectedConversationId) {
@@ -73,7 +64,6 @@ export const ChatPanel = () => {
     }
   }, [selectedConversationId]);
 
-  /* TODO: Add attachments handler*/
   const handleSendMessage = (content: string, attachments?: string[]) => {
     if (!selectedConversationId || !selectedRecipient) return;
 

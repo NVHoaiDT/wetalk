@@ -26,7 +26,7 @@ export const MessagesPopup = () => {
       />
 
       {/* Popup Window */}
-      <div className="fixed bottom-4 right-4 z-50 flex h-[600px] w-full max-w-4xl rounded-lg bg-white shadow-2xl">
+      <div className="fixed bottom-4 right-4 z-50 flex h-[600px] w-full max-w-4xl bg-white shadow-2xl">
         {/* Close Button (top-right corner) */}
         <Button
           variant="ghost"

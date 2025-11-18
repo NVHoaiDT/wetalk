@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 
 import { useConversations } from '../api/get-conversations';
 import { useMessages } from '../stores/messages-store';
@@ -25,13 +26,38 @@ export const ConversationsPanel = () => {
   const filteredConversations = conversations.filter((conv) =>
     conv.otherUser.username.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+  fancyLog(
+    'ConversationsPanel - filteredConversations:',
+    filteredConversations,
+  );
+  /* 
+  [
+    {
+        "id": 1,
+        "otherUser": {
+            "id": 2,
+            "username": "tranthib",
+            "avatar": "https://i.pravatar.cc/150?img=2"
+        },
+        "lastMessage": {
+            "content": "hello there!",
+            "isRead": true,
+            "sentAt": "2025-11-17T13:02:25.468525Z",
+            "readAt": "2025-11-18T05:29:27.878172Z"
+        },
+        "unreadCount": 0,
+        "createdAt": "2025-11-03T09:06:53.972634Z",
+        "updatedAt": "2025-11-17T13:02:26.142042Z"
+    }
+  ]
+  */
 
   return (
     <div className="flex w-80 flex-col border-r border-gray-200 bg-gray-50">
       {/* Header */}
       <div className="border-b border-gray-200 bg-white p-4">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
+          <h2 className="text-lg font-semibold text-gray-700">Wetalk Chat</h2>
           <Button
             size="icon"
             variant="outline"
@@ -70,7 +96,7 @@ export const ConversationsPanel = () => {
           </div>
         ) : filteredConversations.length === 0 ? (
           <div className="flex h-32 items-center justify-center">
-            <p className="text-sm text-gray-500">No results found</p>
+            <p className="text-sm text-gray-500">You have no conversations</p>
           </div>
         ) : (
           <div className="space-y-1">
