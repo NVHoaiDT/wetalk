@@ -10,7 +10,6 @@ export const getMessages = ({
 }: {
   conversationId: number;
   page?: number;
-  limit?: number;
 }): Promise<MessagesResponse> => {
   return api.get(`/messages/conversations/${conversationId}/messages`, {
     params: {

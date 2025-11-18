@@ -31,9 +31,10 @@ export const ChatPanel = () => {
   const markAsReadMutation = useMarkConversationAsRead();
 
   const messages = useMemo(
-    () => messagesQuery.data?.data || [],
+    () => messagesQuery.data?.data.toReversed() || [],
     [messagesQuery.data],
   );
+
   fancyLog('MESSAGES', messages);
   /* 
     [
