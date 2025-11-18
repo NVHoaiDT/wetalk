@@ -1,7 +1,14 @@
-import { MessageSquare, Calendar, Award, Share2 } from 'lucide-react';
+import {
+  MessageSquare,
+  Calendar,
+  Award,
+  Share2,
+  MessageCircle,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { useMessages } from '@/features/messages/stores/messages-store';
 import { fancyLog } from '@/helper/fancy-log';
 import { User } from '@/types/api';
 
@@ -16,6 +23,7 @@ type ProfileSidebarProps = {
 
 export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
   const userBadgetQuery = useUserBadget({ userId: user.id });
+  const { openMessages, selectRecipient } = useMessages();
 
   if (userBadgetQuery.isLoading) {
     return (
@@ -29,8 +37,16 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
   fancyLog('User-Badget:', userBadget);
 
   const handleShare = () => {
-    // TODO: Implement share functionality
     navigator.clipboard.writeText(window.location.href);
+  };
+
+  const handleDM = () => {
+    openMessages();
+    selectRecipient({
+      id: user.id,
+      username: user.username,
+      avatar: user.avatar,
+    });
   };
 
   return (
@@ -53,6 +69,15 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
           Share
         </Button>
 
+        {/* Messages Button */}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleDM}
+          className="relative border-sky-200 bg-sky-50 text-sky-500 hover:bg-sky-100 hover:text-sky-700"
+        >
+          <MessageCircle className="size-5" />
+        </Button>
         {/* Stats Grid */}
         <div className="mb-6 grid grid-cols-2 gap-4">
           <div>

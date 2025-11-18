@@ -65,7 +65,7 @@ export const ChatPanel = () => {
   }, [selectedConversationId]);
 
   const handleSendMessage = (content: string, attachments?: string[]) => {
-    if (!selectedConversationId || !selectedRecipient) return;
+    if (!selectedRecipient) return;
 
     const type = attachments && attachments.length > 0 ? 'image' : 'text';
 
@@ -84,15 +84,15 @@ export const ChatPanel = () => {
     });
   };
 
-  if (!selectedConversationId) {
+  if (!selectedConversationId && !selectedRecipient) {
     return (
       <div className="flex flex-1 items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-lg font-medium text-gray-600">
-            Select a conversation
+            Select a conversation or start new chat !
           </p>
           <p className="mt-1 text-sm text-gray-400">
-            Choose a conversation from the list to start messaging
+            Your messages will appear here
           </p>
         </div>
       </div>
