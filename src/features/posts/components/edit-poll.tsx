@@ -130,7 +130,7 @@ export const EditPoll = ({
   };
 
   const handleRemoveOption = (id: number) => {
-    if (pollOptions.length <= 2) return; // Keep minimum 2 options
+    if (pollOptions.length <= 2) return;
     const updatedOptions = pollOptions.filter((opt) => opt.id !== id);
     setPollOptions(updatedOptions);
     updatePollData(

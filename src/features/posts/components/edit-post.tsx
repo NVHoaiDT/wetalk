@@ -5,13 +5,13 @@ import { Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input } from '@/components/ui/form';
 import { LinkPreview } from '@/components/ui/link-preview';
-import { MediaUploader } from '@/components/ui/media-uploader/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { TextEditor } from '@/components/ui/text-editor/text-editor';
 import { Post } from '@/types/api';
 
 import { editPostInputSchema, useEditPost } from '../api/edit-post';
 
+import { EditMediaUploader } from './edit-media-uploader';
 import { EditPoll } from './edit-poll';
 import { SelectPostTags } from './select-post-tags';
 
@@ -24,6 +24,7 @@ export const EditPost = ({ post }: EditPostProps) => {
   const [activeTab] = useState<'text' | 'media' | 'link' | 'poll'>(
     post.type as any,
   );
+  const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
   const editPostMutation = useEditPost({
     postId: post.id,
@@ -64,9 +65,10 @@ export const EditPost = ({ post }: EditPostProps) => {
           type="submit"
           size="sm"
           isLoading={editPostMutation.isPending}
+          disabled={isUploadingMedia || editPostMutation.isPending}
           className="min-w-[100px] border-0 bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
         >
-          Update
+          {isUploadingMedia ? 'Uploading...' : 'Update'}
         </Button>
       }
     >
@@ -184,23 +186,23 @@ export const EditPost = ({ post }: EditPostProps) => {
 
               {/* Media Tab */}
               {activeTab === 'media' && (
-                <MediaUploader
-                  onChange={(urls) => {
-                    // Update form field
-                    setValue('mediaUrls', urls as any);
-                  }}
-                  onError={(error) => {
-                    addNotification({
-                      type: 'error',
-                      title: 'Upload Failed',
-                      message: error.message,
-                    });
-                  }}
-                  value={watch('mediaUrls')}
-                  maxFiles={10}
-                  accept={{ images: true, videos: true }}
-                  className="space-y-4"
-                />
+                <div className="space-y-4">
+                  <EditMediaUploader
+                    value={watch('mediaUrls') || []}
+                    onChange={(urls) => {
+                      setValue('mediaUrls', urls as any);
+                    }}
+                    onUploadStateChange={(isUploading) => {
+                      setIsUploadingMedia(isUploading);
+                    }}
+                    maxFiles={10}
+                  />
+                  {isUploadingMedia && (
+                    <p className="text-sm text-blue-600">
+                      Uploading media files...
+                    </p>
+                  )}
+                </div>
               )}
 
               {/* Link Tab */}

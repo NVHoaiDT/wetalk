@@ -7,12 +7,12 @@ IMPLEMENT
 When the client needs to upload a photo when updating the user avatar, cover image for the community or photo for the post, fetch the following API:
 
 REQUEST: 
-POST BASEURL/images/upload
+POST BASEURL/images/upload (/videos/upload for videos)
 body: form-data, includes:
 - type: avatar/post/video_thumbnail/… [Text]
 - images: file from device [File]
 
-RESPONSE:
+RESPONSE (image upload):
 {
     "success": true,
     "message": "Images uploaded successfully",
@@ -22,6 +22,14 @@ RESPONSE:
         },
         ...
     ]
+}
+RESPONSE (video upload):
+{
+    "success": true,
+    "message": "Video uploaded successfully",
+    "data": {
+        "url": "videos/cloudinary_video_f0bd3c53-f164-4473-af13-c72b6cbc119c_1761748743"
+    }
 }
 
 To delete an image, the client will call the following API:
@@ -83,7 +91,6 @@ export const useUploadImages = ({ mutationConfig }: UseUploadImagesOptions) => {
   });
 };
 
-// Video Upload Types and Functions
 export const uploadVideosInput = z.object({
   files: z
     .array(z.instanceof(File))
@@ -141,5 +148,75 @@ export const useUploadVideos = ({
     },
     ...restConfig,
     mutationFn: uploadVideos,
+  });
+};
+
+/* New delete image and video hooks */
+
+export const deleteImageInput = z.object({
+  url: z.string().url(),
+});
+
+export type DeleteImageInput = z.infer<typeof deleteImageInput>;
+
+export const deleteImage = ({ data }: { data: DeleteImageInput }) => {
+  return apiMedia.delete('/images/delete', { data });
+};
+
+type UseDeleteImageOptions = {
+  mutationConfig?: MutationConfig<typeof deleteImage>;
+};
+
+export const useDeleteImage = ({
+  mutationConfig,
+}: UseDeleteImageOptions = {}) => {
+  const { onSuccess, ...restConfig } = mutationConfig || {};
+
+  return useMutation({
+    onSuccess: (...args) => {
+      onSuccess?.(...args);
+    },
+    ...restConfig,
+    mutationFn: deleteImage,
+  });
+};
+
+/* 
+  DELETE /videos/delete?filename=video_name
+  
+  Delete video take `file name` instead of `url`, request params instead of body.
+  No idea why the backend team did this messy stuff anyway.
+
+  When upload success, video url looks like:  
+  "data": {
+    "url": "videos/cloudinary_video_f0bd3c53-f164-4473-af13-c72b6cbc119c_1761748743"
+  }    
+  So file name will be:
+  "cloudinary_video_f0bd3c53-f164-4473-af13-c72b6cbc119c_1761748743"
+*/
+export const deleteVideoInput = z.object({
+  fileName: z.string(),
+});
+export type DeleteVideoInput = z.infer<typeof deleteVideoInput>;
+
+export const deleteVideo = ({ data }: { data: DeleteVideoInput }) => {
+  return apiMedia.delete('/videos/delete', { params: data });
+};
+
+type UseDeleteVideoOptions = {
+  mutationConfig?: MutationConfig<typeof deleteVideo>;
+};
+
+export const useDeleteVideo = ({
+  mutationConfig,
+}: UseDeleteVideoOptions = {}) => {
+  const { onSuccess, ...restConfig } = mutationConfig || {};
+
+  return useMutation({
+    onSuccess: (...args) => {
+      onSuccess?.(...args);
+    },
+    ...restConfig,
+    mutationFn: deleteVideo,
   });
 };
