@@ -14,6 +14,7 @@ import { useSummaryPost } from '../api/get-summary-post';
 
 import { AiChatbox } from './ai-chatbox';
 import { DownVotePost } from './downvote-post';
+import { EditPost } from './edit-post';
 import { FollowPost } from './follow-post';
 import { PollView } from './poll-view';
 import { SavePost } from './save-post';
@@ -172,6 +173,9 @@ export const PostView = ({ id }: { id: number }) => {
               </SharePost>
               <SavePost postId={post.id} />
               <FollowPost postId={post.id} />
+              {/* Edit Post - Only show if current user is the author */}
+
+              <EditPost post={post} />
             </div>
           </div>
         </div>
