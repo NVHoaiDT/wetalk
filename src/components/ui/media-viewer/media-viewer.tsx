@@ -11,7 +11,7 @@ import {
   MediaMuteButton,
   MediaFullscreenButton,
 } from 'media-chrome/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
 type MediaViewerProps = {
@@ -39,7 +39,19 @@ export const MediaViewer = ({
   const [videoQuality, setVideoQuality] = useState<VideoQuality>('auto');
   const [showQualityMenu, setShowQualityMenu] = useState(false);
 
+  // Reset currentIndex if it's out of bounds when mediaUrls changes
+  useEffect(() => {
+    if (currentIndex >= mediaUrls.length && mediaUrls.length > 0) {
+      setCurrentIndex(0);
+    }
+  }, [mediaUrls.length, currentIndex]);
+
   if (!mediaUrls.length) return null;
+
+  const currentMedia = mediaUrls[currentIndex];
+
+  // Guard against undefined currentMedia
+  if (!currentMedia) return null;
 
   const getVideoUrl = (publicId: string, quality: VideoQuality) => {
     const transformation = QUALITY_TRANSFORMATIONS[quality];
@@ -49,7 +61,7 @@ export const MediaViewer = ({
   return (
     <div className={`group/carousel relative ${className}`}>
       <div className="overflow-hidden rounded-lg">
-        {mediaUrls[currentIndex].startsWith('videos/') ? (
+        {currentMedia.startsWith('videos/') ? (
           <MediaController
             style={{
               width: '100%',
@@ -59,8 +71,8 @@ export const MediaViewer = ({
           >
             <ReactPlayer
               slot="media"
-              key={`${mediaUrls[currentIndex]}-${videoQuality}`}
-              src={getVideoUrl(mediaUrls[currentIndex], videoQuality)}
+              key={`${currentMedia}-${videoQuality}`}
+              src={getVideoUrl(currentMedia, videoQuality)}
               controls={false}
               className="rounded-lg object-contain"
               style={{
@@ -82,7 +94,7 @@ export const MediaViewer = ({
           </MediaController>
         ) : (
           <img
-            src={mediaUrls[currentIndex]}
+            src={currentMedia}
             alt={title}
             className="h-[480px] w-full bg-black/5 object-contain transition-transform duration-300 group-hover:scale-[1.02]"
           />
@@ -97,7 +109,7 @@ export const MediaViewer = ({
       )}
 
       {/* Quality selector for videos */}
-      {mediaUrls[currentIndex].startsWith('videos/') && (
+      {currentMedia.startsWith('videos/') && (
         <div className="absolute left-3 top-3">
           <div className="relative">
             <button
