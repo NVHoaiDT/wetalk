@@ -41,23 +41,20 @@ export const PostView = ({ id }: { id: number }) => {
       </div>
     );
   }
+
   const post = postQuery?.data?.data;
+  const summaryPost = summaryPostQuery?.data;
+
   if (!post) return null;
 
-  fancyLog('POST', post);
-  fancyLog('Content', post.content);
-  fancyLog(
-    'Plain Text for Summarization:',
-    summaryPostQuery.data?.data.summary,
-  );
-  const summaryPost = summaryPostQuery?.data?.data;
+  fancyLog('SUMMARY', summaryPost);
 
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
-
   return (
     <article className="w-full rounded-xl border border-slate-200 shadow-sm">
       {/* AI Summary Chatbox */}
       <AiChatbox
+        /* summaryPost is undefined so it cause page crash */
         summary={summaryPost?.summary}
         isLoading={summaryPostQuery.isLoading}
       />

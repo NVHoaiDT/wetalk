@@ -30,15 +30,15 @@ import { SummayPost } from '@/types/api';
 const calculateTokenLengths = (text: string) => {
   const wordCount = text.split(' ').length;
   if (wordCount < 512) {
-    return { maxInputLength: 512, maxSummaryLength: 128 };
+    return { maxInputLength: 512, maxSummaryLength: 256 };
   }
   if (wordCount < 1024) {
-    return { maxInputLength: 1024, maxSummaryLength: 256 };
+    return { maxInputLength: 1024, maxSummaryLength: 512 };
   }
   if (wordCount < 2048) {
-    return { maxInputLength: 2048, maxSummaryLength: 512 };
+    return { maxInputLength: 2048, maxSummaryLength: 1024 };
   }
-  return { maxInputLength: 4096, maxSummaryLength: 1024 };
+  return { maxInputLength: 4096, maxSummaryLength: 2048 };
 };
 
 const getPlainTextFromHTML = (html: string): string => {
@@ -64,7 +64,7 @@ export const getSummaryPost = ({
   text,
 }: {
   text: string;
-}): Promise<{ data: SummayPost }> => {
+}): Promise<SummayPost> => {
   const { maxInputLength, maxSummaryLength } = calculateTokenLengths(text);
   const plainText = getPlainTextFromHTML(text);
 
