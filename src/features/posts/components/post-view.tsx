@@ -55,7 +55,7 @@ export const PostView = ({ id }: { id: number }) => {
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
 
   return (
-    <article className="w-full space-y-4 rounded-xl border border-slate-200 shadow-sm">
+    <article className="w-full rounded-xl border border-slate-200 shadow-sm">
       {/* AI Summary Chatbox */}
       <AiChatbox
         summary={summaryPost?.summary}

@@ -14,6 +14,7 @@ import { editPostInputSchema, useEditPost } from '../api/edit-post';
 import { EditMediaUploader } from './edit-media-uploader';
 import { EditPoll } from './edit-poll';
 import { SelectPostTags } from './select-post-tags';
+import { MediaUploader } from '@/components/ui/media-uploader';
 
 type EditPostProps = {
   post: Post;
@@ -187,15 +188,24 @@ export const EditPost = ({ post }: EditPostProps) => {
               {/* Media Tab */}
               {activeTab === 'media' && (
                 <div className="space-y-4">
-                  <EditMediaUploader
-                    value={watch('mediaUrls') || []}
+                  <MediaUploader
                     onChange={(urls) => {
+                      // Update form field
                       setValue('mediaUrls', urls as any);
+                    }}
+                    onError={(error) => {
+                      addNotification({
+                        type: 'error',
+                        title: 'Upload Failed',
+                        message: error.message,
+                      });
                     }}
                     onUploadStateChange={(isUploading) => {
                       setIsUploadingMedia(isUploading);
                     }}
+                    value={watch('mediaUrls')}
                     maxFiles={10}
+                    accept={{ images: true, videos: true }}
                   />
                   {isUploadingMedia && (
                     <p className="text-sm text-blue-600">

@@ -60,7 +60,7 @@ export const RecentPostsSidebar = () => {
 
                   <div className="flex items-center justify-between pb-3">
                     {/* Post Title */}
-                    <h3 className="line-clamp-2 text-sm font-semibold leading-none text-gray-800 transition-colors group-hover:text-blue-600">
+                    <h3 className="line-clamp-1 text-sm font-semibold leading-none text-gray-700 transition-colors group-hover:text-blue-600">
                       {post.title}
                     </h3>
                     {/* Post Date */}
