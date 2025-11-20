@@ -41,7 +41,7 @@ export const UserHoverCard = ({ userId, children }: UserHoverCardProps) => {
               className="shrink-0"
             >
               <img
-                className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-lg font-bold text-white shadow-md"
+                className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-lg font-semibold text-white shadow-md"
                 src={
                   userData.avatar ||
                   'https://styles.redditmedia.com/t5_388p4/styles/communityIcon_hlczkoi3mr3d1.jpg?width=96&height=96&frame=1&auto=webp&crop=96%3A96%2Csmart&s=a46ae3b5bc59034a0365a38630faa863bd365ca0'
@@ -53,22 +53,23 @@ export const UserHoverCard = ({ userId, children }: UserHoverCardProps) => {
             <div className="flex-1">
               <Link
                 to={paths.app.userProfile.getHref(userData.id)}
-                className="text-base font-bold text-gray-900 hover:text-blue-600"
+                className="text-base text-gray-700 hover:text-blue-600"
               >
                 w/{userData.username}
               </Link>
+
+              <div className="flex flex-row gap-1">
+                <p className="text-sm font-semibold text-gray-600">
+                  {format(new Date(userData.createdAt), 'MMMM d, yyyy')}
+                </p>
+                •{' '}
+                <p className="text-sm font-semibold text-gray-600">
+                  {userData.achievement.karma} karma
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-row gap-1">
-            <p className="text-sm font-bold text-gray-600">
-              {format(new Date(userData.createdAt), 'MMMM d, yyyy')}
-            </p>
-            •{' '}
-            <p className="text-sm font-bold text-gray-600">
-              {userData.achievement.karma} karma
-            </p>
-          </div>
           {/* Bio */}
           <p className="line-clamp-3 text-sm text-gray-700">{userData.bio}</p>
         </div>
