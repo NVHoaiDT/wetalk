@@ -14,7 +14,7 @@ type SelectTagsProps = {
 export const SelectTags = ({
   value,
   onChange,
-  label = 'Filter by tags',
+  label = '',
 }: SelectTagsProps) => {
   const [search, setSearch] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -69,25 +69,14 @@ export const SelectTags = ({
         <label className="text-sm font-medium text-gray-700">{label}</label>
       )}
 
-      {/* Selected Tags Display */}
       {value.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {value.map((tag) => (
-            <span
-              key={tag}
-              className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
-            >
-              {tag}
-              <button
-                type="button"
-                onClick={() => handleRemoveTag(tag)}
-                className="rounded-full hover:bg-blue-200"
-              >
-                <X className="size-3" />
-              </button>
-            </span>
-          ))}
-        </div>
+        <button
+          type="button"
+          onClick={() => onChange([])}
+          className="text-xs text-blue-600 hover:text-blue-800 hover:underline"
+        >
+          Clear all filters
+        </button>
       )}
 
       {/* Search Input */}
@@ -146,14 +135,25 @@ export const SelectTags = ({
         )}
       </div>
 
+      {/* Selected Tags Display */}
       {value.length > 0 && (
-        <button
-          type="button"
-          onClick={() => onChange([])}
-          className="text-xs text-blue-600 hover:text-blue-800 hover:underline"
-        >
-          Clear all filters
-        </button>
+        <div className="flex flex-wrap gap-2">
+          {value.map((tag) => (
+            <span
+              key={tag}
+              className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
+            >
+              {tag}
+              <button
+                type="button"
+                onClick={() => handleRemoveTag(tag)}
+                className="rounded-full hover:bg-blue-200"
+              >
+                <X className="size-3" />
+              </button>
+            </span>
+          ))}
+        </div>
       )}
     </div>
   );

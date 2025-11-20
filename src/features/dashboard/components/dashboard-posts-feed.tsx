@@ -123,12 +123,12 @@ export const DashboardPostsFeed = () => {
   return (
     <div className="space-y-4">
       {/* Filter and Sort Bar */}
-      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="border-b border-slate-300 p-4">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center">
           {/* Sort Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="group flex items-center gap-2.5 rounded-2xl border border-gray-200 px-4 py-2 shadow-sm transition-all duration-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md">
+              <button className="group flex items-center gap-2.5 rounded-lg border border-gray-200 px-4 py-2 shadow-sm transition-all duration-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-md">
                 <CurrentSortIcon className={`size-4 ${currentSort?.color}`} />
                 <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-700">
                   {currentSort?.label}
@@ -172,7 +172,7 @@ export const DashboardPostsFeed = () => {
           </DropdownMenu>
 
           {/* Tags Filter */}
-          <div className="flex-1 md:max-w-md">
+          <div className="md:max-w-md">
             <SelectTags value={selectedTags} onChange={setSelectedTags} />
           </div>
         </div>
