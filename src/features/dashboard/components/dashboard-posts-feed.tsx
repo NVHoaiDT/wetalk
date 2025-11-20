@@ -154,9 +154,9 @@ export const DashboardPostsFeed = () => {
 
       {/* End of feed message */}
       {!hasNextPage && posts.length > 0 && (
-        <div className="rounded-xl border border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-8 text-center">
+        <div className="rounded-xl border-y border-gray-200 bg-gradient-to-r from-sky-50 to-cyan-50 p-8 text-center">
           <p className="text-sm font-medium text-gray-700">
-            🎉 You have reached the end! No more posts to load.
+            You have reached the end! No more posts to load.
           </p>
         </div>
       )}

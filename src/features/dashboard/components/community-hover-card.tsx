@@ -1,13 +1,16 @@
 import { Users } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
+import { useCommunity } from '@/features/communities/api/get-community';
+import { JoinCommunity } from '@/features/communities/components/join-community';
+import { UnJoinCommunity } from '@/features/communities/components/unjoin-community';
 import { formatBigNumber } from '@/utils/format';
 
 type CommunityHoverCardProps = {
@@ -16,31 +19,23 @@ type CommunityHoverCardProps = {
   children: React.ReactNode;
 };
 
-// Mock data generator - will be replaced with real API call later
-const getMockCommunityData = (communityId: number, communityName: string) => {
-  return {
-    id: communityId,
-    name: communityName,
-    avatar: communityName.charAt(0).toUpperCase(),
-    description:
-      'A community for discussing and sharing content about various topics.',
-    memberCount: Math.floor(Math.random() * 100000) + 1000,
-    isJoined: false,
-  };
-};
-
 export const CommunityHoverCard = ({
   communityId,
-  communityName,
   children,
 }: CommunityHoverCardProps) => {
-  const communityData = getMockCommunityData(communityId, communityName);
+  const communityQuery = useCommunity({ communityId });
+  const communityData = communityQuery.data?.data;
 
-  const handleJoin = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Join community:', communityId);
-  };
+  if (communityQuery.isLoading) {
+    return (
+      <div className="flex items-center justify-center p-4">
+        <Spinner />
+      </div>
+    );
+  }
+  if (!communityData) {
+    return <>{children}</>;
+  }
 
   return (
     <HoverCard openDelay={300} closeDelay={200}>
@@ -58,9 +53,14 @@ export const CommunityHoverCard = ({
               to={paths.app.community.getHref(communityData.id)}
               className="shrink-0"
             >
-              <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-lg font-bold text-white shadow-md">
-                {communityData.avatar}
-              </div>
+              <img
+                className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-lg font-bold text-white shadow-md"
+                src={
+                  communityData.communityAvatar ||
+                  'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
+                }
+                alt={communityData.name}
+              ></img>
             </Link>
 
             <div className="flex-1">
@@ -73,7 +73,7 @@ export const CommunityHoverCard = ({
               <div className="mt-1 flex items-center gap-1 text-sm text-gray-600">
                 <Users className="size-3.5" />
                 <span>
-                  {formatBigNumber(communityData.memberCount)} members
+                  {formatBigNumber(communityData.totalMembers)} members
                 </span>
               </div>
             </div>
@@ -85,13 +85,11 @@ export const CommunityHoverCard = ({
           </p>
 
           {/* Join Button */}
-          <Button
-            onClick={handleJoin}
-            className="w-full rounded-full bg-blue-600 font-semibold hover:bg-blue-700"
-            size="sm"
-          >
-            {communityData.isJoined ? 'Joined' : 'Join Community'}
-          </Button>
+          {communityData.isFollow ? (
+            <UnJoinCommunity id={communityData.id} />
+          ) : (
+            <JoinCommunity id={communityData.id} />
+          )}
         </div>
       </HoverCardContent>
     </HoverCard>
