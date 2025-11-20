@@ -1,4 +1,4 @@
-import { MoreHorizontal, Trash } from 'lucide-react';
+import { LockKeyhole, MoreHorizontal, Trash } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -154,9 +154,37 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
       <div className="mx-auto max-w-7xl p-6">
         <div className="flex gap-6">
           {/* Posts Area */}
-          <div className="flex-1 space-y-4">
-            <PostsList communityId={community.id}></PostsList>
-          </div>
+          {community.isPrivate && !community.isFollow ? (
+            <div className="flex-1">
+              <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
+                <div className="mx-auto max-w-md space-y-4">
+                  {/* Lock Icon */}
+                  <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-50">
+                    <LockKeyhole className="size-8 text-blue-600" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      This is a Private Community
+                    </h2>
+                    <p className="text-gray-600">
+                      Only members can view and participate in this
+                      community&apos;s posts. Join to unlock exclusive content
+                      and discussions.
+                    </p>
+                  </div>
+
+                  <div className="pt-2">
+                    <JoinCommunity id={community.id} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex-1 space-y-4">
+              <PostsList communityId={community.id}></PostsList>
+            </div>
+          )}
 
           {/* Sidebar */}
           <CommunitySidebar community={community} />
