@@ -49,7 +49,6 @@ export const useNotificationSSE = ({
   const handleSSEEvent = useCallback(
     (eventType: string, data: string) => {
       if (eventType === 'ping') {
-        console.log('[Notification SSE] Ping received');
         return;
       }
 
@@ -87,7 +86,6 @@ export const useNotificationSSE = ({
     const connectSSE = async () => {
       try {
         const url = `${env.API_URL}/stream`;
-        console.log('[Notification SSE] Connecting to:', url);
 
         const response = await fetch(url, {
           headers: {
@@ -162,7 +160,6 @@ export const useNotificationSSE = ({
     // Cleanup on unmount or when enabled changes
     return () => {
       if (connectionRef.current) {
-        console.log('[Notification SSE] Disconnecting...');
         connectionRef.current.active = false;
         connectionRef.current.reader.cancel();
         connectionRef.current = null;

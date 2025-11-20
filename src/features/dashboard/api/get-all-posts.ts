@@ -17,22 +17,34 @@ export const getAllPosts = ({
   page?: number;
   tags?: string[];
 }): Promise<{ data: Post[]; pagination: Pagination }> => {
-  return api.get(`/posts`, {
-    params: {
-      sortBy,
-      page,
-      tags: tags.length > 0 ? tags.join(',') : undefined,
-    },
-  });
+  const params: Record<string, any> = {
+    sortBy,
+    page,
+  };
+
+  if (tags.length > 0) {
+    params.tags = tags.join(',');
+  }
+
+  console.log('🔍 [getAllPosts] Input params:', { sortBy, page, tags });
+  console.log('🔍 [getAllPosts] Built params object:', params);
+
+  return api.get(`/posts`, { params });
 };
 
 export const getInfiniteAllPostsQueryOptions = (
-  sortBy: 'new' | 'hot' | 'top' | 'best' = 'new',
+  sortBy: 'new' | 'hot' | 'top' | 'best',
   tags: string[] = [],
 ) => {
+  console.log('🔑 [QueryOptions] Creating with:', { sortBy, tags });
   return infiniteQueryOptions({
     queryKey: ['all-posts', sortBy, tags],
     queryFn: ({ pageParam = 1 }) => {
+      console.log('🎯 [QueryFn] Executing with:', {
+        sortBy,
+        page: pageParam,
+        tags,
+      });
       return getAllPosts({ sortBy, page: pageParam as number, tags });
     },
     getNextPageParam: (lastPage) => {
@@ -56,5 +68,6 @@ export const useInfiniteAllPosts = ({
 }: UseAllPostsOptions = {}) => {
   return useInfiniteQuery({
     ...getInfiniteAllPostsQueryOptions(sortBy, tags),
+    placeholderData: undefined, // Don't use stale data from other queries
   });
 };

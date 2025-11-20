@@ -36,7 +36,6 @@ export const useMessagesSSE = () => {
     const connectSSE = async () => {
       try {
         const url = `${env.API_URL}/stream`;
-        console.log('[SSE] Connecting to:', url);
 
         const response = await fetch(url, {
           headers: {
@@ -107,7 +106,6 @@ export const useMessagesSSE = () => {
 
     const handleSSEEvent = (eventType: string, data: string) => {
       if (eventType === 'ping') {
-        console.log('[SSE] Ping received');
         return;
       }
 
@@ -165,7 +163,6 @@ export const useMessagesSSE = () => {
     // Cleanup on unmount or when popup closes
     return () => {
       if (connectionRef.current) {
-        console.log('[SSE] Disconnecting...');
         connectionRef.current.active = false;
         connectionRef.current.reader.cancel();
         connectionRef.current = null;

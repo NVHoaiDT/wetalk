@@ -46,13 +46,17 @@ export const SelectTags = ({
 
   const handleSelectTag = (tagName: string) => {
     if (!value.includes(tagName)) {
-      onChange([...value, tagName]);
+      const newTags = [...value, tagName];
+      console.log('🏷️ [SelectTags] Adding tag:', { tagName, newTags });
+      onChange(newTags);
     }
     setSearch('');
   };
 
   const handleRemoveTag = (tagName: string) => {
-    onChange(value.filter((t) => t !== tagName));
+    const newTags = value.filter((t) => t !== tagName);
+    console.log('🗑️ [SelectTags] Removing tag:', { tagName, newTags });
+    onChange(newTags);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
