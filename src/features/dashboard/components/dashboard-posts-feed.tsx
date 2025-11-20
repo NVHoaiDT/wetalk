@@ -15,16 +15,16 @@ import { DashboardPostCard } from './dashboard-post-card';
 import { SelectTags } from './select-tags';
 
 const sortOptions = [
-  { value: 'best', label: 'Best', icon: Star, color: 'text-yellow-500' },
-  { value: 'hot', label: 'Hot', icon: Flame, color: 'text-orange-500' },
   { value: 'new', label: 'New', icon: Clock, color: 'text-blue-500' },
+  { value: 'hot', label: 'Hot', icon: Flame, color: 'text-orange-500' },
   { value: 'top', label: 'Top', icon: TrendingUp, color: 'text-green-500' },
+  { value: 'best', label: 'Best', icon: Star, color: 'text-yellow-500' },
 ] as const;
 
 type SortType = (typeof sortOptions)[number]['value'];
 
 export const DashboardPostsFeed = () => {
-  const [sortBy, setSortBy] = useState<SortType>('best');
+  const [sortBy, setSortBy] = useState<SortType>('new');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
