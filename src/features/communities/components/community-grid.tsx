@@ -10,10 +10,11 @@ import { CommunityCard } from './community-card';
 
 interface CommunityGridProps {
   filter: string;
+  topics?: string[];
 }
 
-const CommunityGrid = ({ filter }: CommunityGridProps) => {
-  const communityQuery = useCommunities({ sortBy: filter, page: 1 });
+const CommunityGrid = ({ filter, topics }: CommunityGridProps) => {
+  const communityQuery = useCommunities({ sortBy: filter, page: 1, topics });
   const addRecentCommunityMutation = useAddRecentCommunity();
 
   if (communityQuery.isLoading) {

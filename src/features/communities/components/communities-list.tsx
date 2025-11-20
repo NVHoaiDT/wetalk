@@ -1,4 +1,5 @@
 import { CommunityGrid } from './community-grid';
+import { CommunityTopicsSection } from './community-topics-section';
 
 const communitiySections = [
   {
@@ -36,6 +37,24 @@ const CommunitiesList = () => {
           <CommunityGrid filter={section.filter}></CommunityGrid>
         </section>
       ))}
+
+      {/* Filter communities by topics */}
+      <section>
+        <div className="mb-8">
+          <div className="flex items-start gap-2 text-2xl">
+            <h1 className="font-medium text-gray-600">Or find your</h1>
+            <h1
+              className={`mb-2 bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text font-bold text-transparent underline decoration-cyan-400 decoration-wavy decoration-2 underline-offset-4`}
+            >
+              Topics
+            </h1>
+          </div>
+          <p className="text-gray-600">
+            Explore communities by topics that interest you
+          </p>
+        </div>
+        <CommunityTopicsSection />
+      </section>
     </div>
   );
 };
