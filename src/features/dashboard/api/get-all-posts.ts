@@ -9,11 +9,11 @@ import { QueryConfig } from '@/lib/react-query';
 import { Pagination, Post } from '@/types/api';
 
 export const getAllPosts = ({
-  sortBy = 'new',
+  sortBy,
   page = 1,
   tags = [],
 }: {
-  sortBy?: 'new' | 'hot' | 'top' | 'best';
+  sortBy?: string | undefined;
   page?: number;
   tags?: string[];
 }): Promise<{ data: Post[]; pagination: Pagination }> => {
@@ -26,25 +26,16 @@ export const getAllPosts = ({
     params.tags = tags.join(',');
   }
 
-  console.log('🔍 [getAllPosts] Input params:', { sortBy, page, tags });
-  console.log('🔍 [getAllPosts] Built params object:', params);
-
   return api.get(`/posts`, { params });
 };
 
 export const getInfiniteAllPostsQueryOptions = (
-  sortBy: 'new' | 'hot' | 'top' | 'best',
+  sortBy: string | undefined,
   tags: string[] = [],
 ) => {
-  console.log('🔑 [QueryOptions] Creating with:', { sortBy, tags });
   return infiniteQueryOptions({
     queryKey: ['all-posts', sortBy, tags],
     queryFn: ({ pageParam = 1 }) => {
-      console.log('🎯 [QueryFn] Executing with:', {
-        sortBy,
-        page: pageParam,
-        tags,
-      });
       return getAllPosts({ sortBy, page: pageParam as number, tags });
     },
     getNextPageParam: (lastPage) => {
@@ -57,13 +48,13 @@ export const getInfiniteAllPostsQueryOptions = (
 };
 
 type UseAllPostsOptions = {
-  sortBy?: 'new' | 'hot' | 'top' | 'best';
+  sortBy?: string | undefined;
   tags?: string[];
   queryConfig?: QueryConfig<typeof getAllPosts>;
 };
 
 export const useInfiniteAllPosts = ({
-  sortBy = 'new',
+  sortBy,
   tags = [],
 }: UseAllPostsOptions = {}) => {
   return useInfiniteQuery({

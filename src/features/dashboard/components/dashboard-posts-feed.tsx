@@ -27,20 +27,10 @@ export const DashboardPostsFeed = () => {
   const [sortBy, setSortBy] = useState<SortType>('best');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  console.log('🎨 [DashboardPostsFeed] State:', { sortBy, selectedTags });
-
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteAllPosts({ sortBy, tags: selectedTags });
 
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
-
-  console.log('📦 [DashboardPostsFeed] Data received:', {
-    totalPages: data?.pages.length,
-    totalPosts: posts.length,
-    firstPostId: posts[0]?.id,
-    firstPostTitle: posts[0]?.title,
-    firstPostTags: posts[0]?.tags,
-  });
 
   const currentSort = sortOptions.find((opt) => opt.value === sortBy);
   const CurrentSortIcon = currentSort?.icon || Star;
