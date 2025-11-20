@@ -72,7 +72,7 @@ export const DashboardPostsFeed = () => {
   return (
     <div className="space-y-4">
       {/* Filter and Sort Bar */}
-      <div className="border-b border-slate-300 p-4">
+      <div className="border-y border-slate-200 p-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           {/* Sort Dropdown */}
           <DropdownMenu>
