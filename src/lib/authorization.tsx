@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { fancyLog } from '@/helper/fancy-log';
 import { Comment, Moderators, User } from '@/types/api';
 
 import { useCurrentUser } from './auth';
@@ -14,21 +13,16 @@ type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
   'comment:delete': (user: User, comment: Comment) => {
-    fancyLog('Policy Check - comment:delete - user:', user);
+    if (!user) return false;
     return user.role === ROLES.superAdmin || comment.author?.id === user.id;
   },
   'post:create': (isFollow: boolean) => {
-    fancyLog('Policy Check - post:create - isFollow:', isFollow);
     return isFollow;
   },
   'community:moderate': (currentUser: User, moderators: Moderators[]) => {
     return moderators.some((mod) => mod.userId === currentUser.id);
   },
   'community:superAdmin': (currentUser: User, moderators: Moderators[]) => {
-    /* Check for:
-      - Moderators-list contains current user (match by `id`)
-      - AND that `id` has role of `super_admin`       
-    */
     return moderators.some(
       (mod) => mod.userId === currentUser.id && mod.role === ROLES.superAdmin,
     );
@@ -39,6 +33,15 @@ export const useAuthorization = () => {
   const userQuery = useCurrentUser();
   const user = userQuery.data?.data;
 
+  /* 
+    If user not logged in, we don't want to throw an error 
+    Instead, we want to return someting like:
+    return {
+      checkAccess: () => false,
+      role: 'guest' 
+    }
+
+  */
   if (!user) {
     throw Error('User does not exist!');
   }

@@ -47,8 +47,6 @@ export const PostView = ({ id }: { id: number }) => {
 
   if (!post) return null;
 
-  fancyLog('SUMMARY', summaryPost);
-
   const hasMedia = post.type === 'media' && post.mediaUrls?.length > 0;
   return (
     <article className="w-full rounded-xl border border-slate-200 shadow-sm">

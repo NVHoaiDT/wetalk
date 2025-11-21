@@ -55,11 +55,8 @@ export const createAppRouter = (queryClient: QueryClient) =>
     },
     {
       path: paths.app.root.path,
-      element: (
-        <ProtectedRoute>
-          <AppRoot />
-        </ProtectedRoute>
-      ),
+      /* ProtectedRoute previosly warped AppRoot */
+      element: <AppRoot />,
       ErrorBoundary: AppRootErrorBoundary,
       children: [
         {
