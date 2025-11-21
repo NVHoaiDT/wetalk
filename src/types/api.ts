@@ -68,7 +68,7 @@ export type LoginResponse = {
 };
 
 /* ____________________Community____________________ */
-type Moderators = {
+export type Moderators = {
   userId: number;
   username: string;
   avatar: string;

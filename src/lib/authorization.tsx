@@ -1,27 +1,37 @@
 import * as React from 'react';
 
 import { fancyLog } from '@/helper/fancy-log';
-import { Comment, User } from '@/types/api';
+import { Comment, Moderators, User } from '@/types/api';
 
 import { useCurrentUser } from './auth';
 
 export enum ROLES {
-  admin = 'admin',
+  superAdmin = 'super_admin',
+  moderator = 'moderator',
   user = 'user',
 }
-
 type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
   'comment:delete': (user: User, comment: Comment) => {
-    if (user.role === ROLES.admin || comment.author?.id === user.id) {
-      return true;
-    }
-    return false;
+    fancyLog('Policy Check - comment:delete - user:', user);
+    return user.role === ROLES.superAdmin || comment.author?.id === user.id;
   },
   'post:create': (isFollow: boolean) => {
     fancyLog('Policy Check - post:create - isFollow:', isFollow);
     return isFollow;
+  },
+  'community:moderate': (currentUser: User, moderators: Moderators[]) => {
+    return moderators.some((mod) => mod.userId === currentUser.id);
+  },
+  'community:superAdmin': (currentUser: User, moderators: Moderators[]) => {
+    /* Check for:
+      - Moderators-list contains current user (match by `id`)
+      - AND that `id` has role of `super_admin`       
+    */
+    return moderators.some(
+      (mod) => mod.userId === currentUser.id && mod.role === ROLES.superAdmin,
+    );
   },
 };
 

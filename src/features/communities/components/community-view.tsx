@@ -10,7 +10,9 @@ import { Spinner } from '@/components/ui/spinner';
 import { CreatePost } from '@/features/posts/components/create-post';
 import { PostsList } from '@/features/posts/components/posts-list';
 import { fancyLog } from '@/helper/fancy-log';
+import { useCurrentUser } from '@/lib/auth';
 import { Authorization, POLICIES } from '@/lib/authorization';
+import { User } from '@/types/api';
 
 import { useCommunity } from '../api/get-community';
 
@@ -23,13 +25,16 @@ import { UpdateCommunity } from './update-community';
 
 export const CommunityView = ({ communityId }: { communityId: number }) => {
   const communityQuery = useCommunity({ communityId });
+  const currentUserQuery = useCurrentUser();
 
-  if (communityQuery.isLoading) {
+  if (communityQuery.isLoading || currentUserQuery.isLoading) {
     <div className="flex h-48 w-full items-center justify-center">
       <Spinner size="lg" />
     </div>;
   }
+
   const community = communityQuery?.data?.data;
+  const currentUser = currentUserQuery?.data?.data;
 
   if (!community) return null;
 
@@ -86,51 +91,90 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                   <CreatePost communityId={community.id} />
                 </Authorization>
 
-                {community.isFollow ? (
-                  <UnJoinCommunity id={community.id} />
-                ) : (
-                  <JoinCommunity id={community.id} />
-                )}
+                {/* Super Admin (community's creator) cannot leave community (they're joined by default) */}
+                <Authorization
+                  policyCheck={
+                    !POLICIES['community:superAdmin'](
+                      currentUser as User,
+                      community.moderators,
+                    )
+                  }
+                >
+                  {community.isFollow ? (
+                    <UnJoinCommunity id={community.id} />
+                  ) : (
+                    <JoinCommunity id={community.id} />
+                  )}
+                </Authorization>
 
                 {/* More Actions */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="flex size-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-gray-50">
-                      <MoreHorizontal className="size-5 text-gray-600" />
-                    </button>
-                  </DropdownMenuTrigger>
+                <Authorization
+                  policyCheck={POLICIES['community:moderate'](
+                    currentUser as User,
+                    community.moderators,
+                  )}
+                >
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="flex items-center justify-center gap-2 rounded-full border border-gray-300 px-4 py-2 font-semibold text-gray-600 shadow-lg transition-colors duration-200 hover:bg-gray-50">
+                        <MoreHorizontal className="size-5 text-gray-600" />
+                        <span>Moderate</span>
+                      </button>
+                    </DropdownMenuTrigger>
 
-                  <DropdownMenuContent sideOffset={12} align="end">
-                    {/* Update Community's Appearance */}
-                    <DropdownMenuItem
-                      onSelect={(e) => e.preventDefault()}
-                      asChild
-                    >
-                      <UpdateCommunity communityId={community.id} />
-                    </DropdownMenuItem>
+                    <DropdownMenuContent sideOffset={12} align="end">
+                      {/* Update Community's Appearance */}
+                      <Authorization
+                        policyCheck={POLICIES['community:superAdmin'](
+                          currentUser as User,
+                          community.moderators,
+                        )}
+                      >
+                        <DropdownMenuItem
+                          onSelect={(e) => e.preventDefault()}
+                          asChild
+                        >
+                          <UpdateCommunity communityId={community.id} />
+                        </DropdownMenuItem>
+                      </Authorization>
 
-                    {/* Community Settings */}
-                    <DropdownMenuItem
-                      onSelect={(e) => e.preventDefault()}
-                      asChild
-                    >
-                      <SettingsCommunity communityId={community.id} />
-                    </DropdownMenuItem>
+                      <Authorization
+                        policyCheck={POLICIES['community:superAdmin'](
+                          currentUser as User,
+                          community.moderators,
+                        )}
+                      >
+                        {/* Community Settings */}
+                        <DropdownMenuItem
+                          onSelect={(e) => e.preventDefault()}
+                          asChild
+                        >
+                          <SettingsCommunity communityId={community.id} />
+                        </DropdownMenuItem>
+                      </Authorization>
 
-                    {/* Mod Tools */}
-                    <DropdownMenuItem
-                      onSelect={(e) => e.preventDefault()}
-                      asChild
-                    >
-                      <ModToolsDialog communityId={community.id} />
-                    </DropdownMenuItem>
+                      {/* Mod Tools */}
+                      <DropdownMenuItem
+                        onSelect={(e) => e.preventDefault()}
+                        asChild
+                      >
+                        <ModToolsDialog communityId={community.id} />
+                      </DropdownMenuItem>
 
-                    <DropdownMenuItem className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal text-destructive focus:text-destructive">
-                      <Trash className="size-5" />
-                      Delete Community
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <Authorization
+                        policyCheck={POLICIES['community:superAdmin'](
+                          currentUser as User,
+                          community.moderators,
+                        )}
+                      >
+                        <DropdownMenuItem className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal text-destructive focus:text-destructive">
+                          <Trash className="size-5" />
+                          Delete Community
+                        </DropdownMenuItem>
+                      </Authorization>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </Authorization>
               </div>
             </div>
           </div>
