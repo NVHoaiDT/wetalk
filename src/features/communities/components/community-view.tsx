@@ -1,4 +1,4 @@
-import { LockKeyhole, MoreHorizontal, Trash } from 'lucide-react';
+import { LockKeyhole, ClockFading, MoreHorizontal, Trash } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -237,7 +237,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                 <div className="mx-auto max-w-md space-y-4">
                   {/* Lock Icon */}
                   <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-amber-50">
-                    <LockKeyhole className="size-8 text-amber-600" />
+                    <ClockFading className="size-8 text-amber-600" />
                   </div>
 
                   <div className="space-y-2">
