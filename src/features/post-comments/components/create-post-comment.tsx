@@ -1,5 +1,5 @@
 import { Image, Send } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { MediaUploader } from '@/components/ui/media-uploader';
@@ -16,6 +16,14 @@ type CreateCommentProps = {
   minimized?: boolean;
 };
 
+// Helper function to check if HTML content is empty (only contains empty tags)
+const isContentEmpty = (html: string): boolean => {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const text = tmp.textContent || tmp.innerText || '';
+  return !text.trim();
+};
+
 export const CreatePostComment = ({
   postId,
   parentCommentId,
@@ -25,6 +33,7 @@ export const CreatePostComment = ({
   const [content, setContent] = useState('');
   const [mediaUrl, setMediaUrl] = useState<string>();
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
+  const editorResetKey = useRef(0);
 
   const { addNotification } = useNotifications();
   const createPostCommentMutation = useCreatePostComment({
@@ -33,6 +42,7 @@ export const CreatePostComment = ({
       onSuccess: () => {
         setContent('');
         setMediaUrl(undefined);
+        editorResetKey.current += 1; // Force re-render to reset editor
         addNotification({
           type: 'success',
           title: 'Comment posted successfully',
@@ -44,7 +54,7 @@ export const CreatePostComment = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!content.trim()) return;
+    if (isContentEmpty(content)) return;
 
     createPostCommentMutation.mutate({
       data: {
@@ -61,7 +71,11 @@ export const CreatePostComment = ({
       <div
         className={`relative rounded-lg border ${minimized ? 'border-transparent hover:border-gray-200' : 'border-gray-200'}`}
       >
-        <TextEditor value={content} onChange={setContent} />
+        <TextEditor
+          key={editorResetKey.current}
+          value={content}
+          onChange={setContent}
+        />
         {mediaUrl && (
           <div className="mx-4 mb-4 mt-2">
             <img
@@ -92,7 +106,9 @@ export const CreatePostComment = ({
           </Button>
           <Button
             type="submit"
-            disabled={!content.trim() || createPostCommentMutation.isPending}
+            disabled={
+              isContentEmpty(content) || createPostCommentMutation.isPending
+            }
             size="sm"
             className="rounded-full bg-gray-600 px-4"
           >
