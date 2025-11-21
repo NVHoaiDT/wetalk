@@ -29,19 +29,11 @@ export const POLICIES = {
   },
 };
 
+// For components that REQUIRE authentication
 export const useAuthorization = () => {
   const userQuery = useCurrentUser();
   const user = userQuery.data?.data;
 
-  /* 
-    If user not logged in, we don't want to throw an error 
-    Instead, we want to return someting like:
-    return {
-      checkAccess: () => false,
-      role: 'guest' 
-    }
-
-  */
   if (!user) {
     throw Error('User does not exist!');
   }
@@ -58,6 +50,30 @@ export const useAuthorization = () => {
   );
 
   return { checkAccess, role: user.role };
+};
+
+// For components that work with or without auth
+export const useOptionalAuthorization = () => {
+  const userQuery = useCurrentUser();
+  const user = userQuery.data?.data;
+
+  const checkAccess = React.useCallback(
+    ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
+      if (!user) return false;
+      if (allowedRoles && allowedRoles.length > 0) {
+        return allowedRoles.includes(user.role as RoleTypes);
+      }
+      return true;
+    },
+    [user],
+  );
+
+  return {
+    checkAccess,
+    role: user?.role ?? null,
+    isAuthenticated: !!user,
+    user: user ?? null,
+  };
 };
 
 type AuthorizationProps = {

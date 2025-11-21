@@ -38,6 +38,11 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
   if (!community) return null;
 
+  const isPrivateAndNotRequest =
+    community.isPrivate && !community.isFollow && !community.isRequestJoin;
+  const isPrivateAndNotApproved =
+    community.isPrivate && !community.isFollow && community.isRequestJoin;
+
   fancyLog('Community-Data:', community);
 
   return (
@@ -198,7 +203,9 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
       <div className="mx-auto max-w-7xl p-6">
         <div className="flex gap-6">
           {/* Posts Area */}
-          {community.isPrivate && !community.isFollow ? (
+
+          {/* TODO: Switch between three conditions: Private and Not Request, Private and not Approved, Public */}
+          {isPrivateAndNotRequest ? (
             <div className="flex-1">
               <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                 <div className="mx-auto max-w-md space-y-4">
@@ -220,6 +227,28 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
                   <div className="pt-2">
                     <JoinCommunity id={community.id} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : isPrivateAndNotApproved ? (
+            <div className="flex-1">
+              <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
+                <div className="mx-auto max-w-md space-y-4">
+                  {/* Lock Icon */}
+                  <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-amber-50">
+                    <LockKeyhole className="size-8 text-amber-600" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      Request Pending
+                    </h2>
+                    <p className="text-gray-600">
+                      Your request to join this private community is pending
+                      approval. You&apos;ll be notified once a moderator reviews
+                      your request.
+                    </p>
                   </div>
                 </div>
               </div>

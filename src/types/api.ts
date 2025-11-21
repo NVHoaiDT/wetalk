@@ -88,6 +88,7 @@ export type Community = {
   moderators: Moderators[];
   isRequiresMemberApproval: boolean;
   isRequiresPostApproval: boolean;
+  isRequestJoin: boolean;
   isFollow: boolean;
 };
 
