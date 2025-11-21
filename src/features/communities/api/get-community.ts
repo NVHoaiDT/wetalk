@@ -1,25 +1,3 @@
-/* 
-export type Community = {
-  id: number;
-  name: string;
-  shortDescription: string;
-  description: string;
-  topic: string[];
-  communityAvatar: string;
-  coverImage: string;
-  isPrivate: boolean;
-  createdAt: string;
-  totalMembers: number;
-  moderators:  
-  { 
-    userId: number;
-    username: string;
-    avatar: string;
-    role: string
-  };
-};
- */
-
 import { useQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
