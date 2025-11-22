@@ -1,10 +1,14 @@
 import { Image, Send } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
+import { ConfirmationDialog } from '@/components/ui/dialog';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { TextEditor } from '@/components/ui/text-editor';
+import { paths } from '@/config/paths';
+import { ProtectedAction } from '@/lib/auth';
 
 import { useCreatePostComment } from '../api/create-post-comment';
 
@@ -24,7 +28,7 @@ const isContentEmpty = (html: string): boolean => {
   return !text.trim();
 };
 
-export const CreatePostComment = ({
+export const CreatePostCommentFallback = ({
   postId,
   parentCommentId,
   onSuccess,
@@ -148,5 +152,59 @@ export const CreatePostComment = ({
         </div>
       )}
     </form>
+  );
+};
+
+export const UnauthenticatedFallback = ({ minimized = false }) => {
+  return (
+    <ConfirmationDialog
+      icon="info"
+      title="Share your thoughts!"
+      body="Sign up to join the conversation and post comments."
+      illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763795804/comment_v2xjak.jpg"
+      triggerButton={
+        <div
+          className={`relative rounded-lg border ${minimized ? 'border-transparent hover:border-gray-200' : 'border-slate-300'} cursor-pointer bg-gray-50 p-8 transition-colors hover:bg-gray-100`}
+        >
+          <p className="text-sm text-gray-500">
+            Sign up to join the conversation and post comments
+          </p>
+        </div>
+      }
+      confirmButton={
+        <Link
+          to={paths.auth.register.getHref(location.pathname)}
+          replace
+          className="inline-block rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          Sign up
+        </Link>
+      }
+    ></ConfirmationDialog>
+  );
+};
+
+export const CreatePostComment = ({
+  postId,
+  parentCommentId,
+  onSuccess,
+  placeholder,
+  minimized = false,
+}: CreateCommentProps) => {
+  return (
+    <ProtectedAction
+      authenticatedFallback={
+        <CreatePostCommentFallback
+          postId={postId}
+          parentCommentId={parentCommentId}
+          onSuccess={onSuccess}
+          placeholder={placeholder}
+          minimized={minimized}
+        />
+      }
+      unauthenticatedFallback={
+        <UnauthenticatedFallback minimized={minimized} />
+      }
+    />
   );
 };
