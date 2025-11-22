@@ -253,6 +253,22 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
+export const ProtectedAction = ({
+  authenticatedFallback,
+  unauthenticatedFallback,
+}: {
+  authenticatedFallback: React.ReactNode;
+  unauthenticatedFallback: React.ReactNode;
+}) => {
+  const user = useCurrentUser();
+
+  if (!user.data) {
+    return unauthenticatedFallback;
+  }
+
+  return authenticatedFallback;
+};
+
 type AuthLoaderProps = {
   children: React.ReactNode;
   renderLoading: () => React.ReactElement;

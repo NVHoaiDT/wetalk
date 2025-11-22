@@ -20,9 +20,11 @@ export const POLICIES = {
     return isFollow;
   },
   'community:moderate': (currentUser: User, moderators: Moderators[]) => {
+    if (!currentUser) return false;
     return moderators.some((mod) => mod.userId === currentUser.id);
   },
   'community:superAdmin': (currentUser: User, moderators: Moderators[]) => {
+    if (!currentUser) return false;
     return moderators.some(
       (mod) => mod.userId === currentUser.id && mod.role === ROLES.superAdmin,
     );
@@ -96,7 +98,7 @@ export const Authorization = ({
   forbiddenFallback = null,
   children,
 }: AuthorizationProps) => {
-  const { checkAccess } = useAuthorization();
+  const { checkAccess } = useOptionalAuthorization();
 
   let canAccess = false;
 
