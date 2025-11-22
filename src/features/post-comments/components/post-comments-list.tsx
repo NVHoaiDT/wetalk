@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
-import { ArchiveX, Reply, MoreVertical } from 'lucide-react';
+import { ArchiveX, MoreVertical } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ import { CreatePostComment } from './create-post-comment';
 import { DeletePostComment } from './delete-post-comment';
 import { DownVotePostComment } from './downvote-post-comment';
 import { EditPostComment } from './edit-post-comment';
+import { ReplyComment } from './reply-comment';
 import { UpVotePostComment } from './upvote-post-comment';
 
 type PostCommentsListProps = {
@@ -93,13 +94,10 @@ const Comment = ({
               <DownVotePostComment commentId={comment.id} />
             </div>
             {level < maxNestedLevel && (
-              <button
-                className="flex h-8 flex-row content-center items-center px-2 text-gray-600 hover:text-blue-600"
-                onClick={() => setIsReplying(!isReplying)}
-              >
-                <Reply className={'mr-1 size-4'} />
-                {isReplying ? 'Cancel' : 'Reply'}
-              </button>
+              <ReplyComment
+                onReply={() => setIsReplying(!isReplying)}
+                isReplying={isReplying}
+              />
             )}
             {level === 0 && (
               <DropdownMenu>
