@@ -244,7 +244,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = useCurrentUser();
   const location = useLocation();
 
-  if (!user.data) {
+  if (!user.data?.data) {
     return (
       <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
     );

@@ -10,8 +10,7 @@ import {
   ProfileTabs,
   TabType,
 } from '@/features/profiles/components/profile-tabs';
-import { useCurrentUser } from '@/lib/auth';
-
+import { useCurrentUser, ProtectedRoute } from '@/lib/auth';
 const ProfileRoute = () => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const userQuery = useCurrentUser();
@@ -29,8 +28,9 @@ const ProfileRoute = () => {
   }
 
   const user = userQuery.data?.data;
+
   if (!user) {
-    return null;
+    return <ProtectedRoute>{null}</ProtectedRoute>;
   }
 
   return (

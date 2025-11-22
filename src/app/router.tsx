@@ -4,7 +4,6 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 
 import { paths } from '@/config/paths';
-import { ProtectedRoute } from '@/lib/auth';
 
 import {
   default as AppRoot,
@@ -55,7 +54,6 @@ export const createAppRouter = (queryClient: QueryClient) =>
     },
     {
       path: paths.app.root.path,
-      /* ProtectedRoute previosly warped AppRoot */
       element: <AppRoot />,
       ErrorBoundary: AppRootErrorBoundary,
       children: [
@@ -75,20 +73,6 @@ export const createAppRouter = (queryClient: QueryClient) =>
           path: paths.app.community.path,
           lazy: () =>
             import('./routes/app/communites/community').then(
-              convert(queryClient),
-            ),
-        },
-        {
-          path: paths.app.discussions.path,
-          lazy: () =>
-            import('./routes/app/discussions/discussions').then(
-              convert(queryClient),
-            ),
-        },
-        {
-          path: paths.app.discussion.path,
-          lazy: () =>
-            import('./routes/app/discussions/discussion').then(
               convert(queryClient),
             ),
         },
