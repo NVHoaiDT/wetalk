@@ -47,8 +47,7 @@ type SideNavigationItem = {
 const Logo = () => {
   return (
     <Link className="flex items-center text-white" to={paths.home.getHref()}>
-      <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-sm font-semibold text-white">Wetalk</span>
+      <img className="h-20 w-auto" src={logo} alt="Workflow" />
     </Link>
   );
 };
