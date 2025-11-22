@@ -26,7 +26,7 @@ export const SavePostFallback = ({ postId }: SavePostProps) => {
   });
   return (
     <button
-      className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100"
+      className="flex items-center gap-1.5 rounded-full p-2 transition-colors hover:bg-gray-100"
       onClick={() => savePostMutation.mutate({ postId })}
     >
       <Bookmark className="size-4" />
@@ -43,7 +43,7 @@ export const UnauthenticatedFallback = () => {
       body="Create an account to save posts and access them anytime."
       illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763794173/save_jmhhpw.jpg"
       triggerButton={
-        <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+        <button className="flex items-center gap-1.5 rounded-full p-2 transition-colors hover:bg-gray-100">
           <Bookmark className="size-4" />
           <span>Save</span>
         </button>

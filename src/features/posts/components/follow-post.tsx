@@ -26,7 +26,7 @@ export const FollowPostFallback = ({ postId }: FollowPostProps) => {
   });
   return (
     <button
-      className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100"
+      className="flex items-center gap-1.5 rounded-full p-2 transition-colors hover:bg-gray-100"
       onClick={() => followPostMutation.mutate({ postId })}
     >
       <Bell className="size-4" />
@@ -43,7 +43,7 @@ export const UnauthenticatedFallback = () => {
       body="Create an account to follow posts and get notified about new comments."
       illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763793969/follow_oykl45.jpg"
       triggerButton={
-        <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+        <button className="flex items-center gap-1.5 rounded-full p-2 transition-colors hover:bg-gray-100">
           <Bell className="size-4" />
           <span>Follow</span>
         </button>

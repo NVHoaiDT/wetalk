@@ -1,10 +1,4 @@
-import {
-  MessageCircle,
-  Share2,
-  Bookmark,
-  MoreHorizontal,
-  EyeOff,
-} from 'lucide-react';
+import { MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
@@ -68,14 +62,6 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
 
   const handleJoinCommunity = () => {
     console.log('Join community:', post.community.id);
-  };
-
-  const handleHide = () => {
-    console.log('Hide post:', post.id);
-  };
-
-  const handleSave = () => {
-    console.log('Save post:', post.id);
   };
 
   return (
@@ -157,25 +143,20 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem
-                      onClick={handleSave}
-                      className="flex items-center gap-2"
-                    >
-                      <Bookmark className="size-4" />
-                      <span>Save</span>
+                    <DropdownMenuItem className="flex items-center gap-2">
+                      <SavePost postId={post.id} />
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={handleHide}
-                      className="flex items-center gap-2"
-                    >
-                      <EyeOff className="size-4" />
-                      <span>Hide</span>
+
+                    <DropdownMenuItem className="flex items-center gap-2">
+                      <FollowPost postId={post.id} />
                     </DropdownMenuItem>
-                    <ReportPost postId={post.id}>
-                      <DropdownMenuItem className="flex items-center gap-2 text-red-600">
-                        <span>Report</span>
-                      </DropdownMenuItem>
-                    </ReportPost>
+
+                    <DropdownMenuItem
+                      className="flex items-center gap-2 text-red-600"
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      <ReportPost postId={post.id} />
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

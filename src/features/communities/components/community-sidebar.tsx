@@ -1,4 +1,10 @@
-import { Calendar, Globe, TrendingUp, MessageCircle } from 'lucide-react';
+import {
+  Calendar,
+  Globe,
+  TrendingUp,
+  MessageCircle,
+  KeyRound,
+} from 'lucide-react';
 import { Link } from 'react-router';
 
 import { paths } from '@/config/paths';
@@ -81,16 +87,22 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
             {community.moderators.map((mod, idx) => (
               <Link to={paths.app.userProfile.getHref(mod.userId)} key={idx}>
                 <div className="flex cursor-pointer items-center gap-3 rounded-full p-2 transition-colors hover:border hover:border-blue-200 hover:bg-blue-50">
-                  <img
-                    src={
-                      mod.avatar || 'https://avatar.iran.liara.run/public/17'
-                    }
-                    alt={mod.username}
-                    className="size-8 rounded-full"
-                  />
-                  <span className="text-sm font-medium text-gray-900">
-                    {mod.username}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={
+                        mod.avatar || 'https://avatar.iran.liara.run/public/17'
+                      }
+                      alt={mod.username}
+                      className="size-8 rounded-full"
+                    />
+                    <span className="text-sm font-medium text-gray-900">
+                      {mod.username}
+                    </span>
+                  </div>
+
+                  {mod.role === 'super_admin' && (
+                    <KeyRound className="size-4 text-yellow-500" />
+                  )}
                 </div>
               </Link>
             ))}
