@@ -7,6 +7,7 @@ import {
   SettingNotification,
   SettingPreferences,
 } from '@/features/settings/components';
+import { ProtectedRoute } from '@/lib/auth';
 
 type SettingTab = 'account' | 'preferences' | 'notifications' | 'email';
 
@@ -60,56 +61,58 @@ const SettingRoute = () => {
   };
 
   return (
-    <ContentLayout>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600">
-            Manage your account settings and preferences
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Sidebar Navigation */}
-          <div className="lg:col-span-3">
-            <div className="sticky top-6 space-y-2 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-              {TABS.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
-
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-all ${
-                      isActive
-                        ? 'border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm'
-                        : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <Icon
-                      className={`size-5 ${isActive ? tab.color : 'text-gray-400'}`}
-                    />
-                    <span
-                      className={`text-sm font-semibold ${isActive ? 'text-gray-900' : 'text-gray-600'}`}
-                    >
-                      {tab.label}
-                    </span>
-                    {isActive && (
-                      <div className="ml-auto size-2 rounded-full bg-blue-600" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+    <ProtectedRoute>
+      <ContentLayout>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="mb-2 text-3xl font-bold text-gray-900">Settings</h1>
+            <p className="text-gray-600">
+              Manage your account settings and preferences
+            </p>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-9">{renderTabContent()}</div>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+            {/* Sidebar Navigation */}
+            <div className="lg:col-span-3">
+              <div className="sticky top-6 space-y-2 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                {TABS.map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
+
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-all ${
+                        isActive
+                          ? 'border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm'
+                          : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <Icon
+                        className={`size-5 ${isActive ? tab.color : 'text-gray-400'}`}
+                      />
+                      <span
+                        className={`text-sm font-semibold ${isActive ? 'text-gray-900' : 'text-gray-600'}`}
+                      >
+                        {tab.label}
+                      </span>
+                      {isActive && (
+                        <div className="ml-auto size-2 rounded-full bg-blue-600" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="lg:col-span-9">{renderTabContent()}</div>
+          </div>
         </div>
-      </div>
-    </ContentLayout>
+      </ContentLayout>
+    </ProtectedRoute>
   );
 };
 
