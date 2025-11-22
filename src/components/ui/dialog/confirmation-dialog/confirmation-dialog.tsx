@@ -19,6 +19,7 @@ export type ConfirmationDialogProps = {
   confirmButton: React.ReactElement;
   title: string;
   body?: string;
+  illustration?: string;
   cancelButtonText?: string;
   icon?: 'danger' | 'info';
   isDone?: boolean;
@@ -29,6 +30,7 @@ export const ConfirmationDialog = ({
   confirmButton,
   title,
   body = '',
+  illustration,
   cancelButtonText = 'Cancel',
   icon = 'danger',
   isDone = false,
@@ -75,6 +77,15 @@ export const ConfirmationDialog = ({
             </div>
           )}
         </div>
+        {illustration && (
+          <div className="flex items-center justify-center">
+            <img
+              src={illustration}
+              alt="Illustration"
+              className="size-64 rounded-full"
+            />
+          </div>
+        )}
 
         <DialogFooter>
           {confirmButton}

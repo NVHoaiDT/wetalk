@@ -1,7 +1,9 @@
 import { Plus } from 'lucide-react';
 import { Controller } from 'react-hook-form';
+import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
+import { ConfirmationDialog } from '@/components/ui/dialog';
 import {
   Form,
   FormDrawer,
@@ -10,7 +12,8 @@ import {
   Textarea,
 } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
-/* import { Authorization, ROLES } from '@/lib/authorization'; */
+import { paths } from '@/config/paths';
+import { ProtectedAction } from '@/lib/auth';
 
 import {
   createCommunityInputSchema,
@@ -19,7 +22,7 @@ import {
 
 import { SearchTopics } from './search-topics';
 
-export const CreateCommunity = () => {
+export const CreateCommunityFallback = () => {
   const { addNotification } = useNotifications();
   const createCommunityMutation = useCreateCommunity({
     mutationConfig: {
@@ -39,7 +42,6 @@ export const CreateCommunity = () => {
     },
   });
   return (
-    /* <Authorization allowedRoles={[ROLES.ADMIN]}> */
     <FormDrawer
       isDone={createCommunityMutation.isSuccess}
       triggerButton={
@@ -144,6 +146,43 @@ export const CreateCommunity = () => {
         )}
       </Form>
     </FormDrawer>
-    /* </Authorization> */
+  );
+};
+
+export const UnauthenticatedFallback = () => {
+  return (
+    <ConfirmationDialog
+      icon="info"
+      title="Start your own community!"
+      body="Create an account to build and manage your own community."
+      illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763791048/community_1_rlcfr1.svg"
+      triggerButton={
+        <Button
+          size="sm"
+          icon={<Plus className="size-4" />}
+          className="border-0 bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
+        >
+          Create Community
+        </Button>
+      }
+      confirmButton={
+        <Link
+          to={paths.auth.register.getHref(location.pathname)}
+          replace
+          className="inline-block rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          Sign up
+        </Link>
+      }
+    ></ConfirmationDialog>
+  );
+};
+
+export const CreateCommunity = () => {
+  return (
+    <ProtectedAction
+      authenticatedFallback={<CreateCommunityFallback />}
+      unauthenticatedFallback={<UnauthenticatedFallback />}
+    />
   );
 };

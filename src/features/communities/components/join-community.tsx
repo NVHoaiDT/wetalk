@@ -60,6 +60,7 @@ export const UnauthenticatedFallback = () => {
       icon="info"
       title="Join the conversation!"
       body="Create an account to join this community and start connecting with others."
+      illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763791448/signup_hxshoi.svg"
       triggerButton={
         <Button
           size="lg"
