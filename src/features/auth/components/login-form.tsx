@@ -88,9 +88,20 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         Don&apos;t have an account?{' '}
         <Link
           to={paths.auth.register.getHref(redirectTo)}
-          className="font-semibold text-gray-900 underline underline-offset-2 transition-colors hover:text-gray-700"
+          className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text font-semibold text-transparent underline decoration-blue-500 decoration-wavy decoration-1 underline-offset-2 transition-colors hover:from-blue-600 hover:to-blue-700"
         >
           Sign up
+        </Link>
+      </div>
+
+      {/* Guest */}
+      <div className="text-center text-sm text-gray-600">
+        Or sign in later?{' '}
+        <Link
+          to={paths.app.dashboard.getHref()}
+          className="bg-gradient-to-r from-cyan-500 to-cyan-600 bg-clip-text font-semibold text-transparent underline decoration-cyan-500 decoration-wavy decoration-1 underline-offset-2 transition-colors hover:from-blue-600 hover:to-blue-700"
+        >
+          Guest
         </Link>
       </div>
     </div>
