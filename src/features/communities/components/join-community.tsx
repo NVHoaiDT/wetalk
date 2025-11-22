@@ -31,7 +31,7 @@ export const JoinCommunityFallback = ({ id }: JoinCommunityProps) => {
       isDone={joinCommunityMutation.isSuccess}
       icon="info"
       title="Ready to join?"
-      body="By joining, you'll be able to participate in discussions and connect with other members. You agree to follow the community guidelines."
+      body="By joining, You agree to follow the community guidelines."
       triggerButton={
         <Button
           size="lg"
