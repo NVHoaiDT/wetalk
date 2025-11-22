@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router';
 
-import logo from '@/assets/logo.svg';
 import { Head } from '@/components/seo';
 import { paths } from '@/config/paths';
 import { useCurrentUser } from '@/lib/auth';
