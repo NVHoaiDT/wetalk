@@ -30,8 +30,8 @@ export const JoinCommunityFallback = ({ id }: JoinCommunityProps) => {
     <ConfirmationDialog
       isDone={joinCommunityMutation.isSuccess}
       icon="info"
-      title="Join this community"
-      body="By joining this community you agree to our terms and conditions"
+      title="Ready to join?"
+      body="By joining, you'll be able to participate in discussions and connect with other members. You agree to follow the community guidelines."
       triggerButton={
         <Button
           size="lg"
@@ -58,8 +58,8 @@ export const UnauthenticatedFallback = () => {
   return (
     <ConfirmationDialog
       icon="info"
-      title="Seem like you're not logged in 🤔"
-      body="Sign up or log in to join this community and participate in discussions"
+      title="Join the conversation!"
+      body="Create an account to join this community and start connecting with others."
       triggerButton={
         <Button
           size="lg"
@@ -69,7 +69,11 @@ export const UnauthenticatedFallback = () => {
         </Button>
       }
       confirmButton={
-        <Link to={paths.auth.register.getHref(location.pathname)} replace>
+        <Link
+          to={paths.auth.register.getHref(location.pathname)}
+          replace
+          className="inline-block rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
           Sign up
         </Link>
       }
