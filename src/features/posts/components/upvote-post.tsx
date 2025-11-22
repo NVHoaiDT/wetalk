@@ -74,6 +74,7 @@ export const UnauthenticatedFallback = () => {
       icon="info"
       title="Join the conversation!"
       body="Sign up to upvote posts and support content you like."
+      illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
       triggerButton={
         <button className="rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500">
           <ChevronUp className="size-5" />

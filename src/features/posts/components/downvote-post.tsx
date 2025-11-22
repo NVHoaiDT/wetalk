@@ -71,7 +71,8 @@ export const UnauthenticatedFallback = () => {
     <ConfirmationDialog
       icon="info"
       title="Join the conversation!"
-      body="Sign up to downvote posts and share your feedback."
+      body="Sign up to share your feedback."
+      illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
       triggerButton={
         <button className="rounded text-gray-500 transition-colors hover:bg-red-50 hover:text-red-500">
           <ChevronDown className="size-5" />
