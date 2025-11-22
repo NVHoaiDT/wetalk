@@ -6,7 +6,6 @@ import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
-import { fancyLog } from '@/helper/fancy-log';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
@@ -34,6 +33,7 @@ export const PostView = ({ id }: { id: number }) => {
       </div>
     );
   }
+
   if (summaryPostQuery.isPending) {
     return (
       <div className="flex h-48 w-full items-center justify-center">

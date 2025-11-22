@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import { paths } from '@/config/paths';
 import { CreatePost } from '@/features/posts/components/create-post';
+import { Authorization, POLICIES } from '@/lib/authorization';
 import { Community } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
@@ -58,7 +59,11 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
             </div>
           </div>
 
-          <CreatePost communityId={community.id} />
+          <Authorization
+            policyCheck={POLICIES['post:create'](community.isFollow)}
+          >
+            <CreatePost communityId={community.id} />
+          </Authorization>
         </div>
       </div>
 

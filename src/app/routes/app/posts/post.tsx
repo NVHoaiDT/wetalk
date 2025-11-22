@@ -38,10 +38,24 @@ const PostRoute = () => {
       </div>
     );
   }
+
   if (postQuery.isError || communityQuery.isError) {
     return (
-      <div className="flex h-48 w-full items-center justify-center text-red-500">
-        Error loading post.
+      <div className="flex min-h-[400px] w-full items-center justify-center">
+        <div className="flex max-w-full flex-col items-center gap-4 rounded-lg border border-orange-200 bg-orange-50/50 p-8 text-center">
+          <img
+            src="https://res.cloudinary.com/djwpst00v/image/upload/v1763789403/13379593_5219088_iajsfa.svg"
+            alt="question"
+            className="size-96 rounded-full"
+          />
+          <h3 className="text-lg font-semibold text-red-900">
+            Unable to Load Post
+          </h3>
+          <p className="text-sm text-orange-700">
+            This post might not exist, or you may not have access to it. Please
+            make sure you've joined the community or try refreshing the page.
+          </p>
+        </div>
       </div>
     );
   }
