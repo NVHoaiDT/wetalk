@@ -230,12 +230,10 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
           {/* Posts Area */}
           {activeTab === 'posts' && (
             <>
-              {/* TODO: Switch between three conditions: Private and Not Request, Private and not Approved, Public */}
               {isPrivateAndNotRequest ? (
                 <div className="flex-1">
                   <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                     <div className="mx-auto max-w-md space-y-4">
-                      {/* Lock Icon */}
                       <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-50">
                         <LockKeyhole className="size-8 text-blue-600" />
                       </div>
@@ -261,7 +259,6 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                 <div className="flex-1">
                   <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                     <div className="mx-auto max-w-md space-y-4">
-                      {/* Lock Icon */}
                       <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-amber-50">
                         <ClockFading className="size-8 text-amber-600" />
                       </div>
@@ -281,7 +278,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                 </div>
               ) : (
                 <div className="flex-1 space-y-4">
-                  <PostsList communityId={community.id}></PostsList>
+                  <PostsList communityId={community.id} />
                 </div>
               )}
             </>

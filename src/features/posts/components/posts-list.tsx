@@ -8,7 +8,6 @@ import {
   TrendingUp,
   ChevronDown,
   MoreHorizontal,
-  EyeOff,
 } from 'lucide-react';
 import * as React from 'react';
 import { Link } from 'react-router';
@@ -86,14 +85,6 @@ export const PostsList = ({ communityId }: PostsListProps) => {
 
   const handleJoinCommunity = (communityId: number) => {
     console.log('Join community:', communityId);
-  };
-
-  const handleHide = (postId: number) => {
-    console.log('Hide post:', postId);
-  };
-
-  const handleSave = (postId: number) => {
-    console.log('Save post:', postId);
   };
 
   if (postsQuery.isLoading) {
@@ -246,24 +237,20 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem
-                            onClick={() => handleSave(post.id)}
-                            className="flex items-center gap-2"
-                          >
-                            <span>Save</span>
+                          <DropdownMenuItem className="flex items-center gap-2">
+                            <SavePost postId={post.id} />
                           </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleHide(post.id)}
-                            className="flex items-center gap-2"
-                          >
-                            <EyeOff className="size-4" />
-                            <span>Hide</span>
+
+                          <DropdownMenuItem className="flex items-center gap-2">
+                            <FollowPost postId={post.id} />
                           </DropdownMenuItem>
-                          <ReportPost postId={post.id}>
-                            <DropdownMenuItem className="flex items-center gap-2 text-red-600">
-                              <span>Report</span>
-                            </DropdownMenuItem>
-                          </ReportPost>
+
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-red-600"
+                            onSelect={(e) => e.preventDefault()}
+                          >
+                            <ReportPost postId={post.id} />
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
@@ -343,8 +330,6 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                         <span>Share</span>
                       </button>
                     </SharePost>
-                    <SavePost postId={post.id} />
-                    <FollowPost postId={post.id} />
                   </div>
                 </div>
               </div>
