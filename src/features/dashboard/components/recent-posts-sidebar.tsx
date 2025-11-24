@@ -35,7 +35,7 @@ export const RecentPostsSidebar = () => {
             <Link
               key={post.id}
               to={paths.app.post.getHref(post.id)}
-              className="group block border-b border-gray-100 pb-4 last:border-b-0 last:pb-0"
+              className="group block border-b border-gray-200 pb-2 last:border-b-0 last:pb-0"
             >
               <div className="flex gap-3">
                 {/* Community Avatar */}
@@ -60,7 +60,7 @@ export const RecentPostsSidebar = () => {
 
                   <div className="flex items-center justify-between pb-3">
                     {/* Post Title */}
-                    <h3 className="line-clamp-1 text-xs font-semibold leading-none text-gray-700 transition-colors group-hover:text-blue-600">
+                    <h3 className="mr-2 line-clamp-1  text-sm text-gray-700 transition-colors group-hover:text-blue-600">
                       {post.title}
                     </h3>
                     {/* Post Date */}

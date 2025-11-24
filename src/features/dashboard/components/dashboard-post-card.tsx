@@ -226,8 +226,6 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
                   <span>Share</span>
                 </button>
               </SharePost>
-              <SavePost postId={post.id} />
-              <FollowPost postId={post.id} />
             </div>
           </div>
         </div>
