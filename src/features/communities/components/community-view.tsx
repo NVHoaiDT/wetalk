@@ -291,7 +291,12 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
           {activeTab === 'about' && (
             <div className="flex-1">
               <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-                <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                <img
+                  src="https://res.cloudinary.com/djwpst00v/image/upload/v1763964381/about_y2vtcs.svg"
+                  alt="rules illustration"
+                  className="mx-auto size-64 rounded-full"
+                />
+                <h2 className="mb-4 mt-8 text-center text-2xl font-bold text-gray-900">
                   About w/{community.name}
                 </h2>
                 <div className="prose max-w-none text-gray-700">
@@ -308,21 +313,11 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
             <div className="flex-1">
               <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                 <div className="mx-auto max-w-md space-y-4">
-                  <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-gray-50">
-                    <svg
-                      className="size-8 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </div>
+                  <img
+                    src="https://res.cloudinary.com/djwpst00v/image/upload/v1763964103/rules_mzdcda.svg"
+                    alt="rules illustration"
+                    className="mx-auto size-64 rounded-full"
+                  />
                   <div className="space-y-2">
                     <h2 className="text-2xl font-bold text-gray-900">
                       Community Rules
