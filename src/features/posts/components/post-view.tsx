@@ -74,28 +74,43 @@ export const PostView = ({ id }: { id: number }) => {
               <div className="flex items-center gap-2">
                 <Link
                   to={paths.app.community.getHref(post.community.id)}
-                  className="shrink-0"
+                  className="shrink-0 self-start"
                 >
-                  <img
-                    src={post.community.avatar}
-                    alt={post.community.name}
-                    className="size-6 rounded-full"
-                  />
+                  <div className="size-10 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl">
+                    <img
+                      src={post.community.avatar}
+                      alt={post.community.name}
+                      className="size-full object-cover"
+                    />
+                  </div>
                 </Link>
 
-                <Link
-                  to={paths.app.community.getHref(post.community.id)}
-                  className="cursor-pointer font-medium text-gray-900 hover:text-blue-600"
-                >
-                  w/{post.community.name}
-                </Link>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to={paths.app.community.getHref(post.community.id)}
+                    className="cursor-pointer font-semibold text-gray-800 hover:text-blue-600"
+                  >
+                    w/{post.community.name}
+                  </Link>
 
-                <span className="text-gray-500">•</span>
-                <span className="text-gray-500">
-                  {formatDistanceToNow(new Date(post.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
+                  <div className="mb-3 flex items-center gap-2 text-sm">
+                    <Link
+                      to={paths.app.userProfile.getHref(post.author.id)}
+                      className="cursor-pointer text-gray-700 hover:text-blue-600"
+                    >
+                      u/{post.author.username}
+                    </Link>
+
+                    <div className="flex items-center gap-1 self-center text-sm text-gray-500">
+                      <span className="text-gray-500">•</span>
+                      <span className="text-gray-500">
+                        {formatDistanceToNow(new Date(post.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* More Actions Menu */}
@@ -134,31 +149,8 @@ export const PostView = ({ id }: { id: number }) => {
               </DropdownMenu>
             </div>
 
-            {/* Post Info - User Row */}
-            <div className="mb-3 flex items-center gap-2 text-sm">
-              <Link
-                to={paths.app.userProfile.getHref(post.author.id)}
-                className="shrink-0"
-              >
-                <img
-                  src={
-                    post.author.avatar ||
-                    'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
-                  }
-                  alt={post.author.username}
-                  className="size-6 rounded-full"
-                />
-              </Link>
-              <Link
-                to={paths.app.userProfile.getHref(post.author.id)}
-                className="cursor-pointer text-gray-700 hover:text-blue-600"
-              >
-                u/{post.author.username}
-              </Link>
-            </div>
-
             {/* Title */}
-            <h1 className="mb-4 text-2xl font-semibold text-gray-900">
+            <h1 className="mb-4 text-xl font-semibold text-gray-700">
               {post.title}
             </h1>
 
