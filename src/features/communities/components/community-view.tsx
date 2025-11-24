@@ -1,4 +1,5 @@
 import { LockKeyhole, ClockFading, MoreHorizontal, Trash } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   DropdownMenu,
@@ -24,6 +25,9 @@ import { UnJoinCommunity } from './unjoin-community';
 import { UpdateCommunity } from './update-community';
 
 export const CommunityView = ({ communityId }: { communityId: number }) => {
+  const [activeTab, setActiveTab] = useState<'posts' | 'about' | 'rules'>(
+    'posts',
+  );
   const communityQuery = useCommunity({ communityId });
   const currentUserQuery = useCurrentUser();
 
@@ -186,13 +190,34 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
           {/* Tabs */}
           <div className="mt-4 flex gap-8 border-t border-gray-100 text-sm font-medium">
-            <button className="border-b-2 border-blue-600 px-1 py-3 text-blue-600">
+            <button
+              onClick={() => setActiveTab('posts')}
+              className={`px-1 py-3 transition-colors ${
+                activeTab === 'posts'
+                  ? 'border-b-2 border-blue-600 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
               Posts
             </button>
-            <button className="px-1 py-3 text-gray-500 transition-colors hover:text-gray-900">
+            <button
+              onClick={() => setActiveTab('about')}
+              className={`px-1 py-3 transition-colors ${
+                activeTab === 'about'
+                  ? 'border-b-2 border-blue-600 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
               About
             </button>
-            <button className="px-1 py-3 text-gray-500 transition-colors hover:text-gray-900">
+            <button
+              onClick={() => setActiveTab('rules')}
+              className={`px-1 py-3 transition-colors ${
+                activeTab === 'rules'
+                  ? 'border-b-2 border-blue-600 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
               Rules
             </button>
           </div>
@@ -203,59 +228,112 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
       <div className="mx-auto max-w-7xl p-6">
         <div className="flex gap-6">
           {/* Posts Area */}
+          {activeTab === 'posts' && (
+            <>
+              {/* TODO: Switch between three conditions: Private and Not Request, Private and not Approved, Public */}
+              {isPrivateAndNotRequest ? (
+                <div className="flex-1">
+                  <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
+                    <div className="mx-auto max-w-md space-y-4">
+                      {/* Lock Icon */}
+                      <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-50">
+                        <LockKeyhole className="size-8 text-blue-600" />
+                      </div>
 
-          {/* TODO: Switch between three conditions: Private and Not Request, Private and not Approved, Public */}
-          {isPrivateAndNotRequest ? (
+                      <div className="space-y-2">
+                        <h2 className="text-2xl font-bold text-gray-900">
+                          This is a Private Community
+                        </h2>
+                        <p className="text-gray-600">
+                          Only members can view and participate in this
+                          community&apos;s posts. Join to unlock exclusive
+                          content and discussions.
+                        </p>
+                      </div>
+
+                      <div className="pt-2">
+                        <JoinCommunity id={community.id} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : isPrivateAndNotApproved ? (
+                <div className="flex-1">
+                  <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
+                    <div className="mx-auto max-w-md space-y-4">
+                      {/* Lock Icon */}
+                      <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-amber-50">
+                        <ClockFading className="size-8 text-amber-600" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <h2 className="text-2xl font-bold text-gray-900">
+                          Request Pending
+                        </h2>
+                        <p className="text-gray-600">
+                          Your request to join this private community is pending
+                          approval. You&apos;ll be notified once a moderator
+                          reviews your request.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex-1 space-y-4">
+                  <PostsList communityId={community.id}></PostsList>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* About Tab */}
+          {activeTab === 'about' && (
             <div className="flex-1">
-              <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
-                <div className="mx-auto max-w-md space-y-4">
-                  {/* Lock Icon */}
-                  <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-50">
-                    <LockKeyhole className="size-8 text-blue-600" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      This is a Private Community
-                    </h2>
-                    <p className="text-gray-600">
-                      Only members can view and participate in this
-                      community&apos;s posts. Join to unlock exclusive content
-                      and discussions.
-                    </p>
-                  </div>
-
-                  <div className="pt-2">
-                    <JoinCommunity id={community.id} />
-                  </div>
+              <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+                <h2 className="mb-4 text-2xl font-bold text-gray-900">
+                  About w/{community.name}
+                </h2>
+                <div className="prose max-w-none text-gray-700">
+                  <p className="whitespace-pre-wrap leading-relaxed">
+                    {community.description}
+                  </p>
                 </div>
               </div>
             </div>
-          ) : isPrivateAndNotApproved ? (
+          )}
+
+          {/* Rules Tab */}
+          {activeTab === 'rules' && (
             <div className="flex-1">
               <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                 <div className="mx-auto max-w-md space-y-4">
-                  {/* Lock Icon */}
-                  <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-amber-50">
-                    <ClockFading className="size-8 text-amber-600" />
+                  <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-gray-50">
+                    <svg
+                      className="size-8 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
                   </div>
-
                   <div className="space-y-2">
                     <h2 className="text-2xl font-bold text-gray-900">
-                      Request Pending
+                      Community Rules
                     </h2>
                     <p className="text-gray-600">
-                      Your request to join this private community is pending
-                      approval. You&apos;ll be notified once a moderator reviews
-                      your request.
+                      This section will be coming soon. Stay tuned for community
+                      guidelines and rules.
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="flex-1 space-y-4">
-              <PostsList communityId={community.id}></PostsList>
             </div>
           )}
 
