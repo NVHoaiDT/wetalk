@@ -18,6 +18,7 @@ type DownVotePostProps = {
 export const DownVotePostFallback = ({ postId }: DownVotePostProps) => {
   const { addNotification } = useNotifications();
   const votePostMutation = useVotePost({
+    postId,
     mutationConfig: {
       onSuccess: () => {
         addNotification({
@@ -28,6 +29,7 @@ export const DownVotePostFallback = ({ postId }: DownVotePostProps) => {
     },
   });
   const unvotePostMutation = useUnvotePost({
+    postId,
     mutationConfig: {
       onSuccess: () => {
         addNotification({

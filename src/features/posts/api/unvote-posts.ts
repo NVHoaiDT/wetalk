@@ -14,6 +14,8 @@ import z from 'zod';
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
+import { getPostQueryOptions } from './get-post';
+
 export const unvotePostInputSchema = z.object({
   postId: z.number(),
 });
@@ -25,17 +27,30 @@ export const unvotePost = ({ postId }: unvotePostInput) => {
 };
 
 type UseUnvotePostOptions = {
+  postId: number;
   mutationConfig?: MutationConfig<typeof unvotePost>;
 };
 
-export const useUnvotePost = ({ mutationConfig }: UseUnvotePostOptions) => {
+export const useUnvotePost = ({
+  postId,
+  mutationConfig,
+}: UseUnvotePostOptions) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
     onSuccess: (data, ...args) => {
-      queryClient.refetchQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({
+        queryKey: getPostQueryOptions(postId).queryKey,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['community-posts'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['all-posts'],
+      });
       onSuccess?.(data, ...args);
     },
     ...restConfig,

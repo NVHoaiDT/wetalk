@@ -16,6 +16,8 @@ import z from 'zod';
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
+import { getPostQueryOptions } from './get-post';
+
 export const votePostInputSchema = z.object({
   postId: z.number(),
   vote: z.boolean(),
@@ -28,17 +30,28 @@ export const votePost = ({ postId, vote }: VotePostInput) => {
 };
 
 type UseVotePostOptions = {
+  postId: number;
   mutationConfig?: MutationConfig<typeof votePost>;
 };
 
-export const useVotePost = ({ mutationConfig }: UseVotePostOptions) => {
+export const useVotePost = ({ postId, mutationConfig }: UseVotePostOptions) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
     onSuccess: (data, ...args) => {
-      queryClient.refetchQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({
+        queryKey: getPostQueryOptions(postId).queryKey,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['community-posts'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['all-posts'],
+      });
+
       onSuccess?.(data, ...args);
     },
     ...restConfig,
