@@ -1,4 +1,5 @@
-import { Edit } from 'lucide-react';
+import { Edit, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,8 @@ import {
 } from '../api/update-community';
 
 export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isUploadingCoverImage, setIsUploadingCoverImage] = useState(false);
   const { addNotification } = useNotifications();
 
   const updateCommunityMutation = useUpdateCommunity({
@@ -62,9 +65,18 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
           type="submit"
           size="sm"
           isLoading={updateCommunityMutation.isPending}
+          disabled={
+            isUploadingAvatar ||
+            isUploadingCoverImage ||
+            updateCommunityMutation.isPending
+          }
           className="min-w-[100px] border-0 bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
         >
-          Submit
+          {isUploadingAvatar
+            ? 'Uploading Avatar...'
+            : isUploadingCoverImage
+              ? 'Uploading Cover...'
+              : 'Submit'}
         </Button>
       }
     >
@@ -81,6 +93,7 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
             shortDescription: community.shortDescription,
             description: community.description,
             communityAvatar: community.communityAvatar || undefined,
+            coverImage: community.coverImage || undefined,
             isPrivate: community.isPrivate,
           },
         }}
@@ -106,61 +119,129 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
               registration={register('description')}
               className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
             />
+            {/* Community Avatar */}
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700">
+              <div className="text-sm font-medium text-gray-700">
                 Community Avatar
-              </p>
+              </div>
+
+              {/* Avatar Preview */}
+              {watch('communityAvatar') && (
+                <div className="relative mb-3 flex justify-center">
+                  <div className="group relative size-32 overflow-hidden rounded-full border-4 border-gray-200 shadow-lg transition-all duration-300 hover:border-blue-400">
+                    <img
+                      key={watch('communityAvatar')}
+                      src={watch('communityAvatar')}
+                      alt="Community Avatar"
+                      className="size-full object-cover transition-all duration-500 group-hover:scale-110"
+                      style={{
+                        animation: 'fadeIn 0.5s ease-in',
+                      }}
+                    />
+                    {isUploadingAvatar && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                        <Loader2 className="size-8 animate-spin text-white" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <MediaUploader
                 mode="replace"
+                maxFiles={1}
+                accept={{ images: true, videos: false }}
+                maxSize={5 * 1024 * 1024}
+                value={
+                  watch('communityAvatar')
+                    ? [watch('communityAvatar') as string]
+                    : []
+                }
                 onChange={(urls) => {
-                  setValue('communityAvatar', urls[0], {
-                    shouldValidate: true,
-                  });
-                  fancyLog('Uploaded Avatar URLS', urls);
+                  if (urls.length > 0) {
+                    setValue('communityAvatar', urls[0], {
+                      shouldValidate: true,
+                    });
+                  }
+                }}
+                onUploadStateChange={(isUploading) => {
+                  setIsUploadingAvatar(isUploading);
                 }}
                 onError={(error) => {
                   addNotification({
                     type: 'error',
-                    title: 'Avatar Upload Failed',
-                    message:
-                      error.message || 'Failed to upload community avatar',
+                    title: 'Upload Error',
+                    message: error.message,
                   });
                 }}
-                value={
-                  watch('communityAvatar')
-                    ? [watch('communityAvatar') as string]
-                    : undefined
-                }
+              />
+
+              {formState.errors['communityAvatar'] && (
+                <p className="text-sm text-red-600">
+                  {formState.errors['communityAvatar']?.message}
+                </p>
+              )}
+            </div>
+
+            {/* Cover Image */}
+            <div className="space-y-2">
+              <div className="text-sm font-medium text-gray-700">
+                Cover Image
+              </div>
+
+              {/* Cover Image Preview */}
+              {watch('coverImage') && (
+                <div className="relative mb-3 flex justify-center">
+                  <div className="group relative h-32 w-full overflow-hidden rounded-lg border-4 border-gray-200 shadow-lg transition-all duration-300 hover:border-blue-400">
+                    <img
+                      key={watch('coverImage')}
+                      src={watch('coverImage')}
+                      alt="Community Cover"
+                      className="size-full object-cover transition-all duration-500 group-hover:scale-110"
+                      style={{
+                        animation: 'fadeIn 0.5s ease-in',
+                      }}
+                    />
+                    {isUploadingCoverImage && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                        <Loader2 className="size-8 animate-spin text-white" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <MediaUploader
+                mode="replace"
                 maxFiles={1}
                 accept={{ images: true, videos: false }}
-                className="space-y-4"
+                maxSize={5 * 1024 * 1024}
+                value={
+                  watch('coverImage') ? [watch('coverImage') as string] : []
+                }
+                onChange={(urls) => {
+                  if (urls.length > 0) {
+                    setValue('coverImage', urls[0], {
+                      shouldValidate: true,
+                    });
+                  }
+                }}
+                onUploadStateChange={(isUploading) => {
+                  setIsUploadingCoverImage(isUploading);
+                }}
+                onError={(error) => {
+                  addNotification({
+                    type: 'error',
+                    title: 'Upload Error',
+                    message: error.message,
+                  });
+                }}
               />
-              {formState.errors['communityAvatar'] && (
-                <span className="text-xs text-red-500">
-                  {formState.errors['communityAvatar'].message}
-                </span>
-              )}
-              {watch('communityAvatar') && (
-                <div className="mt-2 flex items-center gap-2">
-                  <img
-                    src={watch('communityAvatar')}
-                    alt="Community Avatar Preview"
-                    className="size-16 rounded-full border-2 border-blue-200 object-cover"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setValue('communityAvatar', undefined, {
-                        shouldValidate: true,
-                      });
-                    }}
-                    className="text-red-500 hover:text-red-600"
-                  >
-                    Remove Avatar
-                  </Button>
-                </div>
+
+              {formState.errors['coverImage'] && (
+                <p className="text-sm text-red-600">
+                  {formState.errors['coverImage']?.message}
+                </p>
               )}
             </div>
 

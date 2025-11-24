@@ -42,8 +42,8 @@ export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
             )}
 
             {isOwnProfile && (
-              <button className="absolute bottom-0 right-0 flex size-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-blue-700 sm:size-10">
-                <Camera className="size-4 sm:size-5" />
+              <button className="absolute bottom-0 right-0 flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:bg-blue-700 sm:size-10">
+                <Camera className="size-4 sm:size-5 " />
               </button>
             )}
           </div>
