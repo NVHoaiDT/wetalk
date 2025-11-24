@@ -109,6 +109,13 @@ export const PostView = ({ id }: { id: number }) => {
                   align="end"
                   className="w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-md"
                 >
+                  <DropdownMenuItem
+                    className="flex items-center gap-2"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    <EditPost post={post} />
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem className="flex items-center gap-2">
                     <SavePost postId={post.id} />
                   </DropdownMenuItem>
@@ -205,11 +212,6 @@ export const PostView = ({ id }: { id: number }) => {
                   <span>Share</span>
                 </button>
               </SharePost>
-              <SavePost postId={post.id} />
-              <FollowPost postId={post.id} />
-              {/* Edit Post - Only show if current user is the author */}
-
-              <EditPost post={post} />
             </div>
           </div>
         </div>

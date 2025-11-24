@@ -49,14 +49,10 @@ export const EditPost = ({ post }: EditPostProps) => {
     <FormDrawer
       isDone={editPostMutation.isSuccess}
       triggerButton={
-        <Button
-          size="sm"
-          variant="outline"
-          icon={<Pencil className="size-4" />}
-          className="group relative flex items-center justify-center rounded-lg border-2 border-gray-300 bg-white px-4 py-2 font-semibold text-gray-700 shadow-sm transition-all duration-300 hover:border-blue-600 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md"
-        >
-          Edit Post
-        </Button>
+        <button className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100">
+          <Pencil className="size-4" />
+          <span>Edit</span>
+        </button>
       }
       title="Edit your post"
       submitButton={
