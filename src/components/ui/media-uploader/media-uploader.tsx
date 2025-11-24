@@ -1,5 +1,5 @@
 import { Upload } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useUploadImages, useUploadVideos } from '@/lib/upload';
 import { cn } from '@/utils/cn';
@@ -20,6 +20,7 @@ export const MediaUploader = ({
 }: MediaUploaderProps) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const uploaderId = useMemo(() => `media-upload-${crypto.randomUUID()}`, []);
 
   const uploadImagesMutation = useUploadImages({
     mutationConfig: {
@@ -231,14 +232,14 @@ export const MediaUploader = ({
       >
         <input
           type="file"
-          id="media-upload"
+          id={uploaderId}
           multiple
           accept={`${accept.images ? 'image/*,' : ''}${accept.videos ? 'video/*' : ''}`}
           onChange={handleFileSelect}
           className="hidden"
         />
         <label
-          htmlFor="media-upload"
+          htmlFor={uploaderId}
           className="flex cursor-pointer flex-col items-center justify-center py-12"
         >
           <Upload className="mb-3 size-10 text-gray-400" />

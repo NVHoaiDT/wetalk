@@ -7,6 +7,8 @@ import { MutationConfig } from '@/lib/react-query';
 export const updateProfileInputSchema = z.object({
   username: z.string().min(1).max(30),
   avatar: z.string().optional(),
+  /* Added cover image */
+  coverImage: z.string().optional(),
   bio: z.string(),
 });
 
