@@ -38,7 +38,6 @@ const CommunitiesList = () => {
         </section>
       ))}
 
-      {/* Filter communities by topics */}
       <section>
         <div className="mb-8">
           <div className="flex items-start gap-2 text-2xl">
