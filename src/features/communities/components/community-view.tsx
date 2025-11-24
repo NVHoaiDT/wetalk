@@ -48,8 +48,8 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
       {/* Cover Banner */}
-      <div className="relative h-48 overflow-hidden rounded-xl bg-gradient-to-r from-blue-400 via-blue-400 to-indigo-400">
-        <div className="absolute inset-0 opacity-20">
+      <div className="relative h-48 overflow-hidden rounded-xl bg-gradient-to-r from-blue-100 via-blue-200 to-indigo-200">
+        <div className="absolute inset-0 opacity-50">
           <img
             src={community.coverImage}
             alt="W/"
