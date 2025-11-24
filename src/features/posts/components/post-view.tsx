@@ -1,5 +1,11 @@
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@radix-ui/react-dropdown-menu';
 import { formatDistanceToNow } from 'date-fns';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, MoreHorizontal } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { MDPreview } from '@/components/ui/md-preview';
@@ -16,6 +22,7 @@ import { DownVotePost } from './downvote-post';
 import { EditPost } from './edit-post';
 import { FollowPost } from './follow-post';
 import { PollView } from './poll-view';
+import { ReportPost } from './report-post';
 import { SavePost } from './save-post';
 import { SharePost } from './share-post';
 import { UpVotePost } from './upvote-post';
@@ -63,29 +70,61 @@ export const PostView = ({ id }: { id: number }) => {
           {/* Content Section */}
           <div className="flex-1 p-4">
             {/* Post Info - Community Row */}
-            <div className="mb-2 flex items-center gap-2 text-sm">
-              <Link
-                to={paths.app.community.getHref(post.community.id)}
-                className="shrink-0"
-              >
-                <img
-                  src={post.community.avatar}
-                  alt={post.community.name}
-                  className="size-6 rounded-full"
-                />
-              </Link>
-              <Link
-                to={paths.app.community.getHref(post.community.id)}
-                className="cursor-pointer font-medium text-gray-900 hover:text-blue-600"
-              >
-                w/{post.community.name}
-              </Link>
-              <span className="text-gray-500">•</span>
-              <span className="text-gray-500">
-                {formatDistanceToNow(new Date(post.createdAt), {
-                  addSuffix: true,
-                })}
-              </span>
+            <div className="mb-2 flex items-center justify-between  gap-2 text-sm">
+              <div className="flex items-center gap-2">
+                <Link
+                  to={paths.app.community.getHref(post.community.id)}
+                  className="shrink-0"
+                >
+                  <img
+                    src={post.community.avatar}
+                    alt={post.community.name}
+                    className="size-6 rounded-full"
+                  />
+                </Link>
+
+                <Link
+                  to={paths.app.community.getHref(post.community.id)}
+                  className="cursor-pointer font-medium text-gray-900 hover:text-blue-600"
+                >
+                  w/{post.community.name}
+                </Link>
+
+                <span className="text-gray-500">•</span>
+                <span className="text-gray-500">
+                  {formatDistanceToNow(new Date(post.createdAt), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
+
+              {/* More Actions Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex size-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
+                    <MoreHorizontal className="size-5" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-md"
+                >
+                  <DropdownMenuItem className="flex items-center gap-2">
+                    <SavePost postId={post.id} />
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem className="flex items-center gap-2">
+                    <FollowPost postId={post.id} />
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 text-red-600"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    <ReportPost postId={post.id} />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {/* Post Info - User Row */}

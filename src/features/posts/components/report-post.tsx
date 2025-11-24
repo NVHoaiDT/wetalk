@@ -188,7 +188,7 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
       <DialogTrigger asChild>
         {children || (
           <button
-            className="flex items-center gap-1.5 rounded-md px-2 py-1.5 transition-colors hover:bg-gray-100"
+            className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100"
             onClick={open}
           >
             <Flag className="size-4" />

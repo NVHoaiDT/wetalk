@@ -26,7 +26,7 @@ export const SavePostFallback = ({ postId }: SavePostProps) => {
   });
   return (
     <button
-      className="flex items-center gap-1.5 rounded-full p-2 transition-colors hover:bg-gray-100"
+      className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100"
       onClick={() => savePostMutation.mutate({ postId })}
     >
       <Bookmark className="size-4" />

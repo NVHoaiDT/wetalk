@@ -26,7 +26,7 @@ export const FollowPostFallback = ({ postId }: FollowPostProps) => {
   });
   return (
     <button
-      className="flex items-center gap-1.5 rounded-full p-2 transition-colors hover:bg-gray-100"
+      className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100"
       onClick={() => followPostMutation.mutate({ postId })}
     >
       <Bell className="size-4" />
