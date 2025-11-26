@@ -6,7 +6,10 @@ const icons = {
   warning: (
     <CircleAlert className="size-6 text-yellow-500" aria-hidden="true" />
   ),
-  error: <CircleX className="size-6 text-red-500" aria-hidden="true" />,
+  /* error: <CircleX className="size-6 text-red-500" aria-hidden="true" />, */
+
+  /* We don't want to display scary-looking error icons in production */
+  error: <Info className="size-6 text-yellow-500" aria-hidden="true" />,
 };
 
 export type NotificationProps = {

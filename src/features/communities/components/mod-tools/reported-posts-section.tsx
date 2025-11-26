@@ -1,5 +1,7 @@
 import { AlertCircle } from 'lucide-react';
 
+import { fancyLog } from '@/helper/fancy-log';
+
 import { useInfiniteCommunityReportedPosts } from '../../api/get-community-reported-posts';
 import { ReportedPostsTable } from '../manage-reported-posts';
 
@@ -28,6 +30,45 @@ export const ReportedPostsSection = ({
       reportedPostsQuery.fetchNextPage();
     }
   };
+
+  fancyLog('Reported-Posts', reportedPosts);
+  /* 
+  [
+    {
+        "id": 5,
+        "postId": 14,
+        "postTitle": "MVP Development: Speed vs Quality",
+        "author": {
+            "id": 5,
+            "username": "hoangthie",
+            "avatar": "https://res.cloudinary.com/dd2dhsems/image/upload/v1763959471/images/post/cloudinary_post_8b668b9d-9d98-4e88-afcd-a99953f10322_1763959464.webp",
+            "karma": 0,
+            "createdAt": "0001-01-01T00:00:00Z"
+        },
+        "reporters": [
+            {
+                "id": 1,
+                "username": "nguyenvana",
+                "avatar": "https://res.cloudinary.com/dd2dhsems/image/upload/v1762442989/images/post/cloudinary_post_b91ca9d0-8781-44cc-9b7d-fe48203ca9cd_1762442986.webp",
+                "reasons": [
+                    "hate",
+                    "threatening-violence"
+                ]
+            },
+            {
+                "id": 5,
+                "username": "hoangthie",
+                "avatar": "https://res.cloudinary.com/dd2dhsems/image/upload/v1763959471/images/post/cloudinary_post_8b668b9d-9d98-4e88-afcd-a99953f10322_1763959464.webp",
+                "reasons": [
+                    "copyright"
+                ],
+                "note": "Review"
+            }
+        ],
+        "totalReports": 2
+    }
+  ]
+*/
 
   return (
     <div className="flex h-full flex-col">

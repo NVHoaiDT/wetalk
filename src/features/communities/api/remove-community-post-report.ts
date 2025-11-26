@@ -1,3 +1,11 @@
+/* 
+  Endpoint: DELETE /api/v1/communities/:id/manage/reports/:reportId
+  {
+    "success": true,
+    "message": "Post report deleted successfully"
+  }
+*/
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
@@ -14,14 +22,10 @@ export const removeCommunityPostReport = ({
 };
 
 type UseRemoveCommunityPostReportOptions = {
-  communityId: number;
-  reportId: number;
   mutationConfig?: MutationConfig<typeof removeCommunityPostReport>;
 };
 
 export const useRemoveCommunityPostReport = ({
-  communityId,
-  reportId,
   mutationConfig,
 }: UseRemoveCommunityPostReportOptions) => {
   const queryClient = useQueryClient();
@@ -30,9 +34,8 @@ export const useRemoveCommunityPostReport = ({
 
   return useMutation({
     onSuccess: (...args) => {
-      // Invalidate all community reported posts queries for this community
       queryClient.invalidateQueries({
-        queryKey: ['community-reported-posts', communityId, reportId],
+        queryKey: ['community-reported-posts'],
       });
       onSuccess?.(...args);
     },

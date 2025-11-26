@@ -1,6 +1,5 @@
 import { XCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { useNotifications } from '@/components/ui/notifications';
 import { useRemoveCommunityPostReport } from '@/features/communities/api/remove-community-post-report';
 
@@ -15,8 +14,6 @@ export const RemoveReportButton = ({
 }: RemoveReportButtonProps) => {
   const { addNotification } = useNotifications();
   const removeReportMutation = useRemoveCommunityPostReport({
-    communityId,
-    reportId,
     mutationConfig: {
       onSuccess: () => {
         addNotification({
@@ -36,16 +33,14 @@ export const RemoveReportButton = ({
   });
 
   return (
-    <Button
-      size="sm"
-      variant="outline"
+    <button
       onClick={() => removeReportMutation.mutate({ communityId, reportId })}
       disabled={removeReportMutation.isPending}
-      className="border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50"
+      className="flex flex-row items-center justify-center gap-2 rounded-md border border-input px-3 py-1.5 text-gray-700 shadow-sm hover:border-gray-400 hover:bg-gray-50"
       title="Dismiss reports but keep the post"
     >
       <XCircle className="size-4" />
       Dismiss
-    </Button>
+    </button>
   );
 };

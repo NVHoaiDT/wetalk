@@ -172,8 +172,7 @@ export const ReportedPostsTable = ({
                       <div className="flex items-center justify-end gap-2">
                         <RemoveReportButton
                           communityId={communityId}
-                          reportId={reportedPost.reportId}
-                          postTitle={reportedPost.postTitle}
+                          reportId={reportedPost.id}
                         />
                         <RemovePost
                           communityId={communityId}

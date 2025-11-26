@@ -182,6 +182,7 @@ export type Reporter = {
 };
 
 export type ReportedPost = {
+  id: number;
   postId: number;
   postTitle: string;
   author: {
