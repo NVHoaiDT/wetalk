@@ -1,6 +1,7 @@
 import { MessageCircle, Users, TrendingUp, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
+import logo from '@/assets/logo.svg';
 import { Head } from '@/components/seo';
 import { Button } from '@/components/ui/button';
 import { paths } from '@/config/paths';
@@ -18,10 +19,51 @@ const LandingRoute = () => {
     }
   };
 
+  const scrollToFeatures = () => {
+    const featuresSection = document.getElementById('features');
+    featuresSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
       <Head description="Connect, share, and engage with communities on WeTalk" />
       <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-cyan-50/30 to-white">
+        {/* Header */}
+        <header className="relative z-50 border-b border-gray-200/50 bg-white/80 backdrop-blur-md">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              {/* Logo */}
+              <div className="flex items-center gap-2">
+                <img src={logo} alt="WeTalk" className="size-32" />
+              </div>
+
+              {/* Navigation */}
+              <nav className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  onClick={scrollToFeatures}
+                  className="text-gray-700 hover:text-cyan-600"
+                >
+                  Features
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate(paths.auth.register.getHref())}
+                  className="text-gray-700 hover:text-cyan-600"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  onClick={() => navigate(paths.auth.login.getHref())}
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-lg hover:shadow-cyan-500/30"
+                >
+                  Get Started
+                </Button>
+              </nav>
+            </div>
+          </div>
+        </header>
+
         {/* Dotted Background Pattern */}
         <div
           className="absolute inset-0 opacity-40"
@@ -41,8 +83,7 @@ const LandingRoute = () => {
                 {/* Greeting Badge */}
                 <div className="inline-block">
                   <div className="relative inline-block">
-                    <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 opacity-30 blur" />
-                    <span className="relative inline-block rounded-lg bg-white px-4 py-2 text-2xl font-bold text-gray-800">
+                    <span className="relative inline-block bg-[url(https://res.cloudinary.com/djwpst00v/image/upload/v1764155666/hey-brush_qdt75l.webp)] bg-contain bg-center bg-no-repeat px-4 py-2 text-4xl font-bold text-gray-800">
                       Hey.
                     </span>
                   </div>
@@ -204,10 +245,13 @@ const LandingRoute = () => {
         </div>
 
         {/* Features Section */}
-        <div className="relative border-t border-gray-200 bg-white/50 backdrop-blur-sm">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900">
+        <div
+          id="features"
+          className="relative border-t border-gray-200 bg-white/50 backdrop-blur-sm"
+        >
+          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 Why Choose WeTalk?
               </h2>
               <p className="mt-4 text-lg text-gray-600">
@@ -215,43 +259,264 @@ const LandingRoute = () => {
               </p>
             </div>
 
-            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-              <div className="group rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:border-cyan-500 hover:shadow-xl">
-                <div className="mb-4 inline-flex rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 p-3 text-white">
-                  <Users className="size-8" />
+            {/* Feature 1 - Join Communities (Left to Right) */}
+            <div className="mb-24 grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+              <div className="order-2 lg:order-1">
+                <div className="flex items-center">
+                  <h3 className="mb-4 mt-6 bg-[url(https://res.cloudinary.com/djwpst00v/image/upload/v1764156319/Layer_1-1_bjj3qm.svg)] bg-contain bg-center bg-no-repeat px-4 py-2 text-3xl font-bold text-gray-900">
+                    Join
+                  </h3>
+                  <h3 className="mb-4 mt-6 text-3xl font-bold text-gray-900">
+                    Communities
+                  </h3>
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-gray-900">
-                  Join Communities
-                </h3>
-                <p className="text-gray-600">
+                <p className="mb-6 text-lg leading-relaxed text-gray-600">
                   Discover and join communities that match your interests and
-                  passions.
+                  passions. Connect with like-minded individuals and build
+                  lasting relationships in spaces that matter to you.
                 </p>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-cyan-100">
+                      <svg
+                        className="size-4 text-cyan-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Browse thousands of active communities
+                  </li>
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-cyan-100">
+                      <svg
+                        className="size-4 text-cyan-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Create your own community space
+                  </li>
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-cyan-100">
+                      <svg
+                        className="size-4 text-cyan-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Engage with passionate members
+                  </li>
+                </ul>
               </div>
-
-              <div className="group rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:border-purple-500 hover:shadow-xl">
-                <div className="mb-4 inline-flex rounded-xl bg-gradient-to-br from-purple-400 to-pink-500 p-3 text-white">
-                  <MessageCircle className="size-8" />
+              <div className="order-1 lg:order-2">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-cyan-100 to-blue-100 opacity-30 blur-2xl" />
+                  <img
+                    src="https://res.cloudinary.com/djwpst00v/image/upload/v1764157114/image-removebg-preview_e7yasr.png"
+                    alt="Join Communities"
+                    className="relative rounded-2xl"
+                  />
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-gray-900">
-                  Share Ideas
-                </h3>
-                <p className="text-gray-600">
+              </div>
+            </div>
+
+            {/* Feature 2 - Share Ideas (Right to Left) */}
+            <div className="mb-24 grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+              <div className="order-1">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-purple-100 to-pink-100 opacity-60 blur-2xl" />
+                  <img
+                    src="https://res.cloudinary.com/djwpst00v/image/upload/v1764157114/image-removebg-preview_e7yasr.png"
+                    alt="Share Ideas"
+                    className="relative rounded-2xl"
+                  />
+                </div>
+              </div>
+              <div className="order-2">
+                <div className="inline-flex rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 p-4 text-white shadow-xl">
+                  <MessageCircle className="size-12" />
+                </div>
+                <div className="flex items-center">
+                  <h3 className="mb-4 mt-6 bg-[url(https://res.cloudinary.com/djwpst00v/image/upload/v1764155666/hey-brush_qdt75l.webp)] bg-contain bg-center bg-no-repeat px-4 py-2 text-3xl font-bold text-gray-900">
+                    Share
+                  </h3>
+                  <h3 className="mb-4 mt-6 text-3xl font-bold text-gray-900">
+                    Ideas
+                  </h3>
+                </div>
+                <p className="mb-6 text-lg leading-relaxed text-gray-600">
                   Create posts, share your thoughts, and engage in rich
-                  discussions.
+                  discussions. Your ideas deserve to be heard, and WeTalk
+                  provides the perfect platform for meaningful conversations.
                 </p>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-purple-100">
+                      <svg
+                        className="size-4 text-purple-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Post text, images, and polls
+                  </li>
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-purple-100">
+                      <svg
+                        className="size-4 text-purple-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Comment and start discussions
+                  </li>
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-purple-100">
+                      <svg
+                        className="size-4 text-purple-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Upvote and support quality content
+                  </li>
+                </ul>
               </div>
+            </div>
 
-              <div className="group rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:border-amber-500 hover:shadow-xl">
-                <div className="mb-4 inline-flex rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 p-3 text-white">
-                  <TrendingUp className="size-8" />
+            {/* Feature 3 - Stay Updated (Left to Right) */}
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+              <div className="order-2 lg:order-1">
+                <div className="inline-flex rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-500 p-4 text-white shadow-xl">
+                  <TrendingUp className="size-12" />
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-gray-900">
-                  Stay Updated
-                </h3>
-                <p className="text-gray-600">
+                <div className="flex items-center">
+                  <h3 className="mb-4 mt-6 text-3xl font-bold text-gray-900">
+                    Stay
+                  </h3>
+                  <h3 className="mb-4 mt-6 bg-[url(https://res.cloudinary.com/djwpst00v/image/upload/v1764156319/Layer_1-1_bjj3qm.svg)] bg-contain bg-center bg-no-repeat px-4 py-2 text-3xl font-bold text-gray-900">
+                    Updated
+                  </h3>
+                </div>
+                <p className="mb-6 text-lg leading-relaxed text-gray-600">
                   Follow trending topics and never miss important conversations.
+                  Get real-time notifications and stay connected with what
+                  matters most in your communities.
                 </p>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-amber-100">
+                      <svg
+                        className="size-4 text-amber-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Real-time notifications
+                  </li>
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-amber-100">
+                      <svg
+                        className="size-4 text-amber-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Trending posts and topics
+                  </li>
+                  <li className="flex items-center gap-3 text-gray-700">
+                    <div className="flex size-6 items-center justify-center rounded-full bg-amber-100">
+                      <svg
+                        className="size-4 text-amber-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    Personalized feed algorithms
+                  </li>
+                </ul>
+              </div>
+              <div className="order-1 lg:order-2">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-50 opacity-10 blur-2xl" />
+                  <img
+                    src="https://res.cloudinary.com/djwpst00v/image/upload/v1764157114/image-removebg-preview_e7yasr.png"
+                    alt="Stay Updated"
+                    className="relative rounded-2xl"
+                  />
+                </div>
               </div>
             </div>
           </div>
