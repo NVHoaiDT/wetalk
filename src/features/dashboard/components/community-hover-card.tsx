@@ -6,7 +6,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { useCommunity } from '@/features/communities/api/get-community';
 import { JoinCommunity } from '@/features/communities/components/join-community';
@@ -24,18 +23,12 @@ export const CommunityHoverCard = ({
   children,
 }: CommunityHoverCardProps) => {
   const communityQuery = useCommunity({ communityId });
-  const communityData = communityQuery.data?.data;
 
-  if (communityQuery.isLoading) {
-    return (
-      <div className="flex items-center justify-center p-4">
-        <Spinner />
-      </div>
-    );
-  }
-  if (!communityData) {
+  if (communityQuery.isLoading || !communityQuery.data) {
     return <>{children}</>;
   }
+
+  const communityData = communityQuery.data?.data;
 
   return (
     <HoverCard openDelay={300} closeDelay={200}>

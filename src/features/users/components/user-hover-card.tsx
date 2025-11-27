@@ -6,7 +6,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { useUser } from '@/lib/auth';
 
@@ -19,7 +18,7 @@ export const UserHoverCard = ({ userId, children }: UserHoverCardProps) => {
   const userQuery = useUser(userId);
 
   if (userQuery.isLoading || !userQuery.data) {
-    return <Spinner />;
+    return children;
   }
 
   const userData = userQuery.data.data;
