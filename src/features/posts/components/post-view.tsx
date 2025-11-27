@@ -10,7 +10,6 @@ import { Link } from 'react-router';
 
 import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
-import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { formatBigNumber } from '@/utils/format';
 
@@ -27,6 +26,72 @@ import { SavePost } from './save-post';
 import { SharePost } from './share-post';
 import { UpVotePost } from './upvote-post';
 
+const PostViewPlaceholder = () => {
+  return (
+    <article className="w-full rounded-xl border border-slate-200 shadow-sm">
+      {/* Post Header */}
+      <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+        <div className="flex">
+          {/* Content Section */}
+          <div className="flex-1 p-4">
+            {/* Post Info - Community Row */}
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                {/* Community Avatar Skeleton */}
+                <div className="size-10 shrink-0 animate-pulse rounded-full bg-gray-200"></div>
+
+                <div className="flex flex-col gap-2">
+                  {/* Community Name Skeleton */}
+                  <div className="h-5 w-32 animate-pulse rounded bg-gray-200"></div>
+
+                  <div className="mb-3 flex items-center gap-2">
+                    {/* Author Username Skeleton */}
+                    <div className="h-4 w-24 animate-pulse rounded bg-gray-200"></div>
+                    {/* Date Skeleton */}
+                    <div className="h-4 w-20 animate-pulse rounded bg-gray-200"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* More Actions Button Skeleton */}
+              <div className="size-8 animate-pulse rounded-full bg-gray-200"></div>
+            </div>
+
+            {/* Title Skeleton */}
+            <div className="mb-4 h-7 w-3/4 animate-pulse rounded bg-gray-200"></div>
+
+            {/* Tags Skeleton */}
+            <div className="mb-4 flex flex-wrap gap-2">
+              <div className="h-6 w-16 animate-pulse rounded-full bg-gray-200"></div>
+              <div className="h-6 w-20 animate-pulse rounded-full bg-gray-200"></div>
+              <div className="h-6 w-14 animate-pulse rounded-full bg-gray-200"></div>
+            </div>
+
+            {/* Content Skeleton */}
+            <div className="mb-6 space-y-3">
+              <div className="h-4 w-full animate-pulse rounded bg-gray-200"></div>
+              <div className="h-4 w-full animate-pulse rounded bg-gray-200"></div>
+              <div className="h-4 w-5/6 animate-pulse rounded bg-gray-200"></div>
+              <div className="h-4 w-full animate-pulse rounded bg-gray-200"></div>
+              <div className="h-4 w-4/5 animate-pulse rounded bg-gray-200"></div>
+            </div>
+
+            {/* Post Actions Skeleton */}
+            <div className="mt-6 flex items-center gap-4">
+              {/* Vote Section Skeleton */}
+              <div className="h-10 w-28 animate-pulse rounded-full bg-gray-200"></div>
+              {/* Comments Skeleton */}
+              <div className="h-10 w-20 animate-pulse rounded-full bg-gray-200"></div>
+              {/* Share Skeleton */}
+              <div className="h-10 w-20 animate-pulse rounded-full bg-gray-200"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+};
+
 export const PostView = ({ id }: { id: number }) => {
   const postQuery = usePost({ id });
   const summaryPostQuery = useSummaryPost({
@@ -34,19 +99,11 @@ export const PostView = ({ id }: { id: number }) => {
   });
 
   if (postQuery.isLoading) {
-    return (
-      <div className="flex h-48 w-full items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <PostViewPlaceholder />;
   }
 
   if (summaryPostQuery.isPending) {
-    return (
-      <div className="flex h-48 w-full items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <PostViewPlaceholder />;
   }
 
   const post = postQuery?.data?.data;
@@ -59,7 +116,6 @@ export const PostView = ({ id }: { id: number }) => {
     <article className="w-full rounded-xl border border-slate-200 shadow-sm">
       {/* AI Summary Chatbox */}
       <AiChatbox
-        /* summaryPost is undefined so it cause page crash */
         summary={summaryPost?.summary}
         isLoading={summaryPostQuery.isLoading}
       />
