@@ -66,7 +66,7 @@ export const UnauthenticatedFallback = () => {
           size="lg"
           className="rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-2.5 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
         >
-          Join Community
+          Join
         </Button>
       }
       confirmButton={

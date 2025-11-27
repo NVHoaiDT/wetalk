@@ -1,7 +1,6 @@
 import { MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,10 +57,6 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
     } else {
       console.log('User preferences do not allow to store recent posts');
     }
-  };
-
-  const handleJoinCommunity = () => {
-    console.log('Join community:', post.community.id);
   };
 
   return (
@@ -127,15 +122,8 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
-                <Button
-                  size="sm"
-                  onClick={handleJoinCommunity}
-                  className="rounded-xl border border-sky-300 bg-cyan-50 px-4 py-1 text-xs font-semibold text-gray-600 hover:bg-cyan-100 hover:text-gray-700"
-                >
-                  Join
-                </Button>
-
                 {/* More Actions Menu */}
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex size-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
