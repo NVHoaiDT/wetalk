@@ -144,6 +144,7 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
                 icon="info"
                 title="Vote in this poll!"
                 body="Sign up to vote and share your opinion on this topic."
+                illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
                 triggerButton={
                   <button
                     className={`group relative w-full overflow-hidden rounded-lg border-2 transition-all duration-200 ${
@@ -264,6 +265,7 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
               icon="info"
               title="Vote in this poll!"
               body="Sign up to vote and share your opinion on this topic."
+              illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
               triggerButton={
                 <button
                   disabled={selectedOptions.length === 0}
