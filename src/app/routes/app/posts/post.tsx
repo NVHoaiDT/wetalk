@@ -1,14 +1,29 @@
 import { useParams } from 'react-router';
 
 import { ContentLayout } from '@/components/layouts';
-import { Spinner } from '@/components/ui/spinner';
 import { useCommunity } from '@/features/communities/api/get-community';
 import { CommunitySidebar } from '@/features/communities/components/community-sidebar';
 import { CreatePostComment } from '@/features/post-comments/components/create-post-comment';
 import { PostCommentsList } from '@/features/post-comments/components/post-comments-list';
 import { usePost } from '@/features/posts/api/get-post';
 import { PostView } from '@/features/posts/components/post-view';
-import { fancyLog } from '@/helper/fancy-log';
+
+const PostViewPlaceholder = () => {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      {/* Header Skeleton */}
+      <div className="mb-4 h-7 w-48 animate-pulse rounded bg-gray-200"></div>
+
+      {/* Content Skeleton */}
+      <div className="space-y-4">
+        <div className="h-5 w-full animate-pulse rounded bg-gray-200"></div>
+        <div className="h-5 w-full animate-pulse rounded bg-gray-200"></div>
+        <div className="h-5 w-3/4 animate-pulse rounded bg-gray-200"></div>
+        <div className="h-48 w-full animate-pulse rounded bg-gray-200"></div>
+      </div>
+    </div>
+  );
+};
 
 const PostRoute = () => {
   const params = useParams();
@@ -32,11 +47,7 @@ const PostRoute = () => {
   });
 
   if (postQuery.isLoading || communityQuery.isLoading) {
-    return (
-      <div className="flex h-48 w-full items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <PostViewPlaceholder />;
   }
 
   if (postQuery.isError || communityQuery.isError) {
@@ -53,7 +64,8 @@ const PostRoute = () => {
           </h3>
           <p className="text-sm text-orange-700">
             This post might not exist, or you may not have access to it. Please
-            make sure you've joined the community or try refreshing the page.
+            make sure you&apos;ve joined the community or try refreshing the
+            page.
           </p>
         </div>
       </div>
@@ -61,18 +73,15 @@ const PostRoute = () => {
   }
 
   if (!postQuery.data) {
-    return <div>post break the page</div>;
+    return null;
   }
   if (!communityQuery.data) {
-    return <div>community break the page</div>;
-    /* This one displayed !!! */
+    return null;
   }
 
   const post = postQuery.data?.data;
   const community = communityQuery.data?.data;
 
-  fancyLog('Post Data:', post);
-  fancyLog('Community Data:', community);
   return (
     <>
       <ContentLayout>
