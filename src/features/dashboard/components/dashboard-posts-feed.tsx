@@ -23,6 +23,29 @@ const sortOptions = [
 
 type SortType = (typeof sortOptions)[number]['value'];
 
+const DashboardPostsFeedPlaceholder = () => {
+  return (
+    <div className="space-y-4">
+      {Array.from({ length: 5 }).map((_, index) => (
+        <div
+          key={index}
+          className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+        >
+          <div className="mb-4 h-6 w-1/3 animate-pulse rounded bg-gray-200"></div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div
+                key={idx}
+                className="h-5 w-full animate-pulse rounded bg-gray-200"
+              ></div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const DashboardPostsFeed = () => {
   const [sortBy, setSortBy] = useState<SortType>('new');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -60,11 +83,7 @@ export const DashboardPostsFeed = () => {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return (
-      <div className="flex h-96 items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <DashboardPostsFeedPlaceholder />;
   }
 
   fancyLog('DASHBOARD-POSTS: ', posts);
