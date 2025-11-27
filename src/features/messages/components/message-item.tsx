@@ -121,8 +121,8 @@ export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
               {message.attachments && message.attachments.length > 0 && (
                 <div
                   className={cn(
-                    'overflow-hidden rounded-2xl',
-                    isOwn ? 'bg-blue-500' : 'bg-gray-100',
+                    'flex justify-center items-center overflow-hidden rounded-2xl',
+                    isOwn ? 'border-blue-500' : 'border-gray-100',
                     !message.content && 'p-1',
                   )}
                 >
