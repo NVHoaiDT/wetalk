@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
 import { MDPreview } from '@/components/ui/md-preview';
-import { Spinner } from '@/components/ui/spinner';
 import { fancyLog } from '@/helper/fancy-log';
 import { useCurrentUser } from '@/lib/auth';
 import { Authorization, POLICIES } from '@/lib/authorization';
@@ -44,8 +43,6 @@ const Comment = ({
 
   const userQuery = useCurrentUser();
   const user = userQuery.data?.data;
-  fancyLog('USER: ', user);
-  fancyLog('COMMENT: ', comment);
 
   return (
     <Card
@@ -177,15 +174,31 @@ const Comment = ({
   );
 };
 
+const PostCommentsPlaceholder = () => {
+  return (
+    <div className="space-y-4">
+      {[1, 2, 3].map((index) => (
+        <div
+          key={index}
+          className="animate-pulse space-y-2 rounded-lg border border-gray-200 p-4"
+        >
+          <div className="flex items-center space-x-3">
+            <div className="size-8 rounded-full bg-gray-300"></div>
+            <div className="h-4 w-32 rounded bg-gray-300"></div>
+          </div>
+          <div className="mt-2 h-4 w-full rounded bg-gray-300"></div>
+          <div className="mt-2 h-4 w-5/6 rounded bg-gray-300"></div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const PostCommentsList = ({ postId }: PostCommentsListProps) => {
   const postCommentsQuery = useInfinitePostComments({ postId });
 
   if (postCommentsQuery.isLoading) {
-    return (
-      <div className="flex h-48 w-full items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return <PostCommentsPlaceholder />;
   }
 
   /* 
