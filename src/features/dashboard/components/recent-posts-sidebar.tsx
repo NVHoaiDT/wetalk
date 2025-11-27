@@ -2,10 +2,55 @@ import { formatDistanceToNow } from 'date-fns';
 import { MessageCircle, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { useInfiniteAllPosts } from '@/features/dashboard/api/get-all-posts';
 import { formatBigNumber } from '@/utils/format';
+
+const RecentPostsSidebarPlaceholder = () => {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      {/* Header Skeleton */}
+      <div className="mb-4 h-7 w-32 animate-pulse rounded bg-gray-200"></div>
+
+      {/* Post Items Skeleton */}
+      <div className="space-y-4">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            key={index}
+            className="border-b border-gray-200 pb-2 last:border-b-0 last:pb-0"
+          >
+            <div className="flex gap-3">
+              {/* Avatar Skeleton */}
+              <div className="size-10 shrink-0 animate-pulse rounded-full bg-gray-200"></div>
+
+              {/* Post Info Skeleton */}
+              <div className="min-w-0 flex-1">
+                {/* Community Name Skeleton */}
+                <div className="mb-1 h-4 w-24 animate-pulse rounded bg-gray-200"></div>
+
+                <div className="flex items-center justify-between pb-3">
+                  {/* Title Skeleton */}
+                  <div className="mr-2 h-5 flex-1 animate-pulse rounded bg-gray-200"></div>
+                  {/* Date Skeleton */}
+                  <div className="h-4 w-16 animate-pulse rounded bg-gray-200"></div>
+                </div>
+
+                {/* Stats Skeleton */}
+                <div className="flex items-center gap-3">
+                  <div className="h-7 w-20 animate-pulse rounded-xl bg-gray-200"></div>
+                  <div className="h-7 w-16 animate-pulse rounded-xl bg-gray-200"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* View All Link Skeleton */}
+      <div className="mt-4 h-5 w-32 animate-pulse rounded bg-gray-200"></div>
+    </div>
+  );
+};
 
 export const RecentPostsSidebar = () => {
   const { data, isLoading } = useInfiniteAllPosts();
@@ -13,19 +58,17 @@ export const RecentPostsSidebar = () => {
   const posts = data?.pages.flatMap((page) => page.data).slice(0, 5) ?? [];
 
   if (isLoading) {
-    return (
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-bold text-gray-900">Recent Posts</h2>
-        <div className="flex h-32 items-center justify-center">
-          <Spinner size="sm" />
-        </div>
-      </div>
-    );
+    return <RecentPostsSidebarPlaceholder />;
   }
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-lg font-bold text-gray-900">Recent Posts</h2>
+      <div className="flex items-center">
+        <h3 className="mb-2 bg-[url(https://res.cloudinary.com/djwpst00v/image/upload/v1764155666/hey-brush_qdt75l.webp)] bg-contain bg-center bg-no-repeat px-2 py-1 text-lg font-semibold text-gray-700">
+          Recent
+        </h3>
+        <h3 className="mb-2 text-lg font-semibold text-gray-700">Posts</h3>
+      </div>
 
       {posts.length === 0 ? (
         <p className="text-center text-sm text-gray-600">No posts available</p>

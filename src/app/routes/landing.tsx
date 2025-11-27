@@ -357,9 +357,6 @@ const LandingRoute = () => {
                 </div>
               </div>
               <div className="order-2">
-                <div className="inline-flex rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 p-4 text-white shadow-xl">
-                  <MessageCircle className="size-12" />
-                </div>
                 <div className="flex items-center">
                   <h3 className="mb-4 mt-6 bg-[url(https://res.cloudinary.com/djwpst00v/image/upload/v1764155666/hey-brush_qdt75l.webp)] bg-contain bg-center bg-no-repeat px-4 py-2 text-3xl font-bold text-gray-900">
                     Share
@@ -435,9 +432,6 @@ const LandingRoute = () => {
             {/* Feature 3 - Stay Updated (Left to Right) */}
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
               <div className="order-2 lg:order-1">
-                <div className="inline-flex rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-500 p-4 text-white shadow-xl">
-                  <TrendingUp className="size-12" />
-                </div>
                 <div className="flex items-center">
                   <h3 className="mb-4 mt-6 text-3xl font-bold text-gray-900">
                     Stay
