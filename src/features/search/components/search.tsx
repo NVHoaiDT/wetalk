@@ -92,7 +92,7 @@ export const Search = () => {
           onFocus={() => setShowSuggestions(true)}
           placeholder="Search posts, communities..."
           className={cn(
-            'h-11 w-full rounded-full bg-accent/50 pl-12 pr-4 text-sm',
+            'h-11 w-full rounded-full bg-input/50 pl-12 pr-4 text-sm',
             'placeholder:text-muted-foreground/70',
             'outline-none transition-all',
             'hover:bg-accent/70',
