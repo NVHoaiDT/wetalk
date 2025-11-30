@@ -29,7 +29,7 @@ const TABS: { id: SettingTab; label: string; icon: any; color: string }[] = [
 ];
 
 const SettingRoute = () => {
-  const [activeTab, setActiveTab] = useState<SettingTab>('preferences');
+  const [activeTab, setActiveTab] = useState<SettingTab>('account');
 
   const renderTabContent = () => {
     switch (activeTab) {

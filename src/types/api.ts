@@ -45,6 +45,7 @@ export type User = {
   };
   createdAt: string;
   role: string;
+  authProvider: string;
 };
 
 export type RegisterResponse = {

@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/form/input';
 import { useNotifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
+import { fancyLog } from '@/helper/fancy-log';
 import {
   changePasswordInput,
   ChangePasswordInput,
@@ -97,6 +98,7 @@ export const SettingAccounts = () => {
   }
 
   const user = userQuery.data?.data;
+  fancyLog('SETTING-USER', user);
 
   return (
     <div className="space-y-8">
@@ -104,20 +106,23 @@ export const SettingAccounts = () => {
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-gray-900">General</h3>
         <div className="space-y-3">
-          {/* Password */}
-          <button
-            onClick={() => setActiveDialog('password')}
-            className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50/30 hover:shadow-md"
-          >
-            <div className="flex items-center gap-3">
-              <Lock className="size-5 text-purple-600" />
-              <div className="text-left">
-                <p className="text-sm font-semibold text-gray-700">Password</p>
-                <p className="text-xs text-gray-500">********</p>
+          {user?.authProvider === 'email' && (
+            <button
+              onClick={() => setActiveDialog('password')}
+              className="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50/30 hover:shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <Lock className="size-5 text-purple-600" />
+                <div className="text-left">
+                  <p className="text-sm font-semibold text-gray-700">
+                    Password
+                  </p>
+                  <p className="text-xs text-gray-500">********</p>
+                </div>
               </div>
-            </div>
-            <ChevronRight className="size-5 text-gray-400" />
-          </button>
+              <ChevronRight className="size-5 text-gray-400" />
+            </button>
+          )}
 
           {/* Gender */}
           <button
