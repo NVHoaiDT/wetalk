@@ -85,6 +85,7 @@ export type Community = {
   coverImage: string;
   isPrivate: boolean;
   createdAt: string;
+  postsLastWeek: number;
   totalMembers: number;
   moderators: Moderators[];
   isRequiresMemberApproval: boolean;

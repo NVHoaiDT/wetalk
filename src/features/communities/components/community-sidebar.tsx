@@ -58,7 +58,7 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
             </div>
             <div>
               <div className="flex items-center gap-1 text-xl font-bold text-gray-900">
-                {formatBigNumber(12000)}
+                {formatBigNumber(community.postsLastWeek)}
                 <TrendingUp className="size-4 text-green-500" />
               </div>
               <div className="text-xs text-gray-500">Weekly posts</div>

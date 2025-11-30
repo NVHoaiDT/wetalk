@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { ArchiveX, MoreVertical } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -11,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
 import { MDPreview } from '@/components/ui/md-preview';
+import { paths } from '@/config/paths';
 import { fancyLog } from '@/helper/fancy-log';
 import { useCurrentUser } from '@/lib/auth';
 import { Authorization, POLICIES } from '@/lib/authorization';
@@ -50,25 +52,26 @@ const Comment = ({
     >
       <div className="p-4">
         {/* Comment Header */}
-        <div className="mb-2 flex items-center space-x-3">
-          <img
-            src={comment.author.avatar}
-            alt={comment.author.username}
-            className={`rounded-full ${level === 0 ? 'size-8' : 'size-6'}`}
-          />
-          <div className="flex items-center space-x-2 text-sm">
-            <span className="font-semibold text-blue-600">
-              {comment.author.username}
-            </span>
-            <span className="text-gray-500">•</span>
-            <time className="text-gray-500">
-              {formatDistanceToNow(new Date(comment.createdAt), {
-                addSuffix: true,
-              })}
-            </time>
+        <Link to={paths.app.userProfile.getHref(comment.author.id)}>
+          <div className="mb-2 flex items-center space-x-3">
+            <img
+              src={comment.author.avatar}
+              alt={comment.author.username}
+              className={`rounded-full ${level === 0 ? 'size-8' : 'size-6'}`}
+            />
+            <div className="flex items-center space-x-2 text-sm">
+              <span className="font-semibold text-blue-600">
+                {comment.author.username}
+              </span>
+              <span className="text-gray-500">•</span>
+              <time className="text-gray-500">
+                {formatDistanceToNow(new Date(comment.createdAt), {
+                  addSuffix: true,
+                })}
+              </time>
+            </div>
           </div>
-        </div>
-
+        </Link>
         {/* Comment Content */}
         <div className={level === 0 ? 'pl-8' : 'pl-6'}>
           <MDPreview value={comment.content} />

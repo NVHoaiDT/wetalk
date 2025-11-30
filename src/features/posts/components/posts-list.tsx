@@ -12,7 +12,6 @@ import {
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,10 +80,6 @@ export const PostsList = ({ communityId }: PostsListProps) => {
     } else {
       console.log('User preferences do not allow to store recent posts');
     }
-  };
-
-  const handleJoinCommunity = (communityId: number) => {
-    console.log('Join community:', communityId);
   };
 
   if (postsQuery.isLoading) {
@@ -221,13 +216,13 @@ export const PostsList = ({ communityId }: PostsListProps) => {
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2">
-                      <Button
+                      {/*                       <Button
                         size="sm"
                         onClick={() => handleJoinCommunity(post.community.id)}
                         className="rounded-xl border border-sky-300 bg-cyan-50 px-4 py-1 text-xs font-semibold text-gray-600 hover:bg-cyan-100 hover:text-gray-700"
                       >
                         Join
-                      </Button>
+                      </Button> */}
 
                       {/* More Actions Menu */}
                       <DropdownMenu>
