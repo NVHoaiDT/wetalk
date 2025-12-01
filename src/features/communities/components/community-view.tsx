@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
+import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
 import { CreatePost } from '@/features/posts/components/create-post';
 import { PostsList } from '@/features/posts/components/posts-list';
@@ -297,9 +298,10 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                   About w/{community.name}
                 </h2>
                 <div className="prose max-w-none text-gray-700">
-                  <p className="whitespace-pre-wrap leading-relaxed">
+                  {/* <p className="whitespace-pre-wrap leading-relaxed">
                     {community.description}
-                  </p>
+                  </p> */}
+                  <MDPreview value={community.description} />
                 </div>
               </div>
             </div>

@@ -8,10 +8,7 @@ const NotifyRoute = () => {
   const [searchParams] = useSearchParams();
   const email = searchParams.get('email') || 'your email';
 
-  const handleResendEmail = () => {
-    // TODO: Implement resend logic
-    console.log('Resending verification email to:', email);
-  };
+  const handleResendEmail = () => {};
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
