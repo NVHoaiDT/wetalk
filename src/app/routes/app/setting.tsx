@@ -25,7 +25,7 @@ const TABS: { id: SettingTab; label: string; icon: any; color: string }[] = [
     icon: Bell,
     color: 'text-orange-600',
   },
-  { id: 'email', label: 'Email', icon: Mail, color: 'text-green-600' },
+  /* { id: 'email', label: 'Email', icon: Mail, color: 'text-green-600' }, */
 ];
 
 const SettingRoute = () => {
