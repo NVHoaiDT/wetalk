@@ -8,7 +8,6 @@ import {
   ListOrdered,
   Quote,
   Link as LinkIcon,
-  Heading2,
   Undo,
   Redo,
   Code,
@@ -59,7 +58,9 @@ export const TextEditor = ({
 }: TextEditorProps) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: false,
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -73,13 +74,17 @@ export const TextEditor = ({
         class:
           'prose prose-sm max-w-none focus:outline-none px-4 py-2 min-h-[120px]',
       },
+      transformPastedHTML(html) {
+        return html
+          .replace(/<h[1-6][^>]*>/gi, '<b>')
+          .replace(/<\/h[1-6]>/gi, '</b>');
+      },
     },
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
   });
 
-  // Sync editor content when value prop changes externally
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value);
@@ -133,14 +138,6 @@ export const TextEditor = ({
 
         <div className="mx-2 h-6 w-px bg-gray-200" aria-hidden="true" />
 
-        <ToolbarButton
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          active={editor.isActive('heading', { level: 2 })}
-        >
-          <Heading2 className="size-4" />
-        </ToolbarButton>
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           active={editor.isActive('bold')}
