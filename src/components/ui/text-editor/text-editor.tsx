@@ -13,6 +13,7 @@ import {
   Redo,
   Code,
 } from 'lucide-react';
+import { useEffect } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -77,6 +78,13 @@ export const TextEditor = ({
       onChange(editor.getHTML());
     },
   });
+
+  // Sync editor content when value prop changes externally
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value);
+    }
+  }, [editor, value]);
 
   if (!editor) {
     return null;

@@ -1,5 +1,5 @@
 import { Image, Send } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
@@ -37,7 +37,6 @@ export const CreatePostCommentFallback = ({
   const [content, setContent] = useState('');
   const [mediaUrl, setMediaUrl] = useState<string>();
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
-  const editorResetKey = useRef(0);
 
   const { addNotification } = useNotifications();
   const createPostCommentMutation = useCreatePostComment({
@@ -46,7 +45,6 @@ export const CreatePostCommentFallback = ({
       onSuccess: () => {
         setContent('');
         setMediaUrl(undefined);
-        editorResetKey.current += 1; // Force re-render to reset editor
         addNotification({
           type: 'success',
           title: 'Comment posted successfully',
@@ -75,11 +73,7 @@ export const CreatePostCommentFallback = ({
       <div
         className={`relative rounded-lg border ${minimized ? 'border-transparent hover:border-gray-200' : 'border-gray-200'}`}
       >
-        <TextEditor
-          key={editorResetKey.current}
-          value={content}
-          onChange={setContent}
-        />
+        <TextEditor value={content} onChange={setContent} />
         {mediaUrl && (
           <div className="mx-4 mb-4 mt-2">
             <img
