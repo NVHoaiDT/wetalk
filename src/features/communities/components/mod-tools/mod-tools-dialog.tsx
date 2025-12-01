@@ -19,9 +19,10 @@ type ModSection = 'members' | 'posts' | 'reported-posts';
 
 type ModToolsDialogProps = {
   communityId: number;
+  role: 'super_admin' | 'admin' | 'user';
 };
 
-export const ModToolsDialog = ({ communityId }: ModToolsDialogProps) => {
+export const ModToolsDialog = ({ communityId, role }: ModToolsDialogProps) => {
   const { isOpen, open, close } = useDisclosure();
   const [activeSection, setActiveSection] = useState<ModSection>('members');
 
@@ -81,7 +82,7 @@ export const ModToolsDialog = ({ communityId }: ModToolsDialogProps) => {
           {/* Content Area */}
           <div className="flex-1 overflow-hidden">
             {activeSection === 'members' && (
-              <MembersSection communityId={communityId} />
+              <MembersSection communityId={communityId} role={role} />
             )}
             {activeSection === 'posts' && (
               <PostsSection communityId={communityId} />

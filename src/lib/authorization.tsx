@@ -9,6 +9,7 @@ export enum ROLES {
   moderator = 'moderator',
   user = 'user',
 }
+
 type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {

@@ -18,12 +18,14 @@ type MembersTableProps = {
   members: CommunityMember[];
   communityId: number;
   isLoading?: boolean;
+  role: string;
 };
 
 export const MembersTable = ({
   members,
   communityId,
   isLoading,
+  role,
 }: MembersTableProps) => {
   if (isLoading) {
     return (
@@ -117,17 +119,24 @@ export const MembersTable = ({
                       memberName={member.username}
                     />
                   ) : (
+                    /* admin | super */
                     <>
-                      <SetModeratorButton
-                        communityId={communityId}
-                        memberId={member.userId}
-                        memberName={member.username}
-                      />
-                      <BanMemberButton
-                        communityId={communityId}
-                        memberId={member.userId}
-                        memberName={member.username}
-                      />
+                      {role === 'super_admin' && (
+                        <SetModeratorButton
+                          communityId={communityId}
+                          memberId={member.userId}
+                          memberName={member.username}
+                        />
+                      )}
+
+                      {role === 'super_admin' ||
+                      (role === 'admin' && member.role === 'user') ? (
+                        <BanMemberButton
+                          communityId={communityId}
+                          memberId={member.userId}
+                          memberName={member.username}
+                        />
+                      ) : null}
                     </>
                   )}
                 </div>

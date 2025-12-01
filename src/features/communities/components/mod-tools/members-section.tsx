@@ -15,9 +15,10 @@ import { MembersTable } from '../manage-members/members-table';
 
 type MembersSectionProps = {
   communityId: number;
+  role: string;
 };
 
-export const MembersSection = ({ communityId }: MembersSectionProps) => {
+export const MembersSection = ({ communityId, role }: MembersSectionProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<
     'all' | 'approved' | 'pending'
@@ -91,6 +92,7 @@ export const MembersSection = ({ communityId }: MembersSectionProps) => {
           members={members}
           communityId={communityId}
           isLoading={membersQuery.isLoading}
+          role={role}
         />
       </div>
     </div>

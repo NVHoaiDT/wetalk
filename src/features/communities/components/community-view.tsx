@@ -43,6 +43,15 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
   if (!community) return null;
 
+  const isSuperAdmin = community.moderators.some(
+    (mod) => mod.userId === currentUser?.id && mod.role === 'super_admin',
+  );
+  const isModerator = community.moderators.some(
+    (mod) => mod.userId === currentUser?.id && mod.role === 'admin',
+  );
+
+  const role = isSuperAdmin ? 'super_admin' : isModerator ? 'admin' : 'user';
+
   const isPrivateAndNotRequest =
     community.isPrivate && !community.isFollow && !community.isRequestJoin;
   const isPrivateAndNotApproved =
@@ -168,7 +177,10 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                         onSelect={(e) => e.preventDefault()}
                         asChild
                       >
-                        <ModToolsDialog communityId={community.id} />
+                        <ModToolsDialog
+                          communityId={community.id}
+                          role={role}
+                        />
                       </DropdownMenuItem>
 
                       <Authorization
