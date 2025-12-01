@@ -11,6 +11,7 @@ import { Link } from 'react-router';
 import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { paths } from '@/config/paths';
+import { UserHoverCard } from '@/features/users/components/user-hover-card';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
@@ -150,12 +151,14 @@ export const PostView = ({ id }: { id: number }) => {
                   </Link>
 
                   <div className="mb-3 flex items-center gap-2 text-sm">
-                    <Link
-                      to={paths.app.userProfile.getHref(post.author.id)}
-                      className="cursor-pointer text-gray-700 hover:text-blue-600"
-                    >
-                      u/{post.author.username}
-                    </Link>
+                    <UserHoverCard userId={post.author.id}>
+                      <Link
+                        to={paths.app.userProfile.getHref(post.author.id)}
+                        className="cursor-pointer text-gray-700 hover:text-blue-600"
+                      >
+                        u/{post.author.username}
+                      </Link>
+                    </UserHoverCard>
 
                     <div className="flex items-center gap-1 self-center text-sm text-gray-500">
                       <span className="text-gray-500">•</span>
