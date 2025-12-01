@@ -1,6 +1,5 @@
 import { TrendingUp, Users, ShieldBan } from 'lucide-react';
 
-import { MDPreview } from '@/components/ui/md-preview';
 import { formatBigNumber } from '@/utils/format';
 
 interface CommunityCardProps {
@@ -21,7 +20,6 @@ const CommunityCard = ({
   totalMembers,
   rank,
 }: CommunityCardProps) => {
-  // Define color schemes for top 3 ranks
   const getRankColors = () => {
     switch (rank) {
       case 1:
@@ -144,11 +142,9 @@ const CommunityCard = ({
               <ShieldBan className={`size-3.5 ${colors.iconColor}`} />
             )}
           </div>
-          <MDPreview
-            value={shortDescription}
-            maxLines={3}
-            className="mb-2 line-clamp-2 min-h-8 text-xs leading-snug text-gray-600"
-          />
+          <p className="mb-2 line-clamp-2 min-h-8 text-xs leading-snug text-gray-600">
+            {shortDescription}
+          </p>
 
           {/* Stats bar */}
           <div className="text-xs">
