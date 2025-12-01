@@ -110,15 +110,15 @@ const NotifyRoute = () => {
           onClick={handleResendEmail}
           disabled={resendDisabled || resendMutation.isPending}
           isLoading={resendMutation.isPending}
-          className="h-12 w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          className="h-12 w-full rounded-full bg-gradient-to-r from-blue-400 to-blue-500 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
         >
           {resendDisabled && countdown > 0 ? (
             <span>Resend in {countdown}s</span>
           ) : (
-            <>
+            <div className="flex items-center justify-center">
               <RefreshCw className="mr-2 size-4" />
               <span>Resend Verification Email</span>
-            </>
+            </div>
           )}
         </Button>
 
