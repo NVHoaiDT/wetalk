@@ -7,11 +7,18 @@ import { paths } from '@/config/paths';
 import { useRegister, registerInputSchema } from '@/lib/auth';
 
 type RegisterFormProps = {
-  onSuccess: () => void;
+  onSuccess: (email: string) => void;
 };
 
 export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
-  const registering = useRegister({ onSuccess });
+  const [submittedEmail, setSubmittedEmail] = React.useState('');
+
+  const registering = useRegister({
+    onSuccess: () => {
+      // Pass the stored email to the onSuccess callback
+      onSuccess(submittedEmail);
+    },
+  });
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
 
@@ -19,6 +26,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     <div className="space-y-6">
       <Form
         onSubmit={(values) => {
+          setSubmittedEmail(values.email);
           registering.mutate(values);
         }}
         schema={registerInputSchema}

@@ -215,6 +215,36 @@ export const useRegister = ({ onSuccess }: UseRegisterOptions = {}) => {
   });
 };
 
+/* ____________________Resend register verification email____________________ */
+export const resendRegisterVerificationEmailInput = z.object({
+  email: z.string().min(1, 'Required').email('Invalid email'),
+});
+export type ResendRegisterVerificationEmailInput = z.infer<
+  typeof resendRegisterVerificationEmailInput
+>;
+
+const resendRegisterVerificationEmail = (
+  data: ResendRegisterVerificationEmailInput,
+): Promise<{ message: string }> => {
+  return api.post('/auth/resend-verification', data);
+};
+
+type UseResendRegisterVerificationEmailOptions = {
+  onSuccess?: (data: { message: string }) => void;
+};
+
+export const useResendRegisterVerificationEmail = ({
+  onSuccess,
+}: UseResendRegisterVerificationEmailOptions = {}) => {
+  return useMutation({
+    mutationKey: ['resend-verification-email'],
+    mutationFn: resendRegisterVerificationEmail,
+    onSuccess: (response) => {
+      onSuccess?.(response);
+    },
+  });
+};
+
 /* ____________________Change password____________________ */
 export const changePasswordInput = z.object({
   oldPassword: z.string().min(1, 'Required'),

@@ -1,57 +1,84 @@
-import { Mail, CheckCircle, RefreshCw, ArrowLeft } from 'lucide-react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Mail, CheckCircle, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router';
 
+import { AuthLayout } from '@/components/layouts/auth-layout';
+import { Button } from '@/components/ui/button';
+import { useNotifications } from '@/components/ui/notifications';
 import { paths } from '@/config/paths';
+import { useResendRegisterVerificationEmail } from '@/lib/auth';
 
 const NotifyRoute = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const email = searchParams.get('email') || 'your email';
+  const email = searchParams.get('email') || '';
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const { addNotification } = useNotifications();
 
-  const handleResendEmail = () => {};
+  const resendMutation = useResendRegisterVerificationEmail({
+    onSuccess: () => {
+      addNotification({
+        type: 'success',
+        title: 'Email Sent',
+        message: 'Verification email has been resent successfully',
+      });
+      // Disable resend button for 60 seconds
+      setResendDisabled(true);
+      setCountdown(60);
+      const timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            setResendDisabled(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    },
+  });
+
+  const handleResendEmail = () => {
+    if (!email) {
+      addNotification({
+        type: 'error',
+        title: 'Error',
+        message: 'Email address is missing',
+      });
+      return;
+    }
+    resendMutation.mutate({ email });
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
-      {/* Animated background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="email-blob absolute left-10 top-20 size-72 rounded-full bg-blue-200 opacity-30 mix-blend-multiply blur-xl"></div>
-        <div className="absolute right-10 top-40 size-72 rounded-full bg-purple-200 opacity-30 mix-blend-multiply blur-xl"></div>
-        <div className="absolute bottom-20 left-1/2 size-72 rounded-full bg-indigo-200 opacity-30 mix-blend-multiply blur-xl"></div>
-      </div>
-
-      {/* Main card */}
-      <div className="relative w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
+    <AuthLayout title="Check Your Email">
+      <div className="space-y-6">
         {/* Icon */}
-        <div className="mb-6 flex justify-center">
+        <div className="flex justify-center">
           <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-blue-500 opacity-30 blur-xl"></div>
-            <div className="relative rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-6 shadow-lg">
-              <Mail className="size-12 text-white" />
+            <div className="absolute inset-0 rounded-full bg-blue-500 opacity-20 blur-xl"></div>
+            <div className="relative rounded-full bg-gradient-to-br from-blue-500 to-blue-600 p-5 shadow-lg">
+              <Mail className="size-10 text-white" />
             </div>
-            <div className="absolute -bottom-1 -right-1 rounded-full bg-green-500 p-1.5 shadow-lg">
-              <CheckCircle className="size-5 text-white" />
+            <div className="absolute -bottom-1 -right-1 rounded-full bg-green-500 p-1.5 shadow-md">
+              <CheckCircle className="size-4 text-white" />
             </div>
           </div>
         </div>
 
-        {/* Title */}
-        <h1 className="mb-3 text-center text-3xl font-bold text-gray-900">
-          Check Your Email
-        </h1>
-
-        <p className="mb-6 text-center text-gray-600">
-          We&apos;ve sent a verification link to
-        </p>
-
-        {/* Email display */}
-        <div className="mb-6 rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
-          <p className="break-all text-center font-semibold text-blue-700">
-            {email}
+        <div className="space-y-3 text-center">
+          <p className="text-sm text-gray-600">
+            We&apos;ve sent a verification link to
           </p>
+
+          {/* Email display */}
+          <div className="rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-3">
+            <p className="break-all font-semibold text-blue-700">{email}</p>
+          </div>
         </div>
 
         {/* Instructions */}
-        <div className="mb-8 space-y-3">
+        <div className="space-y-3 rounded-lg bg-gray-50 p-4">
           <div className="flex items-start space-x-3">
             <div className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-blue-100">
               <span className="text-sm font-semibold text-blue-600">1</span>
@@ -79,31 +106,41 @@ const NotifyRoute = () => {
         </div>
 
         {/* Resend button */}
-        <button
+        <Button
           onClick={handleResendEmail}
-          className="mb-4 flex w-full items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-3 font-semibold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 hover:shadow-xl active:scale-95"
+          disabled={resendDisabled || resendMutation.isPending}
+          isLoading={resendMutation.isPending}
+          className="h-12 w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
         >
-          <RefreshCw className="size-5" />
-          <span>Resend Verification Email</span>
-        </button>
+          {resendDisabled && countdown > 0 ? (
+            <span>Resend in {countdown}s</span>
+          ) : (
+            <>
+              <RefreshCw className="mr-2 size-4" />
+              <span>Resend Verification Email</span>
+            </>
+          )}
+        </Button>
 
         {/* Back to login */}
-        <button
-          onClick={() => navigate(paths.auth.login.getHref())}
-          className="flex w-full items-center justify-center space-x-2 rounded-lg px-4 py-2 font-medium text-gray-600 transition-colors duration-200 hover:text-gray-900"
-        >
-          <ArrowLeft className="size-4" />
-          <span>Back to Login</span>
-        </button>
+        <div className="text-center text-sm text-gray-600">
+          <Link
+            to={paths.auth.login.getHref()}
+            className="font-semibold text-gray-700 underline underline-offset-2 transition-colors hover:text-gray-900"
+          >
+            Back to Login
+          </Link>
+        </div>
 
         {/* Help text */}
-        <div className="mt-6 border-t border-gray-200 pt-6">
-          <p className="text-center text-sm text-gray-500">
-            Didn&apos;t receive the email? Check spam or contact support.
+        <div className="border-t border-gray-200 pt-4">
+          <p className="text-center text-xs text-gray-500">
+            Didn&apos;t receive the email? Check your spam folder or contact
+            support.
           </p>
         </div>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
