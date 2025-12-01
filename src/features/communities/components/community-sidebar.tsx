@@ -49,6 +49,21 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
             )}
           </div>
 
+          {/* Topic */}
+          <div className="mt-2 flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {community.topic.map((topic) => (
+                <span
+                  key={topic}
+                  className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800"
+                >
+                  {topic}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats */}
           <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-4">
             <div>
               <div className="text-xl font-bold text-gray-900">
