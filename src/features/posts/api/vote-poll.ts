@@ -44,6 +44,9 @@ export const useVotePoll = ({ postId, mutationConfig }: UseVotePollOptions) => {
       queryClient.invalidateQueries({
         queryKey: getPostQueryOptions(postId).queryKey,
       });
+      queryClient.invalidateQueries({
+        queryKey: ['all-posts'],
+      });
       onSuccess?.(...args);
     },
     ...restConfig,
