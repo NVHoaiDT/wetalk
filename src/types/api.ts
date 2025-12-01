@@ -101,6 +101,7 @@ export type CommunityMember = {
   karma: number;
   subscribedAt: string;
   status: string;
+  role: string;
 };
 
 export type RecentCommunity = {

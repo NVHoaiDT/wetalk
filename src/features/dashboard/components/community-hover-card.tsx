@@ -74,7 +74,7 @@ export const CommunityHoverCard = ({
 
           {/* Description */}
           <p className="line-clamp-3 text-sm text-gray-700">
-            {communityData.description}
+            {communityData.shortDescription}
           </p>
 
           {/* Join Button */}

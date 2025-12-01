@@ -119,9 +119,9 @@ export const ProfileCommentsList = ({ userId }: ProfileCommentsListProps) => {
                   className="prose prose-sm max-w-none text-gray-900"
                   dangerouslySetInnerHTML={{ __html: comment.content }}
                 />
-                <div className="mt-2 text-xs text-gray-600">
+                {/* <div className="mt-2 text-xs text-gray-600">
                   on post #{comment.postId}
-                </div>
+                </div> */}
               </div>
             </div>
           </Link>

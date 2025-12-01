@@ -55,9 +55,7 @@ export const MembersTable = ({
             <TableHead className="font-semibold text-gray-700">
               STATUS
             </TableHead>
-            <TableHead className="font-semibold text-gray-700">
-              You can edit
-            </TableHead>
+            <TableHead className="font-semibold text-gray-700">ROLE</TableHead>
             <TableHead className="font-semibold text-gray-700">
               JOINED
             </TableHead>
@@ -103,7 +101,7 @@ export const MembersTable = ({
                 )}
               </TableCell>
               <TableCell>
-                <span className="text-sm text-gray-600">No</span>
+                <span className="text-sm text-gray-600">{member.role}</span>
               </TableCell>
               <TableCell>
                 <div className="text-sm text-gray-600">
