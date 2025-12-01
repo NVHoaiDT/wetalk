@@ -21,7 +21,7 @@ import { getInfinitePostCommentsQueryOptions } from './get-post-comments';
 
 export const editPostCommentInputSchema = z.object({
   content: z.string().min(1, 'Required'),
-  mediaUrl: z.string().min(1, 'Required'),
+  mediaUrl: z.string().optional(),
 });
 
 export type EditPostCommentInput = z.infer<typeof editPostCommentInputSchema>;

@@ -1,4 +1,4 @@
-import { Pencil } from 'lucide-react';
+import { Image, Pencil, X } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { MDPreview } from '@/components/ui/md-preview';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { TextEditor } from '@/components/ui/text-editor';
@@ -32,7 +31,9 @@ export const EditPostComment = ({
 }: EditPostCommentProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(initialContent);
-  const [mediaUrl, setMediaUrl] = useState(initialMediaUrl || '');
+  const [mediaUrl, setMediaUrl] = useState(initialMediaUrl);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const { addNotification } = useNotifications();
 
   const editPostCommentMutation = useEditPostComment({
@@ -55,12 +56,15 @@ export const EditPostComment = ({
 
     editPostCommentMutation.mutate({
       data: {
-        content,
+        content: content.trim(),
         mediaUrl,
       },
       commentId: id,
     });
   };
+
+  const isSubmitDisabled =
+    !content.trim() || editPostCommentMutation.isPending || isUploading;
 
   return (
     <>
@@ -73,39 +77,100 @@ export const EditPostComment = ({
       </button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-xl">
+        <DialogContent
+          className="sm:max-w-xl"
+          onKeyDown={(e) => {
+            // Prevent dialog from closing when space is pressed in editor
+            if (e.key === ' ') {
+              e.stopPropagation();
+            }
+          }}
+        >
           <DialogHeader>
             <DialogTitle>Edit Comment</DialogTitle>
           </DialogHeader>
 
           <div className="mt-4 space-y-4">
-            <div className="rounded-md border p-4">
-              <TextEditor value={content} onChange={setContent} />
-              <div className="mt-2 border-t pt-2">
-                <p className="text-sm text-gray-500">Preview:</p>
-                <MDPreview value={content} />
-              </div>
-            </div>
+            <TextEditor value={content} onChange={setContent} />
 
-            <MediaUploader
-              mode="replace"
-              value={mediaUrl ? [mediaUrl] : []}
-              onChange={(urls) => setMediaUrl(urls[0] || '')}
-              maxFiles={1}
-              maxSize={5}
-            />
+            {mediaUrl && (
+              <div className="relative">
+                <img
+                  src={mediaUrl}
+                  alt="Comment media"
+                  className="max-h-60 rounded-lg object-cover"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="mt-2 text-red-500 hover:text-red-600"
+                  onClick={() => setMediaUrl(undefined)}
+                  disabled={isUploading}
+                >
+                  <div className="flex items-center">
+                    <X className="mr-1 size-4" />
+                    Remove image
+                  </div>
+                </Button>
+              </div>
+            )}
+
+            {!mediaUrl && (
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="py-4"
+                onClick={() => setIsUploaderOpen(true)}
+                disabled={isUploading}
+              >
+                <div className="flex items-center">
+                  <Image className="mr-2 size-4" />
+                  Add image
+                </div>
+              </Button>
+            )}
+
+            {isUploaderOpen && (
+              <div className="rounded-lg border p-4">
+                <MediaUploader
+                  mode="replace"
+                  onChange={(urls) => {
+                    if (urls.length > 0) {
+                      setMediaUrl(urls[0]);
+                    }
+                    setIsUploaderOpen(false);
+                  }}
+                  onError={(error) => {
+                    addNotification({
+                      type: 'error',
+                      title: 'Upload Failed',
+                      message: error.message,
+                    });
+                  }}
+                  onUploadStateChange={setIsUploading}
+                  maxFiles={1}
+                  value={mediaUrl ? [mediaUrl] : []}
+                  accept={{ images: true, videos: false }}
+                />
+              </div>
+            )}
 
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setIsOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+                disabled={isUploading || editPostCommentMutation.isPending}
+              >
                 Cancel
               </Button>
-              <Button
-                onClick={handleEdit}
-                disabled={editPostCommentMutation.isPending || !content.trim()}
-              >
+              <Button onClick={handleEdit} disabled={isSubmitDisabled}>
                 {editPostCommentMutation.isPending
                   ? 'Saving...'
-                  : 'Save Changes'}
+                  : isUploading
+                    ? 'Uploading...'
+                    : 'Save Changes'}
               </Button>
             </div>
           </div>
