@@ -15,6 +15,7 @@ export const updateCommunityInputSchema = z.object({
 
   /* Added cover image */
   coverImage: z.string().url().optional(),
+  topics: z.array(z.string()).optional(),
   isPrivate: z.boolean(),
 });
 

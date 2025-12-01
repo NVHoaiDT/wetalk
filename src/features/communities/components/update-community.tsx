@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
+import { TextEditor } from '@/components/ui/text-editor';
 /* import { Authorization, ROLES } from '@/lib/authorization'; */
 import { fancyLog } from '@/helper/fancy-log';
 
@@ -20,6 +21,8 @@ import {
   updateCommunityInputSchema,
   useUpdateCommunity,
 } from '../api/update-community';
+
+import { SearchTopics } from './search-topics';
 
 export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -94,6 +97,7 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
             description: community.description,
             communityAvatar: community.communityAvatar || undefined,
             coverImage: community.coverImage || undefined,
+            topics: community.topic || [],
             isPrivate: community.isPrivate,
           },
         }}
@@ -113,12 +117,44 @@ export const UpdateCommunity = ({ communityId }: { communityId: number }) => {
               registration={register('shortDescription')}
               className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
             />
-            <Textarea
-              label="Description"
-              error={formState.errors['description']}
-              registration={register('description')}
-              className="min-h-[100px] resize-none rounded-lg border-blue-200 bg-white text-gray-900 shadow-sm transition-all duration-200 placeholder:text-gray-400 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+
+            {/* Description */}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <div className="space-y-2">
+                  <div className="text-sm font-medium text-gray-700">
+                    Description
+                  </div>
+                  <TextEditor
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    error={formState.errors['description']}
+                  />
+                  {formState.errors['description'] && (
+                    <p className="text-sm text-red-600">
+                      {formState.errors['description']?.message}
+                    </p>
+                  )}
+                </div>
+              )}
             />
+
+            {/* Topics Selection */}
+            <Controller
+              name="topics"
+              control={control}
+              render={({ field }) => (
+                <SearchTopics
+                  value={field.value || []}
+                  onChange={field.onChange}
+                  error={formState.errors['topics'] as any}
+                  label="Topics"
+                />
+              )}
+            />
+
             {/* Community Avatar */}
             <div className="space-y-2">
               <div className="text-sm font-medium text-gray-700">
