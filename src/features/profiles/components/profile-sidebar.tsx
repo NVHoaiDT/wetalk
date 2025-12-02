@@ -15,6 +15,7 @@ import { User } from '@/types/api';
 
 import { useUserBadget } from '../api/get-user-badget';
 
+import { BadgeHistoryDialog } from './badge-history-dialog';
 import { UpdateProfile } from './update-profile';
 
 type ProfileSidebarProps = {
@@ -37,6 +38,24 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
 
   const userBadget = userBadgetQuery.data?.data;
   fancyLog('User-Badget:', userBadget);
+  /* 
+  TODO: Display a modal that show the user badge history
+  Then show it when user click "Achievements History" button
+  [
+    {
+        "badgeName": "Bronze",
+        "iconUrl": "https://cdn-icons-png.flaticon.com/512/12927/12927172.png",
+        "karma": 0,
+        "monthYear": "2025-11"
+    },
+    {
+        "badgeName": "Gold",
+        "iconUrl": "https://cdn-icons-png.flaticon.com/128/11280/11280638.png",
+        "karma": 2500,
+        "monthYear": "10/2025"
+    }
+]
+*/
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -209,14 +228,7 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
               Edit Profile
             </Button> */}
             <UpdateProfile />
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full justify-start"
-              icon={<Award className="size-4" />}
-            >
-              Manage Achievements
-            </Button>
+            <BadgeHistoryDialog badges={userBadget || []} />
             <Button
               variant="outline"
               size="sm"
