@@ -24,8 +24,7 @@ import { useMessages } from '@/features/messages/stores/messages-store';
 import { useNotifications } from '@/features/notifications/stores/notifications-store';
 import { useRecentPosts } from '@/features/posts/api/get-recent-posts';
 import { Search } from '@/features/search/components/search';
-import { useLogout } from '@/lib/auth';
-import { ROLES, useAuthorization } from '@/lib/authorization';
+import { useCurrentUser, useLogout } from '@/lib/auth';
 import { cn } from '@/utils/cn';
 import { formatDate } from '@/utils/format';
 
@@ -95,11 +94,10 @@ const Progress = () => {
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const logout = useLogout();
-  /* const { checkAccess } = useAuthorization(); */
+
   const { openMessages, unreadCount: messagesUnreadCount } = useMessages();
   const { unreadCount: notificationsUnreadCount } = useNotifications();
 
-  // State for dropdown sections
   const [isRecentOpen, setIsRecentOpen] = useState(true);
   const [isRecentCommunitiesOpen, setIsRecentCommunitiesOpen] = useState(true);
 
@@ -109,14 +107,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const recentPostsQuery = useRecentPosts();
   const recentPosts = recentPostsQuery.data || [];
 
+  const currrentUserQuery = useCurrentUser();
+  const currentUser = currrentUserQuery.data?.data;
+
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
     { name: 'Communities', to: paths.app.communities.getHref(), icon: Users },
-    /* checkAccess({ allowedRoles: [ROLES.admin] }) && {
-      name: 'Users',
-      to: paths.app.users.getHref(),
-      icon: User2,
-    }, */
   ].filter(Boolean) as SideNavigationItem[];
 
   return (
@@ -433,17 +429,31 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </span>
             )}
           </Button>
+
           {/* Profile button */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full border-emerald-200 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-800"
-              >
-                <span className="sr-only">Open user menu</span>
-                <User2 className="size-6 rounded-full" />
-              </Button>
+              <button className="group relative">
+                {/* Colorful gradient ring */}
+                <div className="absolute inset-0 size-10 rounded-full bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 p-[2px] transition-all duration-300 group-hover:p-[3px] group-hover:shadow-lg">
+                  <div className="size-full rounded-full bg-white p-[2px]">
+                    {currentUser?.avatar ? (
+                      <img
+                        src={currentUser.avatar}
+                        alt="User Avatar"
+                        className="size-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex size-full items-center justify-center rounded-full bg-emerald-50">
+                        <User2 className="size-6 text-emerald-600" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Placeholder for positioning */}
+                <div className="size-10 opacity-0" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
@@ -463,7 +473,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 className={cn('block px-4 py-2 text-sm text-gray-700 w-full')}
                 onClick={() => logout.mutate()}
               >
-                Sign Out
+                {currentUser ? 'Sign Out' : 'Sign In'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
