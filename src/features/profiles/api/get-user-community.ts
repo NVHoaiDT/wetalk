@@ -9,7 +9,8 @@
     ],
     "communityAvatar": "https://images.unsplash.com/photo-1759400333614-6d27a2666266?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764",
     "isPrivate": false,
-    "totalMembers": 0
+    "totalMembers": 0,
+    "userRole": "member"
 },
 {
     "id": 3,
@@ -21,7 +22,8 @@
     ],
     "communityAvatar": "https://images.unsplash.com/photo-1759400333614-6d27a2666266?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764",
     "isPrivate": false,
-    "totalMembers": 1
+    "totalMembers": 1,
+    "userRole": "admin"
 },
 {
     "id": 2,
@@ -33,7 +35,8 @@
     ],
     "communityAvatar": "https://images.unsplash.com/photo-1759400333614-6d27a2666266?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764",
     "isPrivate": false,
-    "totalMembers": 1
+    "totalMembers": 1,
+    "userRole": "super_admin"
 }
 */
 
@@ -48,7 +51,7 @@ export const getUserCommunities = ({
 }: {
   userId: number;
 }): Promise<{ data: Community[] }> => {
-  return api.get(`/users/${userId}/communities/super-admin`);
+  return api.get(`/users/${userId}/communities/joined`);
 };
 
 export const getUserCommunitiesQueryOptions = (userId: number) => {

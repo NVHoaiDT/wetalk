@@ -92,6 +92,7 @@ export type Community = {
   isRequiresPostApproval: boolean;
   isRequestJoin: boolean;
   isFollow: boolean;
+  userRole: string;
 };
 
 export type CommunityMember = {
