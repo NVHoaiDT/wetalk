@@ -24,7 +24,7 @@ export type AuthResponse = {
 
 /*==========Testing zone==========*/
 export type Pagination = {
-  total: number;
+  total: number; //total items - only used for calculating total pages
   page: number;
   limit: number;
   nextUrl: string;
@@ -390,6 +390,20 @@ export type Preference = {
 /* ____________________Settings____________________ */
 export type SummayPost = {
   summary: string;
+};
+
+/* ____________________Search____________________ */
+export type SearchedUser = {
+  id: number;
+  username: string;
+  avatar: string;
+  bio: string;
+  karma: number;
+  createdAt: string;
+};
+export type SearchUsersResponse = {
+  data: SearchedUser[];
+  pagination: Pagination;
 };
 /*==========End Testing zone==========*/
 
