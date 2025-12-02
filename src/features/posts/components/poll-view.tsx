@@ -22,8 +22,6 @@ type PollViewProps = {
 export const PollView = ({ post, isCompact = false }: PollViewProps) => {
   const { addNotification } = useNotifications();
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
-  const userQuery = useCurrentUser();
-  const isAuthenticated = !!userQuery.data?.data;
 
   const votePollMutation = useVotePoll({
     postId: post.id,
@@ -36,22 +34,69 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
         });
         setSelectedOptions([]);
       },
-      onError: () => {
-        addNotification({
-          type: 'error',
-          title: 'Vote Failed',
-          message: 'Failed to submit your vote. Please try again.',
-        });
-      },
     },
   });
 
+  const userQuery = useCurrentUser();
+  const isAuthenticated = !!userQuery.data?.data;
+  const userId = userQuery.data?.data?.id;
+
   if (!post.pollData) return null;
+  fancyLog('Poll-Data:', post.pollData);
+  /* 
+  TODO: Check if the option is voted by the current user, then display with different color
+  {
+    "question": "State Management library nào bạn đang dùng?",
+    "options": [
+        {
+            "id": 1,
+            "text": "Redux Toolkit",
+            "votes": 1,
+            "voters": [
+                1 // user IDs who voted for this option
+            ]
+        },
+        {
+            "id": 2,
+            "text": "Zustand",
+            "votes": 0,
+            "voters": []
+        },
+        {
+            "id": 3,
+            "text": "Jotai",
+            "votes": 1,
+            "voters": [
+                5
+            ]
+        },
+        {
+            "id": 4,
+            "text": "Recoil",
+            "votes": 0,
+            "voters": []
+        },
+        {
+            "id": 5,
+            "text": "Context API only",
+            "votes": 0,
+            "voters": []
+        },
+        {
+            "id": 6,
+            "text": "MobX",
+            "votes": 0,
+            "voters": []
+        }
+    ],
+    "multipleChoice": false,
+    "totalVotes": 2
+}
+  */
 
   const { question, options, multipleChoice, expiresAt, totalVotes } =
     post.pollData;
 
-  fancyLog('Total Vote type', totalVotes);
   const hasExpired = expiresAt && new Date(expiresAt) < new Date();
   const canVote = !hasExpired;
 
@@ -135,6 +180,7 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
         {options.map((option) => {
           const percentage = getPercentage(option.votes);
           const isSelected = selectedOptions.includes(option.id);
+          const hasUserVoted = userId && option.voters?.includes(userId);
 
           // For unauthenticated users, wrap in ConfirmationDialog
           if (!isAuthenticated && canVote) {
@@ -212,14 +258,20 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
               onClick={() => handleOptionClick(option.id)}
               disabled={!canVote || votePollMutation.isPending}
               className={`group relative w-full overflow-hidden rounded-lg border-2 transition-all duration-200 ${
-                isSelected
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 bg-white hover:border-blue-300'
+                hasUserVoted
+                  ? 'border-green-400 bg-green-50'
+                  : isSelected
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-200 bg-white hover:border-blue-300'
               } ${!canVote || votePollMutation.isPending ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
             >
               {/* Progress bar background */}
               <div
-                className="absolute inset-0 bg-gradient-to-r from-blue-100 to-indigo-100 transition-all duration-500"
+                className={`absolute inset-0 transition-all duration-500 ${
+                  hasUserVoted
+                    ? 'bg-gradient-to-r from-green-100 to-emerald-100'
+                    : 'bg-gradient-to-r from-blue-100 to-indigo-100'
+                }`}
                 style={{ width: `${percentage}%` }}
               />
 
@@ -229,12 +281,16 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
                   {/* Checkbox/Radio indicator */}
                   <div
                     className={`flex size-5 shrink-0 items-center justify-center ${multipleChoice ? 'rounded-md' : 'rounded-full'} border-2 transition-colors ${
-                      isSelected
-                        ? 'border-blue-600 bg-blue-600'
-                        : 'border-gray-300 bg-white group-hover:border-blue-400'
+                      hasUserVoted
+                        ? 'border-green-500 bg-green-500'
+                        : isSelected
+                          ? 'border-blue-600 bg-blue-600'
+                          : 'border-gray-300 bg-white group-hover:border-blue-400'
                     }`}
                   >
-                    {isSelected && <Check className="size-3 text-white" />}
+                    {(isSelected || hasUserVoted) && (
+                      <Check className="size-3 text-white" />
+                    )}
                   </div>
 
                   <span className="text-left font-medium text-gray-900">
