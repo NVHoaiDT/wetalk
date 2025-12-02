@@ -136,23 +136,20 @@ const Comment = ({
               </Button>
             )}
             {level === 0 && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 text-gray-600 hover:text-blue-600"
-                  >
-                    <MoreVertical className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" side="top">
-                  <Authorization
-                    policyCheck={POLICIES['comment:delete'](
-                      user as User,
-                      comment,
-                    )}
-                  >
+              <Authorization
+                policyCheck={POLICIES['comment:delete'](user as User, comment)}
+              >
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-gray-600 hover:text-blue-600"
+                    >
+                      <MoreVertical className="size-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" side="top">
                     <DropdownMenuItem
                       onSelect={(e) => {
                         e.preventDefault();
@@ -175,9 +172,9 @@ const Comment = ({
                     >
                       <DeletePostComment id={comment.id} postId={postId} />
                     </DropdownMenuItem>
-                  </Authorization>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </Authorization>
             )}
           </div>
 

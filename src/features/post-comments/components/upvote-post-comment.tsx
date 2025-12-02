@@ -1,4 +1,4 @@
-import { ChevronUp } from 'lucide-react';
+import { ArrowBigUpDash } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { ConfirmationDialog } from '@/components/ui/dialog';
@@ -31,7 +31,7 @@ export const UpVotePostCommentFallback = ({
       className="rounded text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
       onClick={() => votePostCommentMutation.mutate({ commentId, vote: true })}
     >
-      <ChevronUp className="size-5" />
+      <ArrowBigUpDash className="size-5" />
     </button>
   );
 };
@@ -45,7 +45,7 @@ export const UnauthenticatedFallback = () => {
       illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
       triggerButton={
         <button className="rounded text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600">
-          <ChevronUp className="size-5" />
+          <ArrowBigUpDash className="size-5" />
         </button>
       }
       confirmButton={
