@@ -43,7 +43,7 @@ const Comment = ({
 }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(level >= 2); // Default collapse for level 2+
+  const [isCollapsed, setIsCollapsed] = useState(level >= 1); // Default collapse for level 2+
   const maxNestedLevel = 3;
 
   const userQuery = useCurrentUser();
