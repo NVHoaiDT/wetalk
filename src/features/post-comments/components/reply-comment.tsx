@@ -1,4 +1,4 @@
-import { Reply } from 'lucide-react';
+import { MessageCircleReply } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { ConfirmationDialog } from '@/components/ui/dialog';
@@ -19,7 +19,7 @@ export const ReplyCommentFallback = ({
       className="flex h-8 flex-row content-center items-center px-2 text-gray-600 hover:text-blue-600"
       onClick={onReply}
     >
-      <Reply className={'mr-1 size-4'} />
+      <MessageCircleReply className={'mr-1 size-4'} />
       {isReplying ? 'Cancel' : 'Reply'}
     </button>
   );
@@ -34,7 +34,7 @@ export const UnauthenticatedFallback = () => {
       illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763795804/comment_v2xjak.jpg"
       triggerButton={
         <button className="flex h-8 flex-row content-center items-center px-2 text-gray-600 hover:text-blue-600">
-          <Reply className={'mr-1 size-4'} />
+          <MessageCircleReply className={'mr-1 size-4'} />
           Reply
         </button>
       }

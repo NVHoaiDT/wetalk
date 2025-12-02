@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
-import { ArchiveX, MoreVertical } from 'lucide-react';
+import { ArchiveX, MoreVertical, ZoomIn, ZoomOut } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
@@ -43,6 +43,7 @@ const Comment = ({
 }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(level >= 2); // Default collapse for level 2+
   const maxNestedLevel = 3;
 
   const userQuery = useCurrentUser();
@@ -113,6 +114,27 @@ const Comment = ({
                 isReplying={isReplying}
               />
             )}
+            {/* Toggle button for nested replies at level 2+ */}
+            {level >= 1 && comment.replies?.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="h-8 px-2 text-xs text-gray-600 hover:text-blue-600"
+              >
+                {isCollapsed ? (
+                  <div className="flex items-center gap-1 text-sm">
+                    <ZoomIn className="size-4" />
+                    <span> {comment.replies.length} replies</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 text-sm">
+                    <ZoomOut className="size-4" />
+                    <span>Hide replies</span>
+                  </div>
+                )}
+              </Button>
+            )}
             {level === 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -175,7 +197,7 @@ const Comment = ({
       </div>
 
       {/* Nested Replies */}
-      {comment.replies?.length > 0 && (
+      {comment.replies?.length > 0 && !isCollapsed && (
         <div className="space-y-4 border-t border-gray-100 bg-gray-50 p-4 pl-8">
           {comment.replies.map((reply: any) => (
             <Comment
