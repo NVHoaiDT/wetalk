@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react';
+import { ArrowBigDownDash } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { ConfirmationDialog } from '@/components/ui/dialog';
@@ -63,7 +63,7 @@ export const DownVotePostFallback = ({ postId }: DownVotePostProps) => {
         unvotePostMutation.isPending
       }
     >
-      <ChevronDown className="size-5" />
+      <ArrowBigDownDash className="size-5" />
     </button>
   );
 };
@@ -77,7 +77,7 @@ export const UnauthenticatedFallback = () => {
       illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
       triggerButton={
         <button className="rounded text-gray-500 transition-colors hover:bg-red-50 hover:text-red-500">
-          <ChevronDown className="size-5" />
+          <ArrowBigDownDash className="size-5" />
         </button>
       }
       confirmButton={

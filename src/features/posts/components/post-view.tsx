@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
 } from '@radix-ui/react-dropdown-menu';
 import { formatDistanceToNow } from 'date-fns';
-import { MessageCircle, MoreHorizontal } from 'lucide-react';
+import { MessageCircle, MoreHorizontal, Share2 } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { MDPreview } from '@/components/ui/md-preview';
@@ -260,6 +260,7 @@ export const PostView = ({ id }: { id: number }) => {
               </button>
               <SharePost link={paths.app.post.getHref(post.id)}>
                 <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
+                  <Share2 className="size-4" />
                   <span>Share</span>
                 </button>
               </SharePost>
