@@ -1,5 +1,7 @@
 import { Camera } from 'lucide-react';
+import { useState } from 'react';
 
+import { LightboxMediaViewer } from '@/components/ui/lightbox-media-viewer';
 import { User } from '@/types/api';
 
 type ProfileHeaderProps = {
@@ -8,6 +10,8 @@ type ProfileHeaderProps = {
 };
 
 export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
   return (
     <div className="relative mb-6 overflow-hidden rounded-2xl bg-white shadow-lg">
       {/* Banner Background */}
@@ -25,11 +29,24 @@ export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
         <div className="relative -mt-12 mb-4 inline-block sm:-mt-16">
           <div className="group relative">
             {user.avatar ? (
-              <img
-                src={user.avatar}
-                alt={user.username}
-                className="size-24 rounded-full border-4 border-white bg-gray-100 object-cover shadow-lg sm:size-32"
-              />
+              <>
+                <button
+                  onClick={() => setIsLightboxOpen(true)}
+                  className="block cursor-pointer border-0 bg-transparent p-0"
+                  aria-label={`View ${user.username}'s profile picture`}
+                >
+                  <img
+                    src={user.avatar}
+                    alt={user.username}
+                    className="size-24 rounded-full border-4 border-white bg-gray-100 object-cover shadow-lg transition-opacity hover:opacity-90 sm:size-32"
+                  />
+                </button>
+                <LightboxMediaViewer
+                  isOpen={isLightboxOpen}
+                  onClose={() => setIsLightboxOpen(false)}
+                  media={user.avatar}
+                />
+              </>
             ) : (
               <div className="flex size-24 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-blue-400 to-blue-600 text-3xl font-bold text-white shadow-lg sm:size-32 sm:text-4xl">
                 {user.username.charAt(0).toUpperCase()}

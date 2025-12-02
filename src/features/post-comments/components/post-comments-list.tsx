@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
+import { LightboxMediaViewer } from '@/components/ui/lightbox-media-viewer';
 import { MDPreview } from '@/components/ui/md-preview';
 import { paths } from '@/config/paths';
 import { fancyLog } from '@/helper/fancy-log';
@@ -41,6 +42,7 @@ const Comment = ({
   level?: number;
 }) => {
   const [isReplying, setIsReplying] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const maxNestedLevel = 3;
 
   const userQuery = useCurrentUser();
@@ -76,13 +78,25 @@ const Comment = ({
         <div className={level === 0 ? 'pl-8' : 'pl-6'}>
           <MDPreview value={comment.content} />
           {comment.mediaUrl && (
-            <div className="mt-2">
-              <img
-                src={comment.mediaUrl}
-                alt="Comment attachment"
-                className="max-h-60 rounded-lg object-cover"
+            <>
+              <button
+                type="button"
+                className="mt-2 cursor-pointer transition-opacity hover:opacity-90"
+                onClick={() => setIsLightboxOpen(true)}
+                aria-label="View image in fullscreen"
+              >
+                <img
+                  src={comment.mediaUrl}
+                  alt="Comment attachment"
+                  className="max-h-60 rounded-lg object-cover"
+                />
+              </button>
+              <LightboxMediaViewer
+                isOpen={isLightboxOpen}
+                onClose={() => setIsLightboxOpen(false)}
+                media={comment.mediaUrl}
               />
-            </div>
+            </>
           )}
 
           {/* Comment Actions */}
