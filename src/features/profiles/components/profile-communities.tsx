@@ -1,4 +1,4 @@
-import { Users, Lock } from 'lucide-react';
+import { Users, Lock, Crown, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { Spinner } from '@/components/ui/spinner';
@@ -8,6 +8,11 @@ import { fancyLog } from '@/helper/fancy-log';
 
 type ProfileCommunitiesProps = {
   userId: number;
+};
+
+const communityRoleIcons = {
+  super_admin: <Crown className="size-4 text-amber-500" />,
+  admin: <ShieldCheck className="size-4 text-blue-500" />,
 };
 
 export const ProfileCommunities = ({ userId }: ProfileCommunitiesProps) => {
@@ -37,7 +42,7 @@ export const ProfileCommunities = ({ userId }: ProfileCommunitiesProps) => {
   return (
     <div className="space-y-4">
       {/* Communities List */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
         {communities.map((community) => (
           <Link
             key={community.id}
@@ -56,8 +61,18 @@ export const ProfileCommunities = ({ userId }: ProfileCommunitiesProps) => {
               <div className="min-w-0 flex-1">
                 <div className="mb-1 flex items-center space-x-2">
                   <h3 className="truncate text-base font-semibold text-gray-900">
-                    r/{community.name}
+                    w/{community.name}
                   </h3>
+                  {community.userRole &&
+                    community.userRole in communityRoleIcons && (
+                      <div title={community.userRole}>
+                        {
+                          communityRoleIcons[
+                            community.userRole as keyof typeof communityRoleIcons
+                          ]
+                        }
+                      </div>
+                    )}
                   {community.isPrivate && (
                     <Lock className="size-4 shrink-0 text-gray-500" />
                   )}
