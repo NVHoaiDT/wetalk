@@ -10,6 +10,7 @@ import {
   SortType,
 } from '@/features/search/components/search-filters';
 import { SearchPostsList } from '@/features/search/components/search-posts-list';
+import { SearchUsersList } from '@/features/search/components/search-users-list';
 
 const SearchRoute = () => {
   const params = useParams();
@@ -36,6 +37,9 @@ const SearchRoute = () => {
           )}
           {searchType === 'communities' && (
             <SearchCommunitiesList query={query} sortType={sortType} />
+          )}
+          {searchType === 'users' && (
+            <SearchUsersList query={query} sortType={sortType} />
           )}
         </div>
       </div>
