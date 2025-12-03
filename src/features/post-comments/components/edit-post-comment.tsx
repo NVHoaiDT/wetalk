@@ -16,7 +16,6 @@ import { useEditPostComment } from '../api/edit-post-comment';
 
 type EditPostCommentProps = {
   id: number;
-  postId: number;
   initialContent: string;
   initialMediaUrl?: string;
   onClose?: () => void;
@@ -24,7 +23,6 @@ type EditPostCommentProps = {
 
 export const EditPostComment = ({
   id,
-  postId,
   initialContent,
   initialMediaUrl,
   onClose,
@@ -37,7 +35,6 @@ export const EditPostComment = ({
   const { addNotification } = useNotifications();
 
   const editPostCommentMutation = useEditPostComment({
-    postId,
     mutationConfig: {
       onSuccess: () => {
         addNotification({

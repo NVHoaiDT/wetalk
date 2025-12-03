@@ -166,7 +166,6 @@ const Comment = ({
                     >
                       <EditPostComment
                         id={comment.id}
-                        postId={postId}
                         initialContent={comment.content}
                         initialMediaUrl={comment.mediaUrl}
                       />
@@ -178,7 +177,7 @@ const Comment = ({
                       }}
                       className="text-red-600 hover:text-red-700"
                     >
-                      <DeletePostComment id={comment.id} postId={postId} />
+                      <DeletePostComment id={comment.id} />
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

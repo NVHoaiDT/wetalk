@@ -17,8 +17,6 @@ import z from 'zod';
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
-import { getInfinitePostCommentsQueryOptions } from './get-post-comments';
-
 export const editPostCommentInputSchema = z.object({
   content: z.string().min(1, 'Required'),
   mediaUrl: z.string().optional(),
@@ -37,12 +35,10 @@ export const editPostComment = ({
 };
 
 type UseEditPostCommentOptions = {
-  postId: number;
   mutationConfig?: MutationConfig<typeof editPostComment>;
 };
 
 export const useEditPostComment = ({
-  postId,
   mutationConfig,
 }: UseEditPostCommentOptions) => {
   const queryClient = useQueryClient();
@@ -52,7 +48,7 @@ export const useEditPostComment = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.refetchQueries({
-        queryKey: getInfinitePostCommentsQueryOptions(postId).queryKey,
+        queryKey: ['post-comments'],
       });
       onSuccess?.(...args);
     },
