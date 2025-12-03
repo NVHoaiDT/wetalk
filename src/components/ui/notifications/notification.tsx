@@ -6,8 +6,8 @@ const icons = {
   warning: (
     <CircleAlert className="size-6 text-yellow-500" aria-hidden="true" />
   ),
-  /* error: <CircleX className="size-6 text-red-500" aria-hidden="true" />, */
 
+  /* error: <CircleX className="size-6 text-red-500" aria-hidden="true" />, */
   /* We don't want to display scary-looking error icons in production */
   error: <Info className="size-6 text-yellow-500" aria-hidden="true" />,
 };
@@ -27,7 +27,9 @@ export const Notification = ({
   onDismiss,
 }: NotificationProps) => {
   return (
-    <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+    /* Temporarily hidden notifications for purposes */
+    <div className="hidden w-full flex-col items-center space-y-4 sm:items-end ">
+      {/* <div className="flex w-full flex-col items-center space-y-4 sm:items-end "> */}
       <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5">
         <div className="p-4" role="alert" aria-label={title}>
           <div className="flex items-start">
