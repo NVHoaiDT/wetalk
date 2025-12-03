@@ -13,6 +13,14 @@ import {
 } from '@/components/ui/dropdown';
 import { LightboxMediaViewer } from '@/components/ui/lightbox-media-viewer';
 import { MDPreview } from '@/components/ui/md-preview';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select/select';
 import { paths } from '@/config/paths';
 import { fancyLog } from '@/helper/fancy-log';
 import { useCurrentUser } from '@/lib/auth';
@@ -231,7 +239,10 @@ const PostCommentsPlaceholder = () => {
 };
 
 export const PostCommentsList = ({ postId }: PostCommentsListProps) => {
-  const postCommentsQuery = useInfinitePostComments({ postId });
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'popular'>(
+    'newest',
+  );
+  const postCommentsQuery = useInfinitePostComments({ postId, sortBy });
 
   if (postCommentsQuery.isLoading) {
     return <PostCommentsPlaceholder />;
@@ -265,6 +276,28 @@ export const PostCommentsList = ({ postId }: PostCommentsListProps) => {
 
   return (
     <div className="max-w-4xl space-y-4">
+      {/* Comments Filter */}
+      <div className="flex items-center justify-between border-b border-gray-400 py-3">
+        <Select
+          value={sortBy}
+          onValueChange={(value) =>
+            setSortBy(value as 'newest' | 'oldest' | 'popular')
+          }
+        >
+          <SelectTrigger className="h-8 w-48 gap-1 border-0 bg-slate-200 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent align="end">
+            <SelectGroup>
+              <SelectItem value="newest">Newest</SelectItem>
+              <SelectItem value="oldest">Oldest</SelectItem>
+              <SelectItem value="popular">Popular</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Comments List */}
       {comments.map((comment) => (
         <Comment key={comment.id} comment={comment} postId={postId} />
       ))}
