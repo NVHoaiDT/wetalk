@@ -40,7 +40,6 @@ export const CreatePostCommentFallback = ({
 
   const { addNotification } = useNotifications();
   const createPostCommentMutation = useCreatePostComment({
-    postId,
     mutationConfig: {
       onSuccess: () => {
         setContent('');

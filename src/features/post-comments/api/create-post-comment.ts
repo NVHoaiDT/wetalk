@@ -5,8 +5,6 @@ import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 import { Comment } from '@/types/api';
 
-import { getInfinitePostCommentsQueryOptions } from './get-post-comments';
-
 export const createPostCommentInputSchema = z.object({
   postId: z.number().min(1, 'Required'),
   content: z.string().min(1, 'Required'),
@@ -27,13 +25,11 @@ export const createPostComment = ({
 };
 
 type UseCreatePostCommentOptions = {
-  postId: number;
   mutationConfig?: MutationConfig<typeof createPostComment>;
 };
 
 export const useCreatePostComment = ({
   mutationConfig,
-  postId,
 }: UseCreatePostCommentOptions) => {
   const queryClient = useQueryClient();
 
@@ -42,7 +38,7 @@ export const useCreatePostComment = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getInfinitePostCommentsQueryOptions(postId).queryKey,
+        queryKey: ['post-comments'],
       });
       onSuccess?.(...args);
     },
