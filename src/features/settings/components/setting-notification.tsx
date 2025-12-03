@@ -35,6 +35,36 @@ const NOTIFICATION_ACTION_LABELS: Record<
     icon: UserPlus,
     description: 'When someone follows you',
   },
+  post_approved: {
+    label: 'Post approved',
+    icon: UserPlus,
+    description: 'When your post is approved by a moderator',
+  },
+  post_rejected: {
+    label: 'Post rejected',
+    icon: UserPlus,
+    description: 'When your post is rejected by a moderator',
+  },
+  post_deleted: {
+    label: 'Post deleted',
+    icon: UserPlus,
+    description: 'When your post is deleted by a moderator',
+  },
+  post_reported: {
+    label: 'Post reported',
+    icon: UserPlus,
+    description: 'When your post is reported by a moderator',
+  },
+  subscription_approved: {
+    label: 'Subscription approved',
+    icon: UserPlus,
+    description: 'When your join request is approved by a moderator',
+  },
+  subscription_rejected: {
+    label: 'Subscription rejected',
+    icon: UserPlus,
+    description: 'When your join request is rejected by a moderator',
+  },
 };
 
 export const SettingNotification = () => {
