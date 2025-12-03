@@ -9,21 +9,29 @@ import {
 import { cn } from '@/utils/cn';
 
 export type SearchType = 'all' | 'posts' | 'communities' | 'users';
-export type SortType = 'relevance' | 'hot' | 'new' | 'top';
+export type PostSortType = 'hot' | 'new' | 'top';
+export type CommunitySortType = 'member_count' | 'newest';
 
 type SearchFiltersProps = {
   type: SearchType;
-  sortType: SortType;
+  postSortType: PostSortType;
+  communitySortType: CommunitySortType;
   onTypeChange: (value: SearchType) => void;
-  onSortChange: (value: SortType) => void;
+  onPostSortChange: (value: PostSortType) => void;
+  onCommunitySortChange: (value: CommunitySortType) => void;
 };
 
 export const SearchFilters = ({
   type,
-  sortType,
+  postSortType,
+  communitySortType,
   onTypeChange,
-  onSortChange,
+  onPostSortChange,
+  onCommunitySortChange,
 }: SearchFiltersProps) => {
+  // Determine if we should show the sort filter
+  const showSortFilter = type === 'posts' || type === 'communities';
+
   return (
     <div className="sticky top-0 z-10 mb-4 rounded-md bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-4 rounded-md border-b p-4 shadow-sm">
@@ -43,24 +51,50 @@ export const SearchFilters = ({
             </button>
           ))}
         </div>
-        <div className="ml-auto">
-          <Select
-            value={sortType}
-            onValueChange={(value) => onSortChange(value as SortType)}
-          >
-            <SelectTrigger className="h-8 gap-1 border-0 bg-transparent px-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectGroup>
-                <SelectItem value="relevance">Most Relevant</SelectItem>
-                <SelectItem value="hot">Hot</SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="top">Top</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+
+        {/* Sort Filter - Only show for posts and communities */}
+        {showSortFilter && (
+          <div className="ml-auto">
+            {type === 'posts' && (
+              <Select
+                value={postSortType}
+                onValueChange={(value) =>
+                  onPostSortChange(value as PostSortType)
+                }
+              >
+                <SelectTrigger className="h-8 gap-1 border-0 bg-transparent px-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  <SelectGroup>
+                    <SelectItem value="hot">Hot</SelectItem>
+                    <SelectItem value="new">New</SelectItem>
+                    <SelectItem value="top">Top</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+
+            {type === 'communities' && (
+              <Select
+                value={communitySortType}
+                onValueChange={(value) =>
+                  onCommunitySortChange(value as CommunitySortType)
+                }
+              >
+                <SelectTrigger className="h-8 gap-1 border-0 bg-transparent px-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  <SelectGroup>
+                    <SelectItem value="member_count">Most Members</SelectItem>
+                    <SelectItem value="newest">Newest</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

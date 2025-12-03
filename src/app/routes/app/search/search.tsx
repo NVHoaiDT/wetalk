@@ -7,7 +7,8 @@ import { SearchCommunitiesList } from '@/features/search/components/search-commu
 import {
   SearchFilters,
   SearchType,
-  SortType,
+  PostSortType,
+  CommunitySortType,
 } from '@/features/search/components/search-filters';
 import { SearchPostsList } from '@/features/search/components/search-posts-list';
 import { SearchUsersList } from '@/features/search/components/search-users-list';
@@ -16,31 +17,31 @@ const SearchRoute = () => {
   const params = useParams();
   const query = params.query as string;
   const [searchType, setSearchType] = useState<SearchType>('all');
-  const [sortType, setSortType] = useState<SortType>('new');
+  const [postSortType, setPostSortType] = useState<PostSortType>('new');
+  const [communitySortType, setCommunitySortType] =
+    useState<CommunitySortType>('member_count');
 
   return (
     <ContentLayout title={`Search results for "${query}"`}>
       <div className="mx-auto max-w-6xl">
         <SearchFilters
           type={searchType}
-          sortType={sortType}
+          postSortType={postSortType}
+          communitySortType={communitySortType}
           onTypeChange={setSearchType}
-          onSortChange={setSortType}
+          onPostSortChange={setPostSortType}
+          onCommunitySortChange={setCommunitySortType}
         />
 
         <div className="min-h-[200px]">
-          {searchType === 'all' && (
-            <SearchAllList query={query} sortType={sortType} />
-          )}
+          {searchType === 'all' && <SearchAllList query={query} />}
           {searchType === 'posts' && (
-            <SearchPostsList query={query} sortType={sortType} />
+            <SearchPostsList query={query} sortType={postSortType} />
           )}
           {searchType === 'communities' && (
-            <SearchCommunitiesList query={query} sortType={sortType} />
+            <SearchCommunitiesList query={query} sortType={communitySortType} />
           )}
-          {searchType === 'users' && (
-            <SearchUsersList query={query} sortType={sortType} />
-          )}
+          {searchType === 'users' && <SearchUsersList query={query} />}
         </div>
       </div>
     </ContentLayout>

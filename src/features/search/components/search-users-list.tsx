@@ -11,11 +11,10 @@ import { useInfiniteSearchUsers } from '../api/get-search-users';
 
 type SearchUsersListProps = {
   query: string;
-  sortType: string;
 };
 
-export const SearchUsersList = ({ query, sortType }: SearchUsersListProps) => {
-  const searchUsersQuery = useInfiniteSearchUsers({ query, sortType });
+export const SearchUsersList = ({ query }: SearchUsersListProps) => {
+  const searchUsersQuery = useInfiniteSearchUsers({ query, sortType: 'new' });
 
   if (searchUsersQuery.isLoading) {
     return (

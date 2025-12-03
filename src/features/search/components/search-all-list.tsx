@@ -14,14 +14,13 @@ import { useInfiniteSearchPosts } from '../api/get-search-posts';
 
 type SearchAllListProps = {
   query: string;
-  sortType: string;
 };
 
-export const SearchAllList = ({ query, sortType }: SearchAllListProps) => {
-  const searchPostsQuery = useInfiniteSearchPosts({ query, sortType });
+export const SearchAllList = ({ query }: SearchAllListProps) => {
+  const searchPostsQuery = useInfiniteSearchPosts({ query, sortType: 'new' });
   const searchCommunitiesQuery = useInfiniteSearchCommunities({
     query,
-    sortType,
+    sortType: 'member_count',
   });
 
   const isLoading =
