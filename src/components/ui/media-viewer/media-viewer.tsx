@@ -331,8 +331,8 @@ export const MediaViewer = ({
                   {currentMedia.startsWith('videos/') ? (
                     <MediaController
                       style={{
-                        width: '100%',
-                        maxWidth: '90vw',
+                        width: '90vw',
+                        aspectRatio: '16/9',
                         maxHeight: '90vh',
                       }}
                       className="rounded-lg"
@@ -345,7 +345,7 @@ export const MediaViewer = ({
                         className="rounded-lg object-contain"
                         style={{
                           width: '100%',
-                          maxHeight: '90vh',
+                          height: '100%',
                         }}
                       />
                       <MediaControlBar>
