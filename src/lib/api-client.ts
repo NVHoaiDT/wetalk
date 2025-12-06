@@ -16,7 +16,6 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   }
   config.withCredentials = false;
 
-  //Testing purposes
   const url = `${config.baseURL || ''}${config.url}`;
   const params = config.params
     ? `?${new URLSearchParams(config.params as Record<string, string>).toString()}`
@@ -38,26 +37,19 @@ api.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-    useNotifications.getState().addNotification({
-      type: 'error',
-      title: 'Error',
-      message,
-    });
 
     if (error.response?.status === 401) {
-      localStorage.removeItem('accessToken');
-
-      const currentPath = window.location.pathname;
-
-      if (!currentPath.startsWith('/auth')) {
-        window.location.href = paths.auth.login.getHref(currentPath);
-      }
-    } else {
       useNotifications.getState().addNotification({
         type: 'error',
         title: 'Error',
         message,
       });
+
+      localStorage.removeItem('accessToken');
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/auth')) {
+        window.location.href = paths.auth.login.getHref(currentPath);
+      }
     }
 
     return Promise.reject(error);
