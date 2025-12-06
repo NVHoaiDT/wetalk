@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Form, Input } from '@/components/ui/form';
 import { paths } from '@/config/paths';
+import { fancyLog } from '@/helper/fancy-log';
 import {
   useLoginWithEmailAndPassword,
   loginWithEmailAndPasswordInputSchema,
@@ -20,6 +21,19 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   });
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
+
+  const getErrorMessage = () => {
+    if (!login.error) return null;
+    const error = login.error as any;
+    const status = error?.response?.status;
+    fancyLog('Login error status:', status);
+    if (status === 403) {
+      return 'Invalid credential';
+    }
+    return 'Something went wrong';
+  };
+
+  const errorMessage = getErrorMessage();
 
   return (
     <div className="space-y-6">
@@ -39,6 +53,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               registration={register('email')}
               className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
+            {errorMessage && (
+              <div className="flex items-center gap-2 rounded-lg text-sm text-red-600">
+                <span className="font-medium">{errorMessage}</span>
+              </div>
+            )}
             <Input
               type="password"
               label="Password"
@@ -47,6 +66,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               registration={register('password')}
               className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
             />
+            {errorMessage && (
+              <div className="flex items-center gap-2 rounded-lg text-sm text-red-600">
+                <span className="font-medium">{errorMessage}</span>
+              </div>
+            )}
             <div className="pt-2">
               <Button
                 isLoading={login.isPending}
