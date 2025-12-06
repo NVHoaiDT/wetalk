@@ -38,7 +38,7 @@ api.interceptors.response.use(
   (error) => {
     const message = error.response?.data?.message || error.message;
 
-    if (error.response?.status === 401) {
+    if (error.response?.status === 500) {
       useNotifications.getState().addNotification({
         type: 'error',
         title: 'Error',
@@ -68,13 +68,6 @@ apiMedia.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const message = error.response?.data?.message || error.message;
-    useNotifications.getState().addNotification({
-      type: 'error',
-      title: 'Error',
-      message,
-    });
-
     if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
 
@@ -83,12 +76,6 @@ apiMedia.interceptors.response.use(
       if (!currentPath.startsWith('/auth')) {
         window.location.href = paths.auth.login.getHref(currentPath);
       }
-    } else {
-      useNotifications.getState().addNotification({
-        type: 'error',
-        title: 'Error',
-        message,
-      });
     }
 
     return Promise.reject(error);
@@ -106,13 +93,6 @@ apiAI.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const message = error.response?.data?.message || error.message;
-    useNotifications.getState().addNotification({
-      type: 'error',
-      title: 'Error',
-      message,
-    });
-
     if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
 
@@ -121,12 +101,6 @@ apiAI.interceptors.response.use(
       if (!currentPath.startsWith('/auth')) {
         window.location.href = paths.auth.login.getHref(currentPath);
       }
-    } else {
-      useNotifications.getState().addNotification({
-        type: 'error',
-        title: 'Error',
-        message,
-      });
     }
 
     return Promise.reject(error);
