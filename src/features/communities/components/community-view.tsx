@@ -38,10 +38,28 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
     </div>;
   }
 
+  if (communityQuery.isError || !communityQuery?.data?.data)
+    return (
+      <div className="flex min-h-[400px] w-full items-center justify-center">
+        <div className="flex max-w-full flex-col items-center gap-4 rounded-lg border border-orange-200 bg-white p-8 text-center">
+          <img
+            src="https://res.cloudinary.com/djwpst00v/image/upload/v1763789403/13379593_5219088_iajsfa.svg"
+            alt="question"
+            className="size-96 rounded-full"
+          />
+          <h2 className="text-2xl font-bold text-gray-900">
+            Community Not Found
+          </h2>
+          <p className="text-gray-600">
+            The community you are looking for does not exist or an error
+            occurred while fetching the community data.
+          </p>
+        </div>
+      </div>
+    );
+
   const community = communityQuery?.data?.data;
   const currentUser = currentUserQuery?.data?.data;
-
-  if (!community) return null;
 
   const isSuperAdmin = community.moderators.some(
     (mod) => mod.userId === currentUser?.id && mod.role === 'super_admin',
@@ -49,7 +67,6 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
   const isModerator = community.moderators.some(
     (mod) => mod.userId === currentUser?.id && mod.role === 'admin',
   );
-
   const role = isSuperAdmin ? 'super_admin' : isModerator ? 'admin' : 'user';
 
   const isPrivateAndNotRequest =
