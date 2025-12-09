@@ -42,7 +42,7 @@ export const useReportPost = ({ mutationConfig }: UseReportPostOptions) => {
 
   return useMutation({
     onSuccess: (data, ...args) => {
-      queryClient.refetchQueries({ queryKey: ['reported-posts'] });
+      queryClient.invalidateQueries({ queryKey: ['reported-posts'] });
       onSuccess?.(data, ...args);
     },
     ...restConfig,
