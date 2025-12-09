@@ -85,6 +85,7 @@
     "@typescript-eslint/parser": "^7.8.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
+    "baseline-browser-mapping": "^2.9.5",
     "cors": "^2.8.5",
     "eslint": "8",
     "eslint-config-prettier": "^9.1.0",

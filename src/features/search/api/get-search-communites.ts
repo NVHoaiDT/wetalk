@@ -1,19 +1,19 @@
 /* 
 [
-    {
-        "id": 14,
-        "name": "Startup Tech",
-        "shortDescription": "Technical for startups",
-        "isPrivate": false,
-        "totalMembers": 4
-    },
-    {
-        "id": 13,
-        "name": "Tech Career",
-        "shortDescription": "IT career and development",
-        "isPrivate": false,
-        "totalMembers": 6
-    }
+  {
+      "id": 10,
+      "name": "Backend Engineering",
+      "shortDescription": "Kiến trúc hệ thống Backend",
+      "topic": [
+          "Phần mềm",
+          "Phát triển Web",
+          "Công nghệ"
+      ],
+      "communityAvatar": "https://picsum.photos/seed/backend/800/400",
+      "isPrivate": false,
+      "totalMembers": 13,
+      "isFollow": true
+  }
 ]
 */
 
@@ -28,6 +28,7 @@ export type SearchedCommunity = {
   shortDescription: string;
   isPrivate: boolean;
   totalMembers: number;
+  communityAvatar: string;
 };
 
 export type SearchCommunitiesResponse = {

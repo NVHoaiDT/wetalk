@@ -5,8 +5,11 @@ import { Link } from 'react-router';
 import { MDPreview } from '@/components/ui/md-preview';
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
+import { useAddRecentCommunity } from '@/features/communities/api/add-recent-community';
+import { useAddRecentPost } from '@/features/posts/api/add-recent-post';
 import { DownVotePost } from '@/features/posts/components/downvote-post';
 import { UpVotePost } from '@/features/posts/components/upvote-post';
+import { usePreferences } from '@/features/settings/api';
 import { fancyLog } from '@/helper/fancy-log';
 
 import { useInfiniteSearchCommunities } from '../api/get-search-communites';
@@ -22,6 +25,58 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
     query,
     sortType: 'member_count',
   });
+  const preferencesQueryClient = usePreferences();
+  const addRecentPostMutation = useAddRecentPost();
+  const addRecentCommunityMutation = useAddRecentCommunity();
+
+  const preferences = preferencesQueryClient.data;
+
+  /* Check if user allow to store recent posts */
+  const handleAddToRecentPosts = (post: {
+    id: number;
+    title: string;
+    community: { id: number; name: string };
+    createdAt: string;
+  }) => {
+    if (preferences?.isStoreRecentPosts) {
+      addRecentPostMutation.mutate({
+        data: {
+          id: post.id,
+          title: post.title,
+          community: {
+            id: post.community.id,
+            name: post.community.name,
+          },
+          createdAt: post.createdAt,
+        },
+      });
+    } else {
+      console.log('User preferences do not allow to store recent posts');
+    }
+  };
+
+  /* Check if user allow to store recent communities */
+  const handleAddToRecentCommunities = (community: {
+    id: number;
+    name: string;
+    communityAvatar: string;
+    isPrivate: boolean;
+    totalMembers: number;
+  }) => {
+    if (preferences?.isStoreRecentCommunities) {
+      addRecentCommunityMutation.mutate({
+        data: {
+          id: community.id,
+          name: community.name,
+          communityAvatar: community.communityAvatar,
+          isPrivate: community.isPrivate,
+          totalMembers: community.totalMembers,
+        },
+      });
+    } else {
+      console.log('User preferences do not allow to store recent communities');
+    }
+  };
 
   const isLoading =
     searchPostsQuery.isLoading || searchCommunitiesQuery.isLoading;
@@ -60,6 +115,17 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
     <Link
       key={post.id}
       to={paths.app.post.getHref(post.id)}
+      onClick={() =>
+        handleAddToRecentPosts({
+          id: post.id,
+          title: post.title,
+          community: {
+            id: post.community.id,
+            name: post.community.name,
+          },
+          createdAt: post.createdAt,
+        })
+      }
       className="group block overflow-hidden rounded-md border bg-card transition-colors hover:border-blue-200 hover:shadow-md"
     >
       {/* Media thumbnail */}
@@ -93,10 +159,9 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
   );
 
   const renderTextPost = (post: (typeof allPosts)[0]) => (
-    <Link
+    <div
       key={post.id}
-      to={paths.app.post.getHref(post.id)}
-      className="group block rounded-md border-b bg-card transition-colors hover:border-blue-200 hover:bg-blue-50/50"
+      className="group rounded-md border-b bg-card transition-colors hover:border-blue-200 hover:bg-blue-50/50"
     >
       <div className="flex gap-4 p-4">
         <div className="flex min-w-[40px] flex-col items-center gap-1 text-sm text-muted-foreground">
@@ -109,7 +174,6 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
             <Link
               to={paths.app.community.getHref(post.communityId)}
               className="font-medium hover:underline"
-              onClick={(e) => e.stopPropagation()}
             >
               w/{post.community.name}
             </Link>
@@ -118,38 +182,89 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
             <span>•</span>
             <span>{formatDistanceToNow(new Date(post.createdAt))} ago</span>
           </div>
-          <h3 className="text-lg font-medium leading-tight group-hover:text-blue-700">
-            {post.title}
-          </h3>
+          <Link
+            to={paths.app.post.getHref(post.id)}
+            onClick={() =>
+              handleAddToRecentPosts({
+                id: post.id,
+                title: post.title,
+                community: {
+                  id: post.community.id,
+                  name: post.community.name,
+                },
+                createdAt: post.createdAt,
+              })
+            }
+          >
+            <h3 className="text-lg font-medium leading-tight group-hover:text-blue-700">
+              {post.title}
+            </h3>
+          </Link>
           {post.content && <MDPreview value={post.content} maxLines={2} />}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <button className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700">
-              <MessageCircle className="size-4" /> {0} Comments
-            </button>
+            <Link
+              to={paths.app.post.getHref(post.id)}
+              className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700"
+            >
+              <MessageCircle className="size-4" /> {post.commentCount || 0}{' '}
+              Comments
+            </Link>
             <button className="flex items-center gap-1 rounded-md p-2 hover:bg-blue-100 hover:text-blue-700">
               <Share2 className="size-4" /> Share
             </button>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 
   const renderCommunity = (community: (typeof communities)[0]) => (
-    <Link
+    <div
       key={community.id}
-      to={paths.app.community.getHref(community.id)}
       className="flex items-start gap-4 rounded-md border-y p-4 hover:border-blue-200 hover:bg-blue-50/50"
     >
-      <img
-        src={
-          'https://images.pexels.com/photos/1983037/pexels-photo-1983037.jpeg'
+      <Link
+        to={paths.app.community.getHref(community.id)}
+        onClick={() =>
+          handleAddToRecentCommunities({
+            id: community.id,
+            name: community.name,
+            communityAvatar:
+              community.communityAvatar ||
+              'https://images.pexels.com/photos/1983037/pexels-photo-1983037.jpeg',
+            isPrivate: community.isPrivate,
+            totalMembers: community.totalMembers,
+          })
         }
-        alt={community.name}
-        className="size-16 rounded-full object-cover"
-      />
+      >
+        <img
+          src={
+            community.communityAvatar ||
+            'https://images.pexels.com/photos/1983037/pexels-photo-1983037.jpeg'
+          }
+          alt={community.name}
+          className="size-16 rounded-full object-cover"
+        />
+      </Link>
       <div className="flex-1">
-        <h3 className="text-lg font-medium">w/{community.name}</h3>
+        <Link
+          to={paths.app.community.getHref(community.id)}
+          onClick={() =>
+            handleAddToRecentCommunities({
+              id: community.id,
+              name: community.name,
+              communityAvatar:
+                community.communityAvatar ||
+                'https://images.pexels.com/photos/1983037/pexels-photo-1983037.jpeg',
+              isPrivate: community.isPrivate,
+              totalMembers: community.totalMembers,
+            })
+          }
+        >
+          <h3 className="text-lg font-medium hover:text-blue-600">
+            w/{community.name}
+          </h3>
+        </Link>
         <p className="text-sm text-muted-foreground">
           {community.shortDescription}
         </p>
@@ -162,7 +277,7 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
           Private
         </span>
       )}
-    </Link>
+    </div>
   );
 
   return (
