@@ -13,9 +13,14 @@ import { useDisclosure } from '@/hooks/use-disclosure';
 import { MembersSection } from './members-section';
 import { ModSidebar } from './mod-sidebar';
 import { PostsSection } from './posts-section';
+import { ReportedCommentsSection } from './reported-comments-section';
 import { ReportedPostsSection } from './reported-posts-section';
 
-type ModSection = 'members' | 'posts' | 'reported-posts';
+export type ModSection =
+  | 'members'
+  | 'posts'
+  | 'reported-posts'
+  | 'reported-comments';
 
 type ModToolsDialogProps = {
   communityId: number;
@@ -34,6 +39,8 @@ export const ModToolsDialog = ({ communityId, role }: ModToolsDialogProps) => {
         return 'Manage Posts';
       case 'reported-posts':
         return 'Manage Reported Posts';
+      case 'reported-comments':
+        return 'Manage Reported Comments';
       default:
         return 'Mod Tools';
     }
@@ -89,6 +96,9 @@ export const ModToolsDialog = ({ communityId, role }: ModToolsDialogProps) => {
             )}
             {activeSection === 'reported-posts' && (
               <ReportedPostsSection communityId={communityId} />
+            )}
+            {activeSection === 'reported-comments' && (
+              <ReportedCommentsSection communityId={communityId} />
             )}
           </div>
         </div>

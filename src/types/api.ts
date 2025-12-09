@@ -199,6 +199,25 @@ export type ReportedPost = {
   lastReportedAt?: string;
 };
 
+export type ReportedComment = {
+  id: number;
+  commentId: number;
+  commentContent: string;
+  commentAuthor: {
+    id: number;
+    username: string;
+    avatar: string;
+    karma: number;
+    bio: string;
+    createdAt: string;
+  };
+  postId: number;
+  postTitle: string;
+  reporters: Reporter[];
+  totalReports: number;
+  lastReportedAt?: string;
+};
+
 /* ____________________Collected Post (Saved/Followed Post)____________________ */
 export type CollectedPost = {
   postId: number;

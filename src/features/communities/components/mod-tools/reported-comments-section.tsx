@@ -2,35 +2,35 @@ import { AlertCircle } from 'lucide-react';
 
 import { fancyLog } from '@/helper/fancy-log';
 
-import { useInfiniteCommunityReportedPosts } from '../../api/get-community-reported-posts';
-import { ReportedPostsTable } from '../manage-reported-posts';
+import { useInfiniteCommunityReportedComments } from '../../api/get-community-reported-comments';
+import { ReportedCommentsTable } from '../manage-reported-posts';
 
-type ReportedPostsSectionProps = {
+type ReportedCommentsSectionProps = {
   communityId: number;
 };
 
-export const ReportedPostsSection = ({
+export const ReportedCommentsSection = ({
   communityId,
-}: ReportedPostsSectionProps) => {
-  const reportedPostsQuery = useInfiniteCommunityReportedPosts({
+}: ReportedCommentsSectionProps) => {
+  const reportedCommentsQuery = useInfiniteCommunityReportedComments({
     communityId,
   });
 
-  const reportedPosts =
-    reportedPostsQuery.data?.pages.flatMap((page) => page.data) || [];
+  const reportedComments =
+    reportedCommentsQuery.data?.pages.flatMap((page) => page.data) || [];
   const totalReports =
-    reportedPostsQuery.data?.pages[0]?.pagination?.total || 0;
+    reportedCommentsQuery.data?.pages[0]?.pagination?.total || 0;
 
   const handleLoadMore = () => {
     if (
-      reportedPostsQuery.hasNextPage &&
-      !reportedPostsQuery.isFetchingNextPage
+      reportedCommentsQuery.hasNextPage &&
+      !reportedCommentsQuery.isFetchingNextPage
     ) {
-      reportedPostsQuery.fetchNextPage();
+      reportedCommentsQuery.fetchNextPage();
     }
   };
 
-  fancyLog('Reported-Posts', reportedPosts);
+  fancyLog('Reported-Comments', reportedComments);
 
   return (
     <div className="flex h-full flex-col">
@@ -41,7 +41,7 @@ export const ReportedPostsSection = ({
           <div className="flex items-center gap-2">
             <AlertCircle className="size-5 text-red-500" />
             <span className="text-sm font-semibold text-gray-700">
-              Reported Posts
+              Reported Comments
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -54,21 +54,20 @@ export const ReportedPostsSection = ({
             <div className="flex items-center gap-2">
               <span className="size-2 animate-pulse rounded-full bg-red-500"></span>
               <span className="text-sm text-red-700">
-                {totalReports} post{totalReports !== 1 ? 's' : ''} flagged
+                {totalReports} comment{totalReports !== 1 ? 's' : ''} flagged
               </span>
             </div>
           )}
         </div>
       </div>
 
-      {/* Reported Posts Table */}
+      {/* Reported Comments Table */}
       <div className="max-h-[calc(90vh-280px)] overflow-y-auto px-8 py-6">
-        <ReportedPostsTable
-          reportedPosts={reportedPosts}
-          communityId={communityId}
-          isLoading={reportedPostsQuery.isLoading}
-          isFetchingNextPage={reportedPostsQuery.isFetchingNextPage}
-          hasNextPage={reportedPostsQuery.hasNextPage}
+        <ReportedCommentsTable
+          reportedComments={reportedComments}
+          isLoading={reportedCommentsQuery.isLoading}
+          isFetchingNextPage={reportedCommentsQuery.isFetchingNextPage}
+          hasNextPage={reportedCommentsQuery.hasNextPage}
           onLoadMore={handleLoadMore}
         />
       </div>
