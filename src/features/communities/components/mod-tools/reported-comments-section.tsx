@@ -64,6 +64,7 @@ export const ReportedCommentsSection = ({
       {/* Reported Comments Table */}
       <div className="max-h-[calc(90vh-280px)] overflow-y-auto px-8 py-6">
         <ReportedCommentsTable
+          communityId={communityId}
           reportedComments={reportedComments}
           isLoading={reportedCommentsQuery.isLoading}
           isFetchingNextPage={reportedCommentsQuery.isFetchingNextPage}

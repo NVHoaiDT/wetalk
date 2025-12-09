@@ -16,7 +16,11 @@ import { paths } from '@/config/paths';
 import { ReportedComment } from '@/types/api';
 import { formatDate } from '@/utils/format';
 
+import { RemoveCommentButton } from './remove-comment-button';
+import { RemoveCommentReportButton } from './remove-comment-report-button';
+
 type ReportedCommentsTableProps = {
+  communityId: number;
   reportedComments: ReportedComment[];
   isLoading?: boolean;
   isFetchingNextPage?: boolean;
@@ -25,6 +29,7 @@ type ReportedCommentsTableProps = {
 };
 
 export const ReportedCommentsTable = ({
+  communityId,
   reportedComments,
   isLoading,
   isFetchingNextPage,
@@ -163,12 +168,15 @@ export const ReportedCommentsTable = ({
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center justify-end gap-2">
-                        <button className="rounded-md bg-blue-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-600">
-                          Dismiss
-                        </button>
-                        <button className="rounded-md bg-red-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-600">
-                          Remove
-                        </button>
+                        <RemoveCommentReportButton
+                          communityId={communityId}
+                          reportId={reportedComment.id}
+                        />
+                        <RemoveCommentButton
+                          communityId={communityId}
+                          commentId={reportedComment.commentId}
+                          authorId={reportedComment.commentAuthor.id}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
