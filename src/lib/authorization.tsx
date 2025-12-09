@@ -13,7 +13,7 @@ export enum ROLES {
 type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
-  'comment:delete': (user: User, comment: Comment) => {
+  'comment:author': (user: User, comment: Comment) => {
     if (!user) return false;
     return user.role === ROLES.superAdmin || comment.author?.id === user.id;
   },

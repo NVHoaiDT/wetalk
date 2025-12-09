@@ -1,8 +1,10 @@
 import { Flag, Info } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import {
+  ConfirmationDialog,
   Dialog,
   DialogContent,
   DialogFooter,
@@ -11,13 +13,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useNotifications } from '@/components/ui/notifications';
+import { paths } from '@/config/paths';
 import { useDisclosure } from '@/hooks/use-disclosure';
+import { ProtectedAction } from '@/lib/auth';
 
-import { useReportPost } from '../api/report-post';
+import { useReportComment } from '../api/report-comment';
 
-type ReportPostProps = {
-  postId: number;
-  children?: React.ReactNode;
+type ReportPostCommentProps = {
+  commentId: number;
 };
 
 type ReportReason = {
@@ -94,19 +97,21 @@ const REPORT_REASONS: ReportReason[] = [
   },
 ];
 
-export const ReportPost = ({ postId, children }: ReportPostProps) => {
+export const ReportPostCommentFallback = ({
+  commentId,
+}: ReportPostCommentProps) => {
   const { isOpen, open, close } = useDisclosure();
   const { addNotification } = useNotifications();
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
   const [note, setNote] = useState('');
   const [step, setStep] = useState<'reasons' | 'details'>('reasons');
 
-  const reportPostMutation = useReportPost({
+  const reportCommentMutation = useReportComment({
     mutationConfig: {
       onSuccess: () => {
         addNotification({
           type: 'success',
-          title: 'Post Reported Successfully',
+          title: 'Comment Reported Successfully',
           message: 'Thank you for helping keep our community safe.',
         });
         // Reset form and close dialog
@@ -118,7 +123,7 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
       onError: (error) => {
         addNotification({
           type: 'error',
-          title: 'Failed to Report Post',
+          title: 'Failed to Report Comment',
           message: error.message,
         });
       },
@@ -148,7 +153,7 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
       addNotification({
         type: 'warning',
         title: 'No Reason Selected',
-        message: 'Please select at least one reason to report this post.',
+        message: 'Please select at least one reason to report this comment.',
       });
       return;
     }
@@ -160,8 +165,8 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
   };
 
   const handleSubmit = () => {
-    reportPostMutation.mutate({
-      postId,
+    reportCommentMutation.mutate({
+      commentId,
       reasons: selectedReasons,
       note: note.trim() || undefined,
     });
@@ -186,15 +191,13 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
       }}
     >
       <DialogTrigger asChild>
-        {children || (
-          <button
-            className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100"
-            onClick={open}
-          >
-            <Flag className="size-4" />
-            <span>Report</span>
-          </button>
-        )}
+        <button
+          className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100"
+          onClick={open}
+        >
+          <Flag className="size-4" />
+          <span>Report</span>
+        </button>
       </DialogTrigger>
 
       <DialogContent className="max-h-[90vh] max-w-2xl overflow-hidden p-0">
@@ -354,7 +357,7 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
               <Button
                 variant="outline"
                 onClick={close}
-                disabled={reportPostMutation.isPending}
+                disabled={reportCommentMutation.isPending}
               >
                 Cancel
               </Button>
@@ -369,7 +372,7 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
               ) : (
                 <Button
                   onClick={handleSubmit}
-                  isLoading={reportPostMutation.isPending}
+                  isLoading={reportCommentMutation.isPending}
                   className="bg-blue-600 hover:bg-blue-700"
                 >
                   Submit Report
@@ -380,5 +383,42 @@ export const ReportPost = ({ postId, children }: ReportPostProps) => {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+};
+
+export const UnauthenticatedFallback = () => {
+  return (
+    <ConfirmationDialog
+      icon="info"
+      title="Report this comment"
+      body="Create an account to report comments that violate community guidelines."
+      illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763791048/community_1_rlcfr1.svg"
+      triggerButton={
+        <button className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100">
+          <Flag className="size-4" />
+          <span>Report</span>
+        </button>
+      }
+      confirmButton={
+        <Link
+          to={paths.auth.register.getHref(location.pathname)}
+          replace
+          className="inline-block rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          Sign up
+        </Link>
+      }
+    />
+  );
+};
+
+export const ReportPostComment = ({ commentId }: ReportPostCommentProps) => {
+  return (
+    <ProtectedAction
+      authenticatedFallback={
+        <ReportPostCommentFallback commentId={commentId} />
+      }
+      unauthenticatedFallback={<UnauthenticatedFallback />}
+    />
   );
 };

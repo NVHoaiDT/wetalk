@@ -34,6 +34,7 @@ import { DeletePostComment } from './delete-post-comment';
 import { DownVotePostComment } from './downvote-post-comment';
 import { EditPostComment } from './edit-post-comment';
 import { ReplyComment } from './reply-comment';
+import { ReportPostComment } from './report-post-comment';
 import { UpVotePostComment } from './upvote-post-comment';
 
 type PostCommentsListProps = {
@@ -51,7 +52,7 @@ const Comment = ({
 }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(level >= 1); // Default collapse for level 2+
+  const [isCollapsed, setIsCollapsed] = useState(level >= 1);
   const maxNestedLevel = 3;
 
   const userQuery = useCurrentUser();
@@ -144,20 +145,24 @@ const Comment = ({
               </Button>
             )}
             {level === 0 && (
-              <Authorization
-                policyCheck={POLICIES['comment:delete'](user as User, comment)}
-              >
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 px-2 text-gray-600 hover:text-blue-600"
-                    >
-                      <MoreVertical className="size-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" side="top">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-2 text-gray-600 hover:text-blue-600"
+                  >
+                    <MoreVertical className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end" side="top">
+                  <Authorization
+                    policyCheck={POLICIES['comment:author'](
+                      user as User,
+                      comment,
+                    )}
+                  >
                     <DropdownMenuItem
                       onSelect={(e) => {
                         e.preventDefault();
@@ -179,9 +184,18 @@ const Comment = ({
                     >
                       <DeletePostComment id={comment.id} />
                     </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </Authorization>
+                  </Authorization>
+
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                    }}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    <ReportPostComment commentId={comment.id} />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
 
