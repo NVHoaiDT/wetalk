@@ -20,6 +20,10 @@ export const POLICIES = {
   'post:create': (isFollow: boolean) => {
     return isFollow;
   },
+  'post:modify': (currentUser: User, authorId: number) => {
+    if (!currentUser) return false;
+    return authorId === currentUser.id;
+  },
   'community:moderate': (currentUser: User, moderators: Moderators[]) => {
     if (!currentUser) return false;
     return moderators.some((mod) => mod.userId === currentUser.id);

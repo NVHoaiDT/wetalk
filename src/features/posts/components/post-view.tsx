@@ -12,12 +12,15 @@ import { MDPreview } from '@/components/ui/md-preview';
 import { MediaViewer } from '@/components/ui/media-viewer';
 import { paths } from '@/config/paths';
 import { UserHoverCard } from '@/features/users/components/user-hover-card';
+import { useCurrentUser } from '@/lib/auth';
+import { Authorization, POLICIES } from '@/lib/authorization';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
 import { useSummaryPost } from '../api/get-summary-post';
 
 import { AiChatbox } from './ai-chatbox';
+import { DeletePost } from './delete-post';
 import { DownVotePost } from './downvote-post';
 import { EditPost } from './edit-post';
 import { FollowPost } from './follow-post';
@@ -98,17 +101,19 @@ export const PostView = ({ id }: { id: number }) => {
   const summaryPostQuery = useSummaryPost({
     text: postQuery.data?.data.content || '',
   });
+  const currentUserQuery = useCurrentUser();
 
-  if (postQuery.isLoading) {
-    return <PostViewPlaceholder />;
-  }
-
-  if (summaryPostQuery.isPending) {
+  if (
+    postQuery.isLoading ||
+    summaryPostQuery.isPending ||
+    currentUserQuery.isLoading
+  ) {
     return <PostViewPlaceholder />;
   }
 
   const post = postQuery?.data?.data;
   const summaryPost = summaryPostQuery?.data;
+  const currentUser = currentUserQuery?.data?.data;
 
   if (!post) return null;
 
@@ -183,12 +188,19 @@ export const PostView = ({ id }: { id: number }) => {
                   align="end"
                   className="w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-md"
                 >
-                  <DropdownMenuItem
-                    className="flex items-center gap-2"
-                    onSelect={(e) => e.preventDefault()}
+                  <Authorization
+                    policyCheck={POLICIES['post:modify'](
+                      currentUser!,
+                      post.author.id,
+                    )}
                   >
-                    <EditPost post={post} />
-                  </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="flex items-center gap-2"
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      <EditPost post={post} />
+                    </DropdownMenuItem>
+                  </Authorization>
 
                   <DropdownMenuItem className="flex items-center gap-2">
                     <SavePost postId={post.id} />
@@ -204,6 +216,23 @@ export const PostView = ({ id }: { id: number }) => {
                   >
                     <ReportPost postId={post.id} />
                   </DropdownMenuItem>
+
+                  <Authorization
+                    policyCheck={POLICIES['post:modify'](
+                      currentUser!,
+                      post.author.id,
+                    )}
+                  >
+                    <DropdownMenuItem
+                      className="flex items-center gap-2 text-red-600"
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      <DeletePost
+                        communityId={post.community.id}
+                        postId={post.id}
+                      />
+                    </DropdownMenuItem>
+                  </Authorization>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

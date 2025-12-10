@@ -1,0 +1,59 @@
+import { Trash } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { ConfirmationDialog } from '@/components/ui/dialog';
+import { useNotifications } from '@/components/ui/notifications';
+
+import { useDeletePost } from '../api/delete-post';
+
+type DeletePostProps = {
+  communityId: number;
+  postId: number;
+};
+
+export const DeletePost = ({ communityId, postId }: DeletePostProps) => {
+  const { addNotification } = useNotifications();
+  const deletePostMutation = useDeletePost({
+    mutationConfig: {
+      onSuccess: () => {
+        addNotification({
+          type: 'success',
+          title: 'Post Deleted',
+        });
+      },
+      onError: (error) => {
+        addNotification({
+          type: 'error',
+          title: 'Error Deleting Post',
+          message: error.message,
+        });
+      },
+    },
+  });
+
+  return (
+    <ConfirmationDialog
+      isDone={deletePostMutation.isSuccess}
+      icon="danger"
+      title="Delete Post"
+      body="Are you sure you want to delete this post?"
+      triggerButton={
+        <div className="flex items-center">
+          <Trash className="mr-2 size-4" />
+          <span>Delete</span>
+        </div>
+      }
+      confirmButton={
+        <Button
+          isLoading={deletePostMutation.isPending}
+          type="button"
+          variant="destructive"
+          size="sm"
+          onClick={() => deletePostMutation.mutate({ communityId, postId })}
+        >
+          Delete
+        </Button>
+      }
+    />
+  );
+};
