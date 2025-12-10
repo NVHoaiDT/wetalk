@@ -1,3 +1,11 @@
+import {
+  ALargeSmall,
+  BookmarkX,
+  CheckCheck,
+  ClipboardClock,
+  FastForward,
+  List,
+} from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 
@@ -26,6 +34,17 @@ type PostsTableProps = {
   hasNextPage?: boolean;
   onLoadMore?: () => void;
   currentStatus?: 'pending' | 'approved' | 'rejected';
+};
+
+const typeIcons = {
+  text: <ALargeSmall className="size-5 text-yellow-500" />,
+  media: <FastForward className="size-5 text-gray-500" />,
+  poll: <List className="size-5 text-blue-500" />,
+};
+const statusIcons = {
+  approved: <CheckCheck className="size-5 text-green-500" />,
+  pending: <ClipboardClock className="size-5 text-yellow-500" />,
+  rejected: <BookmarkX className="size-5 text-orange-500" />,
 };
 
 export const PostsTable = ({
@@ -75,22 +94,6 @@ export const PostsTable = ({
       </div>
     );
   }
-
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      pending: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-      approved: 'bg-green-50 text-green-700 border-green-200',
-      rejected: 'bg-red-50 text-red-700 border-red-200',
-    };
-
-    return (
-      <span
-        className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${statusConfig[status as keyof typeof statusConfig] || 'border-gray-200 bg-gray-50 text-gray-700'}`}
-      >
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </span>
-    );
-  };
 
   return (
     <div className="flex flex-col">
@@ -158,11 +161,13 @@ export const PostsTable = ({
                 </TableCell>
 
                 <TableCell className="px-4">
-                  <span className="text-sm">{post.type}</span>
+                  <span className="text-sm">
+                    {typeIcons[post.type as keyof typeof typeIcons]}
+                  </span>
                 </TableCell>
 
                 <TableCell className="px-4">
-                  {getStatusBadge(post.status)}
+                  {statusIcons[post.status as keyof typeof statusIcons]}{' '}
                 </TableCell>
 
                 <TableCell className="px-4">
