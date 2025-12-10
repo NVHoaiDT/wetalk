@@ -25,6 +25,9 @@ export const useDeleteCommunity = ({
       queryClient.invalidateQueries({
         queryKey: getCommunitiesQueryOptions().queryKey,
       });
+      queryClient.invalidateQueries({
+        queryKey: ['community'],
+      });
       onSuccess?.(...args);
     },
     ...restConfig,
