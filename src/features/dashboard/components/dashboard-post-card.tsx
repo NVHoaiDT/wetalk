@@ -1,3 +1,4 @@
+import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import { MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -116,6 +117,14 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
                         u/{post.author.username}
                       </Link>
                     </UserHoverCard>
+                    <div className="flex items-center gap-1 self-center text-gray-500">
+                      <span className="text-gray-500">•</span>
+                      <span className="text-gray-500">
+                        {formatDistanceToNow(new Date(post.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
