@@ -23,12 +23,15 @@ export const MembersSection = ({ communityId, role }: MembersSectionProps) => {
   const [statusFilter, setStatusFilter] = useState<
     'all' | 'approved' | 'pending'
   >('all');
+  const [sortByFilter, setSortByFilter] = useState<
+    'newest' | 'oldest' | 'karma'
+  >('newest');
 
-  // Fetch members based on status and search
   const membersQuery = useCommunityMembers({
     communityId,
     status: statusFilter === 'all' ? undefined : statusFilter,
     search: searchQuery,
+    sortBy: sortByFilter,
   });
 
   const members = membersQuery.data?.data || [];
@@ -68,6 +71,22 @@ export const MembersSection = ({ communityId, role }: MembersSectionProps) => {
           </Select>
         </div>
 
+        {/* Sort By Filter */}
+        <Select
+          value={sortByFilter}
+          onValueChange={(value) =>
+            setSortByFilter(value as 'newest' | 'oldest' | 'karma')
+          }
+        >
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="newest">Newest</SelectItem>
+            <SelectItem value="oldest">Oldest</SelectItem>
+            <SelectItem value="karma">Karma</SelectItem>
+          </SelectContent>
+        </Select>
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
           <Button

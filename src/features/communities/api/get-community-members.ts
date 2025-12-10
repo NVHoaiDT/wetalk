@@ -12,7 +12,7 @@ export const getCommunityMembers = ({
   page = 1,
 }: {
   communityId: number;
-  status?: 'approved' | 'pending' /* Default is approved */;
+  status?: 'approved' | 'pending';
   search?: string;
   sortBy?: string;
   page?: number;
@@ -40,7 +40,7 @@ export const getCommunityMembersQueryOptions = ({
   communityId: number;
   status?: 'approved' | 'pending';
   search?: string;
-  sortBy?: string;
+  sortBy?: 'newest' | 'oldest' | 'karma';
   page?: number;
 }) => {
   return queryOptions({
@@ -58,7 +58,7 @@ type UseCommunityMembersOptions = {
   communityId: number;
   status?: 'approved' | 'pending';
   search?: string;
-  sortBy?: string;
+  sortBy?: 'newest' | 'oldest' | 'karma';
   page?: number;
   queryConfig?: QueryConfig<typeof getCommunityMembersQueryOptions>;
 };
