@@ -11,15 +11,26 @@ type ProfileHeaderProps = {
 
 export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-
+  const [isCoverLightboxOpen, setIsCoverLightboxOpen] = useState(false);
   return (
     <div className="relative mb-6 overflow-hidden rounded-2xl bg-white shadow-lg">
       {/* Banner Background */}
       <div className="relative h-32 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 sm:h-40">
-        <img
-          src={user.coverImage}
-          alt={`${user.username}'s cover`}
-          className="size-full object-cover"
+        <button
+          onClick={() => setIsCoverLightboxOpen(true)}
+          className="absolute inset-0 block size-full border-0 bg-transparent p-0"
+          aria-label={`View ${user.username}'s profile picture`}
+        >
+          <img
+            src={user.coverImage}
+            alt={`${user.username}'s cover`}
+            className="size-full object-cover"
+          />
+        </button>
+        <LightboxMediaViewer
+          isOpen={isCoverLightboxOpen}
+          onClose={() => setIsCoverLightboxOpen(false)}
+          media={user.coverImage}
         />
       </div>
 
