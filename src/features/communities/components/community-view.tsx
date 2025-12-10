@@ -123,7 +123,10 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
 
               <div className="flex items-center gap-3">
                 <Authorization
-                  policyCheck={POLICIES['post:create'](community.isFollow)}
+                  policyCheck={POLICIES['post:create'](
+                    community.isFollow,
+                    isSuperAdmin,
+                  )}
                 >
                   <CreatePost communityId={community.id} />
                 </Authorization>

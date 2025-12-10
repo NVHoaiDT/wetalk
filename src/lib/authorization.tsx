@@ -17,8 +17,8 @@ export const POLICIES = {
     if (!user) return false;
     return user.role === ROLES.superAdmin || comment.author?.id === user.id;
   },
-  'post:create': (isFollow: boolean) => {
-    return isFollow;
+  'post:create': (isFollow: boolean, isSuperAdmin: boolean) => {
+    return isFollow || isSuperAdmin;
   },
   'post:modify': (currentUser: User, authorId: number) => {
     if (!currentUser) return false;
