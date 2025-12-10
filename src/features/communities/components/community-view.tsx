@@ -1,4 +1,4 @@
-import { LockKeyhole, ClockFading, MoreHorizontal, Trash } from 'lucide-react';
+import { LockKeyhole, ClockFading, MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 
 import {
@@ -19,6 +19,7 @@ import { User } from '@/types/api';
 import { useCommunity } from '../api/get-community';
 
 import { CommunitySidebar } from './community-sidebar';
+import { DeleteCommunity } from './delete-community';
 import { JoinCommunity } from './join-community';
 import { ModToolsDialog } from './mod-tools/mod-tools-dialog';
 import { SettingsCommunity } from './setting-community';
@@ -206,9 +207,11 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
                           community.moderators,
                         )}
                       >
-                        <DropdownMenuItem className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal text-destructive focus:text-destructive">
-                          <Trash className="size-5" />
-                          Delete Community
+                        <DropdownMenuItem
+                          className="flex w-full flex-row justify-start gap-2 border-b border-gray-200 px-2 py-1.5 text-sm font-normal text-destructive focus:text-destructive"
+                          onSelect={(e) => e.preventDefault()}
+                        >
+                          <DeleteCommunity communityId={community.id} />
                         </DropdownMenuItem>
                       </Authorization>
                     </DropdownMenuContent>

@@ -38,13 +38,10 @@ export const DeleteCommunity = ({ communityId }: DeleteCommunityProps) => {
       title="Delete Community"
       body="Are you sure you want to delete this community?"
       triggerButton={
-        <Button
-          variant="destructive"
-          size="sm"
-          icon={<Trash className="size-4" />}
-        >
+        <button className="flex items-center gap-2 text-sm font-medium text-destructive hover:text-destructive">
+          <Trash className="size-4" />
           Delete Community
-        </Button>
+        </button>
       }
       confirmButton={
         <Button
