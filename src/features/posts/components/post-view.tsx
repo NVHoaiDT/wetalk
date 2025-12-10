@@ -195,23 +195,23 @@ export const PostView = ({ id }: { id: number }) => {
                     )}
                   >
                     <DropdownMenuItem
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 border-b border-gray-200"
                       onSelect={(e) => e.preventDefault()}
                     >
                       <EditPost post={post} />
                     </DropdownMenuItem>
                   </Authorization>
 
-                  <DropdownMenuItem className="flex items-center gap-2">
+                  <DropdownMenuItem className="flex items-center gap-2  border-b border-gray-200">
                     <SavePost postId={post.id} />
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className="flex items-center gap-2">
+                  <DropdownMenuItem className="flex items-center gap-2  border-b border-gray-200">
                     <FollowPost postId={post.id} />
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
-                    className="flex items-center gap-2 text-red-600"
+                    className="flex items-center gap-2 border-b  border-gray-200 text-red-600"
                     onSelect={(e) => e.preventDefault()}
                   >
                     <ReportPost postId={post.id} />

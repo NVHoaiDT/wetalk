@@ -38,10 +38,10 @@ export const DeletePost = ({ communityId, postId }: DeletePostProps) => {
       title="Delete Post"
       body="Are you sure you want to delete this post?"
       triggerButton={
-        <div className="flex items-center">
-          <Trash className="mr-2 size-4" />
+        <button className="flex w-full items-center gap-1.5 p-2 transition-colors hover:bg-gray-100">
+          <Trash className="size-4" />
           <span>Delete</span>
-        </div>
+        </button>
       }
       confirmButton={
         <Button
