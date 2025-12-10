@@ -1,5 +1,5 @@
 /* 
-    Endpoint: DELETE /communities/:communityId/manage/posts/:postId
+    Endpoint: DELETE /posts/:id
 */
 
 import { useQueryClient, useMutation } from '@tanstack/react-query';
@@ -9,14 +9,13 @@ import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
 export const DeletePostInput = z.object({
-  communityId: z.number().min(1, 'Required'),
   postId: z.number().min(1, 'Required'),
 });
 
 type DeletePostInput = z.infer<typeof DeletePostInput>;
 
-export const deletePost = ({ communityId, postId }: DeletePostInput) => {
-  return api.delete(`/communities/${communityId}/manage/posts/${postId}`);
+export const deletePost = ({ postId }: DeletePostInput) => {
+  return api.delete(`/posts/${postId}`);
 };
 
 type UseDeletePostOptions = {

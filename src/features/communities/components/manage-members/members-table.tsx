@@ -1,3 +1,5 @@
+import { Crown, User, ShieldCheck } from 'lucide-react';
+
 import { Spinner } from '@/components/ui/spinner';
 import {
   TableElement,
@@ -19,6 +21,12 @@ type MembersTableProps = {
   communityId: number;
   isLoading?: boolean;
   role: string;
+};
+
+const roleIcons = {
+  super_admin: <Crown className="size-4 text-yellow-500" />,
+  user: <User className="size-4 text-gray-500" />,
+  admin: <ShieldCheck className="size-4 text-blue-500" />,
 };
 
 export const MembersTable = ({
@@ -103,7 +111,9 @@ export const MembersTable = ({
                 )}
               </TableCell>
               <TableCell>
-                <span className="text-sm text-gray-600">{member.role}</span>
+                <span className="text-sm text-gray-600">
+                  {roleIcons[member.role as keyof typeof roleIcons]}
+                </span>
               </TableCell>
               <TableCell>
                 <div className="text-sm text-gray-600">

@@ -7,11 +7,10 @@ import { useNotifications } from '@/components/ui/notifications';
 import { useDeletePost } from '../api/delete-post';
 
 type DeletePostProps = {
-  communityId: number;
   postId: number;
 };
 
-export const DeletePost = ({ communityId, postId }: DeletePostProps) => {
+export const DeletePost = ({ postId }: DeletePostProps) => {
   const { addNotification } = useNotifications();
   const deletePostMutation = useDeletePost({
     mutationConfig: {
@@ -49,7 +48,7 @@ export const DeletePost = ({ communityId, postId }: DeletePostProps) => {
           type="button"
           variant="destructive"
           size="sm"
-          onClick={() => deletePostMutation.mutate({ communityId, postId })}
+          onClick={() => deletePostMutation.mutate({ postId })}
         >
           Delete
         </Button>

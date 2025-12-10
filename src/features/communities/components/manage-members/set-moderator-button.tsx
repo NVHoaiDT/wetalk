@@ -34,9 +34,7 @@ export const SetModeratorButton = ({
   memberName,
 }: SetModeratorButtonProps) => {
   const { isOpen, open, close } = useDisclosure();
-  const [selectedRole, setSelectedRole] = useState<'admin' | 'member'>(
-    'member',
-  );
+  const [selectedRole, setSelectedRole] = useState<'admin' | 'user'>('user');
   const { addNotification } = useNotifications();
 
   const setModeratorMutation = useSetCommunityMod({
@@ -72,7 +70,7 @@ export const SetModeratorButton = ({
       open={isOpen}
       onOpenChange={(isDialogOpen) => {
         if (isDialogOpen) {
-          setSelectedRole('member');
+          setSelectedRole('user');
           open();
         } else {
           close();
@@ -107,14 +105,14 @@ export const SetModeratorButton = ({
             <Select
               value={selectedRole}
               onValueChange={(value) =>
-                setSelectedRole(value as 'admin' | 'member')
+                setSelectedRole(value as 'admin' | 'user')
               }
             >
               <SelectTrigger id="role" className="w-full">
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="member">Member</SelectItem>
+                <SelectItem value="user">Member</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
               </SelectContent>
             </Select>

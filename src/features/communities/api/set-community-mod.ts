@@ -18,7 +18,7 @@ export const setCommunityMod = ({
 }: {
   communityId: number;
   userId: number;
-  role: 'admin' | 'member';
+  role: 'admin' | 'user';
 }) => {
   return api.put(`/communities/${communityId}/moderators/${userId}`, {
     role,

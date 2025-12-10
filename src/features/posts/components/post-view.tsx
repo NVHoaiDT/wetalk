@@ -227,10 +227,7 @@ export const PostView = ({ id }: { id: number }) => {
                       className="flex items-center gap-2 text-red-600"
                       onSelect={(e) => e.preventDefault()}
                     >
-                      <DeletePost
-                        communityId={post.community.id}
-                        postId={post.id}
-                      />
+                      <DeletePost postId={post.id} />
                     </DropdownMenuItem>
                   </Authorization>
                 </DropdownMenuContent>
