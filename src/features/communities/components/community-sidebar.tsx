@@ -9,11 +9,49 @@ import { Link } from 'react-router';
 
 import { paths } from '@/config/paths';
 import { CreatePost } from '@/features/posts/components/create-post';
+import { useCurrentUser } from '@/lib/auth';
 import { Authorization, POLICIES } from '@/lib/authorization';
 import { Community } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
+const CommunitySidebarPlaceholder = () => {
+  return (
+    <aside className="w-80 space-y-4 self-start ">
+      <div className="animate-pulse space-y-4 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <div className="bg-gradient-to-r from-blue-500 to-sky-600 p-4">
+          <div className="h-5 w-32 rounded bg-gray-300"></div>
+        </div>
+        <div className="space-y-4 p-4">
+          <div className="h-12 w-full rounded bg-gray-300"></div>
+          <div className="h-4 w-24 rounded bg-gray-300"></div>
+          <div className="h-4 w-20 rounded bg-gray-300"></div>
+          <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-4">
+            <div>
+              <div className="h-6 w-16 rounded bg-gray-300"></div>
+              <div className="h-4 w-12 rounded bg-gray-300"></div>
+            </div>
+            <div>
+              <div className="h-6 w-16 rounded bg-gray-300"></div>
+              <div className="h-4 w-12 rounded bg-gray-300"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+};
+
 export const CommunitySidebar = ({ community }: { community: Community }) => {
+  const currentUserQuery = useCurrentUser();
+  if (currentUserQuery.isLoading) {
+    return <CommunitySidebarPlaceholder />;
+  }
+  const currentUser = currentUserQuery.data?.data;
+
+  const isSuperAdmin = community.moderators.some(
+    (mod) => mod.userId === currentUser?.id && mod.role === 'super_admin',
+  );
+
   return (
     <aside className="w-80 space-y-4 self-start ">
       {/* About Community */}
@@ -83,7 +121,10 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
           </div>
 
           <Authorization
-            policyCheck={POLICIES['post:create'](community.isFollow)}
+            policyCheck={POLICIES['post:create'](
+              community.isFollow,
+              isSuperAdmin,
+            )}
           >
             <CreatePost communityId={community.id} />
           </Authorization>
