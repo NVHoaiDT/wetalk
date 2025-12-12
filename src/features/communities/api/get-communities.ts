@@ -2,19 +2,56 @@
   Endpoint: GET
     /communities/filter?
       sortBy=top&topics=Công%20nghệ%20%26%20Lập%20trình,Giải%20trí%20&%20Văn%20hóa
+
+    "data": [
+        {
+            "id": 21,
+            "name": "Test",
+            "shortDescription": "Test",
+            "topic": [
+                "Âm nhạc",
+                "AI"
+            ],
+            "communityAvatar": "https://res.cloudinary.com/dd2dhsems/image/upload/v1765518779/images/post/cloudinary_post_4a7c8879-df05-437c-be23-eaa03391858f_1765518773.webp",
+            "isPrivate": false,
+            "totalMembers": 0,
+            "isFollow": false
+        },
+        {
+            "id": 20,
+            "name": "Test",
+            "shortDescription": "Test",
+            "isPrivate": false,
+            "totalMembers": 0,
+            "isFollow": false
+        },
+        {
+            ...
+        },
+    ],
+    "pagination": {
+        "total": 27, // total communities matching the filter
+        "page": 1, // current page
+        "limit": 12, // items per page
+        "nextUrl": "/api/v1/communities/filter?sortBy=newest\u0026page=2\u0026limit=12" // URL for the next page, not present if there are no more pages
+    }
 */
 
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { infiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 import { Community, Pagination } from '@/types/api';
 
-export const getCommunities = (
-  sortBy?: string,
+export const getCommunities = ({
+  sortBy,
   page = 1,
-  topics?: string[],
-): Promise<{
+  topics,
+}: {
+  sortBy?: string;
+  page?: number;
+  topics?: string[];
+}): Promise<{
   data: Community[];
   pagination: Pagination;
 }> => {
@@ -27,32 +64,43 @@ export const getCommunities = (
   });
 };
 
-export const getCommunitiesQueryOptions = ({
+export const getInfiniteCommunitiesQueryOptions = ({
   sortBy,
-  page,
   topics,
-}: { sortBy?: string; page?: number; topics?: string[] } = {}) => {
-  return queryOptions({
-    queryKey: ['communities', { sortBy, page, topics }],
-    queryFn: () => getCommunities(sortBy, page, topics),
+}: {
+  sortBy?: string;
+  topics?: string[];
+}) => {
+  return infiniteQueryOptions({
+    queryKey: ['communities', { sortBy, topics }],
+    queryFn: ({ pageParam = 1 }) => {
+      return getCommunities({
+        sortBy,
+        topics,
+        page: pageParam as number,
+      });
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.pagination?.nextUrl) return undefined;
+      return lastPage.pagination.page + 1;
+    },
+    initialPageParam: 1,
   });
 };
 
-type UseCommunitiesQueryOptions = {
+type UseInfiniteCommunitiesOptions = {
   sortBy?: string;
-  page?: number;
   topics?: string[];
-  queryConfig?: QueryConfig<typeof getCommunitiesQueryOptions>;
+  queryConfig?: QueryConfig<typeof getInfiniteCommunitiesQueryOptions>;
 };
 
-export const useCommunities = ({
+export const useInfiniteCommunities = ({
   sortBy,
-  page,
   topics,
   queryConfig,
-}: UseCommunitiesQueryOptions) => {
-  return useQuery({
-    ...getCommunitiesQueryOptions({ sortBy, page, topics }),
+}: UseInfiniteCommunitiesOptions) => {
+  return useInfiniteQuery({
+    ...getInfiniteCommunitiesQueryOptions({ sortBy, topics }),
     ...queryConfig,
   });
 };

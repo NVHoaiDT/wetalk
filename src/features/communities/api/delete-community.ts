@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
 import { MutationConfig } from '@/lib/react-query';
 
-import { getCommunitiesQueryOptions } from './get-communities';
+import { getInfiniteCommunitiesQueryOptions } from './get-communities';
 
 export const deleteCommunity = ({ communityId }: { communityId: number }) => {
   return api.delete(`/communities/${communityId}`);
@@ -23,7 +23,7 @@ export const useDeleteCommunity = ({
   return useMutation({
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: getCommunitiesQueryOptions().queryKey,
+        queryKey: getInfiniteCommunitiesQueryOptions({}).queryKey,
       });
       queryClient.invalidateQueries({
         queryKey: ['community'],
