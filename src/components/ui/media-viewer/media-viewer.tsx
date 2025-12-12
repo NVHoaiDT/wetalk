@@ -113,7 +113,9 @@ export const MediaViewer = ({
                   height: '100%',
                 }}
               />
-              <MediaControlBar>
+              <MediaControlBar
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              >
                 <MediaPlayButton />
                 <MediaSeekBackwardButton seekOffset={10} />
                 <MediaSeekForwardButton seekOffset={10} />
