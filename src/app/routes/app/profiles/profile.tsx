@@ -12,7 +12,7 @@ import {
 } from '@/features/profiles/components/profile-tabs';
 import { useCurrentUser, ProtectedRoute } from '@/lib/auth';
 const ProfileRoute = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>('communities');
   const userQuery = useCurrentUser();
 
   if (userQuery.isLoading) {

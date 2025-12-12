@@ -1,7 +1,6 @@
 import { cn } from '@/utils/cn';
 
 type TabType =
-  | 'overview'
   | 'communities'
   | 'posts'
   | 'comments'
@@ -17,7 +16,6 @@ type ProfileTabsProps = {
 };
 
 const tabs: { id: TabType; label: string; requiresOwn?: boolean }[] = [
-  /* { id: 'overview', label: 'Overview' }, */
   { id: 'communities', label: 'Communities' },
   { id: 'posts', label: 'Posts' },
   { id: 'comments', label: 'Comments' },
