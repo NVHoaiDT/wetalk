@@ -38,13 +38,13 @@ api.interceptors.response.use(
   (error) => {
     const message = error.response?.data?.message || error.message;
 
-    if (error.response?.status === 500) {
-      useNotifications.getState().addNotification({
-        type: 'error',
-        title: 'Error',
-        message,
-      });
+    useNotifications.getState().addNotification({
+      type: 'error',
+      title: 'Error',
+      message,
+    });
 
+    if (error.response?.status === 500 || error.response?.status === 401) {
       localStorage.removeItem('accessToken');
       const currentPath = window.location.pathname;
       if (!currentPath.startsWith('/auth')) {
@@ -68,7 +68,7 @@ apiMedia.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 || error.response?.status === 500) {
       localStorage.removeItem('accessToken');
 
       const currentPath = window.location.pathname;
