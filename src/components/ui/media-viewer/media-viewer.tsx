@@ -110,7 +110,7 @@ export const MediaViewer = ({
                 className="rounded-lg object-contain"
                 style={{
                   width: '100%',
-                  height: '480px',
+                  height: '100%',
                 }}
               />
               <MediaControlBar>
@@ -332,8 +332,8 @@ export const MediaViewer = ({
                     <MediaController
                       style={{
                         width: '90vw',
+                        maxWidth: '90vw',
                         aspectRatio: '16/9',
-                        maxHeight: '90vh',
                       }}
                       className="rounded-lg"
                     >
