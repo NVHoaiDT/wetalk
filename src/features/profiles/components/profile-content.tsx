@@ -1,7 +1,6 @@
 import { ProfileCommentsList } from './profile-comments-list';
 import { ProfileCommunities } from './profile-communities';
 import { ProfileFollowedPostsList } from './profile-followed-posts-list';
-import { ProfileOverview } from './profile-overview';
 import { ProfilePostsList } from './profile-posts-list';
 import { ProfileSavedPostsList } from './profile-saved-posts-list';
 import { TabType } from './profile-tabs';
@@ -14,8 +13,6 @@ type ProfileContentProps = {
 export const ProfileContent = ({ userId, activeTab }: ProfileContentProps) => {
   const renderContent = () => {
     switch (activeTab) {
-      case 'overview':
-        return <ProfileOverview userId={userId} />;
       case 'communities':
         return <ProfileCommunities userId={userId} />;
       case 'posts':
