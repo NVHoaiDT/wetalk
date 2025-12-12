@@ -24,6 +24,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
     'text' | 'media' | 'link' | 'poll'
   >('text');
   const [mediaFiles, setMediaFiles] = useState<File[]>([]);
+  const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
   const createPostMutation = useCreatePost({
     communityId,
@@ -64,9 +65,10 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
           type="submit"
           size="sm"
           isLoading={createPostMutation.isPending}
+          disabled={isUploadingMedia || createPostMutation.isPending}
           className="min-w-[100px] border-0 bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:shadow-blue-500/40"
         >
-          Post
+          {isUploadingMedia ? 'Uploading...' : 'Post'}
         </Button>
       }
     >
@@ -162,23 +164,33 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
               </div>
 
               {activeTab === 'media' && (
-                <MediaUploader
-                  onChange={(urls) => {
-                    // Update form field
-                    setValue('mediaUrls', urls as any);
-                  }}
-                  onError={(error) => {
-                    addNotification({
-                      type: 'error',
-                      title: 'Upload Failed',
-                      message: error.message,
-                    });
-                  }}
-                  value={watch('mediaUrls')}
-                  maxFiles={10}
-                  accept={{ images: true, videos: true }}
-                  className="space-y-4"
-                />
+                <div className="space-y-4">
+                  <MediaUploader
+                    onChange={(urls) => {
+                      // Update form field
+                      setValue('mediaUrls', urls as any);
+                    }}
+                    onError={(error) => {
+                      addNotification({
+                        type: 'error',
+                        title: 'Upload Failed',
+                        message: error.message,
+                      });
+                    }}
+                    onUploadStateChange={(isUploading) => {
+                      setIsUploadingMedia(isUploading);
+                    }}
+                    value={watch('mediaUrls')}
+                    maxFiles={10}
+                    accept={{ images: true, videos: true }}
+                    className="space-y-4"
+                  />
+                  {isUploadingMedia && (
+                    <p className="text-sm text-blue-600">
+                      Uploading media files...
+                    </p>
+                  )}
+                </div>
               )}
 
               {/* Scaffold for link*/}
