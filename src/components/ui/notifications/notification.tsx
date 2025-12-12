@@ -1,4 +1,5 @@
 import { Info, CircleAlert, CircleX, CircleCheck } from 'lucide-react';
+import { useEffect } from 'react';
 
 const icons = {
   info: <Info className="size-6 text-blue-500" aria-hidden="true" />,
@@ -26,6 +27,15 @@ export const Notification = ({
   notification: { id, type, title, message },
   onDismiss,
 }: NotificationProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onDismiss(id);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [id, onDismiss]);
   return (
     /* Temporarily hidden notifications for purposes */
     <div className="flex w-full flex-col items-center space-y-4 sm:items-end ">
