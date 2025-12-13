@@ -7,15 +7,15 @@ import { paths } from '@/config/paths';
 import { ProtectedAction } from '@/lib/auth';
 import { cn } from '@/utils/cn';
 
-import { usePost } from '../api/get-post';
 import { useUnvotePost } from '../api/unvote-posts';
 import { useVotePost } from '../api/vote-post';
 
 type UpVotePostProps = {
   postId: number;
+  isVoted?: boolean;
 };
 
-export const UpVotePostFallback = ({ postId }: UpVotePostProps) => {
+export const UpVotePostFallback = ({ postId, isVoted }: UpVotePostProps) => {
   const { addNotification } = useNotifications();
   const votePostMutation = useVotePost({
     postId,
@@ -40,9 +40,7 @@ export const UpVotePostFallback = ({ postId }: UpVotePostProps) => {
     },
   });
 
-  const postQuery = usePost({ id: postId });
-
-  const isUpVoted = postQuery.data?.data.isVoted;
+  const isUpVoted = isVoted === true;
 
   const handleClick = () => {
     if (isUpVoted) {
@@ -59,11 +57,7 @@ export const UpVotePostFallback = ({ postId }: UpVotePostProps) => {
         isUpVoted && 'text-green-500',
       )}
       onClick={handleClick}
-      disabled={
-        postQuery.isLoading ||
-        votePostMutation.isPending ||
-        unvotePostMutation.isPending
-      }
+      disabled={votePostMutation.isPending || unvotePostMutation.isPending}
     >
       <ArrowBigUpDash className="size-5" />
     </button>
@@ -95,10 +89,12 @@ export const UnauthenticatedFallback = () => {
   );
 };
 
-export const UpVotePost = ({ postId }: UpVotePostProps) => {
+export const UpVotePost = ({ postId, isVoted }: UpVotePostProps) => {
   return (
     <ProtectedAction
-      authenticatedFallback={<UpVotePostFallback postId={postId} />}
+      authenticatedFallback={
+        <UpVotePostFallback postId={postId} isVoted={isVoted} />
+      }
       unauthenticatedFallback={<UnauthenticatedFallback />}
     />
   );

@@ -160,11 +160,11 @@ export const PostsList = ({ communityId }: PostsListProps) => {
             <div className="flex">
               {/* Vote Section */}
               <div className="flex w-12 flex-col items-center gap-1 border-r border-gray-200 bg-gray-50 py-3">
-                <UpVotePost postId={post.id} />
+                <UpVotePost postId={post.id} isVoted={post.isVoted} />
                 <span className="text-xs font-bold text-gray-700">
                   {formatBigNumber(post.vote)}
                 </span>
-                <DownVotePost postId={post.id} />
+                <DownVotePost postId={post.id} isVoted={post.isVoted} />
               </div>
 
               {/* Content */}

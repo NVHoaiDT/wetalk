@@ -262,11 +262,11 @@ export const PostView = ({ id }: { id: number }) => {
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
               {/* Vote Section */}
               <div className="flex flex-row items-center gap-2 rounded-full bg-input p-2">
-                <UpVotePost postId={post.id} />
+                <UpVotePost postId={post.id} isVoted={post.isVoted} />
                 <span className="text-xs font-bold text-gray-600">
                   {formatBigNumber(post.vote)}
                 </span>
-                <DownVotePost postId={post.id} />
+                <DownVotePost postId={post.id} isVoted={post.isVoted} />
               </div>
               <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
                 <MessageCircle className="size-4" />

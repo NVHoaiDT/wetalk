@@ -66,11 +66,11 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
       <div className="flex">
         {/* Vote Section */}
         <div className="flex w-12 flex-col items-center gap-1 py-3">
-          <UpVotePost postId={post.id} />
+          <UpVotePost postId={post.id} isVoted={post.isVoted} />
           <span className="text-xs font-bold text-gray-600">
             {formatBigNumber(post.vote)}
           </span>
-          <DownVotePost postId={post.id} />
+          <DownVotePost postId={post.id} isVoted={post.isVoted} />
         </div>
 
         {/* Content */}

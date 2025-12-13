@@ -165,9 +165,9 @@ export const SearchAllList = ({ query }: SearchAllListProps) => {
     >
       <div className="flex gap-4 p-4">
         <div className="flex min-w-[40px] flex-col items-center gap-1 text-sm text-muted-foreground">
-          <UpVotePost postId={post.id} />
+          <UpVotePost postId={post.id} isVoted={post.isVoted} />
           <span>{post.vote || 0}</span>
-          <DownVotePost postId={post.id} />
+          <DownVotePost postId={post.id} isVoted={post.isVoted} />
         </div>
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">

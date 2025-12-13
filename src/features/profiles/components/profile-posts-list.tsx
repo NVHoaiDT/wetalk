@@ -89,11 +89,11 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
           >
             <div className="flex space-x-3">
               {/* <div className="flex flex-col items-center space-y-1">
-                  <UpVotePost postId={post.id} />
+                  <UpVotePost postId={post.id} isVoted={post.isVoted} />
                   <span className="text-sm font-semibold text-gray-900">
                     {post.vote}
                   </span>
-                  <DownVotePost postId={post.id} />
+                  <DownVotePost postId={post.id} isVoted={post.isVoted} />
                 </div> */}
 
               {/* Content */}
