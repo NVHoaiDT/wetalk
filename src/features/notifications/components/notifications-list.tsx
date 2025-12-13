@@ -116,7 +116,7 @@ export const NotificationsList = () => {
       </div>
 
       {/* Pagination */}
-      {pagination && pagination.total > 1 && (
+      {pagination && pagination.total > limit && (
         <div className="flex items-center justify-between border-t pt-6">
           <Button
             variant="outline"
@@ -134,7 +134,7 @@ export const NotificationsList = () => {
             </span>
             <span className="text-sm text-gray-500">of</span>
             <span className="text-sm font-medium text-gray-700">
-              {pagination.total}
+              {Math.ceil(pagination.total / pagination.limit)}
             </span>
           </div>
 

@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from 'date-fns';
 import {
   MessageCircle,
   Share2,
@@ -25,7 +24,7 @@ import { paths } from '@/config/paths';
 import { usePreferences } from '@/features/settings/api';
 import { UserHoverCard } from '@/features/users/components/user-hover-card';
 import { fancyLog } from '@/helper/fancy-log';
-import { formatBigNumber } from '@/utils/format';
+import { formatBigNumber, formatDateFns } from '@/utils/format';
 
 import { useAddRecentPost } from '../api/add-recent-post';
 import { useInfinitePosts } from '../api/get-sorted-posts';
@@ -207,9 +206,7 @@ export const PostsList = ({ communityId }: PostsListProps) => {
                             </Link>
                           </UserHoverCard>
                           <span>•</span>
-                          <span>
-                            {formatDistanceToNow(new Date(post.createdAt))}
-                          </span>
+                          <span>{formatDateFns(post.createdAt)}</span>
                         </div>
                       </div>
                     </div>
