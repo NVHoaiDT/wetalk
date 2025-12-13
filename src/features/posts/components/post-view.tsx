@@ -17,7 +17,6 @@ import { Authorization, POLICIES } from '@/lib/authorization';
 import { formatBigNumber } from '@/utils/format';
 
 import { usePost } from '../api/get-post';
-import { useSummaryPost } from '../api/get-summary-post';
 
 import { AiChatbox } from './ai-chatbox';
 import { DeletePost } from './delete-post';
@@ -98,21 +97,13 @@ const PostViewPlaceholder = () => {
 
 export const PostView = ({ id }: { id: number }) => {
   const postQuery = usePost({ id });
-  const summaryPostQuery = useSummaryPost({
-    text: postQuery.data?.data.content || '',
-  });
   const currentUserQuery = useCurrentUser();
 
-  if (
-    postQuery.isLoading ||
-    summaryPostQuery.isPending ||
-    currentUserQuery.isLoading
-  ) {
+  if (postQuery.isLoading || currentUserQuery.isLoading) {
     return <PostViewPlaceholder />;
   }
 
   const post = postQuery?.data?.data;
-  const summaryPost = summaryPostQuery?.data;
   const currentUser = currentUserQuery?.data?.data;
 
   if (!post) return null;
@@ -121,10 +112,7 @@ export const PostView = ({ id }: { id: number }) => {
   return (
     <article className="w-full rounded-xl border border-slate-200 shadow-sm">
       {/* AI Summary Chatbox */}
-      <AiChatbox
-        summary={summaryPost?.summary}
-        isLoading={summaryPostQuery.isLoading}
-      />
+      <AiChatbox content={post.content} />
 
       {/* Post Header */}
       <div className="overflow-hidden rounded-xl bg-white shadow-sm">

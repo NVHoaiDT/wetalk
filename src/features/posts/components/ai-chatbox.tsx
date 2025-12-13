@@ -1,15 +1,22 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bot, Loader2, Sparkles, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { useSummaryPost } from '../api/get-summary-post';
 
 interface AiChatboxProps {
-  summary?: string;
-  isLoading?: boolean;
+  content: string;
 }
 
-export const AiChatbox = ({ summary, isLoading }: AiChatboxProps) => {
+export const AiChatbox = ({ content }: AiChatboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showFullSummary, setShowFullSummary] = useState(false);
+
+  // Only fetch summary when chatbox is opened
+  const summaryPostQuery = useSummaryPost(
+    { text: content },
+    { enabled: isOpen && !!content },
+  );
 
   const handleToggle = () => {
     if (!isOpen) {
@@ -21,6 +28,13 @@ export const AiChatbox = ({ summary, isLoading }: AiChatboxProps) => {
       setTimeout(() => setIsOpen(false), 200);
     }
   };
+
+  // Reset showFullSummary when summary data arrives
+  useEffect(() => {
+    if (summaryPostQuery.data?.summary && isOpen) {
+      setShowFullSummary(true);
+    }
+  }, [summaryPostQuery.data, isOpen]);
 
   return (
     <div className="fixed bottom-6 left-6 z-50">
@@ -112,12 +126,33 @@ export const AiChatbox = ({ summary, isLoading }: AiChatboxProps) => {
 
             {/* Content */}
             <div className="max-h-96 overflow-y-auto p-4">
-              {isLoading ? (
-                <div className="flex flex-col items-center justify-center py-8">
-                  <Loader2 className="mb-3 size-8 animate-spin text-blue-500" />
-                  <p className="text-sm text-gray-500">Analyzing the post...</p>
-                </div>
-              ) : summary ? (
+              {summaryPostQuery.isLoading || summaryPostQuery.isFetching ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="space-y-3"
+                >
+                  {/* Greeting placeholder */}
+                  <div className="rounded-lg bg-blue-50 p-3">
+                    <div className="h-4 w-3/4 animate-pulse rounded bg-blue-100"></div>
+                  </div>
+
+                  {/* Summary loading */}
+                  <div className="rounded-lg bg-gray-50 p-3">
+                    <div className="mb-2 flex items-center gap-2">
+                      <Loader2 className="size-4 animate-spin text-blue-500" />
+                      <span className="text-xs text-gray-500">
+                        Generating summary...
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-3 w-full animate-pulse rounded bg-gray-200"></div>
+                      <div className="h-3 w-5/6 animate-pulse rounded bg-gray-200"></div>
+                      <div className="h-3 w-4/5 animate-pulse rounded bg-gray-200"></div>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : summaryPostQuery.data?.summary ? (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -151,7 +186,7 @@ export const AiChatbox = ({ summary, isLoading }: AiChatboxProps) => {
                         transition={{ duration: 0.5 }}
                         className="text-sm leading-relaxed text-gray-800"
                       >
-                        {summary}
+                        {summaryPostQuery.data.summary}
                       </motion.p>
                     ) : (
                       <div className="flex items-center gap-2">

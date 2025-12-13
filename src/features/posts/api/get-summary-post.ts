@@ -95,12 +95,13 @@ type UseSummaryPostOptions = {
   queryConfig?: QueryConfig<typeof getSummaryPostQueryOptions>;
 };
 
-export const useSummaryPost = ({
-  text,
-  queryConfig,
-}: UseSummaryPostOptions) => {
+export const useSummaryPost = (
+  { text, queryConfig }: UseSummaryPostOptions,
+  additionalConfig?: { enabled?: boolean },
+) => {
   return useQuery({
     ...getSummaryPostQueryOptions(text),
     ...queryConfig,
+    ...additionalConfig,
   });
 };
