@@ -49,7 +49,13 @@ export const useUnvotePost = ({
         queryKey: ['community-posts'],
       });
       queryClient.invalidateQueries({
+        queryKey: ['posts'],
+      });
+      queryClient.invalidateQueries({
         queryKey: ['all-posts'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['searched-posts'],
       });
       onSuccess?.(data, ...args);
     },
