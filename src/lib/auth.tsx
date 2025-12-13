@@ -26,10 +26,11 @@ const getUserById = async (userId: number): Promise<{ data: User }> => {
   return api.get(`/users/${userId}`);
 };
 
-export const useUser = (userId: number) => {
+export const useUser = (userId: number, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ['user', userId],
     queryFn: () => getUserById(userId),
+    enabled: options?.enabled !== undefined ? options.enabled : true,
   });
 };
 

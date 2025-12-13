@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { useState } from 'react';
 import { Link } from 'react-router';
 
 import {
@@ -15,7 +16,9 @@ type UserHoverCardProps = {
 };
 
 export const UserHoverCard = ({ userId, children }: UserHoverCardProps) => {
-  const userQuery = useUser(userId);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const userQuery = useUser(userId, { enabled: isOpen });
 
   if (userQuery.isLoading || !userQuery.data) {
     return children;
@@ -24,7 +27,7 @@ export const UserHoverCard = ({ userId, children }: UserHoverCardProps) => {
   const userData = userQuery.data.data;
 
   return (
-    <HoverCard openDelay={300} closeDelay={200}>
+    <HoverCard openDelay={300} closeDelay={200} onOpenChange={setIsOpen}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent
         className="w-80"

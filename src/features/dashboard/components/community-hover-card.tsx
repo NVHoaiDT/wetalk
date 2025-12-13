@@ -1,4 +1,5 @@
 import { Users } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 
 import {
@@ -22,7 +23,12 @@ export const CommunityHoverCard = ({
   communityId,
   children,
 }: CommunityHoverCardProps) => {
-  const communityQuery = useCommunity({ communityId });
+  const [isOpen, setIsOpen] = useState(false);
+
+  const communityQuery = useCommunity({
+    communityId,
+    queryConfig: { enabled: isOpen },
+  });
 
   if (communityQuery.isLoading || !communityQuery.data) {
     return <>{children}</>;
@@ -31,7 +37,7 @@ export const CommunityHoverCard = ({
   const communityData = communityQuery.data?.data;
 
   return (
-    <HoverCard openDelay={300} closeDelay={200}>
+    <HoverCard openDelay={300} closeDelay={200} onOpenChange={setIsOpen}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent
         className="w-80"
