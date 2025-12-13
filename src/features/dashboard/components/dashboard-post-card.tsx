@@ -227,3 +227,4 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
     </article>
   );
 };
+/*  */
