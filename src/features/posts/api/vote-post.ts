@@ -54,6 +54,9 @@ export const useVotePost = ({ postId, mutationConfig }: UseVotePostOptions) => {
       queryClient.invalidateQueries({
         queryKey: ['all-posts'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['searched-posts'],
+      });
 
       onSuccess?.(data, ...args);
     },

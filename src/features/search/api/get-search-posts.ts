@@ -80,13 +80,12 @@ export const getInfiniteSearchPostsOptions = (
   sortType: string,
 ) => {
   return infiniteQueryOptions({
-    queryKey: ['searchPosts', query, sortType],
+    queryKey: ['searched-posts', query, sortType],
     queryFn: ({ pageParam = 1 }) => {
       return getSearchPosts({ query, sortType, page: pageParam as number });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage?.pagination?.page === lastPage?.pagination.total)
-        return undefined;
+      if (!lastPage?.pagination?.nextUrl) return undefined;
       const nextPage = lastPage.pagination.page + 1;
       return nextPage;
     },
