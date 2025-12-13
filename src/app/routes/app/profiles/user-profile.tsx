@@ -14,7 +14,7 @@ import { useUser, useCurrentUser } from '@/lib/auth';
 
 const UserProfileRoute = () => {
   const { userId } = useParams<{ userId: string }>();
-  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>('communities');
 
   const { data: currentUserData } = useCurrentUser();
   const currentUserId = currentUserData?.data?.id;
