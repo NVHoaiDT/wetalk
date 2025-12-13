@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import { MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -23,7 +22,7 @@ import { usePreferences } from '@/features/settings/api';
 import { UserHoverCard } from '@/features/users/components/user-hover-card';
 import { postCardColors } from '@/lib/colors';
 import { Post } from '@/types/api';
-import { formatBigNumber } from '@/utils/format';
+import { formatBigNumber, formatDateFns } from '@/utils/format';
 
 import { CommunityHoverCard } from './community-hover-card';
 
@@ -120,9 +119,7 @@ export const DashboardPostCard = ({ post, index }: DashboardPostCardProps) => {
                     <div className="flex items-center gap-1 self-center text-gray-500">
                       <span className="text-gray-500">•</span>
                       <span className="text-gray-500">
-                        {formatDistanceToNow(new Date(post.createdAt), {
-                          addSuffix: true,
-                        })}
+                        {formatDateFns(post.createdAt)}
                       </span>
                     </div>
                   </div>
