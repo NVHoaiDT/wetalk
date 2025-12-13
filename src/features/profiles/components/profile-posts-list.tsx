@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
-import { DownVotePost } from '@/features/posts/components/downvote-post';
-import { UpVotePost } from '@/features/posts/components/upvote-post';
 import { useInfiniteUserPosts } from '@/features/profiles/api/get-user-posts';
 import { cn } from '@/utils/cn';
 
@@ -90,14 +88,13 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
             className="block rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
           >
             <div className="flex space-x-3">
-              {/* Vote Section */}
-              <div className="flex flex-col items-center space-y-1">
-                <UpVotePost postId={post.id} />
-                <span className="text-sm font-semibold text-gray-900">
-                  {post.vote}
-                </span>
-                <DownVotePost postId={post.id} />
-              </div>
+              {/* <div className="flex flex-col items-center space-y-1">
+                  <UpVotePost postId={post.id} />
+                  <span className="text-sm font-semibold text-gray-900">
+                    {post.vote}
+                  </span>
+                  <DownVotePost postId={post.id} />
+                </div> */}
 
               {/* Content */}
               <Link to={paths.app.post.getHref(post.id)}>

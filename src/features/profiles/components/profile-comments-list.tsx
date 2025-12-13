@@ -1,4 +1,4 @@
-import { ArrowBigUp, ChevronDown, Eye } from 'lucide-react';
+import { ChevronDown, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
@@ -89,14 +89,14 @@ export const ProfileCommentsList = ({ userId }: ProfileCommentsListProps) => {
           >
             <div className="flex space-x-3">
               {/* Vote Section */}
-              <div className="flex flex-col items-center space-y-1">
+              {/* <div className="flex flex-col items-center space-y-1">
                 <button className="text-gray-400 hover:text-blue-600">
                   <ArrowBigUp className="size-6" />
                 </button>
                 <span className="text-sm font-semibold text-gray-900">
                   {comment.vote}
                 </span>
-              </div>
+              </div> */}
 
               {/* Content */}
               <div className="min-w-0 flex-1">
