@@ -47,6 +47,7 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
   const loginWithGoogle = useLoginWithGoogle({ onSuccess });
   const googleButtonRef = useRef<HTMLDivElement>(null);
   const initAttempts = useRef(0);
+  const isGoogleReadyRef = useRef(false);
   const maxAttempts = 50; // 5 seconds max
 
   useEffect(() => {
@@ -55,10 +56,15 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
       return;
     }
 
-    console.log('Initializing Google Sign-In with client ID:', env.GOOGLE_CLIENT_ID);
+    console.log(
+      'Initializing Google Sign-In with client ID:',
+      env.GOOGLE_CLIENT_ID,
+    );
 
     window.handleGoogleCallback = (response: GoogleCallbackResponse) => {
-      console.log('Google callback triggered', { hasCredential: !!response.credential });
+      console.log('Google callback triggered', {
+        hasCredential: !!response.credential,
+      });
       if (response.credential) {
         loginWithGoogle.mutate({ idToken: response.credential });
       } else {
@@ -92,6 +98,19 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
               logo_alignment: 'center',
               width: 400,
             });
+
+            // Wait a bit for the button to be fully rendered in the DOM
+            setTimeout(() => {
+              const renderedButton =
+                buttonContainer.querySelector('div[role="button"]');
+              if (renderedButton) {
+                console.log('Google button found in DOM');
+                isGoogleReadyRef.current = true;
+              } else {
+                console.warn('Google button not found after render');
+              }
+            }, 200);
+
             console.log('Google button rendered successfully');
             fancyLog('Google button rendered successfully', '✓');
           } else {
@@ -101,7 +120,9 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
           console.error('Failed to initialize Google Sign-In:', error);
         }
       } else if (initAttempts.current < maxAttempts) {
-        console.log(`Waiting for Google API... (attempt ${initAttempts.current}/${maxAttempts})`);
+        console.log(
+          `Waiting for Google API... (attempt ${initAttempts.current}/${maxAttempts})`,
+        );
         setTimeout(initializeGoogleSignIn, 100);
       } else {
         console.error('Google API failed to load after 5 seconds');
@@ -113,20 +134,53 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
     return () => {
       delete window.handleGoogleCallback;
       initAttempts.current = 0;
+      isGoogleReadyRef.current = false;
     };
   }, [loginWithGoogle]);
 
   const handleCustomButtonClick = () => {
     console.log('Custom button clicked');
-    // Find and click the actual Google button inside the container
-    const googleButton = googleButtonRef.current?.querySelector(
+
+    const buttonContainer = document.getElementById('google-button-container');
+    if (!buttonContainer) {
+      console.error('Button container not found');
+      return;
+    }
+
+    // Try multiple selectors to find the Google button
+    const selectors = [
       'div[role="button"]',
-    ) as HTMLElement;
+      'button',
+      '[data-type="standard"]',
+      'div[id^="g_id_"]',
+    ];
+
+    let googleButton: HTMLElement | null = null;
+    for (const selector of selectors) {
+      googleButton = buttonContainer.querySelector(selector) as HTMLElement;
+      if (googleButton) {
+        console.log(`Google button found with selector: ${selector}`);
+        break;
+      }
+    }
+
     if (googleButton) {
       console.log('Triggering Google button click');
       googleButton.click();
     } else {
       console.error('Google button not found in container');
+      console.log('Container HTML:', buttonContainer.innerHTML);
+
+      // Fallback: Try to trigger Google One Tap
+      if (window.google?.accounts?.id) {
+        console.log('Attempting fallback: Google One Tap prompt');
+        try {
+          /* window.google.accounts.id.prompt(); */
+          console.log('Google One Tap prompt triggered');
+        } catch (error) {
+          console.error('One Tap prompt failed:', error);
+        }
+      }
     }
   };
 
@@ -185,7 +239,8 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
 
       {loginWithGoogle.isError && (
         <div className="mt-2 text-sm text-red-600">
-          {loginWithGoogle.error?.message || 'Google login failed. Please try again or contact support.'}
+          {loginWithGoogle.error?.message ||
+            'Google login failed. Please try again or contact support.'}
         </div>
       )}
     </div>
