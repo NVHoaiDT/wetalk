@@ -49,6 +49,7 @@ export const UpVotePostCommentFallback = ({
     }
   };
 
+  console.log('isAlreadyUpVoted:', isAlreadyUpVoted);
   return (
     <button
       className={cn(

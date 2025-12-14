@@ -58,6 +58,7 @@ const Comment = ({
   const userQuery = useCurrentUser();
   const user = userQuery.data?.data;
 
+  console.log("Comment's isVoted:", comment.isVoted);
   return (
     <Card
       className={`border-l-2 ${level === 0 ? 'border-l-transparent' : 'border-l-blue-200'}`}
@@ -115,10 +116,13 @@ const Comment = ({
               {/* Vote buttons */}
               <UpVotePostComment
                 commentId={comment.id}
-                isAlreadyUpVoted={comment.isVoted}
+                isAlreadyUpVoted={comment.isVoted === true}
               />
               <span>{comment.vote}</span>
-              <DownVotePostComment commentId={comment.id} />
+              <DownVotePostComment
+                commentId={comment.id}
+                isAlreadyDownVoted={comment.isVoted === false}
+              />
             </div>
             {level < maxNestedLevel && (
               <ReplyComment
