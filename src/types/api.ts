@@ -103,6 +103,7 @@ export type CommunityMember = {
   subscribedAt: string;
   status: string;
   role: string;
+  isBannedBefore: boolean;
 };
 
 export type RecentCommunity = {
@@ -424,6 +425,14 @@ export type SearchedUser = {
 export type SearchUsersResponse = {
   data: SearchedUser[];
   pagination: Pagination;
+};
+
+export type BanRestriction = {
+  id: number;
+  restrictionType: 'temporary_ban' | 'warning' | 'permanent_ban';
+  reason: string;
+  expiresAt?: string;
+  createdAt: string;
 };
 /*==========End Testing zone==========*/
 

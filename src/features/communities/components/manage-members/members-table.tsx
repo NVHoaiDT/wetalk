@@ -15,6 +15,7 @@ import { formatDate } from '@/utils/format';
 import { ApproveMemberButton } from './approve-member-button';
 import { BanMemberButton } from './ban-member-button';
 import { SetModeratorButton } from './set-moderator-button';
+import { ViewBannedHistoryButton } from './view-banned-history-button';
 
 type MembersTableProps = {
   members: CommunityMember[];
@@ -100,15 +101,25 @@ export const MembersTable = ({
                 </div>
               </TableCell>
               <TableCell>
-                {member.status === 'approved' ? (
-                  <span className="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
-                    Approved
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center rounded-full bg-yellow-50 px-3 py-1 text-xs font-medium text-yellow-600">
-                    Pending
-                  </span>
-                )}
+                <div className="flex items-center">
+                  {member.status === 'approved' ? (
+                    <span className="inline-flex items-center rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
+                      Approved
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-yellow-50 px-3 py-1 text-xs font-medium text-yellow-600">
+                      Pending
+                    </span>
+                  )}
+
+                  {member.isBannedBefore && (
+                    <ViewBannedHistoryButton
+                      communityId={communityId}
+                      userId={member.userId}
+                      username={member.username}
+                    />
+                  )}
+                </div>
               </TableCell>
               <TableCell>
                 <span className="text-sm text-gray-600">
