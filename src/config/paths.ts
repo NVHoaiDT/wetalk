@@ -25,6 +25,11 @@ export const paths = {
       getHref: (email?: string | null | undefined) =>
         `/auth/notify${email ? `?email=${encodeURIComponent(email)}` : ''}`,
     },
+    notifyResetPassword: {
+      path: '/auth/notify-reset-password',
+      getHref: (email?: string | null | undefined) =>
+        `/auth/notify-reset-password${email ? `?email=${encodeURIComponent(email)}` : ''}`,
+    },
     forgotPassword: {
       path: '/auth/forgot-password',
       getHref: () => '/auth/forgot-password',

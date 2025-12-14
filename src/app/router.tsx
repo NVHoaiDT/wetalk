@@ -43,6 +43,13 @@ export const createAppRouter = (queryClient: QueryClient) =>
       lazy: () => import('./routes/auth/notify').then(convert(queryClient)),
     },
     {
+      path: paths.auth.notifyResetPassword.path,
+      lazy: () =>
+        import('./routes/auth/notify-reset-password').then(
+          convert(queryClient),
+        ),
+    },
+    {
       path: paths.auth.forgotPassword.path,
       lazy: () =>
         import('./routes/auth/forgot-password').then(convert(queryClient)),

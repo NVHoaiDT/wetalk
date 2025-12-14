@@ -6,13 +6,11 @@ import { paths } from '@/config/paths';
 import { useForgotPassword, forgotPasswordInputSchema } from '@/lib/auth';
 
 type ForgotPasswordFormProps = {
-  onSuccess: () => void;
+  onSuccess: (email: string) => void;
 };
 
 export const ForgotPasswordForm = ({ onSuccess }: ForgotPasswordFormProps) => {
-  const forgotPassword = useForgotPassword({
-    onSuccess,
-  });
+  const forgotPassword = useForgotPassword({});
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirectTo');
 
@@ -20,7 +18,9 @@ export const ForgotPasswordForm = ({ onSuccess }: ForgotPasswordFormProps) => {
     <div className="space-y-6">
       <Form
         onSubmit={(values) => {
-          forgotPassword.mutate(values);
+          forgotPassword.mutate(values, {
+            onSuccess: () => onSuccess(values.email),
+          });
         }}
         schema={forgotPasswordInputSchema}
       >

@@ -7,19 +7,21 @@ import { ForgotPasswordForm } from '@/features/auth/components/forgot-password-f
 
 const ForgotPasswordRoute = () => {
   const navigate = useNavigate();
+
   const { addNotification } = useNotifications();
 
   return (
     <AuthLayout title="Forgot Password">
       <ForgotPasswordForm
-        onSuccess={() => {
+        onSuccess={(email) => {
           addNotification({
             type: 'success',
             title: 'Success',
             message:
               'Password reset link has been sent to your email. Please check your inbox.',
           });
-          navigate(paths.auth.login.getHref(), {
+
+          navigate(paths.auth.notifyResetPassword.getHref(email), {
             replace: true,
           });
         }}
