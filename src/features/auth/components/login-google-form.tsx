@@ -147,35 +147,21 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
       return;
     }
 
-    // Try multiple selectors to find the Google button
-    const selectors = [
-      'div[role="button"]',
-      'button',
-      '[data-type="standard"]',
-      'div[id^="g_id_"]',
-    ];
+    // Google renders the button as an iframe
+    const iframe = buttonContainer.querySelector('iframe') as HTMLIFrameElement;
 
-    let googleButton: HTMLElement | null = null;
-    for (const selector of selectors) {
-      googleButton = buttonContainer.querySelector(selector) as HTMLElement;
-      if (googleButton) {
-        console.log(`Google button found with selector: ${selector}`);
-        break;
-      }
-    }
-
-    if (googleButton) {
-      console.log('Triggering Google button click');
-      googleButton.click();
+    if (iframe) {
+      console.log('Google iframe found, triggering click');
+      // Click the iframe to trigger the Google sign-in
+      iframe.click();
     } else {
-      console.error('Google button not found in container');
+      console.error('Google iframe not found in container');
       console.log('Container HTML:', buttonContainer.innerHTML);
 
       // Fallback: Try to trigger Google One Tap
       if (window.google?.accounts?.id) {
         console.log('Attempting fallback: Google One Tap prompt');
         try {
-          /* window.google.accounts.id.prompt(); */
           console.log('Google One Tap prompt triggered');
         } catch (error) {
           console.error('One Tap prompt failed:', error);
