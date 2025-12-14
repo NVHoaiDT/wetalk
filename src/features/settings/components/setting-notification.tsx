@@ -65,6 +65,16 @@ const NOTIFICATION_ACTION_LABELS: Record<
     icon: UserPlus,
     description: 'When your join request is rejected by a moderator',
   },
+  post_status_updated: {
+    label: 'Post status update',
+    icon: UserPlus,
+    description: 'When your post is approved/reject by a moderator',
+  },
+  subscription_status_updated: {
+    label: 'Subscription status update',
+    icon: UserPlus,
+    description: 'When your subscription is approved/reject by a moderator',
+  },
 };
 
 export const SettingNotification = () => {
