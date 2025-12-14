@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronRight, Globe, Lock, Mail, Trash2, User } from 'lucide-react';
+import { ChevronRight, Globe, Lock, Mail, User } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -189,7 +189,7 @@ export const SettingAccounts = () => {
         <ChevronRight className="size-5 text-gray-400" />
       </button>
       {/* Delete Account Section */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <h3 className="text-lg font-bold text-gray-900">Delete Account</h3>
         <button
           onClick={() => setActiveDialog('delete')}
@@ -208,7 +208,7 @@ export const SettingAccounts = () => {
           </div>
           <ChevronRight className="size-5 text-red-400" />
         </button>
-      </div>
+      </div> */}
 
       {/* Change Password Dialog */}
       <Dialog
