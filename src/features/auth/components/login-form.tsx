@@ -26,11 +26,29 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     if (!login.error) return null;
     const error = login.error as any;
     const status = error?.response?.status;
+    const message = error?.response?.data?.message;
+
     fancyLog('Login error status:', status);
-    if (status === 403) {
-      return 'Invalid credential';
+    fancyLog('Login error message:', message);
+
+    if (status === 403 || status === 401) {
+      return 'Invalid credentials. Please check your email and password.';
     }
-    return 'Something went wrong';
+
+    if (message) {
+      if (message.toLowerCase().includes('password')) {
+        if (message.toLowerCase().includes('min')) {
+          return 'Password must be at least 6 characters long.';
+        }
+        return message;
+      }
+      if (message.toLowerCase().includes('email')) {
+        return message;
+      }
+      return message;
+    }
+
+    return 'Something went wrong. Please try again.';
   };
 
   const errorMessage = getErrorMessage();
@@ -45,32 +63,52 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       >
         {({ register, formState }) => (
           <div className="space-y-5">
-            <Input
-              type="email"
-              label="Email"
-              placeholder="name@email.com"
-              error={formState.errors['email']}
-              registration={register('email')}
-              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
-            />
-            {errorMessage && (
-              <div className="flex items-center gap-2 rounded-lg text-sm text-red-600">
-                <span className="font-medium">{errorMessage}</span>
-              </div>
-            )}
-            <Input
-              type="password"
-              label="Password"
-              placeholder="••••••••"
-              error={formState.errors['password']}
-              registration={register('password')}
-              className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
-            />
-            {errorMessage && (
-              <div className="flex items-center gap-2 rounded-lg text-sm text-red-600">
-                <span className="font-medium">{errorMessage}</span>
-              </div>
-            )}
+            <div>
+              <Input
+                type="email"
+                label="Email"
+                placeholder="name@email.com"
+                error={formState.errors['email']}
+                registration={register('email')}
+                className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
+              />
+              {formState.errors['email'] && (
+                <div className="mt-2 flex items-center gap-2 text-sm text-red-600">
+                  <span className="font-medium">
+                    {formState.errors['email']?.message?.toString() ||
+                      'Please enter a valid email address with @ symbol'}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <Input
+                type="password"
+                label="Password"
+                placeholder="••••••••"
+                error={formState.errors['password']}
+                registration={register('password')}
+                className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
+              />
+              {formState.errors['password'] && (
+                <div className="mt-2 flex items-center gap-2 text-sm text-red-600">
+                  <span className="font-medium">
+                    {formState.errors['password']?.message?.toString() ||
+                      'Password must be at least 6 characters long'}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {errorMessage &&
+              !formState.errors['email'] &&
+              !formState.errors['password'] && (
+                <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                  <span className="font-medium">{errorMessage}</span>
+                </div>
+              )}
+
             <div className="pt-2">
               <Button
                 isLoading={login.isPending}
