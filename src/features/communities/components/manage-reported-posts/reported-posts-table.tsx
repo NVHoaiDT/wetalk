@@ -178,6 +178,7 @@ export const ReportedPostsTable = ({
                           communityId={communityId}
                           postId={reportedPost.postId}
                           postTitle={reportedPost.postTitle}
+                          authorId={reportedPost.author.id}
                         />
                       </div>
                     </TableCell>

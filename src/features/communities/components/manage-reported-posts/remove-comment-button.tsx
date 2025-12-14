@@ -36,16 +36,15 @@ export const RemoveCommentButton = ({
 
   const removeCommentMutation = useRemoveCommunityComment({
     mutationConfig: {
-      onSuccess: async () => {
+      onSuccess: () => {
         addNotification({
           type: 'success',
           title: 'Comment Removed',
           message: 'The comment has been permanently removed',
         });
 
-        // If penalize option selected, call penalize API
         if (penalizeOption !== 'none') {
-          await handlePenalize();
+          handlePenalize();
         } else {
           resetAndClose();
         }
@@ -82,12 +81,15 @@ export const RemoveCommentButton = ({
     },
   });
 
-  const handlePenalize = async () => {
+  const handlePenalize = () => {
     const payload: any = {
       userId: authorId,
       restrictionType: penalizeOption,
-      reason: reason || undefined,
     };
+
+    if (reason) {
+      payload.reason = reason;
+    }
 
     if (penalizeOption === 'temporary_ban' && expiresAt) {
       payload.expiresAt = new Date(expiresAt).toISOString();
@@ -97,7 +99,6 @@ export const RemoveCommentButton = ({
   };
 
   const handleConfirmRemove = () => {
-    // Validate temporary ban has expiration date
     if (penalizeOption === 'temporary_ban' && !expiresAt) {
       addNotification({
         type: 'error',

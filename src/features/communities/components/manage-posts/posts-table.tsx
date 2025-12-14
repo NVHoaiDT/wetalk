@@ -195,6 +195,7 @@ export const PostsTable = ({
                       communityId={communityId}
                       postId={post.id}
                       postTitle={post.title}
+                      authorId={post.author.id}
                     />
                   </div>
                 </TableCell>

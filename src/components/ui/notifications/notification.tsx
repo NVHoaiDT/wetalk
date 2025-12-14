@@ -30,7 +30,7 @@ export const Notification = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       onDismiss(id);
-    }, 5000);
+    }, 500000);
 
     return () => {
       clearTimeout(timer);
