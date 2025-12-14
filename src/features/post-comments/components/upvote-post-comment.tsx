@@ -5,15 +5,19 @@ import { ConfirmationDialog } from '@/components/ui/dialog';
 import { useNotifications } from '@/components/ui/notifications';
 import { paths } from '@/config/paths';
 import { ProtectedAction } from '@/lib/auth';
+import { cn } from '@/utils/cn';
 
+import { useUnvotePostComment } from '../api/unvote-post-comment';
 import { useVotePostComment } from '../api/vote-post-comment';
 
 type UpVotePostCommentProps = {
   commentId: number;
+  isAlreadyUpVoted?: boolean;
 };
 
 export const UpVotePostCommentFallback = ({
   commentId,
+  isAlreadyUpVoted,
 }: UpVotePostCommentProps) => {
   const { addNotification } = useNotifications();
   const votePostCommentMutation = useVotePostComment({
@@ -26,10 +30,35 @@ export const UpVotePostCommentFallback = ({
       },
     },
   });
+  const unvotePostCommentMutation = useUnvotePostComment({
+    mutationConfig: {
+      onSuccess: () => {
+        addNotification({
+          type: 'success',
+          title: 'Upvote Removed Successfully',
+        });
+      },
+    },
+  });
+
+  const handleClick = () => {
+    if (isAlreadyUpVoted) {
+      unvotePostCommentMutation.mutate({ commentId });
+    } else {
+      votePostCommentMutation.mutate({ commentId, vote: true });
+    }
+  };
+
   return (
     <button
-      className="rounded text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
-      onClick={() => votePostCommentMutation.mutate({ commentId, vote: true })}
+      className={cn(
+        'rounded text-gray-500 transition-colors hover:bg-green-50 hover:text-green-500',
+        isAlreadyUpVoted && 'text-green-500',
+      )}
+      onClick={handleClick}
+      disabled={
+        votePostCommentMutation.isPending || unvotePostCommentMutation.isPending
+      }
     >
       <ArrowBigUpDash className="size-5" />
     </button>
@@ -61,11 +90,17 @@ export const UnauthenticatedFallback = () => {
   );
 };
 
-export const UpVotePostComment = ({ commentId }: UpVotePostCommentProps) => {
+export const UpVotePostComment = ({
+  commentId,
+  isAlreadyUpVoted,
+}: UpVotePostCommentProps) => {
   return (
     <ProtectedAction
       authenticatedFallback={
-        <UpVotePostCommentFallback commentId={commentId} />
+        <UpVotePostCommentFallback
+          commentId={commentId}
+          isAlreadyUpVoted={isAlreadyUpVoted}
+        />
       }
       unauthenticatedFallback={<UnauthenticatedFallback />}
     />

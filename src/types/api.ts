@@ -253,6 +253,7 @@ export type Comment = {
   createdAt: string;
   updatedAt: string;
   replies: Comment[];
+  isVoted: boolean;
 };
 
 /* ____________________Image Response____________________ */

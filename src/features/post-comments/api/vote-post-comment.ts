@@ -41,7 +41,7 @@ export const useVotePostComment = ({
 
   return useMutation({
     onSuccess: (data, ...args) => {
-      queryClient.refetchQueries({ queryKey: ['post-comments'] });
+      queryClient.invalidateQueries({ queryKey: ['post-comments'] });
       onSuccess?.(data, ...args);
     },
     ...restConfig,

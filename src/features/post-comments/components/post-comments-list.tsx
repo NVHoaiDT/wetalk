@@ -113,7 +113,10 @@ const Comment = ({
           <div className="mt-2 flex items-center space-x-2">
             <div className="flex items-center space-x-1">
               {/* Vote buttons */}
-              <UpVotePostComment commentId={comment.id} />
+              <UpVotePostComment
+                commentId={comment.id}
+                isAlreadyUpVoted={comment.isVoted}
+              />
               <span>{comment.vote}</span>
               <DownVotePostComment commentId={comment.id} />
             </div>
