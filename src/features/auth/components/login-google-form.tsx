@@ -46,11 +46,19 @@ type LoginGoogleFormProps = {
 export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
   const loginWithGoogle = useLoginWithGoogle({ onSuccess });
   const googleButtonRef = useRef<HTMLDivElement>(null);
+  const initAttempts = useRef(0);
+  const maxAttempts = 50; // 5 seconds max
 
   useEffect(() => {
-    if (!env.GOOGLE_CLIENT_ID) return;
+    if (!env.GOOGLE_CLIENT_ID) {
+      console.error('GOOGLE_CLIENT_ID is not configured');
+      return;
+    }
+
+    console.log('Initializing Google Sign-In with client ID:', env.GOOGLE_CLIENT_ID);
 
     window.handleGoogleCallback = (response: GoogleCallbackResponse) => {
+      console.log('Google callback triggered', { hasCredential: !!response.credential });
       if (response.credential) {
         loginWithGoogle.mutate({ idToken: response.credential });
       } else {
@@ -59,10 +67,13 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
     };
 
     const initializeGoogleSignIn = () => {
-      if (window.google) {
+      initAttempts.current += 1;
+
+      if (window.google?.accounts?.id) {
         const google = window.google;
 
         try {
+          console.log('Google API loaded, initializing...');
           google.accounts.id.initialize({
             client_id: env.GOOGLE_CLIENT_ID!,
             callback: window.handleGoogleCallback!,
@@ -81,13 +92,19 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
               logo_alignment: 'center',
               width: 400,
             });
+            console.log('Google button rendered successfully');
             fancyLog('Google button rendered successfully', '✓');
+          } else {
+            console.error('Button container not found');
           }
         } catch (error) {
           console.error('Failed to initialize Google Sign-In:', error);
         }
-      } else {
+      } else if (initAttempts.current < maxAttempts) {
+        console.log(`Waiting for Google API... (attempt ${initAttempts.current}/${maxAttempts})`);
         setTimeout(initializeGoogleSignIn, 100);
+      } else {
+        console.error('Google API failed to load after 5 seconds');
       }
     };
 
@@ -95,20 +112,26 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
 
     return () => {
       delete window.handleGoogleCallback;
+      initAttempts.current = 0;
     };
   }, [loginWithGoogle]);
 
   const handleCustomButtonClick = () => {
+    console.log('Custom button clicked');
     // Find and click the actual Google button inside the container
     const googleButton = googleButtonRef.current?.querySelector(
       'div[role="button"]',
     ) as HTMLElement;
     if (googleButton) {
+      console.log('Triggering Google button click');
       googleButton.click();
+    } else {
+      console.error('Google button not found in container');
     }
   };
 
   if (!env.GOOGLE_CLIENT_ID) {
+    console.warn('Google Client ID not configured');
     return null;
   }
 
@@ -162,7 +185,7 @@ export const LoginGoogleForm = ({ onSuccess }: LoginGoogleFormProps) => {
 
       {loginWithGoogle.isError && (
         <div className="mt-2 text-sm text-red-600">
-          Google login failed. Please try again or contact support.
+          {loginWithGoogle.error?.message || 'Google login failed. Please try again or contact support.'}
         </div>
       )}
     </div>
