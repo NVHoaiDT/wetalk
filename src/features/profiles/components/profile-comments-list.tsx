@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
+import { DeletePostComment } from '@/features/post-comments/components/delete-post-comment';
 import { useInfiniteUserComments } from '@/features/profiles/api/get-user-comments';
 import { cn } from '@/utils/cn';
 
@@ -82,14 +83,17 @@ export const ProfileCommentsList = ({ userId }: ProfileCommentsListProps) => {
       {/* Comments List */}
       <div className="space-y-3">
         {comments.map((comment) => (
-          <Link
+          <div
             key={comment.id}
-            to={paths.app.post.getHref(comment.postId)}
-            className="block rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
+            className="flex flex-row items-center justify-between rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
           >
-            <div className="flex space-x-3">
-              {/* Vote Section */}
-              {/* <div className="flex flex-col items-center space-y-1">
+            <Link
+              to={paths.app.post.getHref(comment.postId)}
+              className="block rounded-lg"
+            >
+              <div className="flex space-x-3">
+                {/* Vote Section */}
+                {/* <div className="flex flex-col items-center space-y-1">
                 <button className="text-gray-400 hover:text-blue-600">
                   <ArrowBigUp className="size-6" />
                 </button>
@@ -98,33 +102,37 @@ export const ProfileCommentsList = ({ userId }: ProfileCommentsListProps) => {
                 </span>
               </div> */}
 
-              {/* Content */}
-              <div className="min-w-0 flex-1">
-                <div className="mb-2 text-xs text-gray-600">
-                  <span>
-                    {new Date(comment.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
-                  </span>
-                  {comment.parentCommentId && (
-                    <>
-                      <span className="mx-1">•</span>
-                      <span>Reply</span>
-                    </>
-                  )}
-                </div>
-                <div
-                  className="prose prose-sm max-w-none text-gray-900"
-                  dangerouslySetInnerHTML={{ __html: comment.content }}
-                />
-                {/* <div className="mt-2 text-xs text-gray-600">
+                {/* Content */}
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2 text-xs text-gray-600">
+                    <span>
+                      {new Date(comment.createdAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
+                    {comment.parentCommentId && (
+                      <>
+                        <span className="mx-1">•</span>
+                        <span>Reply</span>
+                      </>
+                    )}
+                  </div>
+                  <div
+                    className="prose prose-sm max-w-none text-gray-900"
+                    dangerouslySetInnerHTML={{ __html: comment.content }}
+                  />
+                  {/* <div className="mt-2 text-xs text-gray-600">
                   on post #{comment.postId}
                 </div> */}
+                </div>
               </div>
+            </Link>
+            <div className="flex shrink-0 text-yellow-600 hover:cursor-pointer hover:text-yellow-700">
+              <DeletePostComment id={comment.id.toString()} />
             </div>
-          </Link>
+          </div>
         ))}
       </div>
 
