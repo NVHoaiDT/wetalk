@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from 'date-fns';
 import { MessageSquare, ChevronDown, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
@@ -7,6 +6,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { useInfiniteUserSavedPosts } from '@/features/profiles/api/get-user-saved-posts';
 import { cn } from '@/utils/cn';
+import { formatDateFns } from '@/utils/format';
 
 import { RemoveUserCollectedPost } from './remove-user-collected-post';
 
@@ -97,13 +97,33 @@ export const ProfileSavedPostsList = () => {
                     >
                       r/{post.community.name}
                     </Link> */}
-                    w/wetalk-community
-                    <span>•</span>
-                    <span>
-                      {formatDistanceToNow(new Date(post.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </span>
+                    <div className="flex items-center justify-center gap-1">
+                      <img
+                        src={post.community.avatar}
+                        alt={post.community.name}
+                        className="inline-block size-6 rounded-full object-cover"
+                      />
+                      <div className="flex flex-col">
+                        <Link
+                          to={paths.app.community.getHref(post.community.id)}
+                          className="font-semibold hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span>w/{post.community.name}</span>
+                        </Link>
+                        <Link
+                          to={paths.app.userProfile.getHref(post.author.id)}
+                          className="hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          u/{post.author.username}
+                        </Link>
+                      </div>
+                    </div>
+                    <div>
+                      <span>•</span>
+                      <span>{formatDateFns(post.createdAt)}</span>
+                    </div>
                   </div>
                   <h3 className="mb-2 line-clamp-2 text-base font-semibold text-gray-900">
                     {post.title}

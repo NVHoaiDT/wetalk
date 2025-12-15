@@ -100,13 +100,19 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
               <Link to={paths.app.post.getHref(post.id)}>
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center space-x-2 text-xs text-gray-600">
-                    <Link
-                      to={paths.app.community.getHref(post.community.id)}
-                      className="font-semibold hover:underline"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      r/{post.community.name}
-                    </Link>
+                    {post.community ? (
+                      <Link
+                        to={paths.app.community.getHref(post.community.id)}
+                        className="font-semibold hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        r/{post.community.name}
+                      </Link>
+                    ) : (
+                      <span className="font-semibold">
+                        Community #{post.communityId}
+                      </span>
+                    )}
                     <span>•</span>
                     <span>
                       {formatDistanceToNow(new Date(post.createdAt), {

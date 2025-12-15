@@ -223,6 +223,12 @@ export type ReportedComment = {
 export type CollectedPost = {
   postId: number;
   title: string;
+  community: {
+    id: number;
+    name: string;
+    avatar: string;
+    shortDescription: string;
+  };
   author: {
     id: number;
     username: string;
