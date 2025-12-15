@@ -136,11 +136,9 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
               </Link>
             </div>
 
-            {!post.community && (
-              <div className="flex shrink-0 text-yellow-600">
-                <DeletePost postId={post.id} />
-              </div>
-            )}
+            <div className="flex shrink-0 text-yellow-600">
+              <DeletePost postId={post.id} />
+            </div>
           </div>
         ))}
       </div>
