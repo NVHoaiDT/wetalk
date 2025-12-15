@@ -53,7 +53,7 @@ const PostRoute = () => {
   if (postQuery.isError || communityQuery.isError) {
     return (
       <div className="flex min-h-[400px] w-full items-center justify-center">
-        <div className="flex max-w-full flex-col items-center gap-4 rounded-lg border border-orange-200 bg-orange-50/50 p-8 text-center">
+        <div className="flex max-w-full flex-col items-center gap-4 rounded-lg border border-orange-200 bg-white p-8 text-center">
           <img
             src="https://res.cloudinary.com/djwpst00v/image/upload/v1763789403/13379593_5219088_iajsfa.svg"
             alt="question"
@@ -63,9 +63,12 @@ const PostRoute = () => {
             Unable to Load Post
           </h3>
           <p className="text-sm text-orange-700">
-            This post might not exist, or you may not have access to it. Please
-            make sure you&apos;ve joined the community or try refreshing the
-            page.
+            This post or it&apos;s community might not exist or have been
+            deleted, or you may not have access to it.
+          </p>
+          <p className="text-sm text-orange-700">
+            Please make sure you&apos;ve joined the community or try refreshing
+            the page.
           </p>
         </div>
       </div>
