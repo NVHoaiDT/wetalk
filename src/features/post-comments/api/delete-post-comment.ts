@@ -26,6 +26,9 @@ export const useDeletePostComment = ({
       queryClient.invalidateQueries({
         queryKey: ['user-comments'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['community-reported-comments'],
+      });
       onSuccess?.(...args);
     },
     ...restConfig,

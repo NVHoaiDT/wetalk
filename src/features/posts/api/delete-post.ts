@@ -38,6 +38,9 @@ export const useDeletePost = ({ mutationConfig }: UseDeletePostOptions) => {
       queryClient.invalidateQueries({
         queryKey: ['community-posts'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['community-reported-posts'],
+      });
       onSuccess?.(...args);
     },
     ...restConfig,
