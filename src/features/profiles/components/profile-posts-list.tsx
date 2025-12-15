@@ -88,14 +88,6 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
             className="block rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
           >
             <div className="flex space-x-3">
-              {/* <div className="flex flex-col items-center space-y-1">
-                  <UpVotePost postId={post.id} isVoted={post.isVoted} />
-                  <span className="text-sm font-semibold text-gray-900">
-                    {post.vote}
-                  </span>
-                  <DownVotePost postId={post.id} isVoted={post.isVoted} />
-                </div> */}
-
               {/* Content */}
               <Link to={paths.app.post.getHref(post.id)}>
                 <div className="min-w-0 flex-1">
@@ -109,9 +101,7 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
                         r/{post.community.name}
                       </Link>
                     ) : (
-                      <span className="font-semibold">
-                        Community #{post.communityId}
-                      </span>
+                      <span className="font-semibold">[Deleted Community]</span>
                     )}
                     <span>•</span>
                     <span>
