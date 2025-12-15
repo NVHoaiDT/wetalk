@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 
 import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
+import { DeletePost } from '@/features/posts/components/delete-post';
 import { useInfiniteUserPosts } from '@/features/profiles/api/get-user-posts';
 import { cn } from '@/utils/cn';
 
@@ -85,7 +86,7 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
         {posts.map((post) => (
           <div
             key={post.id}
-            className="block rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
+            className="flex flex-row items-center justify-between rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
           >
             <div className="flex space-x-3">
               {/* Content */}
@@ -134,6 +135,12 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
                 </div>
               </Link>
             </div>
+
+            {!post.community && (
+              <div className="flex shrink-0 text-yellow-600">
+                <DeletePost postId={post.id} />
+              </div>
+            )}
           </div>
         ))}
       </div>
