@@ -44,7 +44,10 @@ api.interceptors.response.use(
       message,
     });
 
-    if (error.response?.status === 500 || error.response?.status === 401) {
+    /* if (error.response?.status === 500) {
+    } */
+
+    if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
       const currentPath = window.location.pathname;
       if (!currentPath.startsWith('/auth')) {
@@ -68,7 +71,12 @@ apiMedia.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 500) {
+    if (error.response?.status === 500) {
+      window.location.href = paths.app.notFound.path;
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
 
       const currentPath = window.location.pathname;
@@ -93,6 +101,11 @@ apiAI.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.response?.status === 500) {
+      window.location.href = paths.app.notFound.path;
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
 

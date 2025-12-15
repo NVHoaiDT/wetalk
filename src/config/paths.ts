@@ -95,5 +95,9 @@ export const paths = {
       path: 'settings',
       getHref: () => '/app/settings',
     },
+    notFound: {
+      path: 'not-found',
+      getHref: () => '/app/not-found',
+    },
   },
 } as const;

@@ -122,6 +122,10 @@ export const createAppRouter = (queryClient: QueryClient) =>
       path: '*',
       lazy: () => import('./routes/not-found').then(convert(queryClient)),
     },
+    {
+      path: paths.app.notFound.path,
+      lazy: () => import('./routes/not-found').then(convert(queryClient)),
+    },
   ]);
 
 export const AppRouter = () => {
