@@ -246,7 +246,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
             >
               About
             </button>
-            <button
+            {/* <button
               onClick={() => setActiveTab('rules')}
               className={`px-1 py-3 transition-colors ${
                 activeTab === 'rules'
@@ -255,7 +255,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
               }`}
             >
               Rules
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -125,7 +125,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                 >
                   Images & Video
                 </button>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => setActiveTab('link')}
                   className={`border-b-2 px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
@@ -135,7 +135,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
                   }`}
                 >
                   Link
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={() => setActiveTab('poll')}
