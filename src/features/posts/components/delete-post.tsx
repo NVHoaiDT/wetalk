@@ -20,13 +20,6 @@ export const DeletePost = ({ postId }: DeletePostProps) => {
           title: 'Post Deleted',
         });
       },
-      onError: (error) => {
-        addNotification({
-          type: 'error',
-          title: 'Error Deleting Post',
-          message: error.message,
-        });
-      },
     },
   });
 

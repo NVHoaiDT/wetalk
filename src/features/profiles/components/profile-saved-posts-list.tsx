@@ -8,6 +8,8 @@ import { paths } from '@/config/paths';
 import { useInfiniteUserSavedPosts } from '@/features/profiles/api/get-user-saved-posts';
 import { cn } from '@/utils/cn';
 
+import { RemoveUserCollectedPost } from './remove-user-collected-post';
+
 type SortType = 'new' | 'top' | 'hot';
 
 export const ProfileSavedPostsList = () => {
@@ -82,7 +84,7 @@ export const ProfileSavedPostsList = () => {
             key={post.postId}
             className="block rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
           >
-            <div className="flex space-x-3">
+            <div className="flex justify-between space-x-3">
               <Link to={paths.app.post.getHref(post.postId)}>
                 {/* Content */}
                 <div className="min-w-0 flex-1">
@@ -95,7 +97,7 @@ export const ProfileSavedPostsList = () => {
                     >
                       r/{post.community.name}
                     </Link> */}
-                    w/mock-community
+                    w/wetalk-community
                     <span>•</span>
                     <span>
                       {formatDistanceToNow(new Date(post.createdAt), {
@@ -129,6 +131,8 @@ export const ProfileSavedPostsList = () => {
                   </div>
                 </div>
               </Link>
+
+              <RemoveUserCollectedPost postId={post.postId} />
             </div>
           </div>
         ))}
