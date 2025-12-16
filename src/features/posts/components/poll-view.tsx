@@ -1,17 +1,16 @@
 import { formatDistanceToNow } from 'date-fns';
 import { Check, Clock } from 'lucide-react';
-import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { ConfirmationDialog } from '@/components/ui/dialog';
 import { useNotifications } from '@/components/ui/notifications';
-import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { fancyLog } from '@/helper/fancy-log';
 import { useCurrentUser } from '@/lib/auth';
 import { Post } from '@/types/api';
 import { formatBigNumber } from '@/utils/format';
 
+import { useUnvotePoll } from '../api/unvote-poll';
 import { useVotePoll } from '../api/vote-poll';
 
 type PollViewProps = {
@@ -21,7 +20,6 @@ type PollViewProps = {
 
 export const PollView = ({ post, isCompact = false }: PollViewProps) => {
   const { addNotification } = useNotifications();
-  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
 
   const votePollMutation = useVotePoll({
     postId: post.id,
@@ -32,7 +30,19 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
           title: 'Vote Submitted',
           message: 'Your vote has been recorded',
         });
-        setSelectedOptions([]);
+      },
+    },
+  });
+
+  const unvotePollMutation = useUnvotePoll({
+    postId: post.id,
+    mutationConfig: {
+      onSuccess: () => {
+        addNotification({
+          type: 'success',
+          title: 'Vote Removed',
+          message: 'Your vote has been removed',
+        });
       },
     },
   });
@@ -101,28 +111,21 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
   const canVote = !hasExpired;
 
   const handleOptionClick = (optionId: number) => {
-    if (!canVote || votePollMutation.isPending) return;
+    if (!canVote || votePollMutation.isPending || unvotePollMutation.isPending)
+      return;
 
-    if (multipleChoice) {
-      setSelectedOptions((prev) =>
-        prev.includes(optionId)
-          ? prev.filter((id) => id !== optionId)
-          : [...prev, optionId],
-      );
+    // Check if user has already voted for this option
+    const hasUserVotedThisOption =
+      userId &&
+      options.find((opt) => opt.id === optionId)?.voters?.includes(userId);
+
+    if (hasUserVotedThisOption) {
+      // Unvote if already voted
+      unvotePollMutation.mutate({ postId: post.id, optionId });
     } else {
+      // Vote if not yet voted
       votePollMutation.mutate({ postId: post.id, optionId });
     }
-  };
-
-  const handleVoteSubmit = () => {
-    if (selectedOptions.length === 0 || !canVote) return;
-
-    // For multiple choice, submit the first selected option
-    // (API might need to be updated to handle multiple options)
-    votePollMutation.mutate({
-      postId: post.id,
-      optionId: selectedOptions[0],
-    });
   };
 
   const getPercentage = (votes: number) => {
@@ -179,7 +182,6 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
       <div className="space-y-3">
         {options.map((option) => {
           const percentage = getPercentage(option.votes);
-          const isSelected = selectedOptions.includes(option.id);
           const hasUserVoted = userId && option.voters?.includes(userId);
 
           // For unauthenticated users, wrap in ConfirmationDialog
@@ -192,13 +194,7 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
                 body="Sign up to vote and share your opinion on this topic."
                 illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
                 triggerButton={
-                  <button
-                    className={`group relative w-full overflow-hidden rounded-lg border-2 transition-all duration-200 ${
-                      isSelected
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 bg-white hover:border-blue-300'
-                    } cursor-pointer`}
-                  >
+                  <button className="group relative w-full cursor-pointer overflow-hidden rounded-lg border-2 border-gray-200 bg-white transition-all duration-200 hover:border-blue-300">
                     {/* Progress bar background */}
                     <div
                       className="absolute inset-0 bg-gradient-to-r from-blue-100 to-indigo-100 transition-all duration-500"
@@ -210,16 +206,8 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
                       <div className="flex items-center gap-3">
                         {/* Checkbox/Radio indicator */}
                         <div
-                          className={`flex size-5 shrink-0 items-center justify-center ${multipleChoice ? 'rounded-md' : 'rounded-full'} border-2 transition-colors ${
-                            isSelected
-                              ? 'border-blue-600 bg-blue-600'
-                              : 'border-gray-300 bg-white group-hover:border-blue-400'
-                          }`}
-                        >
-                          {isSelected && (
-                            <Check className="size-3 text-white" />
-                          )}
-                        </div>
+                          className={`flex size-5 shrink-0 items-center justify-center border-2 border-gray-300 bg-white transition-colors group-hover:border-blue-400 ${multipleChoice ? 'rounded-md' : 'rounded-full'}`}
+                        ></div>
 
                         <span className="text-left font-medium text-gray-900">
                           {option.text}
@@ -256,14 +244,16 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
             <button
               key={option.id}
               onClick={() => handleOptionClick(option.id)}
-              disabled={!canVote || votePollMutation.isPending}
+              disabled={
+                !canVote ||
+                votePollMutation.isPending ||
+                unvotePollMutation.isPending
+              }
               className={`group relative w-full overflow-hidden rounded-lg border-2 transition-all duration-200 ${
                 hasUserVoted
                   ? 'border-green-400 bg-green-50'
-                  : isSelected
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 bg-white hover:border-blue-300'
-              } ${!canVote || votePollMutation.isPending ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+                  : 'border-gray-200 bg-white hover:border-blue-300'
+              } ${!canVote || votePollMutation.isPending || unvotePollMutation.isPending ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
             >
               {/* Progress bar background */}
               <div
@@ -283,14 +273,10 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
                     className={`flex size-5 shrink-0 items-center justify-center ${multipleChoice ? 'rounded-md' : 'rounded-full'} border-2 transition-colors ${
                       hasUserVoted
                         ? 'border-green-500 bg-green-500'
-                        : isSelected
-                          ? 'border-blue-600 bg-blue-600'
-                          : 'border-gray-300 bg-white group-hover:border-blue-400'
+                        : 'border-gray-300 bg-white group-hover:border-blue-400'
                     }`}
                   >
-                    {(isSelected || hasUserVoted) && (
-                      <Check className="size-3 text-white" />
-                    )}
+                    {hasUserVoted && <Check className="size-3 text-white" />}
                   </div>
 
                   <span className="text-left font-medium text-gray-900">
@@ -312,54 +298,6 @@ export const PollView = ({ post, isCompact = false }: PollViewProps) => {
           );
         })}
       </div>
-
-      {/* Vote button for multiple choice */}
-      {multipleChoice && canVote && (
-        <>
-          {!isAuthenticated ? (
-            <ConfirmationDialog
-              icon="info"
-              title="Vote in this poll!"
-              body="Sign up to vote and share your opinion on this topic."
-              illustration="https://res.cloudinary.com/djwpst00v/image/upload/v1763792572/vote_d9nmh4.jpg"
-              triggerButton={
-                <button
-                  disabled={selectedOptions.length === 0}
-                  className="w-full rounded-lg bg-gradient-to-r from-cyan-800 to-sky-800 py-2.5 font-semibold text-white shadow-md transition-all duration-200 hover:from-cyan-900 hover:to-sky-900 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {`Vote (${selectedOptions.length} selected)`}
-                </button>
-              }
-              confirmButton={
-                <Link
-                  to={paths.auth.register.getHref(location.pathname)}
-                  replace
-                  className="inline-block rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                >
-                  Sign up
-                </Link>
-              }
-            />
-          ) : (
-            <button
-              onClick={handleVoteSubmit}
-              disabled={
-                selectedOptions.length === 0 || votePollMutation.isPending
-              }
-              className="w-full rounded-lg bg-gradient-to-r from-cyan-800 to-sky-800 py-2.5 font-semibold text-white shadow-md transition-all duration-200 hover:from-cyan-900 hover:to-sky-900 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {votePollMutation.isPending ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Spinner size="sm" />
-                  Submitting...
-                </span>
-              ) : (
-                `Vote (${selectedOptions.length} selected)`
-              )}
-            </button>
-          )}
-        </>
-      )}
 
       {/* Expired message */}
       {hasExpired && (
