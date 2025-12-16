@@ -78,8 +78,20 @@ export const CreatePoll = ({ setValue, errors }: CreatePollProps) => {
   };
 
   const handleExpiresAtChange = (value: string) => {
-    setExpiresAt(value);
-    updatePollData(pollQuestion, pollOptions, multipleChoice, value);
+    const isoString = value ? new Date(value).toISOString() : '';
+    setExpiresAt(isoString);
+    updatePollData(pollQuestion, pollOptions, multipleChoice, isoString);
+  };
+
+  const getLocalDatetimeValue = (isoString: string) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   return (
@@ -185,7 +197,7 @@ export const CreatePoll = ({ setValue, errors }: CreatePollProps) => {
           <input
             id="expiresAt"
             type="datetime-local"
-            value={expiresAt}
+            value={getLocalDatetimeValue(expiresAt)}
             onChange={(e) => handleExpiresAtChange(e.target.value)}
             min={new Date().toISOString().slice(0, 16)}
             className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-900 shadow-sm transition-all duration-200 hover:border-blue-300 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
