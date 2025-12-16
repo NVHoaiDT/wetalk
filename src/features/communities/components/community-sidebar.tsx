@@ -1,10 +1,4 @@
-import {
-  Calendar,
-  Globe,
-  TrendingUp,
-  MessageCircle,
-  KeyRound,
-} from 'lucide-react';
+import { Calendar, Globe, TrendingUp, KeyRound } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { paths } from '@/config/paths';
@@ -137,10 +131,10 @@ export const CommunitySidebar = ({ community }: { community: Community }) => {
           <h3 className="text-sm font-bold text-gray-900">MODERATORS</h3>
         </div>
         <div className="p-4">
-          <button className="mb-4 flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 py-2 text-sm font-medium transition-colors hover:bg-gray-50">
+          {/* <button className="mb-4 flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 py-2 text-sm font-medium transition-colors hover:bg-gray-50">
             <MessageCircle className="size-4" />
             Message Mods
-          </button>
+          </button> */}
           <div className="space-y-3">
             {community.moderators.map((mod, idx) => (
               <Link to={paths.app.userProfile.getHref(mod.userId)} key={idx}>
