@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { DeletePost } from '@/features/posts/components/delete-post';
 import { useInfiniteUserPosts } from '@/features/profiles/api/get-user-posts';
+import { useCurrentUser } from '@/lib/auth';
 import { cn } from '@/utils/cn';
 
 type ProfilePostsListProps = {
@@ -24,9 +25,12 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
       userId,
       sortBy,
     });
+  const currentUserIdQuery = useCurrentUser();
+  const currentUserId = currentUserIdQuery.data?.data?.id;
 
   const posts = data?.pages.flatMap((page) => page.data) ?? [];
 
+  const isOwnProfile = currentUserId === userId;
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -136,9 +140,11 @@ export const ProfilePostsList = ({ userId }: ProfilePostsListProps) => {
               </Link>
             </div>
 
-            <div className="flex shrink-0 text-yellow-600">
-              <DeletePost postId={post.id} />
-            </div>
+            {isOwnProfile && (
+              <div className="flex shrink-0 text-yellow-600">
+                <DeletePost postId={post.id} />
+              </div>
+            )}
           </div>
         ))}
       </div>

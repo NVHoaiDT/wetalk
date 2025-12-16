@@ -6,6 +6,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { paths } from '@/config/paths';
 import { DeletePostComment } from '@/features/post-comments/components/delete-post-comment';
 import { useInfiniteUserComments } from '@/features/profiles/api/get-user-comments';
+import { useCurrentUser } from '@/lib/auth';
 import { cn } from '@/utils/cn';
 
 type ProfileCommentsListProps = {
@@ -23,6 +24,10 @@ export const ProfileCommentsList = ({ userId }: ProfileCommentsListProps) => {
       userId,
       sortBy,
     });
+
+  const currentUserIdQuery = useCurrentUser();
+  const currentUserId = currentUserIdQuery.data?.data?.id;
+  const isOwnProfile = currentUserId === userId;
 
   const comments = data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -129,9 +134,11 @@ export const ProfileCommentsList = ({ userId }: ProfileCommentsListProps) => {
                 </div>
               </div>
             </Link>
-            <div className="flex shrink-0 text-yellow-600 hover:cursor-pointer hover:text-yellow-700">
-              <DeletePostComment id={comment.id.toString()} />
-            </div>
+            {isOwnProfile && (
+              <div className="flex shrink-0 text-yellow-600 hover:cursor-pointer hover:text-yellow-700">
+                <DeletePostComment id={comment.id.toString()} />
+              </div>
+            )}
           </div>
         ))}
       </div>
