@@ -174,7 +174,7 @@ export const PostView = ({ id }: { id: number }) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-md"
+                  className="z-50 w-48 rounded-lg border border-gray-200 bg-white p-2 shadow-md"
                 >
                   <Authorization
                     policyCheck={POLICIES['post:modify'](

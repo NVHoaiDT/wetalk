@@ -104,9 +104,6 @@ export const ReportedPostsTable = ({
               <TableHead className="font-semibold text-gray-700">
                 REPORTS
               </TableHead>
-              <TableHead className="font-semibold text-gray-700">
-                LAST REPORTED
-              </TableHead>
               <TableHead className="w-[140px] text-right font-semibold text-gray-700">
                 ACTIONS
               </TableHead>
@@ -160,13 +157,6 @@ export const ReportedPostsTable = ({
                       <span className="inline-flex items-center rounded-full border border-red-200 bg-red-50 px-3 py-1 text-sm font-semibold text-red-700">
                         {reportedPost.totalReports}
                       </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm text-gray-600">
-                        {reportedPost.lastReportedAt
-                          ? formatDate(reportedPost.lastReportedAt)
-                          : 'N/A'}
-                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center justify-end gap-2">
