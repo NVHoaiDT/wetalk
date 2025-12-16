@@ -1,204 +1,102 @@
-# React Vite Application
+<div align="center">
 
-## Get Started
+  <div>
+    <img src="https://img.shields.io/badge/-React-black?style=for-the-badge&logo=react&logoColor=white&color=61DAFB" alt="react" />
+    <img src="https://img.shields.io/badge/-React%20Query-black?style=for-the-badge&logo=reactquery&logoColor=white&color=FF4154" alt="react-query" />
+    <img src="https://img.shields.io/badge/-Tailwind%20CSS-black?style=for-the-badge&logo=tailwindcss&logoColor=white&color=06B6D4" alt="tailwindcss" />
+    <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logo=typescript&logoColor=white&color=3178C6" alt="typescript" />
+    <img src="https://img.shields.io/badge/-Vite-black?style=for-the-badge&logo=vite&logoColor=white&color=646CFF" alt="vite" />
+    <img src="https://img.shields.io/badge/-React%20Router-black?style=for-the-badge&logo=reactrouter&logoColor=white&color=CA4245" alt="react-router" />
+  </div>
 
-Prerequisites:
+  <h3 align="center">WeTalk</h3>
 
-- Node 20+
-- Yarn 1.22+
+   <div align="center">
+    <p>
+        Labor of love — a Social Media for Developers.
+    </p>
+    </div>
+</div>
 
-To set up the app execute the following commands.
+## Introduction
+
+Inspired by [Medium](https://medium.com/) and [Reddit](https://www.reddit.com/), WeTalk is a social media platform for developers.
+
+## Features
+
+Wetalk is a place where developers can connect, share their knowledge, and learn from other developers.
+
+<details open>
+<summary>Click to collapse image</summary>    
+<pre>
+<img src = "./public/show/landing.png"><img>
+</pre>
+</details>
+
+At first glance, it looks like a pretty standard social media platform, but if we scroll down a bit, we come across something really deep:
+
+<details open>
+<summary>Click to collapse gif</summary>    
+<pre>
+<img src = "./public/docs/division-groups-demo.gif"><img>
+</pre>
+</details>
+<details open>
+<summary>Click to collapse gif</summary>    
+<pre>
+<img src = "./public/docs/flexbox-demo.gif"><img>
+</pre>
+</details>
+
+Some highlights include:
+
+- MDX-powered posts — write articles that seamlessly blend Markdown and React components.
+- Custom interactive elements — from visual demos to playful UI experiments.
+- React ecosystem — built with React, Next.js, and styled with a clean, reusable design.
+
+## Tech Stack
+
+- React
+- React Router
+- React Query
+- TypeScript
+- Tailwind CSS
+- Zustand
+
+## Running Locally
+
+WeTalk is live at [WeTalk](https://wetalk-ute.vercel.app/). For running locally, follow these steps to set up the project on your machine.
+
+**Prerequisites**
+
+This project was build with React, so make sure you have the following installed on your machine:
+
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en)
+- [npm, yarm or pnpm (recommended)](https://www.npmjs.com/)
+
+> [!NOTE]
+> While you can run this project using any package manager, I highly recommend using [`pnpm`](https://pnpm.io/) as your package manager, as it's faster and more efficient than `npm` or `yarn`.
+
+**Cloning the Repository**
 
 ```bash
-git clone https://github.com/NVHoaiDT/we-talk
-cd we-talk
-cp .env.example .env
+git clone https://github.com/NVHoaiDT/wetalk
+cd hdt-blog
+```
+
+**Installation**
+
+Install the project dependencies using pnpm:
+
+```bash
 pnpm install
 ```
 
-##### `pnpm dev`
+**Running the Project**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-##### `pnpm build`
-
-Builds the app for production to the `dist` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-See the section about [deployment](https://vitejs.dev/guide/static-deploy) for more information.
-
-## Contributing
-
-Contributions are always welcome! If you have any ideas, suggestions, fixes, feel free to contribute. You can do that by going through the following steps:
-
-1. Clone this repo
-2. Create a branch: `git checkout -b your-feature`
-3. Execute the `yarn prepare` script.
-4. Make some changes
-5. Test your changes
-6. Push your branch and open a Pull Request
-
-View `docs` folder for more information about project structure and coding principles.
-
-## Project Structure (Simplified)
-
+```bash
+pnpm run dev
 ```
-wetalk-client
-├─ .eslintrc.cjs
-├─ .husky
-├─ .prettierignore
-├─ .prettierrc
-├─ .storybook
-├─ docs
-├─ e2e
-│  ├─ .eslintrc.cjs
-│  └─ tests
-├─ generators
-│  └─ component
-├─ index.html
-├─ mock-server.ts
-├─ package.json
-├─ playwright.config.ts
-├─ plopfile.cjs
-├─ pnpm-lock.yaml
-├─ postcss.config.cjs
-├─ public
-├─ README.md
-├─ src
-│  ├─ app
-│  │  ├─ index.tsx
-│  │  ├─ provider.tsx
-│  │  ├─ router.tsx
-│  │  └─ routes
-│  │     ├─ app
-│  │     │  ├─ communites
-│  │     │  │  ├─ communites.tsx
-│  │     │  │  └─ community.tsx
-│  │     │  ├─ dashboard.tsx
-│  │     │  ├─ posts
-│  │     │  │  └─ post.tsx
-│  │     │  ├─ profile.tsx
-│  │     │  ├─ root.tsx
-│  │     │  ├─ search
-│  │     │  │  └─ search.tsx
-│  │     │  └─ users.tsx
-│  │     ├─ auth
-│  │     │  ├─ login.tsx
-│  │     │  ├─ notify.tsx
-│  │     │  ├─ register.tsx
-│  │     │  └─ verify.tsx
-│  │     ├─ landing.tsx
-│  │     └─ not-found.tsx
-│  ├─ assets
-│  │  └─ logo.svg
-│  ├─ components
-│  │  ├─ errors
-│  │  │  └─ main.tsx
-│  │  ├─ layouts
-│  │  │  ├─ auth-layout.tsx
-│  │  │  ├─ content-layout.tsx
-│  │  │  ├─ dashboard-layout.tsx
-│  │  │  └─ index.ts
-│  │  ├─ seo
-│  │  └─ ui
-│  │     ├─ button
-│  │     ├─ card
-│  │     ├─ dialog
-│  │     ├─ drawer
-│  │     ├─ dropdown
-│  │     ├─ form
-│  │     ├─ grid
-│  │     ├─ link
-│  │     ├─ md-preview
-│  │     ├─ media-uploader
-│  │     ├─ media-viewer
-│  │     ├─ notifications
-│  │     ├─ search
-│  │     ├─ select
-│  │     ├─ spinner
-│  │     ├─ table
-│  │     └─ text-editor
-│  ├─ config
-│  │  ├─ env.ts
-│  │  └─ paths.ts
-│  ├─ features
-│  │  ├─ auth
-│  │  │  └─ components
-│  │  │     ├─ login-form.tsx
-│  │  │     └─ register-form.tsx
-│  │  ├─ communities
-│  │  │  ├─ api
-│  │  │  │  ├─ create-community.ts
-│  │  │  │  ├─ delete-community.ts
-│  │  │  │  ├─ get-communities.ts
-│  │  │  │  ├─ get-community.ts
-│  │  │  │  ├─ join-community.ts
-│  │  │  │  └─ update-community.ts
-│  │  │  └─ components
-│  │  │     ├─ communities-list.tsx
-│  │  │     ├─ community-view.tsx
-│  │  │     ├─ create-community.tsx
-│  │  │     ├─ delete-community.tsx
-│  │  │     ├─ join-community.tsx
-│  │  │     └─ update-community.tsx
-│  │  ├─ messages
-│  │  │  ├─ api
-│  │  │  ├─ components
-│  │  │  └─ stores
-│  │  ├─ post-comments
-│  │  │  ├─ api
-│  │  │  │  ├─ create-post-comment.ts
-│  │  │  │  ├─ delete-post-comment.ts
-│  │  │  │  ├─ edit-post-comment.ts
-│  │  │  │  ├─ get-post-comments.ts
-│  │  │  │  └─ vote-post-comment.ts
-│  │  │  └─ components
-│  │  │     ├─ create-post-comment.tsx
-│  │  │     ├─ delete-post-comment.tsx
-│  │  │     ├─ downvote-post-comment.tsx
-│  │  │     ├─ edit-post-comment.tsx
-│  │  │     ├─ post-comments-list.tsx
-│  │  │     └─ upvote-post-comment.tsx
-│  │  ├─ posts
-│  │  │  ├─ api
-│  │  │  └─ components
-│  │  ├─ search
-│  │  │  ├─ api
-│  │  │  │  ├─ get-search-communites.ts
-│  │  │  │  └─ get-search-posts.ts
-│  │  │  └─ components
-│  │  │     ├─ search-communities-list.tsx
-│  │  │     ├─ search-filters.tsx
-│  │  │     ├─ search-posts-list.tsx
-│  │  │     └─ search.tsx
-│  ├─ helper
-│  │  └─ fancy-log.ts
-│  ├─ hooks
-│  │  ├─ use-disclosure.ts
-│  │  └─ __tests__
-│  │     └─ use-disclosure.test.ts
-│  ├─ index.css
-│  ├─ lib
-│  │  ├─ api-client.ts
-│  │  ├─ auth.tsx
-│  │  ├─ authorization.tsx
-│  │  ├─ react-query.ts
-│  │  ├─ upload.ts
-│  ├─ main.tsx
-│  ├─ testing
-│  ├─ types
-│  │  └─ api.ts
-│  ├─ utils
-│  │  ├─ cn.ts
-│  │  └─ format.ts
-│  └─ vite-env.d.ts
-├─ tailwind.config.cjs
-├─ tsconfig.json
-├─ vite-env.d.ts
-├─ vite.config.ts
-└─ __mocks__
-   ├─ vitest-env.d.ts
-   └─ zustand.ts
 
-```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.

@@ -130,7 +130,7 @@ const LandingRoute = () => {
                     </div>
                   </Button>
                   <a
-                    href="https://github.com/NVHoaiDT/we-talk"
+                    href="https://github.com/NVHoaiDT/wetalk"
                     target="_blank"
                     rel="noreferrer"
                   >
