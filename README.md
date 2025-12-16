@@ -38,21 +38,30 @@ At first glance, it looks like a pretty standard social media platform, but if w
 <details open>
 <summary>Click to collapse gif</summary>    
 <pre>
-<img src = "./public/docs/division-groups-demo.gif"><img>
+<img src = "./public/show/dashboard.png"><img>
 </pre>
 </details>
 <details open>
 <summary>Click to collapse gif</summary>    
 <pre>
-<img src = "./public/docs/flexbox-demo.gif"><img>
+<img src = "./public/show/community.png"><img>
 </pre>
 </details>
 
+...And more features waiting for you to discover.
+
 Some highlights include:
 
-- MDX-powered posts — write articles that seamlessly blend Markdown and React components.
-- Custom interactive elements — from visual demos to playful UI experiments.
-- React ecosystem — built with React, Next.js, and styled with a clean, reusable design.
+- **Community**: WeTalk is a place where developers can connect, share their knowledge, and learn from other developers.
+- **Post**: Share your knowledge with the world though various post formats, from text, media to poll.
+- **Comment**: Comment on posts and share your thoughts.
+- **Voting**: Upvote posts and comments.
+- **Create and manage communities**: Create and manage communities to connect with like-minded developers.
+- **Realtime chat**: Realtime chat with other users.
+- **Realtime notifications**: Realtime notifications.
+- **AI Chatbox**: View summary of posts with wetake AI.
+- **Personal Suggestions**: Personal suggestions based on your interests.
+- **Automation censoring**: AI-powered automation censoring post and comment.
 
 ## Tech Stack
 
@@ -82,7 +91,7 @@ This project was build with React, so make sure you have the following installed
 
 ```bash
 git clone https://github.com/NVHoaiDT/wetalk
-cd hdt-blog
+cd wetalk
 ```
 
 **Installation**
@@ -96,7 +105,7 @@ pnpm install
 **Running the Project**
 
 ```bash
-pnpm run dev
+pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.

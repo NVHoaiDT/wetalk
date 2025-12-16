@@ -38,7 +38,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     if (message) {
       if (message.toLowerCase().includes('password')) {
         if (message.toLowerCase().includes('min')) {
-          return 'Password must be at least 6 characters long.';
+          return 'Password must be at least 8 characters long.';
         }
         return message;
       }
@@ -68,7 +68,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 type="email"
                 label="Email"
                 placeholder="name@email.com"
-                error={formState.errors['email']}
                 registration={register('email')}
                 className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
               />
@@ -87,7 +86,6 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 type="password"
                 label="Password"
                 placeholder="••••••••"
-                error={formState.errors['password']}
                 registration={register('password')}
                 className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
               />

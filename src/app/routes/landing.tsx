@@ -51,7 +51,7 @@ const LandingRoute = () => {
                   onClick={() => navigate(paths.auth.register.getHref())}
                   className="text-gray-700 hover:text-cyan-600"
                 >
-                  Sign In
+                  Sign Up
                 </Button>
                 <Button
                   onClick={() => navigate(paths.auth.login.getHref())}
