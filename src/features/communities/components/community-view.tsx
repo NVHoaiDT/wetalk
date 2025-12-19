@@ -266,7 +266,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
           {/* Posts Area */}
           {activeTab === 'posts' && (
             <>
-              {isPrivateAndNotRequest ? (
+              {isPrivateAndNotRequest && !isSuperAdmin && !isModerator ? (
                 <div className="flex-1">
                   <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                     <div className="mx-auto max-w-md space-y-4">
