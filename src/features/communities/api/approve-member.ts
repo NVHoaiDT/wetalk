@@ -59,6 +59,10 @@ export const useApproveMember = ({
       queryClient.invalidateQueries({
         queryKey: getCommunityMembersQueryOptions({ communityId }).queryKey,
       });
+      queryClient.invalidateQueries({
+        queryKey: ['community-members'],
+      });
+
       onSuccess?.(data, ...args);
     },
     ...restConfig,
