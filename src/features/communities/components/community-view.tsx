@@ -71,9 +71,17 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
   const role = isSuperAdmin ? 'super_admin' : isModerator ? 'admin' : 'user';
 
   const isPrivateAndNotRequest =
-    community.isPrivate && !community.isFollow && !community.isRequestJoin;
+    community.isPrivate &&
+    !community.isFollow &&
+    !community.isRequestJoin &&
+    !isSuperAdmin &&
+    !isModerator;
   const isPrivateAndNotApproved =
-    community.isPrivate && !community.isFollow && community.isRequestJoin;
+    community.isPrivate &&
+    !community.isFollow &&
+    community.isRequestJoin &&
+    !isSuperAdmin &&
+    !isModerator;
 
   fancyLog('Community-Data:', community);
 
@@ -266,7 +274,7 @@ export const CommunityView = ({ communityId }: { communityId: number }) => {
           {/* Posts Area */}
           {activeTab === 'posts' && (
             <>
-              {isPrivateAndNotRequest && !isSuperAdmin && !isModerator ? (
+              {isPrivateAndNotRequest ? (
                 <div className="flex-1">
                   <div className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
                     <div className="mx-auto max-w-md space-y-4">
