@@ -40,7 +40,7 @@ import { MutationConfig } from '@/lib/react-query';
 
 import { getInfinitePostsQueryOptions } from './get-posts';
 
-export const createPostInputSchema = z.object({
+export const createPostInput = z.object({
   communityId: z.number().min(1, 'Required'),
   type: z.string().min(1, 'Required'),
   title: z.string().min(1, 'Required'),
@@ -74,7 +74,7 @@ export const createPostInputSchema = z.object({
     .optional(),
 });
 
-export type CreatePostInput = z.infer<typeof createPostInputSchema>;
+export type CreatePostInput = z.infer<typeof createPostInput>;
 
 export const createPost = ({
   data,

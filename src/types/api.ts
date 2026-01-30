@@ -453,3 +453,21 @@ export type Discussion = Entity<{
   teamId: string;
   author: User;
 }>;
+
+/* ____________________Chatbot____________________ */
+export type ChatbotChunk = {
+  content: string;
+  done: boolean;
+  timestamp: string;
+};
+
+export type ChatbotCompleteEvent = {
+  model: string;
+  timestamp: string;
+};
+
+export type ChatbotStreamEvent =
+  | { type: 'connected' }
+  | { type: 'chunk'; chunk: ChatbotChunk }
+  | { type: 'complete'; data: ChatbotCompleteEvent }
+  | { type: 'error'; error: string };
