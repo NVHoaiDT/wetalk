@@ -9,7 +9,7 @@ import { MediaUploader } from '@/components/ui/media-uploader/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { TextEditor } from '@/components/ui/text-editor/text-editor';
 
-import { createPostInputSchema, useCreatePost } from '../api/create-post';
+import { createPostInput, useCreatePost } from '../api/create-post';
 
 import { CreatePoll } from './create-poll';
 import { SelectPostTags } from './select-post-tags';
@@ -82,7 +82,7 @@ export const CreatePost = ({ communityId }: CreatePostProps) => {
             },
           });
         }}
-        schema={createPostInputSchema}
+        schema={createPostInput}
         options={{
           defaultValues: {
             communityId: communityId,
