@@ -35,6 +35,10 @@ export type User = {
   username: string;
   email: string;
   bio: string;
+  dateOfBirth: string;
+  gender: string;
+  phone: string;
+  address: string;
   avatar: string;
   coverImage: string;
   achievement: {

@@ -87,6 +87,10 @@ export const UpdateProfile = () => {
             avatar: user?.avatar ?? '',
             coverImage: user?.coverImage ?? '',
             bio: user?.bio ?? '',
+            dateOfBirth: user?.dateOfBirth ?? '',
+            gender: user?.gender ?? '',
+            phone: user?.phone ?? '',
+            address: user?.address ?? '',
           },
         }}
         schema={updateProfileInputSchema}
@@ -107,6 +111,26 @@ export const UpdateProfile = () => {
                 label="Bio"
                 error={formState.errors['bio']}
                 registration={register('bio')}
+              />
+              <Textarea
+                label="Date of Birth"
+                error={formState.errors['dateOfBirth']}
+                registration={register('dateOfBirth')}
+              />
+              <Textarea
+                label="Gender"
+                error={formState.errors['gender']}
+                registration={register('gender')}
+              />
+              <Textarea
+                label="Phone"
+                error={formState.errors['phone']}
+                registration={register('phone')}
+              />
+              <Textarea
+                label="Address"
+                error={formState.errors['address']}
+                registration={register('address')}
               />
 
               <div className="space-y-2">
