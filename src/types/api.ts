@@ -291,6 +291,17 @@ export type Message = {
   readAt: string | null;
   createdAt: string;
   attachments: string[];
+
+  /**
+   * For shared post
+   */
+  sharedPost: {
+    id: number;
+    title: string;
+    tags: string[];
+    content: string;
+    mediaUrls: string[];
+  };
   isDeleted: boolean;
 };
 

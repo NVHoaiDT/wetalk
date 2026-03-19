@@ -1,4 +1,4 @@
-import { Check, Copy, Facebook, Twitter } from 'lucide-react';
+import { Check, Copy, Facebook, MessageCircle, Twitter } from 'lucide-react';
 import { useState } from 'react';
 
 import {
@@ -8,13 +8,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown';
+import { Post } from '@/types/api';
+
+import { ShareToChatDialog } from './share-to-chat-dialog';
 
 type SharePostProps = {
   link: string;
+  post?: Post;
   children: React.ReactNode;
 };
 
-export const SharePost = ({ link, children }: SharePostProps) => {
+export const SharePost = ({ link, post, children }: SharePostProps) => {
   const [copied, setCopied] = useState(false);
 
   const getFullUrl = (url: string) => {
@@ -78,6 +82,26 @@ export const SharePost = ({ link, children }: SharePostProps) => {
         </div>
 
         <DropdownMenuSeparator />
+
+        {/* Share to Chat Option */}
+        {post && (
+          <>
+            <div className="p-1">
+              <ShareToChatDialog post={post}>
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex cursor-pointer items-center gap-3 px-3 py-2"
+                >
+                  <div className="flex size-8 items-center justify-center rounded-full bg-green-600">
+                    <MessageCircle className="size-4 text-white" />
+                  </div>
+                  <span className="text-sm font-medium">Share to Chat</span>
+                </DropdownMenuItem>
+              </ShareToChatDialog>
+            </div>
+            <DropdownMenuSeparator />
+          </>
+        )}
 
         {/* Social Media Share Options */}
         <div className="p-1">

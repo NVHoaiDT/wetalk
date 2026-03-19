@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
-import { Trash2 } from 'lucide-react';
+import { ExternalLink, Trash2 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 import { MessageMediaViewer } from '@/components/ui/message-media-viewer';
 import { useNotifications } from '@/components/ui/notifications';
@@ -20,6 +21,7 @@ export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const deleteMessageMutation = useDeleteMessage({});
   const { addNotification } = useNotifications();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -114,6 +116,66 @@ export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
                   <p className="whitespace-pre-wrap break-words text-sm">
                     {message.content}
                   </p>
+                </div>
+              )}
+
+              {/* Shared Post Card */}
+              {message.sharedPost && (
+                <div
+                  onClick={() => navigate(`/posts/${message.sharedPost.id}`)}
+                  className={cn(
+                    'cursor-pointer rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md',
+                    'max-w-sm',
+                  )}
+                >
+                  {/* Post Header */}
+                  <div className="mb-2 flex items-start justify-between gap-2">
+                    <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
+                      {message.sharedPost.title}
+                    </h3>
+                    <ExternalLink className="size-4 shrink-0 text-gray-400" />
+                  </div>
+
+                  {/* Post Content Preview */}
+                  {message.sharedPost.content && (
+                    <p className="mb-2 line-clamp-2 text-xs text-gray-600">
+                      {message.sharedPost.content}
+                    </p>
+                  )}
+
+                  {/* Post Media */}
+                  {message.sharedPost.mediaUrls &&
+                    message.sharedPost.mediaUrls.length > 0 && (
+                      <div className="mb-2 overflow-hidden rounded-lg">
+                        <img
+                          src={message.sharedPost.mediaUrls[0]}
+                          alt="Post media"
+                          className="h-32 w-full object-cover"
+                        />
+                      </div>
+                    )}
+
+                  {/* Post Tags */}
+                  {message.sharedPost.tags &&
+                    message.sharedPost.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {message.sharedPost.tags
+                          .slice(0, 3)
+                          .map((tag, index) => (
+                            <span
+                              key={index}
+                              className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        {message.sharedPost.tags.length > 3 && (
+                          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                            +{message.sharedPost.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
                 </div>
               )}
 

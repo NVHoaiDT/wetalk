@@ -272,7 +272,7 @@ export const PostView = ({ id }: { id: number }) => {
                 <MessageCircle className="size-4" />
                 <span>{post.commentCount}</span>
               </button>
-              <SharePost link={paths.app.post.getHref(post.id)}>
+              <SharePost link={paths.app.post.getHref(post.id)} post={post}>
                 <button className="flex items-center gap-1.5 rounded-full bg-input p-2 transition-colors hover:bg-gray-100">
                   <Share2 className="size-4" />
                   <span>Share</span>
