@@ -295,7 +295,7 @@ export type Message = {
   /**
    * For shared post
    */
-  sharedPost: {
+  metadata: {
     id: number;
     title: string;
     tags: string[];

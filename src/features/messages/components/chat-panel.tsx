@@ -35,56 +35,15 @@ export const ChatPanel = () => {
     [messagesQuery.data],
   );
 
-  fancyLog('MESSAGES', messages);
-  /* 
-[
-        {
-            "id": 35,
-            "conversationId": 5,
-            "sender": {
-                "id": 5,
-                "username": "hoangthie",
-                "avatar": "https://i.pravatar.cc/150?img=5"
-            },
-            "content": "Hello! This is my second message",
-            "isRead": false,
-            "attachments": [
-                {
-                    "id": 2,
-                    "fileUrl": "file-url-demo.png",
-                    "fileType": "image"
-                },
-                ...
-            ],
-            "createdAt": "2025-11-14T08:02:49.874363Z",
-            "isDeleted": false
-        },
-        {
-            "id": 34,
-            "conversationId": 5,
-            "sender": {
-                "id": 5,
-                "username": "hoangthie",
-                "avatar": "https://i.pravatar.cc/150?img=5"
-            },
-            "content": "This message has been deleted",
-            "isRead": false,
-            "createdAt": "2025-11-14T07:59:51.897037Z",
-            "isDeleted": true
-        }
-    ]
-  */
-
-  // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  // Mark conversation as read when opening
+
   useEffect(() => {
     if (selectedConversationId) {
       markAsReadMutation.mutate(selectedConversationId);
     }
-  }, [selectedConversationId, markAsReadMutation]);
+  }, [selectedConversationId]);
 
   const handleSendMessage = (
     content: string,
@@ -174,7 +133,7 @@ export const ChatPanel = () => {
       </div>
 
       {/* Messages Area */}
-      {/* <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-6">
         {messagesQuery.isLoading ? (
           <div className="flex h-full items-center justify-center">
             <Spinner size="lg" />
@@ -197,7 +156,7 @@ export const ChatPanel = () => {
             <div ref={messagesEndRef} />
           </div>
         )}
-      </div> */}
+      </div>
 
       {/* Message Input */}
       <div className="border-t border-gray-200 p-4">

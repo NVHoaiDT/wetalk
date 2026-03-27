@@ -48,7 +48,7 @@ export const ShareToChatDialog = ({
         recipientId: userId,
         content: `Shared a post: ${post.title}`,
         attachments: [],
-        sharedPost: {
+        metadata: {
           id: post.id,
           title: post.title,
           tags: post.tags,
