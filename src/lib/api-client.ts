@@ -14,7 +14,7 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
       config.headers.Authorization = `Bearer ${token}`;
     }
   }
-  config.withCredentials = false;
+  config.withCredentials = true;
 
   const url = `${config.baseURL || ''}${config.url}`;
   const params = config.params
@@ -35,7 +35,7 @@ api.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  (error) => {
+  async (error) => {
     const message = error.response?.data?.message || error.message;
 
     useNotifications.getState().addNotification({
@@ -44,14 +44,51 @@ api.interceptors.response.use(
       message,
     });
 
-    /* if (error.response?.status === 500) {
-    } */
+    const originalRequest = error.config;
 
-    if (error.response?.status === 401) {
-      localStorage.removeItem('accessToken');
-      const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/auth')) {
-        window.location.href = paths.auth.login.getHref(currentPath);
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      console.log('Unauthorized, attempting to refresh token');
+
+      try {
+        const response = await Axios.post(
+          `${env.API_URL}/auth/refresh`,
+          {},
+          {
+            withCredentials: true,
+          },
+        );
+
+        console.log('Token refresh response:', response);
+
+        const newAccessToken = response.data?.data?.accessToken;
+
+        if (newAccessToken) {
+          console.log(
+            'Token refreshed successfully, retrying original request',
+          );
+          localStorage.setItem('accessToken', newAccessToken);
+
+          // Update the authorization header with new token
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          // Retry the original request
+          return api(originalRequest);
+        }
+      } catch (refreshError) {
+        console.log('Token refresh failed, redirecting to login');
+        console.error(refreshError);
+
+        localStorage.removeItem('accessToken');
+
+        const currentPath = window.location.pathname;
+
+        // if (!currentPath.startsWith('/auth')) {
+        //   window.location.href = paths.auth.login.getHref(currentPath);
+        // }
+        // return Promise.reject(refreshError);
+        return null;
       }
     }
 
@@ -70,19 +107,46 @@ apiMedia.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  (error) => {
+  async (error) => {
     if (error.response?.status === 500) {
       window.location.href = paths.app.notFound.path;
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 401) {
-      localStorage.removeItem('accessToken');
+    const originalRequest = error.config;
 
-      const currentPath = window.location.pathname;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-      if (!currentPath.startsWith('/auth')) {
-        window.location.href = paths.auth.login.getHref(currentPath);
+      console.log('Unauthorized (Media API), attempting to refresh token');
+
+      try {
+        const response = await Axios.post(
+          `${env.API_URL}/auth/refresh-token`,
+          {},
+          {
+            withCredentials: true,
+          },
+        );
+
+        const newAccessToken = response.data?.data?.accessToken;
+
+        if (newAccessToken) {
+          console.log('Token refreshed successfully, retrying media request');
+          localStorage.setItem('accessToken', newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return apiMedia(originalRequest);
+        }
+      } catch (refreshError) {
+        console.log('Token refresh failed (Media API), redirecting to login');
+        localStorage.removeItem('accessToken');
+
+        const currentPath = window.location.pathname;
+
+        if (!currentPath.startsWith('/auth')) {
+          window.location.href = paths.auth.login.getHref(currentPath);
+        }
+        return Promise.reject(refreshError);
       }
     }
 
@@ -100,19 +164,46 @@ apiAI.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  (error) => {
+  async (error) => {
     if (error.response?.status === 500) {
       window.location.href = paths.app.notFound.path;
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 401) {
-      localStorage.removeItem('accessToken');
+    const originalRequest = error.config;
 
-      const currentPath = window.location.pathname;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-      if (!currentPath.startsWith('/auth')) {
-        window.location.href = paths.auth.login.getHref(currentPath);
+      console.log('Unauthorized (AI API), attempting to refresh token');
+
+      try {
+        const response = await Axios.post(
+          `${env.API_URL}/auth/refresh-token`,
+          {},
+          {
+            withCredentials: true,
+          },
+        );
+
+        const newAccessToken = response.data?.data?.accessToken;
+
+        if (newAccessToken) {
+          console.log('Token refreshed successfully, retrying AI request');
+          localStorage.setItem('accessToken', newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return apiAI(originalRequest);
+        }
+      } catch (refreshError) {
+        console.log('Token refresh failed (AI API), redirecting to login');
+        localStorage.removeItem('accessToken');
+
+        const currentPath = window.location.pathname;
+
+        if (!currentPath.startsWith('/auth')) {
+          window.location.href = paths.auth.login.getHref(currentPath);
+        }
+        return Promise.reject(refreshError);
       }
     }
 

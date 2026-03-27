@@ -7,6 +7,34 @@ import { RegisterResponse, LoginResponse, User } from '@/types/api';
 
 import { api } from './api-client';
 
+const refreshToken = async (): Promise<{ data: { accessToken: string } }> => {
+  return api.post('/auth/refresh');
+};
+
+type UseRefreshTokenOptions = {
+  onSuccess?: (data: { data: { accessToken: string } }) => void;
+};
+
+export const useRefreshToken = ({
+  onSuccess,
+}: UseRefreshTokenOptions = {}) => {
+  const queryClient = useQueryClient();
+  console.log("Invoke refresh token mutation");
+
+  return useMutation({
+    mutationKey: ['refresh-token'],
+    mutationFn: refreshToken,
+
+    onSuccess: (response) => {
+      if (response.data?.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+      }
+      queryClient.setQueryData(['user-login'], response);
+      onSuccess?.(response);
+    },
+  });
+};
+
 /* ____________________User____________________ */
 const getCurrentUser = async (): Promise<{ data: User | null }> => {
   return api.get('/users/me');
@@ -36,7 +64,7 @@ export const useUser = (userId: number, options?: { enabled?: boolean }) => {
 
 /* ____________________Logout____________________ */
 const logout = async (): Promise<void> => {
-  localStorage.removeItem('accessToken');
+  return api.post('/auth/logout');
 };
 
 export const useLogout = () => {

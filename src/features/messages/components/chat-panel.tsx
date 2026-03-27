@@ -84,7 +84,7 @@ export const ChatPanel = () => {
     if (selectedConversationId) {
       markAsReadMutation.mutate(selectedConversationId);
     }
-  }, [selectedConversationId]);
+  }, [selectedConversationId, markAsReadMutation]);
 
   const handleSendMessage = (
     content: string,
@@ -174,7 +174,7 @@ export const ChatPanel = () => {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6">
+      {/* <div className="flex-1 overflow-y-auto p-6">
         {messagesQuery.isLoading ? (
           <div className="flex h-full items-center justify-center">
             <Spinner size="lg" />
@@ -197,7 +197,7 @@ export const ChatPanel = () => {
             <div ref={messagesEndRef} />
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* Message Input */}
       <div className="border-t border-gray-200 p-4">
