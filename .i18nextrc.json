@@ -1,0 +1,38 @@
+{
+  "input": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "output": "./",
+  "options": {
+    "debug": true,
+    "func": {
+      "list": [
+        "t"
+      ]
+    },
+    "lngs": [
+      "en"
+    ],
+    "ns": [
+      "common",
+      "post",
+      "message",
+      "community",
+      "auth",
+      "dashboard",
+      "notifications",
+      "search",
+      "profiles",
+      "users",
+      "chatbot",
+      "settings",
+      "postComments"
+    ],
+    "defaultLng": "en",
+    "defaultNs": "common",
+    "resource": {
+      "loadPath": "public/locales/{{lng}}/{{ns}}.json"
+    }
+  }
+}
