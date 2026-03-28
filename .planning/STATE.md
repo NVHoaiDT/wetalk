@@ -55,9 +55,9 @@ Discussed implementation decisions for String Extraction & Audit phase:
   - Feature-specific strings in individual files (12 total: post.json, message.json, community.json, auth.json, dashboard.json, notifications.json, search.json, profiles.json, users.json, chatbot.json, settings.json, postComments.json)
   - Element-type nesting within files (action, label, placeholder, error, validation, modal, help)
 
-- **Key Naming Convention:** Nested objects with semantic organization
-  - Format: PascalCase namespace + camelCase property chain
-  - Examples: `Post.action.create`, `Common.button.confirm`, `Post.modal.deleteConfirmation.title`
+- **Key Naming Convention:** Nested objects with all camelCase
+  - Format: `featureName.elementType.property` (all camelCase)
+  - Examples: `post.action.create`, `common.button.confirm`, `post.modal.deleteConfirmation.title`
   - Extraction estimate: ~500-700 keys across 13 files
 
 - **Artifacts Created:**

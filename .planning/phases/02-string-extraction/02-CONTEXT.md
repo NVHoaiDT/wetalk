@@ -93,9 +93,12 @@ Organize nested keys by semantic category within each feature file:
 - Scales well (each feature file stays <300 keys; largest predicted: ~150 keys)
 
 ### Naming Case Style (locked)
-- Feature names: PascalCase (Post, Message, Common)
-- Property chains: camelCase with dot notation (deleteConfirmation, senderName)
-- Example: `Post.modal.deleteConfirmation.title` expands to `modal.deleteConfirmation.title` in post.json
+- All camelCase (namespace + property chains)
+- Format: `featureName.elementType.property` with camelCase throughout
+- Examples:
+  - `post.action.create` → button text "Create Post"
+  - `common.button.confirm` → button text "Confirm"
+  - `post.modal.deleteConfirmation.title` → modal heading "Delete Post?"
 
 ### Extraction Order & Approach
 - **Phase 2a (Task 1):** Manual audit + codebase grep to identify all strings
@@ -106,13 +109,13 @@ Organize nested keys by semantic category within each feature file:
 
 ### Common.json Reserved Strings (initial list)
 Buttons and generic UI elements that appear across multiple features:
-- `button.confirm`, `button.cancel`, `button.save`, `button.delete`, `button.close`, `button.back`, `button.next`, `button.submit`, `button.edit`, `button.view`
-- `label.loading`, `label.noResults`, `label.emptyState`
-- `error.networkError`, `error.unauthorized`, `error.notFound`, `error.serverError`
-- `validation.required`, `validation.emailInvalid`, `validation.passwordTooWeak`
-- `pagination.page`, `pagination.of`, `pagination.nextPage`, `pagination.previousPage`
+- `common.button.confirm`, `common.button.cancel`, `common.button.save`, `common.button.delete`, `common.button.close`, `common.button.back`, `common.button.next`, `common.button.submit`, `common.button.edit`, `common.button.view`
+- `common.label.loading`, `common.label.noResults`, `common.label.emptyState`
+- `common.error.networkError`, `common.error.unauthorized`, `common.error.notFound`, `common.error.serverError`
+- `common.validation.required`, `common.validation.emailInvalid`, `common.validation.passwordTooWeak`
+- `common.pagination.page`, `common.pagination.of`, `common.pagination.nextPage`, `common.pagination.previousPage`
 
-**Note:** If a feature needs a variant (e.g., "Create Post" vs generic "Create"), use feature-specific key: `Post.action.create` not `Common.action.create`.
+**Note:** If a feature needs a variant (e.g., "Create Post" vs generic "Create"), use feature-specific key: `post.action.create` not `common.action.create`.
 
 ### the agent's Discretion
 - **Extraction granularity:** How specific to make keys is left to extraction tasks. Example: "Delete Post?" can be one key (`modal.deleteConfirmation.title`) or split (title, description, buttons separately). Agent should extract at component/task boundary level.
@@ -181,9 +184,9 @@ Buttons and generic UI elements that appear across multiple features:
 ## Specific Ideas & Preferences
 
 ### Naming Convention Examples (locked)
-- Feature-specific: `Post.action.create` → button text "Create Post"
-- Shared: `Common.button.confirm` → button text "Confirm"
-- Nested semantic: `Post.modal.deleteConfirmation.title` → modal heading "Delete Post?"
+- Feature-specific: `post.action.create` → button text "Create Post"
+- Shared: `common.button.confirm` → button text "Confirm"
+- Nested semantic: `post.modal.deleteConfirmation.title` → modal heading "Delete Post?"
 
 ### Extraction Target
 - Estimate: **500-700 keys** total

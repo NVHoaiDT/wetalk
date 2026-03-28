@@ -84,21 +84,20 @@
    - **Rationale:** Clear semantic grouping makes translation files scannable
 
 3. **Naming case style:** camelCase, kebab-case, or PascalCase?
-   - **Answer:** 
-     - Feature/namespace names: **PascalCase** (Post, Message, Common)
-     - Property chains: **camelCase** (deleteConfirmation, senderName)
-   - **Example notation:** `Post.modal.deleteConfirmation.title` (namespace prefix) → implements as `modal.deleteConfirmation.title` in post.json
-   - **Example:** 
-     - `Post.action.create` → "Create Post"
-     - `Common.button.confirm` → "Confirm"
-     - `Message.label.senderName` → "Sent by"
+   - **Answer:** All camelCase (no PascalCase)
+   - **Format:** `featureName.elementType.property` with camelCase throughout
+   - **Examples:** 
+     - `post.action.create` → "Create Post"
+     - `common.button.confirm` → "Confirm"
+     - `post.modal.deleteConfirmation.title` → "Delete Post?"
+     - `message.label.senderName` → "Sent by"
 
 4. **Compound key naming:** Specific/literal keys or generic/reusable keys?
    - **Answer:** Specific keys that map 1:1 to UI components/modals
-   - **Example:** `modal.deleteConfirmation.title`, `modal.deleteConfirmation.description`, `modal.deleteConfirmation.confirmButton`
+   - **Example:** `post.modal.deleteConfirmation.title`, `post.modal.deleteConfirmation.description`, `post.modal.deleteConfirmation.confirmButton`
    - **Rationale:** Easier for developers to find the right key when integrating components; easier for translator to understand context
 
-**Final naming convention:** PascalCase namespace (in notation) + camelCase nested properties, organized by semantic element type
+**Final naming convention:** All camelCase (`featureName.elementType.property`), organized by semantic element type
 
 ---
 
@@ -123,7 +122,7 @@ None mentioned during discussion.
 User locked in two major decisions:
 
 1. **File Structure: Mixed approach** — `common.json` + 12 feature files, with element-type nesting within each file
-2. **Key Naming: Nested objects with PascalCase namespace + camelCase properties** — organized by semantic element type (action, label, error, modal, etc.)
+2. **Key Naming: Nested objects with all camelCase** (`featureName.elementType.property`) — organized by semantic element type (action, label, error, modal, etc.)
 
 These decisions ensure:
 - Clear semantic organization (aligns with code structure)
