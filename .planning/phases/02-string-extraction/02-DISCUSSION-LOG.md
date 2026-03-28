@@ -14,11 +14,11 @@
 
 **Options presented (from workflow):**
 
-| Option | Description | Selected |
-|--------|-------------|----------|
-| Breadth Approach | One JSON file per feature (posts.json, messages.json, etc.), flat or minimal nesting | |
-| Depth Approach | Multiple files per feature by category (posts/actions.json, posts/labels.json, posts/errors.json) | |
-| Mixed Approach | Common/shared buttons in common.json, feature-specific content in individual feature files | ✓ |
+| Option           | Description                                                                                       | Selected |
+| ---------------- | ------------------------------------------------------------------------------------------------- | -------- |
+| Breadth Approach | One JSON file per feature (posts.json, messages.json, etc.), flat or minimal nesting              |          |
+| Depth Approach   | Multiple files per feature by category (posts/actions.json, posts/labels.json, posts/errors.json) |          |
+| Mixed Approach   | Common/shared buttons in common.json, feature-specific content in individual feature files        | ✓        |
 
 **User's choice:** Mixed approach
 
@@ -38,6 +38,7 @@
    - **Rationale:** Simpler mental model, matches code organization
 
 **Final file structure:** 13 JSON files total
+
 - `public/locales/en/common.json` — Shared buttons, generic UI, validation messages
 - `public/locales/en/{feature}.json` × 12 — Feature-specific strings (post, message, community, auth, dashboard, notifications, search, profiles, users, chatbot, settings, postComments)
 
@@ -49,11 +50,11 @@
 
 **Options presented (from workflow):**
 
-| Option | Description | Selected |
-|--------|-------------|----------|
-| Nested Objects (A) | Semantic/readable structure with nesting: `posts.actions.create`, `posts.labels.title` | ✓ |
-| Flat Keys (B) | Simple prefixed keys without nesting: `posts_action_create`, `posts_label_title` | |
-| Hybrid (C) | Flexible approach: mix nesting and flat keys based on context | |
+| Option             | Description                                                                            | Selected |
+| ------------------ | -------------------------------------------------------------------------------------- | -------- |
+| Nested Objects (A) | Semantic/readable structure with nesting: `posts.actions.create`, `posts.labels.title` | ✓        |
+| Flat Keys (B)      | Simple prefixed keys without nesting: `posts_action_create`, `posts_label_title`       |          |
+| Hybrid (C)         | Flexible approach: mix nesting and flat keys based on context                          |          |
 
 **User's choice:** Nested objects (Option A)
 
@@ -68,7 +69,9 @@
        "action": { "create": "Create Post", "delete": "Delete Post" },
        "label": { "title": "Post Title", "content": "Post Content" },
        "error": { "titleRequired": "Post title is required" },
-       "modal": { "deleteConfirmation": { "title": "Delete Post?", "description": "..." } }
+       "modal": {
+         "deleteConfirmation": { "title": "Delete Post?", "description": "..." }
+       }
      }
      ```
 
@@ -86,7 +89,7 @@
 3. **Naming case style:** camelCase, kebab-case, or PascalCase?
    - **Answer:** All camelCase (no PascalCase)
    - **Format:** `featureName.elementType.property` with camelCase throughout
-   - **Examples:** 
+   - **Examples:**
      - `post.action.create` → "Create Post"
      - `common.button.confirm` → "Confirm"
      - `post.modal.deleteConfirmation.title` → "Delete Post?"
@@ -125,6 +128,7 @@ User locked in two major decisions:
 2. **Key Naming: Nested objects with all camelCase** (`featureName.elementType.property`) — organized by semantic element type (action, label, error, modal, etc.)
 
 These decisions ensure:
+
 - Clear semantic organization (aligns with code structure)
 - Translator-friendly (organize by feature/element type)
 - i18next-compatible (supports nested objects and namespace references)

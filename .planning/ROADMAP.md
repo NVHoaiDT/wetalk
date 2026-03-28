@@ -11,7 +11,7 @@
 ## Phases
 
 - [x] **Phase 1: Foundation & Infrastructure** - i18next setup, providers, language detection, persistence
-- [ ] **Phase 2: String Extraction & Audit** - Complete UI string inventory and JSON structure
+- [x] **Phase 2: String Extraction & Audit** - Complete UI string inventory and JSON structure
 - [ ] **Phase 3: Component Integration** - Wire all components with useTranslation hooks
 - [ ] **Phase 4: Language Switching & Settings UI** - User language preference UI and persistence
 - [ ] **Phase 5: Vietnamese Translations** - Complete Vietnamese translation of all UI strings
@@ -76,7 +76,12 @@ I18N-07, I18N-08, I18N-09, I18N-10
 Phase 1 must be complete
 
 **Status:**  
-Not Started
+Planning complete (02-01-PLAN.md, 02-02-PLAN.md) — ready for execution
+
+**Plans:**
+
+- [ ] 02-01-PLAN.md — Manual audit and initial JSON extraction (Wave 1)
+- [ ] 02-02-PLAN.md — Scanner validation and audit documentation (Wave 2)
 
 ---
 
