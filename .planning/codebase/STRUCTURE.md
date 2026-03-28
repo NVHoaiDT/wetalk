@@ -229,16 +229,21 @@ wetalk-client/
 ## Directory Purposes
 
 ### `src/`
+
 Main source code root. All application code.
 
 ### `src/app/`
+
 **Purpose:** Application shell, routing, and provider wrapping
+
 - `provider.tsx` - Provides React Query, error boundary, auth loading
 - `router.tsx` - All route definitions for the SPA
 - `routes/` - Page components (lazy-loaded by router)
 
 ### `src/components/`
+
 **Purpose:** Reusable, presentational UI components
+
 - `ui/` - Primitive/base components (Button, Input, Dialog, etc.)
   - Each component in its own directory with `index.ts` barrel export
   - Built on Radix UI primitives + Tailwind styling
@@ -247,7 +252,9 @@ Main source code root. All application code.
 - `seo/` - Metadata/SEO components
 
 ### `src/features/`
+
 **Purpose:** Domain-specific, self-contained feature modules
+
 - Each folder is a feature area (posts, messages, communities, etc.)
 - `api/` - Data fetching logic (React Query hooks + mutations)
 - `components/` - Feature UI components
@@ -255,7 +262,9 @@ Main source code root. All application code.
 - Features are loosely coupled through query invalidation and events
 
 ### `src/lib/`
+
 **Purpose:** Core infrastructure and shared utilities
+
 - `api-client.ts` - HTTP client with auth interceptors
 - `auth.tsx` - Authentication logic and hooks
 - `authorization.tsx` - Role-based access control
@@ -264,106 +273,134 @@ Main source code root. All application code.
 - `colors.ts`, `upload.ts`, etc. - Specialized utilities
 
 ### `src/config/`
+
 **Purpose:** Application configuration
+
 - `env.ts` - Environment variables (API_URL, etc.)
 - `paths.ts` - Route path definitions and href generators
 
 ### `src/types/`
+
 **Purpose:** TypeScript type definitions
+
 - `api.ts` - Backend API response types (User, Post, etc.)
 
 ### `src/utils/`
+
 **Purpose:** Reusable utility functions
+
 - `cn.ts` - Classname merging helper
 - `format.ts` - Formatting helpers
 
 ### `src/hooks/`
+
 **Purpose:** Custom React hooks
+
 - `use-disclosure.ts` - Modal open/close logic
 - `__tests__/` - Hook tests
 
 ### `src/testing/`
+
 **Purpose:** Test infrastructure
+
 - `setup-tests.ts` - Vitest global setup
 - `test-utils.tsx` - Test helper components
 - `data-generators.ts` - Fake data generators
 - `mocks/` - Mock Service Worker setup
 
 ### `e2e/`
+
 **Purpose:** Playwright end-to-end tests
+
 - Real browser automation tests
 - Tests authentication, critical user flows
 
 ### `generators/`
+
 **Purpose:** Code generation templates
+
 - Plop-based component/feature scaffolding
 - `plopfile.cjs` defines generators
 
 ### `public/`
+
 **Purpose:** Static assets served directly
+
 - `mockServiceWorker.js` - MSW service worker (required)
 - `robots.txt` - SEO directives
 - `_redirects` - Vercel redirect rules
 
 ### `docs/`
+
 **Purpose:** Project documentation
+
 - Architecture decisions, patterns, standards
 - API documentation, deployment guides
 
 ### `write-down/`
+
 **Purpose:** Working notes and task planning
+
 - Not code; reference material for task execution
 
 ### `.planning/`
+
 **Purpose:** GSD project planning
+
 - Roadmap, milestones, phase planning
 - Codebase analysis documents (this file)
 
 ## Key File Locations
 
 ### Entry Points
-| File | Purpose |
-|------|---------|
-| `src/main.tsx` | React app bootstrap |
-| `src/app/index.tsx` | Root App component |
-| `src/app/provider.tsx` | Global provider setup |
-| `src/app/router.tsx` | Route configuration |
+
+| File                          | Purpose                   |
+| ----------------------------- | ------------------------- |
+| `src/main.tsx`                | React app bootstrap       |
+| `src/app/index.tsx`           | Root App component        |
+| `src/app/provider.tsx`        | Global provider setup     |
+| `src/app/router.tsx`          | Route configuration       |
 | `src/app/routes/app/root.tsx` | Protected app entry point |
 
 ### Configuration
-| File | Purpose |
-|------|---------|
-| `src/config/env.ts` | Environment variables |
-| `src/config/paths.ts` | Route paths + href functions |
-| `tsconfig.json` | TypeScript with `@/*` path alias |
-| `vite.config.ts` | Build config, test setup |
-| `tailwind.config.cjs` | Tailwind theming |
+
+| File                  | Purpose                          |
+| --------------------- | -------------------------------- |
+| `src/config/env.ts`   | Environment variables            |
+| `src/config/paths.ts` | Route paths + href functions     |
+| `tsconfig.json`       | TypeScript with `@/*` path alias |
+| `vite.config.ts`      | Build config, test setup         |
+| `tailwind.config.cjs` | Tailwind theming                 |
 
 ### Core Logic
-| File | Purpose |
-|------|---------|
-| `src/lib/api-client.ts` | HTTP client + auth interceptor |
-| `src/lib/auth.tsx` | User auth state + mutations |
-| `src/lib/authorization.tsx` | Role-based access control |
-| `src/lib/react-query.ts` | Query client configuration |
-| `src/lib/server-side-event.ts` | SSE real-time updates |
+
+| File                           | Purpose                        |
+| ------------------------------ | ------------------------------ |
+| `src/lib/api-client.ts`        | HTTP client + auth interceptor |
+| `src/lib/auth.tsx`             | User auth state + mutations    |
+| `src/lib/authorization.tsx`    | Role-based access control      |
+| `src/lib/react-query.ts`       | Query client configuration     |
+| `src/lib/server-side-event.ts` | SSE real-time updates          |
 
 ### Testing
-| File | Purpose |
-|------|---------|
-| `src/testing/setup-tests.ts` | Vitest configuration |
-| `src/testing/mocks/server.ts` | MSW server |
-| `src/testing/mocks/db.ts` | Mock database |
+
+| File                          | Purpose              |
+| ----------------------------- | -------------------- |
+| `src/testing/setup-tests.ts`  | Vitest configuration |
+| `src/testing/mocks/server.ts` | MSW server           |
+| `src/testing/mocks/db.ts`     | Mock database        |
 
 ### Types
-| File | Purpose |
-|------|---------|
-| `src/types/api.ts` | Backend API types |
-| `vite-env.d.ts` | Vite globals (import.meta.env) |
+
+| File               | Purpose                        |
+| ------------------ | ------------------------------ |
+| `src/types/api.ts` | Backend API types              |
+| `vite-env.d.ts`    | Vite globals (import.meta.env) |
 
 ## Naming Conventions
 
 ### Files
+
 - **Components:** PascalCase with `.tsx` (e.g., `LoginForm.tsx`)
 - **Hooks:** camelCase starting with `use` (e.g., `useDisclosure.ts`)
 - **Utilities:** camelCase with descriptive name (e.g., `api-client.ts`)
@@ -371,23 +408,27 @@ Main source code root. All application code.
 - **Tests:** Same name as tested file + `.test.ts` or `.spec.ts`
 
 ### Directories
+
 - **Feature dirs:** kebab-case, singular or plural based on content (e.g., `post-comments`, `profiles`)
 - **Component dirs:** kebab-case (e.g., `logo-button`, `media-viewer`)
 - **Standard dirs:** Single word, lowercase (e.g., `api`, `components`, `utils`)
 
 ### Functions/Variables
+
 - **React components:** PascalCase (e.g., `LoginForm`, `DashboardLayout`)
 - **Hooks:** camelCase with `use` prefix (e.g., `useMessages`, `useCurrentUser`)
 - **Utilities:** camelCase (e.g., `formatDate`, `getMeta`)
 - **Constants:** UPPER_SNAKE_CASE (e.g., `ROLES`, `POLICIES`)
 
 ### Imports
+
 - **Path alias:** Always use `@/*` for src imports (via tsconfig.json)
+
   ```typescript
   // Good
   import { Button } from '@/components/ui/button';
   import { useMessages } from '@/features/messages/stores/messages-store';
-  
+
   // Avoid
   import { Button } from '../../../../../components/ui/button';
   ```
@@ -395,6 +436,7 @@ Main source code root. All application code.
 ## Where to Add New Code
 
 ### New Feature
+
 1. Create `src/features/feature-name/`
 2. Add subdirectories:
    - `api/` - React Query hooks (useFeature(), useCreateFeature(), etc.)
@@ -403,6 +445,7 @@ Main source code root. All application code.
 3. Follow the post feature as template
 
 **Example structure:**
+
 ```
 src/features/comments/
 ├── api/
@@ -418,6 +461,7 @@ src/features/comments/
 ```
 
 ### New Reusable Component
+
 1. Create `src/components/ui/component-name/`
 2. Create `component.tsx` with component code
 3. Create `index.ts` with barrel export
@@ -425,6 +469,7 @@ src/features/comments/
 5. Build on Radix UI primitives for base behavior
 
 **Example:**
+
 ```
 src/components/ui/avatar/
 ├── avatar.tsx       # Component impl
@@ -433,6 +478,7 @@ src/components/ui/avatar/
 ```
 
 ### New Page Route
+
 1. Create file in `src/app/routes/` matching URL structure
 2. Export default: React component
 3. Optional exports:
@@ -441,6 +487,7 @@ src/components/ui/avatar/
 4. Use layout components from `src/components/layouts/`
 
 **Example for `/app/discussions/:id`:**
+
 ```
 src/app/routes/app/discussions/discussion.tsx
 ├── export default DiscussionPage
@@ -449,18 +496,21 @@ src/app/routes/app/discussions/discussion.tsx
 ```
 
 ### New Utility Function
+
 - **API-related:** Add to `src/lib/` (e.g., `format-api-response.ts`)
 - **Data formatting:** Add to `src/utils/` (e.g., `format.ts`)
 - **UI helpers:** Add to `src/components/` or keep in component file
 - **Feature-specific:** Keep in feature's api/ or component file
 
 ### New Store
+
 1. Create in feature's `stores/` directory
 2. Use Zustand: `create<StoreType>((set) => (...))`
 3. Export hook: `export const useFeature = create(...)`
 4. Use transient state only (modals, filters, selection)
 
 **Example:**
+
 ```typescript
 // src/features/comments/stores/comment-filter-store.ts
 import { create } from 'zustand';
@@ -477,6 +527,7 @@ export const useCommentFilter = create<CommentFilterStore>((set) => ({
 ```
 
 ### New API Mutation/Query
+
 1. Create file in feature's `api/` directory
 2. Define Zod input schema: `export const createXInput = z.object({...})`
 3. Define async API function: `const createX = async (data) => api.post(...)`
@@ -484,6 +535,7 @@ export const useCommentFilter = create<CommentFilterStore>((set) => ({
 5. Invalidate related queries on success
 
 **Example:**
+
 ```typescript
 // src/features/comments/api/create-comment.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -517,12 +569,14 @@ export const useCreateComment = () => {
 ```
 
 ### New Test
+
 1. Create `.test.ts` or `.spec.ts` file next to tested file
 2. Use Vitest + React Testing Library
 3. Mock external dependencies (API, stores)
 4. See `src/testing/` for utilities
 
 **Example:**
+
 ```typescript
 // src/features/comments/api/create-comment.test.ts
 import { describe, it, expect, vi } from 'vitest';
@@ -533,7 +587,9 @@ import { useCreateComment } from './create-comment';
 ## Special Directories
 
 ### `.planning/`
+
 **Purpose:** GSD project planning artifacts
+
 - **Generated:** Yes (by GSD CLI)
 - **Committed:** Yes (to git)
 - **Contents:**
@@ -543,7 +599,9 @@ import { useCreateComment } from './create-comment';
   - Git log of planning decisions
 
 ### `__mocks__/`
+
 **Purpose:** Vitest mock setup
+
 - **Generated:** No (manual setup)
 - **Committed:** Yes
 - **Contents:**
@@ -551,7 +609,9 @@ import { useCreateComment } from './create-comment';
   - `vitest-env.d.ts` - Type definitions
 
 ### `public/`
+
 **Purpose:** Static assets served as-is by HTTP
+
 - **Generated:** No (manual + MSW generates warmServiceWorkerjs)
 - **Committed:** Yes
 - **Note:** MSW service worker must be here for offline simulation
@@ -559,10 +619,12 @@ import { useCreateComment } from './create-comment';
 ## Build Outputs
 
 ### Development
+
 - Vite dev server on http://localhost:5173
 - Generates no permanent artifacts
 
 ### Production Build
+
 - `npm run build` → `vite build`
 - Output: `dist/` (not shown in structure, .gitignored)
 - Code-split chunks via Taildwind CSS class truncation and rollup config
@@ -570,4 +632,4 @@ import { useCreateComment } from './create-comment';
 
 ---
 
-*Structure analysis: 2026-03-28*
+_Structure analysis: 2026-03-28_

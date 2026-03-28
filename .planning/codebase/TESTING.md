@@ -9,6 +9,7 @@
 **Framework:** Vitest 1.x (via vite-node)
 
 **Configuration:** [vite.config.ts](vite.config.ts)
+
 ```typescript
 test: {
   globals: true,
@@ -22,6 +23,7 @@ test: {
 ```
 
 **Key settings:**
+
 - **Environment:** jsdom (browser-like environment)
 - **Globals:** True (no need to import `describe`, `test`, `expect`)
 - **Setup files:** `src/testing/setup-tests.ts`
@@ -32,6 +34,7 @@ test: {
 **Library:** Vitest built-in assertions + `@testing-library/jest-dom`
 
 Assertions available globally:
+
 ```typescript
 expect(value).toBe(expectedValue);
 expect(value).toEqual(expectedValue);
@@ -62,6 +65,7 @@ yarn test use-disclosure.test.ts
 **Convention:** Tests co-located with source code in `__tests__/` directories.
 
 **Structure:**
+
 ```
 src/
 ├── hooks/
@@ -81,6 +85,7 @@ src/
 **Convention:** `*.test.ts` or `*.test.tsx` for unit tests; `*.spec.ts` or `*.spec.tsx` for E2E tests.
 
 Current test files found:
+
 - `src/hooks/__tests__/use-disclosure.test.ts` - Hook unit test
 - `e2e/tests/auth.setup.ts` - Playwright setup
 - `e2e/tests/smoke.spec.ts` - E2E smoke tests
@@ -93,6 +98,7 @@ Current test files found:
 **Pattern:** Simple test structure with minimal setup required.
 
 Example from `src/hooks/__tests__/use-disclosure.test.ts`:
+
 ```typescript
 import { renderHook, act } from '@testing-library/react';
 import { useDisclosure } from '../use-disclosure';
@@ -120,6 +126,7 @@ test('should toggle the state', () => {
 ```
 
 **Key patterns:**
+
 - One `test()` per behavior (not per assertion)
 - Test names describe the behavior: `should ...`
 - Use `act()` wrapper for hook state updates
@@ -162,6 +169,7 @@ afterEach(() => {
 ```
 
 **Applied to all tests:**
+
 1. MSW server starts/listens before all tests
 2. ResizeObserver mocked (used in many components)
 3. Window encoding functions mocked
@@ -177,6 +185,7 @@ afterEach(() => {
 **Location:** `src/testing/mocks/`
 
 **Structure:**
+
 ```
 src/testing/mocks/
 ├── server.ts       # MSW server setup
@@ -190,6 +199,7 @@ src/testing/mocks/
 ### Server Setup
 
 Example from `src/testing/mocks/server.ts`:
+
 ```typescript
 import { setupServer } from 'msw/node';
 import { handlers } from './handlers';
@@ -198,8 +208,9 @@ export const server = setupServer(...handlers);
 ```
 
 Server is started in `beforeAll()` hook and listens with strict error handling:
+
 ```typescript
-server.listen({ onUnhandledRequest: 'error' })
+server.listen({ onUnhandledRequest: 'error' });
 ```
 
 ### Custom Mocking
@@ -207,12 +218,14 @@ server.listen({ onUnhandledRequest: 'error' })
 **Vitest mocking with `vi.mock()`:**
 
 From `src/testing/setup-tests.ts`:
+
 ```typescript
 // Mock entire modules
 vi.mock('zustand');
 ```
 
 **Selective mocking within tests:**
+
 ```typescript
 const ResizeObserverMock = vi.fn(() => ({
   observe: vi.fn(),
@@ -225,12 +238,14 @@ vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 ### What to Mock
 
 **Should mock:**
+
 1. API calls (handled by MSW)
 2. Browser APIs (`ResizeObserver`, `btoa`, `atob`)
 3. State management libraries (`zustand`)
 4. Third-party external APIs
 
 **Should NOT mock:**
+
 1. React internals
 2. Custom utility functions
 3. Component logic (test actual behavior)
@@ -307,10 +322,7 @@ export const waitForLoadingToFinish = () =>
     { timeout: 4000 },
   );
 
-export const initializeUser = async (
-  user: any,
-  render: (ui: any) => any,
-) => {
+export const initializeUser = async (user: any, render: (ui: any) => any) => {
   // Initialize and render with authenticated user
 };
 ```
@@ -358,6 +370,7 @@ export const db = factory(models);
 ```
 
 **Database operations:**
+
 ```typescript
 db.user.create({ firstName: 'John', email: 'john@example.com' });
 db.discussion.getAll();
@@ -371,6 +384,7 @@ db.comment.update({ where: { id }, data: { body: 'Updated' } });
 **Currently:** No enforced coverage targets.
 
 **Configuration in vite.config.ts:**
+
 ```typescript
 coverage: {
   include: ['src/**'],
@@ -392,11 +406,13 @@ Generates coverage report showing untested files and line coverage percentages.
 **Scope:** Individual functions, hooks, utilities
 
 **Example:** `src/hooks/__tests__/use-disclosure.test.ts`
+
 - Tests hook behavior in isolation
 - Tests state changes and callbacks
 - No external dependencies
 
 **Pattern:**
+
 ```typescript
 test('should [expected behavior]', () => {
   // Arrange: Set up test data
@@ -421,6 +437,7 @@ test('should [expected behavior]', () => {
 **Current status:** No dedicated integration tests found; would typically use `test-utils.tsx` helpers.
 
 **Pattern would be:**
+
 ```typescript
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -429,9 +446,9 @@ import { createUser, loginAsUser } from '@/testing/test-utils';
 test('user can log in and view dashboard', async () => {
   const user = await createUser();
   await loginAsUser(user);
-  
+
   render(<App />);
-  
+
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
 });
 ```
@@ -445,6 +462,7 @@ test('user can log in and view dashboard', async () => {
 **Location:** `e2e/tests/`
 
 **Current tests:**
+
 1. **auth.setup.ts** - Authentication flow setup (used by other tests)
    - User registration
    - User login
@@ -460,6 +478,7 @@ test('user can log in and view dashboard', async () => {
 ### E2E Test Example
 
 From `e2e/tests/auth.setup.ts`:
+
 ```typescript
 import { test as setup, expect } from '@playwright/test';
 import { createUser } from '../../src/testing/data-generators';
@@ -496,6 +515,7 @@ setup('authenticate', async ({ page }) => {
 ```
 
 **Run E2E tests:**
+
 ```bash
 yarn test-e2e  # Starts mock server + runs playwright
 ```
@@ -512,7 +532,7 @@ import { useCustomHook } from '../use-custom-hook';
 
 test('hook behavior', () => {
   const { result } = renderHook(() => useCustomHook());
-  
+
   expect(result.current.state).toEqual(initialValue);
 
   act(() => {
@@ -625,19 +645,22 @@ test('component handles errors gracefully', async () => {
 ### Priority for Testing
 
 **High priority:**
+
 1. Utility functions in `src/lib/` (high reuse)
 2. Feature module APIs (high impact)
 3. Error handling paths (production safety)
 
 **Medium priority:**
+
 1. UI components (covered partially by E2E)
 2. Form validation (current approach: E2E only)
 3. State management (low complexity in current schema)
 
 **Low priority:**
+
 1. Basic Layout components (visual, not much logic)
 2. Presentational components (covered by E2E)
 
 ---
 
-*Testing analysis: 2026-03-28*
+_Testing analysis: 2026-03-28_

@@ -7,6 +7,7 @@
 **Overall:** Feature-based modular architecture with layered separation of concerns.
 
 **Key Characteristics:**
+
 - Domain-driven feature modules encapsulating related functionality
 - Centralized routing and provider infrastructure at the app level
 - Clean separation between UI components, business logic, and utilities
@@ -17,32 +18,38 @@
 ## Layers
 
 ### 1. Entry Point Layer
+
 **Location:** `src/main.tsx`, `src/index.css`
 
 **Purpose:** Application bootstrap with test environment setup and global styles.
 
 **Contains:**
+
 - React DOM root initialization with mock service worker integration
 - Global CSS with Tailwind directives and CSS variable theme setup
 - Error boundaries and suspense configuration
 
 **Depends on:**
+
 - `src/app` - Main App component
 - `src/testing/mocks` - MSW for mocking HTTP in development
 
 **Used by:** Browser/Node environment only
 
 ### 2. App/Provider Layer
+
 **Location:** `src/app/provider.tsx`, `src/app/router.tsx`, `src/app/index.tsx`
 
 **Purpose:** Application configuration, provider setup, and route definition.
 
 **Contains:**
+
 - `AppProvider`: Wraps children with React Query, error boundaries, auth loader, global UI components (notifications, messages popup, AI chatbox)
 - `AppRouter`: Defines all routes with lazy-loaded components and React Router-compatible loaders/actions
 - Root `App` component: Composes provider and router
 
 **Depends on:**
+
 - `@tanstack/react-query` - Query client and provider
 - `react-router` - Browser router and route definitions
 - `src/lib/auth` - Current user loading
@@ -53,6 +60,7 @@
 **Key Pattern:** Routes use `lazy()` for code splitting and `convert(queryClient)` function to inject QueryClient into route loaders/actions.
 
 ### 3. Core Library Layer
+
 **Location:** `src/lib/`
 
 **Purpose:** Shared utilities, integrations, and infrastructure code.
@@ -60,6 +68,7 @@
 **Key modules:**
 
 #### API Client (`src/lib/api-client.ts`)
+
 - Axios instance with request/response interceptors
 - Bearer token injection from localStorage
 - 401 handling with automatic token refresh
@@ -67,6 +76,7 @@
 - Centralized error notification via Zustand store
 
 #### Authentication (`src/lib/auth.tsx`)
+
 - `useCurrentUser()` - Fetches authenticated user from `/users/me`
 - `useRefreshToken()` - Token refresh mutation
 - `useLogout()` - Logout with query cache invalidation
@@ -74,6 +84,7 @@
 - Routes to login on 401 with access token expiry
 
 #### Authorization (`src/lib/authorization.tsx`)
+
 - Role-based access control with enum `ROLES` (superAdmin, moderator, user)
 - Policy engine: `POLICIES` object with predicate functions
   - `comment:author` - Author or superAdmin can modify comments
@@ -86,11 +97,13 @@
 - `<Authorization>` component - Declarative access control with fallback UI
 
 #### React Query Configuration (`src/lib/react-query.ts`)
+
 - Default options: no retry on failure, 60s staleTime, no window focus refetch
 - Type utilities for query/mutation configuration
 - Applied globally to QueryClientProvider
 
 #### Server-Side Events (`src/lib/server-side-event.ts`)
+
 - Unified SSE hook handling messages, conversations, notifications
 - Real-time event types: `new_message`, `conversation_updated`, `new_notification`
 - Automatic query invalidation on SSE events
@@ -102,16 +115,19 @@
 **Used by:** Features, components, and routes
 
 ### 4. Feature Layer
+
 **Location:** `src/features/`
 
 **Purpose:** Domain-specific business logic organized by feature area.
 
 **Organization:** Each feature is self-contained with:
+
 - `api/` - Data fetching hooks and mutations using React Query
 - `components/` - Feature-specific React components
 - `stores/` - Zustand stores for transient UI state (e.g., modal open/close)
 
 **Features:**
+
 - `auth/` - Authentication forms, register/login/reset flows
 - `users/` - User profile data, hover cards, achievements
 - `profiles/` - User profile pages and editing
@@ -126,6 +142,7 @@
 - `dashboard/` - Dashboard page content and state
 
 **Example Feature Structure (posts):**
+
 ```
 src/features/posts/
 ├── api/
@@ -145,6 +162,7 @@ src/features/posts/
 ```
 
 **API Pattern:** Each mutation/query file exports:
+
 - Input schema (Zod validation)
 - API function (async wrapper around `api` client)
 - React Query hook (useMutation or useQuery)
@@ -157,11 +175,13 @@ src/features/posts/
 **Used by:** Routes and other features
 
 ### 5. Component/UI Layer
+
 **Location:** `src/components/`
 
 **Purpose:** Reusable, presentational components shared across features.
 
 **Organization:**
+
 - `ui/` - Primitive UI components (Button, Input, Dialog, Card, etc.)
   - Built with Radix UI + CVA (class-variance-authority) for composition
   - Examples: `button/`, `form/`, `dialog/`, `table/`, `select/`, `dropdown/`
@@ -175,6 +195,7 @@ src/features/posts/
 **Styling:** Tailwind CSS with CSS custom properties for theming (light/dark mode)
 
 **Component Guidelines:**
+
 - Unstyled primitives accept className overrides
 - Exported as named exports with index.ts barrel files
 - Props documented via TypeScript interfaces
@@ -185,11 +206,13 @@ src/features/posts/
 **Used by:** All features and routes
 
 ### 6. Routes/Pages Layer
+
 **Location:** `src/app/routes/`
 
 **Purpose:** Page-level route components combining layouts, features, and hooks.
 
 **Organization:**
+
 ```
 src/app/routes/
 ├── landing.tsx                   # Home/landing page
@@ -209,11 +232,13 @@ src/app/routes/
 ```
 
 **Pattern:** Each route file exports:
+
 - Default export: React component (lazy-loaded by router)
 - Optional `ErrorBoundary` export: Error UI for this route
 - Optional route loaders/actions (converted to React Router format)
 
 **Example: `src/app/routes/app/root.tsx`**
+
 - Mounts `DashboardLayout` wrapper
 - Initializes SSE connection for real-time updates on `<Outlet />`
 - Provides error boundary for entire `/app/*` subtree
@@ -225,6 +250,7 @@ src/app/routes/
 ## Data Flow
 
 ### 1. Authentication Flow
+
 ```
 User visits app
        ↓
@@ -242,6 +268,7 @@ useCurrentUser() hits /users/me
 ```
 
 ### 2. Post Creation Flow
+
 ```
 User clicks "Create Post"
        ↓
@@ -260,6 +287,7 @@ API: POST /posts with schema validation
 ```
 
 ### 3. Real-Time Updates (Messages)
+
 ```
 User in messages-popup.tsx
        ↓
@@ -281,6 +309,7 @@ Unread count syncs via useMessages store
 ```
 
 ### 4. State Management Strategy
+
 ```
 Server State (React Query):
 - Persistent data: Users, posts, comments, communities
@@ -303,13 +332,16 @@ Browser Storage (localStorage):
 ## Component Boundaries
 
 ### Cross-Feature Communication
+
 Features are loosely coupled through:
+
 1. **Query Invalidation** - When feature A mutates data, it invalidates queries used by feature B
 2. **Zustand Stores** - Global-but-scoped UI state (messages popup accessible from anywhere)
 3. **SSE Events** - Real-time sync without direct coupling
 4. **Props Drilling** - Routes compose features and pass needed props
 
 ### Example: Posting in a Community
+
 ```
 routes/app/communities/community.tsx
        ↓
@@ -329,17 +361,20 @@ Success: Invalidates both:
 ## Key Abstractions
 
 ### QueryKey Convention
+
 Pattern: `[resource, filterCriteria, pagination]`
+
 ```typescript
 // Examples:
-['posts', { communityId: 5 }, { page: 1, limit: 20 }]
-['conversations', { page: 1, limit: 20 }]
-['user', userId]
-['notifications']
+['posts', { communityId: 5 }, { page: 1, limit: 20 }][
+  ('conversations', { page: 1, limit: 20 })
+][('user', userId)]['notifications'];
 ```
 
 ### Input Validation
+
 All mutations use Zod schemas defined in API files:
+
 ```typescript
 // src/features/posts/api/create-post.ts
 export const createPostInput = z.object({
@@ -353,13 +388,16 @@ export const createPostInput = z.object({
 ```
 
 ### Authorization Patterns
+
 1. **Role-based:** `@/lib/authorization.ROLES.superAdmin`
 2. **Policy-based:** Predicate functions in `POLICIES` object
 3. **Declarative:** `<Authorization allowedRoles={['moderator']}>` component
 4. **Imperative:** `checkAccess()` from auth hook
 
 ### Error Handling
+
 **Layers:**
+
 1. **API Interceptor** (`src/lib/api-client.ts`) - Catches 401, refreshes token, retries
 2. **Component Error Boundary** - `<Authorization forbiddenFallback={...}>`
 3. **Route Error Boundary** - ErrorBoundary export from routes
@@ -369,22 +407,29 @@ export const createPostInput = z.object({
 ## Entry Points
 
 ### Browser Entry
+
 **Location:** `src/main.tsx`
+
 - Initializes MSW for development
 - Creates React root
 - Renders `<App />`
 
 ### App Entry
+
 **Location:** `src/app/index.tsx`
+
 - Delegates to `<AppProvider>` and `<AppRouter>`
 
 ### Protected App Entry
+
 **Location:** `src/app/routes/app/root.tsx`
+
 - Mounts `<DashboardLayout>`
 - Initializes SSE for real-time updates
 - Provides error boundary
 
 ### Route Entry Points (Lazy-Loaded)
+
 - `/` - `src/app/routes/landing.tsx`
 - `/auth/login` - `src/app/routes/auth/login.tsx`
 - `/auth/register` - `src/app/routes/auth/register.tsx`
@@ -397,39 +442,51 @@ export const createPostInput = z.object({
 ## Cross-Cutting Concerns
 
 ### Logging
+
 **Approach:** Console-based with `fancyLog` helper from `src/helper/fancy-log.ts`
+
 - API requests and responses logged in `api-client.ts` interceptors
 - Auth state changes logged in `auth.tsx` hooks
 - SSE events logged in `server-side-event.ts`
 
 ### Validation
+
 **Approach:** Zod schemas at API boundary (mutations)
+
 - Forms use hook-form + @hookform/resolvers with Zod
 - Backend response types defined in `src/types/api.ts`
 
 ### Authentication
+
 **Approach:** JWT with bearer tokens + token refresh
+
 - Token stored in localStorage
 - Injected as `Authorization: Bearer <token>` header
 - Auto-refresh on 401 response
 - Logout clears localStorage and redirects
 
 ### Authorization
+
 **Approach:** Role-based + policy-based
+
 - Roles: superAdmin, moderator, user
 - Policies: Predicates for fine-grained checks
 - Enforced at component level with `<Authorization>` wrapper
 - Conditional rendering based on `useAuthorization()` hook
 
 ### Real-Time Sync
+
 **Approach:** Server-Sent Events + Query Invalidation
+
 - Single SSE connection at app root
 - Handles: new messages, conversation updates, notifications
 - Query invalidation triggers React Query refetch
 - Unread counts synced via Zustand stores
 
 ### Styling
+
 **Approach:** Tailwind CSS + CSS custom properties
+
 - Colors use HSL variables for light/dark mode toggle
 - Radix UI for unstyled primitives
 - CVA for component variants
@@ -445,4 +502,4 @@ See [TESTING.md](TESTING.md) for detailed conventions.
 
 ---
 
-*Architecture analysis: 2026-03-28*
+_Architecture analysis: 2026-03-28_

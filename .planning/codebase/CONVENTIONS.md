@@ -14,6 +14,7 @@
 - Feature files: `queries.ts`, `types.ts`, `api.ts`, `index.ts`
 
 Example from `src/components/ui/button/button.tsx`:
+
 ```typescript
 // File: src/components/ui/button/button.tsx
 import { Button, buttonVariants } from './button';
@@ -33,6 +34,7 @@ import { Button, buttonVariants } from './button';
 **Convention:** **camelCase** for all function definitions and variable declarations.
 
 Example from `src/lib/upload.ts`:
+
 ```typescript
 export const uploadImages = async ({ data }: { data: UploadImagesInput }) => {
   // Function names are camelCase
@@ -44,6 +46,7 @@ export const useUploadImages = ({ mutationConfig }: UseUploadImagesOptions) => {
 ```
 
 Example from `src/hooks/use-disclosure.ts`:
+
 ```typescript
 export const useDisclosure = (initial = false) => {
   const [isOpen, setIsOpen] = React.useState(initial);
@@ -57,6 +60,7 @@ export const useDisclosure = (initial = false) => {
 **Convention:** **PascalCase** for all type definitions.
 
 Example from `src/lib/upload.ts`:
+
 ```typescript
 export const uploadImagesInput = z.object({
   type: z.enum(['avatar', 'post', 'video_thumbnail', 'community_cover']),
@@ -64,10 +68,13 @@ export const uploadImagesInput = z.object({
 });
 
 export type UploadImagesInput = z.infer<typeof uploadImagesInput>;
-export type UploadImageResponse = { /* ... */ };
+export type UploadImageResponse = {
+  /* ... */
+};
 ```
 
 Example from `src/types/api.ts`:
+
 ```typescript
 export type User = {
   id: number;
@@ -87,6 +94,7 @@ export type AuthResponse = {
 **Convention:** **UPPER_SNAKE_CASE** for enum values.
 
 Example from `src/lib/authorization.tsx`:
+
 ```typescript
 export enum ROLES {
   superAdmin = 'super_admin',
@@ -100,6 +108,7 @@ export enum ROLES {
 **Convention:** **camelCase** for regular constants, **UPPER_SNAKE_CASE** for configuration constants.
 
 Example from `src/testing/mocks/utils.ts`:
+
 ```typescript
 export const AUTH_COOKIE = 'auth-token'; // Configuration constant
 ```
@@ -111,6 +120,7 @@ export const AUTH_COOKIE = 'auth-token'; // Configuration constant
 **Tool:** Prettier 3.2.5
 
 **Configuration:** [`.prettierrc`](.prettierrc)
+
 ```json
 {
   "printWidth": 80,
@@ -127,6 +137,7 @@ export const AUTH_COOKIE = 'auth-token'; // Configuration constant
 ```
 
 **Key settings:**
+
 - Line width: **80 characters**
 - Indentation: **2 spaces**
 - Quotes: **Single quotes** for JavaScript, **double quotes** for JSX attributes
@@ -141,6 +152,7 @@ export const AUTH_COOKIE = 'auth-token'; // Configuration constant
 **Configuration:** [`.eslintrc.cjs`](.eslintrc.cjs)
 
 **Key plugins enabled:**
+
 - `@typescript-eslint` - TypeScript linting
 - `react` - React best practices
 - `react-hooks` - Hooks linting
@@ -155,11 +167,13 @@ export const AUTH_COOKIE = 'auth-token'; // Configuration constant
 **Key rules enforced:**
 
 #### Import Organization
+
 - Imports organized in groups: `builtin` → `external` → `internal` → `parent` → `sibling` → `index` → `object`
 - **Always alphabetized** within each group (case-insensitive)
 - **Blank lines** between import groups
 
 Example from `src/app/routes/landing.tsx`:
+
 ```typescript
 import { MessageCircle, Users, TrendingUp, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router';
@@ -172,6 +186,7 @@ import { useCurrentUser } from '@/lib/auth';
 ```
 
 #### Feature Isolation
+
 - **Cross-feature imports blocked**: Features cannot import from other features
   - `src/features/auth/` cannot import from `src/features/posts/`, etc.
   - Exception: Each feature can only import from itself
@@ -180,12 +195,14 @@ import { useCurrentUser } from '@/lib/auth';
   - Shared modules (`components`, `hooks`, `lib`, `types`, `utils`) cannot import from `app` or `features`
 
 #### Type Safety
+
 - `@typescript-eslint/no-unused-vars` - **Error**: All unused variables forbidden
 - `@typescript-eslint/no-explicit-any` - **Off**: `any` is allowed
 - Explicit function return types - **Off**: Return types are optional
 - Explicit module boundary types - **Off**: Not enforced
 
 #### React
+
 - `react/react-in-jsx-scope` - **Off**: Not needed with modern React
 - `react/prop-types` - **Off**: TypeScript handles prop validation
 - `jsx-a11y/anchor-is-valid` - **Off**: Allows anchor href patterns used in routing
@@ -197,11 +214,13 @@ import { useCurrentUser } from '@/lib/auth';
 **Pattern:** Use `index.ts` files to export public APIs from components and utilities.
 
 Example from `src/components/ui/button/index.ts`:
+
 ```typescript
 export { Button, buttonVariants } from './button';
 ```
 
 This allows clean imports:
+
 ```typescript
 import { Button } from '@/components/ui/button';
 ```
@@ -211,6 +230,7 @@ import { Button } from '@/components/ui/button';
 **Tool:** vite-tsconfig-paths
 
 **Common aliases from `tsconfig.json`:**
+
 - `@/` → `src/`
 - `@/components` → `src/components/`
 - `@/lib` → `src/lib/`
@@ -219,6 +239,7 @@ import { Button } from '@/components/ui/button';
 - `@/utils` → `src/utils/`
 
 **Usage:**
+
 ```typescript
 // Preferred: absolute imports with aliases
 import { Button } from '@/components/ui/button';
@@ -236,6 +257,7 @@ import { Button } from '../../../components/ui/button';
 **Theme:** Error boundaries + React Query error handling
 
 Example from `src/lib/authorization.tsx`:
+
 ```typescript
 export const useAuthorization = () => {
   const userQuery = useCurrentUser();
@@ -251,10 +273,12 @@ export const useAuthorization = () => {
 ```
 
 **Components using react-error-boundary:**
+
 - `src/components/errors/main.tsx` - Centralized error boundary
 - Wraps main app routes to catch unhandled errors
 
 **API error handling:**
+
 - Uses `@tanstack/react-query` for mutation error management
 - Mutations include `mutationConfig` parameter for error callbacks
 - See `src/lib/upload.ts` for mutation pattern
@@ -264,11 +288,13 @@ export const useAuthorization = () => {
 **Framework:** `console` (no external logging library)
 
 **Conventions:**
+
 - Use `console.log()` for general debugging
 - Use `console.error()` for error conditions
 - Development logging not enforced in production builds
 
 Example from mock server setup:
+
 ```bash
 yarn run-mock-server  # Uses pino-pretty for formatted output
 ```
@@ -280,12 +306,14 @@ yarn run-mock-server  # Uses pino-pretty for formatted output
 **Comments are minimal** - code should be self-documenting.
 
 **Use comments for:**
+
 - Complex business logic explanation
 - API documentation patterns
 - Configuration notes
 - Feature flags or experimental code
 
 Example from `src/lib/upload.ts` (API documentation):
+
 ```typescript
 /* 
 API DOCS:
@@ -311,6 +339,7 @@ POST BASEURL/images/upload (/videos/upload for videos)
 **Pattern:** Small, focused functions with single responsibility.
 
 Example from `src/hooks/use-disclosure.ts`:
+
 ```typescript
 export const useDisclosure = (initial = false) => {
   const [isOpen, setIsOpen] = React.useState(initial);
@@ -328,6 +357,7 @@ export const useDisclosure = (initial = false) => {
 **Pattern:** Use object destructuring for multiple parameters.
 
 Example from `src/lib/upload.ts`:
+
 ```typescript
 // ✓ Good: object parameters
 export const uploadImages = async ({
@@ -349,18 +379,19 @@ export const uploadImages = async (data, onSuccess, onError) => {
 **Pattern:** Explicit return types for public APIs, optional for internal functions.
 
 Example from `src/lib/upload.ts`:
+
 ```typescript
 // ✓ Public functions have explicit return types
 export const uploadImages = async ({
   data,
 }: {
   data: UploadImagesInput;
-}): Promise<UploadImageResponse> => { /* ... */ };
+}): Promise<UploadImageResponse> => {
+  /* ... */
+};
 
 // ✓ Custom hooks use explicit return type
-export const useUploadImages = ({
-  mutationConfig,
-}: UseUploadImagesOptions) => {
+export const useUploadImages = ({ mutationConfig }: UseUploadImagesOptions) => {
   return useMutation({
     mutationFn: uploadImages,
   });
@@ -374,6 +405,7 @@ export const useUploadImages = ({
 **Pattern:** Feature modules follow consistent structure.
 
 Example from `src/features/auth/`:
+
 ```
 src/features/auth/
 ├── components/          # UI components specific to auth
@@ -384,10 +416,13 @@ src/features/auth/
 ```
 
 **Pattern from upload utility:**
+
 ```typescript
 // Export both the service function and the hook
-export const uploadImages = async ({ data }: { data: UploadImagesInput }) => { };
-export const useUploadImages = ({ mutationConfig }: UseUploadImagesOptions) => { };
+export const uploadImages = async ({ data }: { data: UploadImagesInput }) => {};
+export const useUploadImages = ({
+  mutationConfig,
+}: UseUploadImagesOptions) => {};
 ```
 
 ### Exports
@@ -395,6 +430,7 @@ export const useUploadImages = ({ mutationConfig }: UseUploadImagesOptions) => {
 **Pattern:** Export public APIs from `index.ts` files.
 
 Example from `src/components/ui/button/index.ts`:
+
 ```typescript
 export { Button, buttonVariants } from './button';
 ```
@@ -404,6 +440,7 @@ Use barrel files to create clean API surfaces for consumers.
 ### Shared Code Organization
 
 **Locations:**
+
 - `src/components/` - Reusable UI components
 - `src/hooks/` - Custom React hooks
 - `src/lib/` - Utilities, helpers, API clients
@@ -417,18 +454,21 @@ Use barrel files to create clean API surfaces for consumers.
 **Primary:** Tailwind CSS 3.4.3
 
 **Utilities:**
+
 - `clsx` - Conditional class names
 - `tailwind-merge` - Smart Tailwind class merging
 - `class-variance-authority` - Component variant management
 
 Example from `src/components/ui/button/button.tsx`:
+
 ```typescript
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground shadow hover:bg-primary/90',
+        default:
+          'bg-primary text-primary-foreground shadow hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground',
         outline: 'border border-input bg-background shadow-sm',
       },
@@ -460,6 +500,7 @@ import { cn } from '@/utils/cn';
 **Convention:** Custom hooks use `use` prefix and are placed in `src/hooks/`.
 
 Example from `src/hooks/use-disclosure.ts`:
+
 ```typescript
 export const useDisclosure = (initial = false) => {
   const [isOpen, setIsOpen] = React.useState(initial);
@@ -472,6 +513,7 @@ export const useDisclosure = (initial = false) => {
 **Pattern:** Use TypeScript interfaces for component props.
 
 Example from `src/components/ui/button/button.tsx`:
+
 ```typescript
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
@@ -492,11 +534,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 **Framework:** React Hook Form + Zod validation
 
 **Pattern:**
+
 1. Define Zod schema
 2. Use schema to infer TypeScript type
 3. Pass type to `useForm` hook
 
 Example from `src/lib/upload.ts`:
+
 ```typescript
 export const uploadImagesInput = z.object({
   type: z.enum(['avatar', 'post', 'video_thumbnail', 'community_cover']),
@@ -511,6 +555,7 @@ export type UploadImagesInput = z.infer<typeof uploadImagesInput>;
 **Pattern:** Use Radix UI + custom components for composition.
 
 Example from button with icon:
+
 ```typescript
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ isLoading, icon, children, ...props }, ref) => {
@@ -535,4 +580,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 ---
 
-*Convention analysis: 2026-03-28*
+_Convention analysis: 2026-03-28_
