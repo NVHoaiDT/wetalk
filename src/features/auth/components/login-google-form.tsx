@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { env } from '@/config/env';
 import { fancyLog } from '@/helper/fancy-log';

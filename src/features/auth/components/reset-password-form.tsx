@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Form, Input } from '@/components/ui/form';
@@ -10,6 +11,7 @@ type ResetPasswordFormProps = {
 };
 
 export const ResetPasswordForm = ({ onSuccess }: ResetPasswordFormProps) => {
+  const { t } = useTranslation('auth');
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') || '';
   const redirectTo = searchParams.get('redirectTo');
@@ -33,8 +35,8 @@ export const ResetPasswordForm = ({ onSuccess }: ResetPasswordFormProps) => {
           <div className="space-y-5">
             <Input
               type="password"
-              label="New Password"
-              placeholder="••••••••"
+              label={t('label.newPassword')}
+              placeholder={t('placeholder.newPassword')}
               error={formState.errors['newPassword']}
               registration={register('newPassword')}
               className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
@@ -46,7 +48,7 @@ export const ResetPasswordForm = ({ onSuccess }: ResetPasswordFormProps) => {
                 type="submit"
                 className="h-12 w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Reset Password
+                {t('action.resetPassword')}
               </Button>
             </div>
           </div>
@@ -55,12 +57,12 @@ export const ResetPasswordForm = ({ onSuccess }: ResetPasswordFormProps) => {
 
       {/* Back to login link */}
       <div className="text-center text-sm text-gray-600">
-        Remember your password?{' '}
+        {t('label.rememberPassword')}{' '}
         <Link
           to={paths.auth.login.getHref(redirectTo)}
           className="font-semibold text-gray-900 underline underline-offset-2 transition-colors hover:text-gray-700"
         >
-          Log in
+          {t('action.login')}
         </Link>
       </div>
     </div>

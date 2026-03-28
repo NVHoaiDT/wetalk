@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Form, Input } from '@/components/ui/form';
@@ -16,6 +17,7 @@ type LoginFormProps = {
 };
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const { t } = useTranslation('auth');
   const login = useLoginWithEmailAndPassword({
     onSuccess,
   });
@@ -32,7 +34,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     fancyLog('Login error message:', message);
 
     if (status === 403 || status === 401) {
-      return 'Invalid credentials. Please check your email and password.';
+      return t('error.invalidEmail');
     }
 
     if (message) {
@@ -48,7 +50,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       return message;
     }
 
-    return 'Something went wrong. Please try again.';
+    return t('error.invalidPassword');
   };
 
   const errorMessage = getErrorMessage();
@@ -66,8 +68,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <div>
               <Input
                 type="email"
-                label="Email"
-                placeholder="name@email.com"
+                label={t('label.email')}
+                placeholder={t('placeholder.emailInput')}
                 registration={register('email')}
                 className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
               />
@@ -75,7 +77,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 <div className="mt-2 flex items-center gap-2 text-sm text-red-600">
                   <span className="font-medium">
                     {formState.errors['email']?.message?.toString() ||
-                      'Please enter a valid email address with @ symbol'}
+                      t('error.invalidEmail')}
                   </span>
                 </div>
               )}
@@ -84,8 +86,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <div>
               <Input
                 type="password"
-                label="Password"
-                placeholder="••••••••"
+                label={t('label.password')}
+                placeholder={t('placeholder.passwordInput')}
                 registration={register('password')}
                 className="h-12 rounded-full border-gray-400 px-4 text-base placeholder:text-gray-400 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20"
               />
@@ -93,7 +95,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 <div className="mt-2 flex items-center gap-2 text-sm text-red-600">
                   <span className="font-medium">
                     {formState.errors['password']?.message?.toString() ||
-                      'Password must be at least 6 characters long'}
+                      t('error.weakPassword')}
                   </span>
                 </div>
               )}
@@ -113,7 +115,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 type="submit"
                 className="h-12 w-full rounded-full bg-gradient-to-r from-sky-500 to-blue-500 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-xl hover:shadow-blue-500/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Log in
+                {t('action.login')}
               </Button>
             </div>
           </div>
@@ -139,18 +141,18 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           to={paths.auth.forgotPassword.getHref()}
           className="font-semibold text-gray-700 underline underline-offset-2 transition-colors hover:text-gray-900"
         >
-          Forgot my password
+          {t('action.forgotPassword')}
         </Link>
       </div>
 
       {/* Sign up link */}
       <div className="text-center text-sm text-gray-600">
-        Don&apos;t have an account?{' '}
+        {t('label.noAccount')}{' '}
         <Link
           to={paths.auth.register.getHref(redirectTo)}
           className="bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text font-semibold text-transparent underline decoration-blue-500 decoration-wavy decoration-1 underline-offset-2 transition-colors hover:from-blue-600 hover:to-blue-700"
         >
-          Sign up
+          {t('action.signup')}
         </Link>
       </div>
 
