@@ -10,7 +10,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & Infrastructure** - i18next setup, providers, language detection, persistence
+- [x] **Phase 1: Foundation & Infrastructure** - i18next setup, providers, language detection, persistence
 - [ ] **Phase 2: String Extraction & Audit** - Complete UI string inventory and JSON structure
 - [ ] **Phase 3: Component Integration** - Wire all components with useTranslation hooks
 - [ ] **Phase 4: Language Switching & Settings UI** - User language preference UI and persistence
