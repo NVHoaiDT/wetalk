@@ -18,22 +18,22 @@ This is **EXPECTED and CORRECT** for Phase 2.
 
 ## Key Counts by Namespace
 
-| Namespace | Keys in JSON | Used in Code | Status | Notes |
-|-----------|-------------|---|--------|-------|
-| common | 42 | 0 | Expected (Phase 3) | Buttons, labels, errors, validation, pagination |
-| post | 26 | 0 | Expected (Phase 3) | Post creation/edit/delete flows |
-| message | 13 | 0 | Expected (Phase 3) | Messaging feature |
-| community | 24 | 0 | Expected (Phase 3) | Community management |
-| auth | 18 | 0 | Expected (Phase 3) | Authentication flows |
-| dashboard | 7 | 0 | Expected (Phase 3) | Dashboard/feed UI |
-| notifications | 8 | 0 | Expected (Phase 3) | Notification display |
-| search | 6 | 0 | Expected (Phase 3) | Search functionality |
-| profiles | 10 | 0 | Expected (Phase 3) | User profile pages |
-| users | 8 | 0 | Expected (Phase 3) | User management |
-| chatbot | 6 | 0 | Expected (Phase 3) | AI chatbot interface |
-| settings | 8 | 0 | Expected (Phase 3) | Settings pages |
-| postComments | 10 | 0 | Expected (Phase 3) | Comment display/creation |
-| **TOTAL** | **186** | **0** | **✅** | **All keys created, awaiting Phase 3 wiring** |
+| Namespace     | Keys in JSON | Used in Code | Status             | Notes                                           |
+| ------------- | ------------ | ------------ | ------------------ | ----------------------------------------------- |
+| common        | 42           | 0            | Expected (Phase 3) | Buttons, labels, errors, validation, pagination |
+| post          | 26           | 0            | Expected (Phase 3) | Post creation/edit/delete flows                 |
+| message       | 13           | 0            | Expected (Phase 3) | Messaging feature                               |
+| community     | 24           | 0            | Expected (Phase 3) | Community management                            |
+| auth          | 18           | 0            | Expected (Phase 3) | Authentication flows                            |
+| dashboard     | 7            | 0            | Expected (Phase 3) | Dashboard/feed UI                               |
+| notifications | 8            | 0            | Expected (Phase 3) | Notification display                            |
+| search        | 6            | 0            | Expected (Phase 3) | Search functionality                            |
+| profiles      | 10           | 0            | Expected (Phase 3) | User profile pages                              |
+| users         | 8            | 0            | Expected (Phase 3) | User management                                 |
+| chatbot       | 6            | 0            | Expected (Phase 3) | AI chatbot interface                            |
+| settings      | 8            | 0            | Expected (Phase 3) | Settings pages                                  |
+| postComments  | 10           | 0            | Expected (Phase 3) | Comment display/creation                        |
+| **TOTAL**     | **186**      | **0**        | **✅**             | **All keys created, awaiting Phase 3 wiring**   |
 
 ---
 
@@ -50,6 +50,7 @@ Since no components are currently using `t('key')` calls, there are no "missing"
 **Unused keys (in JSON but not in code):** 186 (Expected in Phase 2)
 
 All 186 keys are currently unused because component wiring happens in Phase 3. This is **EXPECTED** and indicates:
+
 - ✅ All keys have been extracted into JSON files
 - ✅ No mismatches exist yet between code and keys
 - ✅ Ready for Phase 3 component integration
@@ -59,6 +60,7 @@ All 186 keys are currently unused because component wiring happens in Phase 3. T
 ## Phase 2 Validation: ✅ PASS
 
 **Criteria:**
+
 - [x] All 13 JSON files created
 - [x] All 186 keys properly formatted (camelCase, semantic organization)
 - [x] All JSON files are valid and loadable
@@ -73,13 +75,13 @@ All 186 keys are currently unused because component wiring happens in Phase 3. T
 
 ## Timeline
 
-| Phase | Task | Status |
-|-------|------|--------|
-| Phase 1 | i18next infrastructure | ✅ Complete |
-| **Phase 2** | **String extraction & JSON creation** | **✅ Complete** |
-| Phase 3 | Component wiring with useTranslation() | ⏳ Next |
-| Phase 4 | Language switching UI | ⏳ Future |
-| Phase 5 | Vietnamese translations | ⏳ Future |
+| Phase       | Task                                   | Status          |
+| ----------- | -------------------------------------- | --------------- |
+| Phase 1     | i18next infrastructure                 | ✅ Complete     |
+| **Phase 2** | **String extraction & JSON creation**  | **✅ Complete** |
+| Phase 3     | Component wiring with useTranslation() | ⏳ Next         |
+| Phase 4     | Language switching UI                  | ⏳ Future       |
+| Phase 5     | Vietnamese translations                | ⏳ Future       |
 
 ---
 

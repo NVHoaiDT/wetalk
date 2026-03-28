@@ -1,19 +1,12 @@
 {
-  "input": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
+  "input": ["src/**/*.ts", "src/**/*.tsx"],
   "output": "./",
   "options": {
     "debug": true,
     "func": {
-      "list": [
-        "t"
-      ]
+      "list": ["t"]
     },
-    "lngs": [
-      "en"
-    ],
+    "lngs": ["en"],
     "ns": [
       "common",
       "post",
@@ -32,7 +25,8 @@
     "defaultLng": "en",
     "defaultNs": "common",
     "resource": {
-      "loadPath": "public/locales/{{lng}}/{{ns}}.json"
+      "loadPath": "public/locales/{{lng}}/{{ns}}.json",
+      "savePath": "public/locales/{{lng}}/{{ns}}.json"
     }
   }
 }

@@ -31,7 +31,21 @@ Validate extraction completeness using i18next-scanner, generate comprehensive a
     "debug": true,
     "func": { "list": ["t"] },
     "lngs": ["en"],
-    "ns": ["common", "post", "message", "community", "auth", "dashboard", "notifications", "search", "profiles", "users", "chatbot", "settings", "postComments"],
+    "ns": [
+      "common",
+      "post",
+      "message",
+      "community",
+      "auth",
+      "dashboard",
+      "notifications",
+      "search",
+      "profiles",
+      "users",
+      "chatbot",
+      "settings",
+      "postComments"
+    ],
     "defaultLng": "en",
     "defaultNs": "common",
     "resource": {
@@ -42,6 +56,7 @@ Validate extraction completeness using i18next-scanner, generate comprehensive a
 ```
 
 **Settings applied:**
+
 - Input patterns: `src/**/*.ts` and `src/**/*.tsx`
 - Function detection: `t()` calls (react-i18next pattern)
 - All 13 namespaces configured
@@ -58,15 +73,16 @@ Validate extraction completeness using i18next-scanner, generate comprehensive a
 
 **Scanner Results:**
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| Total keys in JSON files | 186 | ✅ |
-| Missing keys (not in JSON) | 0 | ✅ PASS |
-| Unused keys (in JSON, not in code) | 186 | Expected (Phase 3 will use) |
-| Scanning errors | 0 | ✅ |
-| Configuration errors | 0 | ✅ |
+| Metric                             | Value | Status                      |
+| ---------------------------------- | ----- | --------------------------- |
+| Total keys in JSON files           | 186   | ✅                          |
+| Missing keys (not in JSON)         | 0     | ✅ PASS                     |
+| Unused keys (in JSON, not in code) | 186   | Expected (Phase 3 will use) |
+| Scanning errors                    | 0     | ✅                          |
+| Configuration errors               | 0     | ✅                          |
 
 **Why unused keys are expected:**
+
 - Phase 2 = String extraction phase
 - Phase 3 = Component wiring (will consume these keys)
 - This is CORRECT behavior for Phase 2
@@ -81,6 +97,7 @@ Validate extraction completeness using i18next-scanner, generate comprehensive a
 **Comprehensive translator reference includes:**
 
 #### Content Sections:
+
 - [x] Project context (WeTalk platform, target audience, tone)
 - [x] Naming convention explanation (namespace.elementType.property pattern)
 - [x] File structure overview (13 files, 186 keys)
@@ -94,19 +111,20 @@ Validate extraction completeness using i18next-scanner, generate comprehensive a
 
 #### Key Terminology Guide (Translated for Consistency):
 
-| English Term | Vietnamese | Context | Why This Term |
-|--------------|------------|---------|---------------|
-| Post | Bài đăng | User-created content | Standard platform term |
-| Community | Cộng đồng | Group/forum | Formal, inclusive |
-| Message | Tin nhắn | 1-on-1 conversation | Direct, personal |
-| Share | Chia sẻ | Distribute content | Natural, friendly |
-| Like | Thích | Appreciation | Concise, familiar |
-| Comment | Bình luận | Response to post | Standard term |
-| Follow | Theo dõi | Subscribe to user | Standard term |
-| Notification | Thông báo | Alert to user | Standard term |
-| Karma | Karma | Reputation score | Leave English (tech audience) |
+| English Term | Vietnamese | Context              | Why This Term                 |
+| ------------ | ---------- | -------------------- | ----------------------------- |
+| Post         | Bài đăng   | User-created content | Standard platform term        |
+| Community    | Cộng đồng  | Group/forum          | Formal, inclusive             |
+| Message      | Tin nhắn   | 1-on-1 conversation  | Direct, personal              |
+| Share        | Chia sẻ    | Distribute content   | Natural, friendly             |
+| Like         | Thích      | Appreciation         | Concise, familiar             |
+| Comment      | Bình luận  | Response to post     | Standard term                 |
+| Follow       | Theo dõi   | Subscribe to user    | Standard term                 |
+| Notification | Thông báo  | Alert to user        | Standard term                 |
+| Karma        | Karma      | Reputation score     | Leave English (tech audience) |
 
 #### Text Length Guidance:
+
 - Short strings (5-10 chars): ~14% expansion expected
 - Medium strings (10-30 chars): ~30% expansion expected
 - Long strings (30+ chars): ~10-25% expansion expected
@@ -121,22 +139,22 @@ Validate extraction completeness using i18next-scanner, generate comprehensive a
 
 **File Verification:**
 
-| File | Keys | JSON Valid | Loadable | Status |
-|------|------|-----------|----------|--------|
-| common.json | 42 | ✅ | ✅ | Ready |
-| auth.json | 18 | ✅ | ✅ | Ready |
-| post.json | 26 | ✅ | ✅ | Ready |
-| message.json | 13 | ✅ | ✅ | Ready |
-| community.json | 24 | ✅ | ✅ | Ready |
-| dashboard.json | 7 | ✅ | ✅ | Ready |
-| notifications.json | 8 | ✅ | ✅ | Ready |
-| search.json | 6 | ✅ | ✅ | Ready |
-| profiles.json | 10 | ✅ | ✅ | Ready |
-| users.json | 8 | ✅ | ✅ | Ready |
-| chatbot.json | 6 | ✅ | ✅ | Ready |
-| settings.json | 8 | ✅ | ✅ | Ready |
-| postComments.json | 10 | ✅ | ✅ | Ready |
-| **TOTAL** | **186** | **✅** | **✅** | **✅ COMPLETE** |
+| File               | Keys    | JSON Valid | Loadable | Status          |
+| ------------------ | ------- | ---------- | -------- | --------------- |
+| common.json        | 42      | ✅         | ✅       | Ready           |
+| auth.json          | 18      | ✅         | ✅       | Ready           |
+| post.json          | 26      | ✅         | ✅       | Ready           |
+| message.json       | 13      | ✅         | ✅       | Ready           |
+| community.json     | 24      | ✅         | ✅       | Ready           |
+| dashboard.json     | 7       | ✅         | ✅       | Ready           |
+| notifications.json | 8       | ✅         | ✅       | Ready           |
+| search.json        | 6       | ✅         | ✅       | Ready           |
+| profiles.json      | 10      | ✅         | ✅       | Ready           |
+| users.json         | 8       | ✅         | ✅       | Ready           |
+| chatbot.json       | 6       | ✅         | ✅       | Ready           |
+| settings.json      | 8       | ✅         | ✅       | Ready           |
+| postComments.json  | 10      | ✅         | ✅       | Ready           |
+| **TOTAL**          | **186** | **✅**     | **✅**   | **✅ COMPLETE** |
 
 **Key Statistics:**
 
@@ -173,17 +191,17 @@ Coverage by feature:
 
 ## Key Metrics
 
-| Metric | Value |
-|--------|-------|
-| Configuration files created | 1 (.i18nextrc.json) |
-| Validation reports created | 1 (02-SCANNER-REPORT.md) |
-| Translator documentation pages | 1 (02-AUDIT-DOCUMENT.md) |
-| Final inventory documents | 1 (02-02-INVENTORY.md) |
-| Scanner execution errors | 0 |
-| JSON parsing errors | 0 |
-| Missing keys detected | 0 ✅ |
-| Readiness for Phase 3 | Ready ✅ |
-| Readiness for Phase 5 translator | Ready ✅ |
+| Metric                           | Value                    |
+| -------------------------------- | ------------------------ |
+| Configuration files created      | 1 (.i18nextrc.json)      |
+| Validation reports created       | 1 (02-SCANNER-REPORT.md) |
+| Translator documentation pages   | 1 (02-AUDIT-DOCUMENT.md) |
+| Final inventory documents        | 1 (02-02-INVENTORY.md)   |
+| Scanner execution errors         | 0                        |
+| JSON parsing errors              | 0                        |
+| Missing keys detected            | 0 ✅                     |
+| Readiness for Phase 3            | Ready ✅                 |
+| Readiness for Phase 5 translator | Ready ✅                 |
 
 ---
 
@@ -191,7 +209,7 @@ Coverage by feature:
 
 - [x] .i18nextrc.json created with correct configuration
 - [x] Configuration specifies all 13 namespaces
-- [x] Input patterns match src/ structure (*.ts, *.tsx)
+- [x] Input patterns match src/ structure (_.ts, _.tsx)
 - [x] i18next-scanner executed successfully
 - [x] Scanner reports zero missing keys (Phase 2 extraction complete)
 - [x] Scanner configuration valid (no syntax errors)
@@ -211,12 +229,14 @@ Coverage by feature:
 ## Phase 2 Completion Status
 
 **Wave 1 (02-01):** ✅ COMPLETE
+
 - Manual audit of 520+ UI strings
 - Created common.json (42 keys)
 - Created 12 feature-specific JSON files (144 keys)
 - Total: 186 keys across 13 files
 
 **Wave 2 (02-02):** ✅ COMPLETE
+
 - Created .i18nextrc.json configuration
 - Ran i18next-scanner (zero missing keys)
 - Generated translator audit document
@@ -229,7 +249,9 @@ Coverage by feature:
 ## Handoff Status
 
 ### For Phase 3 (Component Integration)
+
 ✅ **READY TO PROCEED**
+
 - All 186 keys extracted and organized
 - i18next configuration complete
 - Zero missing keys
@@ -237,7 +259,9 @@ Coverage by feature:
 - Test mocking patterns ready
 
 ### For Phase 5 (Vietnamese Translation)
+
 ✅ **READY TO HAND OFF TO TRANSLATOR**
+
 - Comprehensive terminology guide provided
 - Tone examples for all contexts
 - Text length expansion guidance
@@ -256,12 +280,13 @@ All must-haves from plan satisfied:
 ✅ All translation keys have both namespace and property chain  
 ✅ Key naming conventions documented and verified  
 ✅ Audit document generated for translator with:
-  - [x] Key counts and scope
-  - [x] Terminology guidance
-  - [x] Tone examples
-  - [x] Text length considerations
-  - [x] Per-namespace descriptions
-  - [x] Completeness checklist
+
+- [x] Key counts and scope
+- [x] Terminology guidance
+- [x] Tone examples
+- [x] Text length considerations
+- [x] Per-namespace descriptions
+- [x] Completeness checklist
 
 **Wave 2 Status:** ✅ **COMPLETE** — Ready for Phase 3 execution
 
@@ -269,13 +294,13 @@ All must-haves from plan satisfied:
 
 ## Next Phases
 
-| Phase | Status | Timing | Blockers |
-|-------|--------|--------|----------|
-| **Phase 3** | ⏳ READY | Next | None — can start immediately |
-| Phase 4 | 📋 Planning | After Phase 3 | None |
+| Phase       | Status                  | Timing                  | Blockers                       |
+| ----------- | ----------------------- | ----------------------- | ------------------------------ |
+| **Phase 3** | ⏳ READY                | Next                    | None — can start immediately   |
+| Phase 4     | 📋 Planning             | After Phase 3           | None                           |
 | **Phase 5** | 🤝 READY FOR TRANSLATOR | Parallel with Phase 3-4 | None — translator has all docs |
-| Phase 6 | 📋 Planning | After Phase 5 | Phase 5 complete |
-| Phase 7 | 📋 Planning | After Phase 6 | Phase 6 complete |
+| Phase 6     | 📋 Planning             | After Phase 5           | Phase 5 complete               |
+| Phase 7     | 📋 Planning             | After Phase 6           | Phase 6 complete               |
 
 ---
 
@@ -284,6 +309,7 @@ All must-haves from plan satisfied:
 **Phase 2 Status:** ✅ **EXTRACTION & AUDIT COMPLETE**
 
 **Next Action:**
+
 ```bash
 /gsd-execute-phase 3
 ```

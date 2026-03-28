@@ -17,6 +17,7 @@
 ## Audit by Feature
 
 ### Auth Feature (src/features/auth/)
+
 - `label.email`: "Email"
 - `placeholder.emailInput`: "name@email.com"
 - `validation.emailInvalid`: "Please enter a valid email address with @ symbol"
@@ -33,6 +34,7 @@
 **Count:** 12 strings
 
 ### Posts Feature (src/features/posts/)
+
 - `placeholder.postTitle`: "An interesting title..."
 - `placeholder.linkUrl`: "https://example.com"
 - `label.postTitle`: "Post Title"
@@ -53,6 +55,7 @@
 **Count:** 16 strings
 
 ### Messages Feature (src/features/messages/)
+
 - `placeholder.typeMessage`: "Type a message..."
 - `placeholder.searchConversations`: "Search conversations..."
 - `label.conversations`: "Conversations"
@@ -68,6 +71,7 @@
 **Count:** 11 strings
 
 ### Communities Feature (src/features/communities/)
+
 - `modal.communitySettings.title`: "Community Settings"
 - `modal.setModerator.title`: "Set Moderator Role"
 - `modal.setModerator.description`: "Change the role for {name} in this community."
@@ -96,6 +100,7 @@
 **Count:** 24 strings
 
 ### Settings Feature (src/features/settings/)
+
 - `placeholder.currentPassword`: "Enter current password"
 - `placeholder.newPassword`: "Enter new password (min 5 characters)"
 - `label.accountSettings`: "Account Settings"
@@ -108,6 +113,7 @@
 **Count:** 8 strings
 
 ### Chatbot Feature (src/features/chatbot/)
+
 - `placeholder.askAnything`: "Ask me anything..."
 - `label.chatbot`: "Chat with AI"
 - `button.send`: "Send"
@@ -116,6 +122,7 @@
 **Count:** 4 strings
 
 ### Search Feature (src/features/search/)
+
 - `placeholder.searchPostsCommunities`: "Search posts, communities..."
 - `label.searchResults`: "Search Results"
 - `error.noResults`: "No results found"
@@ -124,6 +131,7 @@
 **Count:** 4 strings
 
 ### Notifications Feature (src/features/notifications/)
+
 - `modal.deleteNotification.title`: "Delete Unread Notification?"
 - `label.notifications`: "Notifications"
 - `action.markAsRead`: "Mark as Read"
@@ -133,6 +141,7 @@
 **Count:** 5 strings
 
 ### Post Comments Feature (src/features/post-comments/)
+
 - `modal.editComment.title`: "Edit Comment"
 - `placeholder.reportDescription`: "Provide any additional context that might help us review this report..."
 - `label.comment`: "Comment"
@@ -145,6 +154,7 @@
 **Count:** 8 strings
 
 ### Profiles Feature (src/features/profiles/)
+
 - `label.profileName`: "Profile Name"
 - `label.bio`: "Bio"
 - `label.location`: "Location"
@@ -156,6 +166,7 @@
 **Count:** 7 strings
 
 ### Users Feature (src/features/users/)
+
 - `label.users`: "Users"
 - `label.username`: "Username"
 - `label.joinDate`: "Joined"
@@ -166,6 +177,7 @@
 **Count:** 6 strings
 
 ### Dashboard Feature (src/features/dashboard/)
+
 - `label.dashboard`: "Dashboard"
 - `label.feed`: "Feed"
 - `label.trending`: "Trending"
@@ -181,6 +193,7 @@
 ## Common UI Elements (Extracted for common.json)
 
 ### Buttons
+
 - `button.confirm`: "Confirm"
 - `button.cancel`: "Cancel"
 - `button.save`: "Save"
@@ -197,11 +210,13 @@
 - `button.reply`: "Reply"
 
 ### Generic Labels
+
 - `label.loading`: "Loading..."
 - `label.noResults`: "No results found"
 - `label.emptyState`: "Nothing here yet"
 
 ### Generic Errors
+
 - `error.networkError`: "Network error. Please try again."
 - `error.unauthorized`: "You don't have permission to do that."
 - `error.notFound`: "Not found."
@@ -209,12 +224,14 @@
 - `error.unknown`: "Something went wrong. Please try again."
 
 ### Validation
+
 - `validation.required`: "This field is required."
 - `validation.emailInvalid`: "Please enter a valid email address."
 - `validation.passwordTooWeak`: "Password must be at least 8 characters."
 - `validation.passwordMismatch`: "Passwords do not match."
 
 ### Pagination
+
 - `pagination.previous`: "Previous"
 - `pagination.next`: "Next"
 - `pagination.page`: "Page"
@@ -226,23 +243,23 @@
 
 ## Statistics
 
-| Feature | Count | Type |
-|---------|-------|------|
-| API Placeholders/Hardcoded | 520 | identified |
-| Common UI (buttons, errors, validation) | 42 | extracted |
-| Auth | 12 | feature-specific |
-| Posts | 16 | feature-specific |
-| Messages | 11 | feature-specific |
-| Communities | 24 | feature-specific |
-| Settings | 8 | feature-specific |
-| Chatbot | 4 | feature-specific |
-| Search | 4 | feature-specific |
-| Notifications | 5 | feature-specific |
-| Post Comments | 8 | feature-specific |
-| Profiles | 7 | feature-specific |
-| Users | 6 | feature-specific |
-| Dashboard | 7 | feature-specific |
-| **TOTAL** | **520+** | |
+| Feature                                 | Count    | Type             |
+| --------------------------------------- | -------- | ---------------- |
+| API Placeholders/Hardcoded              | 520      | identified       |
+| Common UI (buttons, errors, validation) | 42       | extracted        |
+| Auth                                    | 12       | feature-specific |
+| Posts                                   | 16       | feature-specific |
+| Messages                                | 11       | feature-specific |
+| Communities                             | 24       | feature-specific |
+| Settings                                | 8        | feature-specific |
+| Chatbot                                 | 4        | feature-specific |
+| Search                                  | 4        | feature-specific |
+| Notifications                           | 5        | feature-specific |
+| Post Comments                           | 8        | feature-specific |
+| Profiles                                | 7        | feature-specific |
+| Users                                   | 6        | feature-specific |
+| Dashboard                               | 7        | feature-specific |
+| **TOTAL**                               | **520+** |                  |
 
 **Confidence:** HIGH — All major features scanned; standard UI patterns captured; ready for JSON extraction.
 
