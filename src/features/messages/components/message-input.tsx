@@ -100,7 +100,9 @@ export const MessageInput = ({
       {isUploaderOpen && (
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <div className="mb-2 flex items-center justify-between">
-            <h4 className="text-sm font-medium text-gray-700">{t('action.uploadMedia')}</h4>
+            <h4 className="text-sm font-medium text-gray-700">
+              {t('action.uploadMedia')}
+            </h4>
             <button
               type="button"
               onClick={() => setIsUploaderOpen(false)}

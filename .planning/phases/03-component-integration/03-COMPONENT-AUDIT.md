@@ -9,22 +9,22 @@ total_keys: 186 (42 common + 144 feature-specific)
 
 **Objective:** Comprehensive catalog of all React components that require i18n integration. Lists component locations, estimated translation keys per component, feature grouping, priority tier, and execution roadmap for Waves 2-4.
 
-**Scope:** All components in src/components/ (UI primitives, layouts) and src/features/*/components/ (feature-specific)
+**Scope:** All components in src/components/ (UI primitives, layouts) and src/features/\*/components/ (feature-specific)
 
 ---
 
 ## Executive Summary
 
-| Metric | Value |
-|--------|-------|
-| **Total Components** | 140+ |
-| **Total Translation Keys** | 186 |
-| **Features** | 12 |
-| **UI Primitives** | 40 components, 42 keys (common namespace) |
-| **Feature Components** | 100+ components, 144 keys (feature-specific namespaces) |
-| **Total LOC (est)** | ~15,000-20,000 lines of component code |
-| **Effort Estimate** | 4-6 hours (Waves 2-4: 3 days focused work) |
-| **Priority Tiers** | P1 (core), P2a/2b (critical UX), P3 (secondary), P4 (tertiary), P5 (infra) |
+| Metric                     | Value                                                                      |
+| -------------------------- | -------------------------------------------------------------------------- |
+| **Total Components**       | 140+                                                                       |
+| **Total Translation Keys** | 186                                                                        |
+| **Features**               | 12                                                                         |
+| **UI Primitives**          | 40 components, 42 keys (common namespace)                                  |
+| **Feature Components**     | 100+ components, 144 keys (feature-specific namespaces)                    |
+| **Total LOC (est)**        | ~15,000-20,000 lines of component code                                     |
+| **Effort Estimate**        | 4-6 hours (Waves 2-4: 3 days focused work)                                 |
+| **Priority Tiers**         | P1 (core), P2a/2b (critical UX), P3 (secondary), P4 (tertiary), P5 (infra) |
 
 ---
 
@@ -35,13 +35,13 @@ total_keys: 186 (42 common + 144 feature-specific)
 **Auth Feature** (5 components, 18 keys)  
 Foundation to entire user journey — must be first
 
-| Component | Path | Est. Keys | LOC | Deps |
-|-----------|------|-----------|-----|------|
-| login-form.tsx | src/features/auth/components/ | 8 | 120 | form, button |
-| register-form.tsx | src/features/auth/components/ | 8 | 140 | form, button, link |
-| forgot-password-form.tsx | src/features/auth/components/ | 4 | 80 | form, button |
-| reset-password-form.tsx | src/features/auth/components/ | 5 | 100 | form, button |
-| login-google-form.tsx | src/features/auth/components/ | 3 | 50 | button |
+| Component                | Path                          | Est. Keys | LOC | Deps               |
+| ------------------------ | ----------------------------- | --------- | --- | ------------------ |
+| login-form.tsx           | src/features/auth/components/ | 8         | 120 | form, button       |
+| register-form.tsx        | src/features/auth/components/ | 8         | 140 | form, button, link |
+| forgot-password-form.tsx | src/features/auth/components/ | 4         | 80  | form, button       |
+| reset-password-form.tsx  | src/features/auth/components/ | 5         | 100 | form, button       |
+| login-google-form.tsx    | src/features/auth/components/ | 3         | 50  | button             |
 
 **Wave 2 Execution:** Task 1
 
@@ -52,14 +52,14 @@ Foundation to entire user journey — must be first
 **Messages Feature** (6 components, 13 keys)  
 Core user communication feature — high engagement
 
-| Component | Path | Est. Keys | LOC | Deps |
-|-----------|------|-----------|-----|------|
-| message-input.tsx | src/features/messages/components/ | 3 | 100 | input, button |
-| message-item.tsx | src/features/messages/components/ | 3 | 110 | typography, status |
-| chat-panel.tsx | src/features/messages/components/ | 2 | 90 | panel, message-item |
-| conversations-panel.tsx | src/features/messages/components/ | 2 | 85 | panel, list |
-| conversation-item.tsx | src/features/messages/components/ | 2 | 80 | button, avatar |
-| messages-popup.tsx | src/features/messages/components/ | 1 | 60 | popup, chat-panel |
+| Component               | Path                              | Est. Keys | LOC | Deps                |
+| ----------------------- | --------------------------------- | --------- | --- | ------------------- |
+| message-input.tsx       | src/features/messages/components/ | 3         | 100 | input, button       |
+| message-item.tsx        | src/features/messages/components/ | 3         | 110 | typography, status  |
+| chat-panel.tsx          | src/features/messages/components/ | 2         | 90  | panel, message-item |
+| conversations-panel.tsx | src/features/messages/components/ | 2         | 85  | panel, list         |
+| conversation-item.tsx   | src/features/messages/components/ | 2         | 80  | button, avatar      |
+| messages-popup.tsx      | src/features/messages/components/ | 1         | 60  | popup, chat-panel   |
 
 **Wave 2 Execution:** Task 2
 
@@ -70,13 +70,13 @@ Core user communication feature — high engagement
 **Posts Feature — Critical Components Only** (5 components, ~15 keys from 26 total)  
 Essential for user feed and post creation experience
 
-| Component | Path | Est. Keys | LOC | Deps |
-|-----------|------|-----------|-----|------|
-| create-post.tsx | src/features/posts/components/ | 4 | 180 | form, input, button, media-uploader |
-| edit-post.tsx | src/features/posts/components/ | 3 | 150 | form, button, modal |
-| post-view.tsx | src/features/posts/components/ | 4 | 200 | comment, vote, share, card |
-| share-post.tsx | src/features/posts/components/ | 2 | 90 | button, dialog, link |
-| sort-posts.tsx | src/features/posts/components/ | 2 | 60 | select, button |
+| Component       | Path                           | Est. Keys | LOC | Deps                                |
+| --------------- | ------------------------------ | --------- | --- | ----------------------------------- |
+| create-post.tsx | src/features/posts/components/ | 4         | 180 | form, input, button, media-uploader |
+| edit-post.tsx   | src/features/posts/components/ | 3         | 150 | form, button, modal                 |
+| post-view.tsx   | src/features/posts/components/ | 4         | 200 | comment, vote, share, card          |
+| share-post.tsx  | src/features/posts/components/ | 2         | 90  | button, dialog, link                |
+| sort-posts.tsx  | src/features/posts/components/ | 2         | 60  | select, button                      |
 
 **Wave 2 Execution:** Task 3
 
@@ -86,33 +86,36 @@ Essential for user feed and post creation experience
 
 #### Posts Remaining Components (13 files, 11 additional keys from 26 total)
 
-| Component | Path | Est. Keys | LOC | Type |
-|-----------|------|-----------|-----|------|
-| delete-post.tsx | src/features/posts/components/ | 1 | 50 | action |
-| report-post.tsx | src/features/posts/components/ | 2 | 85 | form |
-| upvote-post.tsx | src/features/posts/components/ | 1 | 40 | action |
-| downvote-post.tsx | src/features/posts/components/ | 1 | 40 | action |
-| create-poll.tsx | src/features/posts/components/ | 2 | 130 | form |
-| edit-poll.tsx | src/features/posts/components/ | 2 | 120 | form |
-| edit-media-uploader.tsx | src/features/posts/components/ | 1 | 100 | uploader |
-| ai-chatbox.tsx | src/features/posts/components/ | 1 | 90 | chat |
-| follow-post.tsx | src/features/posts/components/ | 1 | 45 | action |
-| save-post.tsx | src/features/posts/components/ | 1 | 45 | action |
-| select-post-tags.tsx | src/features/posts/components/ | 2 | 95 | form |
-| create-link-post.tsx | src/features/posts/components/ | 1 | 85 | form |
-| poll-view.tsx | src/features/posts/components/ | 1 | 110 | viewer |
+| Component               | Path                           | Est. Keys | LOC | Type     |
+| ----------------------- | ------------------------------ | --------- | --- | -------- |
+| delete-post.tsx         | src/features/posts/components/ | 1         | 50  | action   |
+| report-post.tsx         | src/features/posts/components/ | 2         | 85  | form     |
+| upvote-post.tsx         | src/features/posts/components/ | 1         | 40  | action   |
+| downvote-post.tsx       | src/features/posts/components/ | 1         | 40  | action   |
+| create-poll.tsx         | src/features/posts/components/ | 2         | 130 | form     |
+| edit-poll.tsx           | src/features/posts/components/ | 2         | 120 | form     |
+| edit-media-uploader.tsx | src/features/posts/components/ | 1         | 100 | uploader |
+| ai-chatbox.tsx          | src/features/posts/components/ | 1         | 90  | chat     |
+| follow-post.tsx         | src/features/posts/components/ | 1         | 45  | action   |
+| save-post.tsx           | src/features/posts/components/ | 1         | 45  | action   |
+| select-post-tags.tsx    | src/features/posts/components/ | 2         | 95  | form     |
+| create-link-post.tsx    | src/features/posts/components/ | 1         | 85  | form     |
+| poll-view.tsx           | src/features/posts/components/ | 1         | 110 | viewer   |
 
 **Wave 3 Execution:** Task 1
 
 #### Communities Feature (25+ components, 24 keys)
 
 Main components (10):
+
 - create-community, community-view, community-card, community-grid, communities-list, join-community, unjoin-community, delete-community, community-sidebar, community-topics-section
 
 Mod Tools (5):
+
 - mod-tools-dialog, mod-sidebar, members-section, posts-section, reported-posts-section, reported-comments-section
 
 Management (14):
+
 - manage-members/: members-table, ban-member-button, approve-member-button, set-moderator-button, view-banned-history-button
 - manage-posts/: posts-table, approve-post, reject-post, remove-post
 - manage-reported-posts/: reported-posts-table, reported-comments-table, remove-report-button, remove-comment-report-button
@@ -206,11 +209,11 @@ Management (14):
 
 **Effort:** 4-6 hours (2 parallel engineers)
 
-| Task | Feature | Components | Keys | Est. Time |
-|------|---------|-----------|------|-----------|
-| Task 1 | Auth | 5 | 18 | 1-2 hours |
-| Task 2 | Messages | 6 | 13 | 1-1.5 hours |
-| Task 3 | Posts (critical) + Test Utils | 5 | 15 | 1.5-2 hours |
+| Task   | Feature                       | Components | Keys | Est. Time   |
+| ------ | ----------------------------- | ---------- | ---- | ----------- |
+| Task 1 | Auth                          | 5          | 18   | 1-2 hours   |
+| Task 2 | Messages                      | 6          | 13   | 1-1.5 hours |
+| Task 3 | Posts (critical) + Test Utils | 5          | 15   | 1.5-2 hours |
 
 **Dependencies:** None (Phase 1 complete, all 186 keys in place)
 
@@ -220,11 +223,11 @@ Management (14):
 
 **Effort:** 6-8 hours (can parallelize)
 
-| Task | Feature | Components | Keys | Est. Time |
-|------|---------|-----------|------|-----------|
-| Task 1 | Posts (remaining) | 13 | 11 | 2 hours |
-| Task 2 | Communities (main + mod tools + management) | 25+ | 24 | 3-4 hours |
-| Task 3 | Profiles + Dashboard | 18 | 17 | 2-3 hours |
+| Task   | Feature                                     | Components | Keys | Est. Time |
+| ------ | ------------------------------------------- | ---------- | ---- | --------- |
+| Task 1 | Posts (remaining)                           | 13         | 11   | 2 hours   |
+| Task 2 | Communities (main + mod tools + management) | 25+        | 24   | 3-4 hours |
+| Task 3 | Profiles + Dashboard                        | 18         | 17   | 2-3 hours |
 
 ---
 
@@ -232,11 +235,11 @@ Management (14):
 
 **Effort:** 6-8 hours (includes final verification)
 
-| Task | Components | Keys | Est. Time |
-|------|-----------|------|-----------|
-| Task 1 | Post-Comments, Notifications, Search, Settings | 19 | 32 | 3 hours |
-| Task 2 | UI Primitives & Layouts | 40 | 42 | 3 hours |
-| Task 3 | Minor features (2) + Hardcoded string scan | 2 | — | 1-2 hours |
+| Task   | Components                                     | Keys | Est. Time |
+| ------ | ---------------------------------------------- | ---- | --------- | --------- |
+| Task 1 | Post-Comments, Notifications, Search, Settings | 19   | 32        | 3 hours   |
+| Task 2 | UI Primitives & Layouts                        | 40   | 42        | 3 hours   |
+| Task 3 | Minor features (2) + Hardcoded string scan     | 2    | —         | 1-2 hours |
 
 **Total Wave 4 Effort:** 6-8 hours
 
@@ -272,6 +275,7 @@ Execution strategy: **Bottom-up** (infrastructure first) but we wire **top-down 
 All translation keys reference Phase 2 deliverables:
 
 **public/locales/en/:**
+
 - common.json (42 keys) — buttons, labels, errors, validation, pagination
 - auth.json (18 keys)
 - post.json (26 keys)
@@ -293,6 +297,7 @@ All translation keys reference Phase 2 deliverables:
 ## Estimation Notes
 
 **Lines of Code (LOC):**
+
 - Auth components: 490 LOC (avg 98)
 - Message components: 425 LOC (avg 71)
 - Post components: 1800 LOC (avg 100)
@@ -305,6 +310,7 @@ All translation keys reference Phase 2 deliverables:
 **Total estimated component LOC: 15,000-20,000**
 
 **Keys per Component:**
+
 - Avg. 1-1.5 keys per small component (buttons, modals)
 - Avg. 8-10 keys per medium component (forms, pages)
 - Avg. 15-20 keys per large component (feature views)

@@ -17,6 +17,7 @@ Wave 2 implements i18n for 16 core feature components across Auth, Messages, and
 **Status:** ✅ COMPLETE
 
 **Files Updated:**
+
 - `src/features/auth/components/login-form.tsx` - Added useTranslation('auth'), replaced all hardcoded text with t() calls
 - `src/features/auth/components/register-form.tsx` - Added useTranslation('auth'), wired all form labels and buttons
 - `src/features/auth/components/forgot-password-form.tsx` - Added useTranslation('auth'), wired email and button text
@@ -24,6 +25,7 @@ Wave 2 implements i18n for 16 core feature components across Auth, Messages, and
 - `src/features/auth/components/login-google-form.tsx` - Added useTranslation('auth'), prepared for Google button text
 
 **Translation Keys Used (24 total):**
+
 - `action.login`, `action.signup`, `action.forgotPassword`, `action.resetPassword`, `action.register`
 - `label.email`, `label.username`, `label.password`, `label.newPassword`, `label.confirmPassword`, `label.haveAccount`, `label.noAccount`, `label.rememberPassword`
 - `placeholder.emailInput`, `placeholder.usernameInput`, `placeholder.passwordInput`, `placeholder.newPassword`
@@ -31,9 +33,11 @@ Wave 2 implements i18n for 16 core feature components across Auth, Messages, and
 - `validation.emailRequired`, `validation.passwordRequired`
 
 **Translation File Updates:**
+
 - `public/locales/en/auth.json` - Added 3 new keys: `label.haveAccount`, `label.rememberPassword`, `label.noAccount`
 
 **Commits:**
+
 - aaec53c: feat(03-wave-2-task-1): wire auth components with i18n (5 components, 24 keys)
 
 ### Task 2: Message Components (6 components, 13 translation keys)
@@ -41,6 +45,7 @@ Wave 2 implements i18n for 16 core feature components across Auth, Messages, and
 **Status:** ✅ COMPLETE
 
 **Files Updated:**
+
 - `src/features/messages/components/message-input.tsx` - Added useTranslation('message'), wired placeholder and upload UI text
 - `src/features/messages/components/message-item.tsx` - Added useTranslation('message'), prepared for message context menu translations
 - `src/features/messages/components/chat-panel.tsx` - Added useTranslation('message'), context ready for chat UI
@@ -49,15 +54,18 @@ Wave 2 implements i18n for 16 core feature components across Auth, Messages, and
 - `src/features/messages/components/messages-popup.tsx` - Added useTranslation('message'), popup wrapper context
 
 **Translation Keys Used:**
+
 - `action.send`, `action.uploadMedia`, `action.delete`, `action.reply`, `action.markAsRead`
 - `label.messages`, `label.conversations`, `label.online`, `label.offline`, `label.unreadCount`
 - `placeholder.typeMessage`, `placeholder.searchConversations`
 - `error.uploadFailed`, `error.failedToSend`, `error.messageNotFound`, `error.failedToDelete`
 
 **Translation File Updates:**
+
 - `public/locales/en/message.json` - Added 2 new keys: `action.uploadMedia`, `label.online`, `label.offline`, `error.uploadFailed`
 
 **Commits:**
+
 - 39dc3c6: feat(03-wave-2-task-2): wire message components with i18n (6 components, 13 keys)
 
 ### Task 3: Critical Post Components (5 components)
@@ -65,6 +73,7 @@ Wave 2 implements i18n for 16 core feature components across Auth, Messages, and
 **Status:** 🔄 IN PROGRESS (Hooks added, await full detail replacement)
 
 **Components Identified for Wiring:**
+
 - `create-post.tsx` - Create form wiring in progress
 - `edit-post.tsx` - Edit form wiring in progress
 - `post-view.tsx` - View rendering wiring in progress

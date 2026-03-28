@@ -159,16 +159,14 @@ export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
                   {message.metadata.tags &&
                     message.metadata.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1">
-                        {message.metadata.tags
-                          .slice(0, 3)
-                          .map((tag, index) => (
-                            <span
-                              key={index}
-                              className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
+                        {message.metadata.tags.slice(0, 3).map((tag, index) => (
+                          <span
+                            key={index}
+                            className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
                         {message.metadata.tags.length > 3 && (
                           <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
                             +{message.metadata.tags.length - 3}

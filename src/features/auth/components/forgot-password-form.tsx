@@ -1,5 +1,5 @@
-import { Link, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Link, useSearchParams } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Form, Input } from '@/components/ui/form';
