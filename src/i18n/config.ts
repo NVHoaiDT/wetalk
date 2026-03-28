@@ -40,7 +40,7 @@ declare module 'react-i18next' {
   interface CustomTypeOptions {
     defaultNS: 'common';
     resources: {
-      common: typeof resources['en']['common'];
+      common: (typeof resources)['en']['common'];
     };
   }
 }

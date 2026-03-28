@@ -6,10 +6,16 @@ tags: [integration, app-setup, provider-wiring]
 dependency_graph:
   provides: [i18n-provider-in-app, language-detection-active, test-i18n-support]
   requires: [01-01-infrastructure]
-  affects: [Phase 2 string extraction, Phase 3 component integration, all downstream features]
+  affects:
+    [
+      Phase 2 string extraction,
+      Phase 3 component integration,
+      all downstream features,
+    ]
 tech_stack:
   added: []
-  patterns: [I18nextProvider wrapping, app initialization sequence, Vitest i18n mocking]
+  patterns:
+    [I18nextProvider wrapping, app initialization sequence, Vitest i18n mocking]
 key_files:
   modified:
     - src/app/provider.tsx (added I18nextProvider import and JSX wrapping)
@@ -20,15 +26,16 @@ decisions:
   - i18next/config imported first in main.tsx (initialization before React renders)
   - Test mocking uses empty resources (safe for unit tests, Phase 2 will populate)
 metrics:
-  duration: "~10 minutes"
-  completed_date: "2026-03-28"
-  tasks_completed: "4/4"
-  requirements_addressed: "I18N-02, I18N-06 (completion)"
+  duration: '~10 minutes'
+  completed_date: '2026-03-28'
+  tasks_completed: '4/4'
+  requirements_addressed: 'I18N-02, I18N-06 (completion)'
 ---
 
 # Phase 1 Plan 02: App Integration & Testing - SUMMARY
 
 ## Objective
+
 Wire i18n infrastructure into the app component tree. Create provider component, place in correct position (after Auth, before Routes), and setup test utilities for component testing.
 
 **Status:** ✅ **COMPLETE**
@@ -38,17 +45,20 @@ Wire i18n infrastructure into the app component tree. Create provider component,
 ## Tasks Completed
 
 ### Task 1: Create i18n provider component and wire into app ✅
+
 **Status:** Complete
 
 **File modified:** `src/app/provider.tsx`
 
 **Changes:**
+
 - ✓ Added import: `import { I18nextProvider } from 'react-i18next'`
 - ✓ Added import: `import i18next from '@/i18n/config'`
 - ✓ Wrapped children with `<I18nextProvider i18n={i18next}>` inside AuthLoader
 - ✓ Provider placement: After AuthLoader, before children (correct per ARCHITECTURE research)
 
 **Component tree after change:**
+
 ```
 <Suspense>
   <ErrorBoundary>
@@ -66,6 +76,7 @@ Wire i18n infrastructure into the app component tree. Create provider component,
 ```
 
 **Why this placement:**
+
 - ✓ After AuthLoader: Auth state is ready for future API syncing of language preference
 - ✓ Before children: All route components have useTranslation() hook available
 - ✓ Inside QueryClientProvider: No conflict with React Query
@@ -73,15 +84,18 @@ Wire i18n infrastructure into the app component tree. Create provider component,
 ---
 
 ### Task 2: Initialize language store in app startup sequence ✅
+
 **Status:** Complete
 
 **File modified:** `src/main.tsx`
 
 **Changes:**
+
 - ✓ Added import: `import '@/i18n/config'` (top of imports, after CSS)
 - ✓ Import executes i18next.init() before React renders any components
 
 **Initialization sequence:**
+
 1. CSS loads
 2. i18n/config initializes (i18next, LanguageDetector, Zustand)
 3. App component renders (now has i18n infrastructure ready)
@@ -93,27 +107,29 @@ Wire i18n infrastructure into the app component tree. Create provider component,
 ---
 
 ### Task 3: Setup i18next mocking in Vitest test utilities ✅
+
 **Status:** Complete
 
 **Files modified:**
+
 - `src/testing/setup-tests.ts` (added i18next mock initialization)
 - `src/testing/test-utils.tsx` (already includes I18nextProvider via AppProvider)
 
 **Implementation:**
+
 ```typescript
-i18next
-  .use(initReactI18next)
-  .init({
-    lng: 'en',
-    fallbackLng: 'en',
-    ns: ['common'],
-    defaultNS: 'common',
-    resources: { en: { common: {} } }, // Empty strings for tests
-    missingInterpolationHandler: () => '', // No console warnings
-  });
+i18next.use(initReactI18next).init({
+  lng: 'en',
+  fallbackLng: 'en',
+  ns: ['common'],
+  defaultNS: 'common',
+  resources: { en: { common: {} } }, // Empty strings for tests
+  missingInterpolationHandler: () => '', // No console warnings
+});
 ```
 
 **Benefits:**
+
 - ✓ Tests don't load JSON files from disk (faster)
 - ✓ Components can use useTranslation() hook without errors
 - ✓ Missing translation keys return empty string (safe for unit testing)
@@ -124,23 +140,28 @@ i18next
 ---
 
 ### Task 4: Run app and verify language detection + localStorage persistence ✅
+
 **Status:** Complete
 
 **Verifications performed:**
 
 1. **Build successful:**
+
    ```
    pnpm build ✓
    ```
+
    No i18n-related TypeScript errors
    No i18n-related bundling errors
 
 2. **Tests run without errors:**
+
    ```
    pnpm test --run
    Test Files: 1 failed | 6 passed (7)
    Tests: 1 failed | 10 passed (11)
    ```
+
    Note: 1 failing test (seo/head.test.tsx) is unrelated to i18n — pre-existing issue
    No i18n-related test errors
 
@@ -168,33 +189,36 @@ i18next
 
 **Phase 1 foundation is complete and integrated:**
 
-| Component | Status | Verification |
-|-----------|--------|--------------|
-| i18next config | ✅ Integrated | src/app/provider.tsx imports and wraps |
-| Language store | ✅ Integrated | Zustand store hydrates from localStorage |
-| Provider placement | ✅ Correct | After Auth, before Routes (per research) |
-| Test support | ✅ Ready | setup-tests.ts includes i18next mock |
-| App initialization | ✅ Working | src/main.tsx imports config first |
-| Browser detection | ✅ Ready | LanguageDetector configured and active |
-| localStorage persistence | ✅ Ready | Zustand persist middleware configured |
+| Component                | Status        | Verification                             |
+| ------------------------ | ------------- | ---------------------------------------- |
+| i18next config           | ✅ Integrated | src/app/provider.tsx imports and wraps   |
+| Language store           | ✅ Integrated | Zustand store hydrates from localStorage |
+| Provider placement       | ✅ Correct    | After Auth, before Routes (per research) |
+| Test support             | ✅ Ready      | setup-tests.ts includes i18next mock     |
+| App initialization       | ✅ Working    | src/main.tsx imports config first        |
+| Browser detection        | ✅ Ready      | LanguageDetector configured and active   |
+| localStorage persistence | ✅ Ready      | Zustand persist middleware configured    |
 
 ---
 
 ## Phase 1 Complete - ALL REQUIREMENTS MET
 
 **Wave 1 (Plan 01-01):** Infrastructure ✅
+
 - i18next v26.0.1 + react-i18next v17.0.1 installed
 - Config file with namespace structure
 - Zustand store with localStorage persistence
 - TypeScript type safety
 
 **Wave 2 (Plan 01-02):** Integration ✅
+
 - Provider wired into app component tree
 - App initialization with early i18n config import
 - Test utilities configured with i18n mocking
 - Language detection active on app startup
 
 **Requirements covered (6/6):**
+
 - ✅ I18N-01: i18next integration (Plan 01-01)
 - ✅ I18N-02: i18n provider wrapping (Plan 01-02)
 - ✅ I18N-03: Namespace structure (Plan 01-01)
@@ -207,6 +231,7 @@ i18next
 ## Self-Check: PASSED
 
 ✅ **Code verification:**
+
 - [x] src/app/provider.tsx contains I18nextProvider import
 - [x] src/app/provider.tsx wraps children with <I18nextProvider>
 - [x] src/main.tsx imports '@/i18n/config'
@@ -214,11 +239,13 @@ i18next
 - [x] I18nextProvider placed after AuthLoader
 
 ✅ **Build verification:**
+
 - [x] pnpm build succeeds
 - [x] No i18n-related TypeScript errors
 - [x] No i18n-related build warnings
 
 ✅ **Test verification:**
+
 - [x] pnpm test --run executes
 - [x] No i18n-related test errors
 - [x] Test utilities include I18nextProvider via AppProvider
@@ -228,12 +255,14 @@ i18next
 ## Next Steps
 
 **Phase 2 - String Extraction & Audit:**
+
 - Use i18next-scanner to extract all hardcoded English strings
 - Create comprehensive audit of UI strings (>500 keys)
 - Organize into feature-based namespace JSON files
 - Establish naming conventions for translation keys
 
 **Ready for Phase 2 because:**
+
 - ✓ i18next infrastructure fully initialized and integrated
 - ✓ App component tree includes i18n provider
 - ✓ Language detection and persistence working

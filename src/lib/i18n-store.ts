@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
 import i18next from '@/i18n/config';
 
 type LanguageStoreState = {
@@ -19,6 +20,6 @@ export const useLanguageStore = create<LanguageStoreState>()(
     {
       name: 'language-store', // localStorage key
       version: 1,
-    }
-  )
+    },
+  ),
 );

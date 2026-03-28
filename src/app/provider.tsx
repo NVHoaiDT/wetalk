@@ -46,9 +46,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                 </div>
               )}
             >
-              <I18nextProvider i18n={i18next}>
-                {children}
-              </I18nextProvider>
+              <I18nextProvider i18n={i18next}>{children}</I18nextProvider>
             </AuthLoader>
           </QueryClientProvider>
         </HelmetProvider>
