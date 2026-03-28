@@ -2,12 +2,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
+import { I18nextProvider } from 'react-i18next';
 
 import { MainErrorFallback } from '@/components/errors/main';
 import { Notifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
 import { AiChatbox } from '@/features/chatbot/components/ai-chatbox';
 import { MessagesPopup } from '@/features/messages/components/messages-popup';
+import i18next from '@/i18n/config';
 import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from '@/lib/react-query';
 
@@ -44,7 +46,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                 </div>
               )}
             >
-              {children}
+              <I18nextProvider i18n={i18next}>
+                {children}
+              </I18nextProvider>
             </AuthLoader>
           </QueryClientProvider>
         </HelmetProvider>

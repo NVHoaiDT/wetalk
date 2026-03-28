@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './index.css';
+import '@/i18n/config'; // Initialize i18next before any components render
 import { App } from './app';
 import { enableMocking } from './testing/mocks';
 
