@@ -2,11 +2,30 @@ import '@testing-library/jest-dom/vitest';
 
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { vi } from 'vitest';
 
 import { initializeDb, resetDb } from '@/testing/mocks/db';
 import { server } from '@/testing/mocks/server';
 
 vi.mock('zustand');
+
+// Mock react-i18next for isolated component tests
+// This allows components to import useTranslation() without loading actual JSON files
+vi.mock('react-i18next', async () => {
+  const actual = await vi.importActual('react-i18next');
+  return {
+    ...actual,
+    useTranslation: vi.fn(() => ({
+      t: (key: string, defaultValue?: string) => defaultValue || key,
+      i18n: {
+        language: 'en',
+        changeLanguage: vi.fn().mockResolvedValue(undefined),
+        exists: vi.fn().mockReturnValue(true),
+        loadNamespace: vi.fn().mockResolvedValue(undefined),
+      },
+    })),
+  };
+});
 
 // Initialize i18next for tests with minimal configuration
 i18next.use(initReactI18next).init({
