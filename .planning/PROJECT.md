@@ -11,6 +11,7 @@ WeTalk is a social media platform for developers, built with React 18+, TypeScri
 **Goal:** Make WeTalk accessible to Vietnamese speakers by adding Vietnamese language support, while building scalable i18n infrastructure to support expansion to 5-10 languages in the future.
 
 **Target features:**
+
 - i18next integration with language auto-detection (browser locale)
 - Manual language override in user settings (English ↔ Vietnamese)
 - Complete UI string translation (buttons, labels, forms, messages, modals)
@@ -19,6 +20,7 @@ WeTalk is a social media platform for developers, built with React 18+, TypeScri
 - Vietnamese translations matching WeTalk's social media tone
 
 **Scope boundaries:**
+
 - ✅ UI/interface strings only (buttons, labels, help text, error messages)
 - ✅ Design for future language expansion (5-10 languages)
 - ❌ User-generated content translation (posts, comments stay original language)
@@ -57,6 +59,7 @@ WeTalk is a social media platform for developers, built with React 18+, TypeScri
 This document evolves at phase transitions and milestone boundaries.
 
 **After each phase transition:**
+
 1. Requirements invalidated? → Move to Out of Scope with reason
 2. Requirements validated? → Move to Validated with phase reference
 3. New requirements emerged? → Add to Active

@@ -10,6 +10,7 @@
 Internationalization (i18n) integrates cleanly into WeTalk's architecture using **react-i18next** wrapped in the provider stack. Language preference lives in **Zustand** (transient UI state) with localStorage persistence, mirroring the token storage pattern. The i18n provider initializes AFTER authentication but BEFORE route rendering to ensure language preference is available during component tree initialization. No conflicts with React Query or Router—translations are static per language and don't require cache invalidation.
 
 **Key Implications:**
+
 - Single provider addition to `AppProvider` stack (minimal surface area)
 - Language preference stored in Zustand (consistent with existing UI state pattern)
 - No API dependency for base translations (optional for translated strings from backend)
@@ -40,22 +41,26 @@ Structure: Global→Query→UI State→Auth→Router
 ### State Management Patterns
 
 **Zustand (UI State):**
+
 - Location: `src/features/{feature}/stores/*.ts`
 - Pattern: Per-feature stores for modal state, form state, filters
 - Persistence: Manual localStorage sync via subscriber pattern
 - Example: `useNotificationStore` for toast notifications
 
 **localStorage:**
+
 - `accessToken` - Set by auth layer, read on app init
 - No automatic persistence—requires explicit `store.subscribe()` setup in Zustand
 
 **React Query:**
+
 - Queries: Data fetching with caching and background refetching
 - Mutations: Server-side operations (create, update, delete)
 - Invalidation: Manual via `queryClient.invalidateQueries()`
 - No global state—all server-synced via API
 
 **Auth Flow:**
+
 1. App mounts → AuthLoader queries `/users/me`
 2. Token exists in localStorage → Load succeeds → Routes render
 3. Token missing → Load suspended → Redirect to login
@@ -84,6 +89,7 @@ React DOM
 ```
 
 **Why this position?**
+
 - ✅ Auth state available for API-stored language preference (optional)
 - ✅ Language initialized before routes render (translations available immediately)
 - ✅ Zustand store initialized below this level can read language changes
@@ -91,6 +97,7 @@ React DOM
 - ✅ Suspense for initial translation load wraps entire app
 
 **Alternative (not recommended): Language beside AuthLoader**
+
 - ❌ Language preference might not be persisted after auth completes
 - ❌ Race condition if language load completes before auth
 
@@ -110,37 +117,44 @@ export type Language = 'en' | 'vi';
 interface LanguageStore {
   language: Language;
   setLanguage: (language: Language) => void;
-  initializeLanguage: (detectedLanguage?: Language, apiLanguage?: Language) => void;
+  initializeLanguage: (
+    detectedLanguage?: Language,
+    apiLanguage?: Language,
+  ) => void;
 }
 
 // Zustand store with localStorage persistence
-export const useLanguageStore = create<LanguageStore>(
-  (set) => ({
-    // Initial state from localStorage or browser detection
-    language: localStorage.getItem('language') as Language || detectBrowserLanguage(),
+export const useLanguageStore = create<LanguageStore>((set) => ({
+  // Initial state from localStorage or browser detection
+  language:
+    (localStorage.getItem('language') as Language) || detectBrowserLanguage(),
 
-    setLanguage: (language: Language) => {
-      set({ language });
-      localStorage.setItem('language', language);
-      // Optional: sync to API when user has auth token
-      // syncLanguagePreferenceToAPI(language);
-    },
+  setLanguage: (language: Language) => {
+    set({ language });
+    localStorage.setItem('language', language);
+    // Optional: sync to API when user has auth token
+    // syncLanguagePreferenceToAPI(language);
+  },
 
-    initializeLanguage: (detectedLanguage, apiLanguage) => {
-      // Priority: API preference > localStorage > browser detection
-      const preferredLanguage = apiLanguage || localStorage.getItem('language') || detectedLanguage || 'en';
-      set({ language: preferredLanguage as Language });
-    },
-  }),
-);
+  initializeLanguage: (detectedLanguage, apiLanguage) => {
+    // Priority: API preference > localStorage > browser detection
+    const preferredLanguage =
+      apiLanguage ||
+      localStorage.getItem('language') ||
+      detectedLanguage ||
+      'en';
+    set({ language: preferredLanguage as Language });
+  },
+}));
 
 function detectBrowserLanguage(): Language {
   const browserLang = navigator.language.split('-')[0];
-  return (browserLang === 'vi') ? 'vi' : 'en';
+  return browserLang === 'vi' ? 'vi' : 'en';
 }
 ```
 
 **Why Zustand?**
+
 - ✅ Consistent with WeTalk's UI state pattern (notifications, messages, etc.)
 - ✅ Lightweight, no extra dependencies
 - ✅ Automatic persistence via `localStorage.setItem()`
@@ -196,6 +210,7 @@ src/
 ```
 
 **Organization Rationale:**
+
 - Grouped by feature (maps to `src/features/` structure)
 - `common.json` for shared strings (buttons, navigation, common UI)
 - Easier to split translations by team (feature owners manage feature translations)
@@ -323,6 +338,7 @@ export const LanguageSwitcher = () => {
 ```
 
 **Flow:**
+
 1. User selects language → `setLanguage(newLang)`
 2. Zustand store updates → localStorage syncs
 3. `LanguageConsumer` notices language change
@@ -355,11 +371,13 @@ export const PostCard = ({ post }) => {
 #### React Router
 
 **No special integration needed.** Routes are language-agnostic:
+
 - Routes don't change based on language
 - No URL-based language selector (e.g., `/en/dashboard` vs `/vi/dashboard`) — language preference is user preference, not route state
 - Query namespacing: `queryKey: ['posts']` is language-independent (API returns data, not UI strings)
 
 **Optional: URL-based language (future enhancement)**
+
 ```typescript
 // IF desired: /en/dashboard or /vi/dashboard routing
 // Would require: route path includes language parameter + Zustand sync
@@ -408,12 +426,12 @@ function PostFilter() {
 
 ```typescript
 // These are independent:
-useQuery(['posts'])         // Fetches Post objects from API (language-neutral)
-useTranslation('posts')     // Loads translated UI strings (language-aware)
+useQuery(['posts']); // Fetches Post objects from API (language-neutral)
+useTranslation('posts'); // Loads translated UI strings (language-aware)
 
 // Cache invalidation: Language change doesn't invalidate posts query
 // Data is same in English or Vietnamese—only UI labels change
-i18n.changeLanguage('vi')   // Does NOT call queryClient.invalidateQueries()
+i18n.changeLanguage('vi'); // Does NOT call queryClient.invalidateQueries()
 
 // Exception: IF API returns translatable content (e.g., post titles)
 // Language change DOES require re-fetch
@@ -447,16 +465,16 @@ const resources = {
 };
 
 i18n
-  .use(initReactI18next)  // Bind i18next with react-i18next
+  .use(initReactI18next) // Bind i18next with react-i18next
   .init({
     resources,
     fallbackLng: 'en',
-    defaultNS: 'common',   // Namespace when not specified in useTranslation()
+    defaultNS: 'common', // Namespace when not specified in useTranslation()
     interpolation: {
-      escapeValue: false,  // React protects against XSS, no need to escape
+      escapeValue: false, // React protects against XSS, no need to escape
     },
     react: {
-      useSuspense: false,  // Don't suspend on language load (handle gracefully)
+      useSuspense: false, // Don't suspend on language load (handle gracefully)
     },
   });
 
@@ -530,26 +548,31 @@ import { App } from '@/app';
 ## Migration Strategy for Existing English Strings
 
 ### Phase 1: Extract & Create JSONs
+
 1. Scan codebase for hardcoded strings (`const text = "Save"`)
 2. Extract → Create `src/locales/en/*.json`
 3. Commit with i18n library addition (no behavior change)
 
 ### Phase 2: Install react-i18next
+
 ```bash
 npm install i18next react-i18next
 ```
 
 ### Phase 3: Wire Provider + Consumer
+
 1. Add I18nextProvider to AppProvider
 2. Add LanguageConsumer component
 3. Initialize `useLanguageStore` with browser detection
 
 ### Phase 4: Replace Hardcoded Strings
+
 1. Add `useTranslation()` to components
 2. Replace strings with `t('key')`
 3. Test language switcher
 
 ### Phase 5: Vietnamese Translations
+
 1. Translate JSONs into Vietnamese
 2. Partner with Vietnamese speaker or translator
 3. Add QA pass
@@ -561,6 +584,7 @@ npm install i18next react-i18next
 ### Recommended: localStorage (MVP)
 
 **Pros:**
+
 - ✅ No API dependency
 - ✅ Instant on app load (no network delay)
 - ✅ Works for anonymous users
@@ -568,10 +592,12 @@ npm install i18next react-i18next
 - ✅ Simple Zustand implementation
 
 **Cons:**
+
 - ❌ Language preference lost if user clears cache
 - ❌ Doesn't sync across tabs/devices
 
 **Code:**
+
 ```typescript
 useLanguageStore.setLanguage(lang) {
   set({ language: lang });
@@ -582,16 +608,18 @@ useLanguageStore.setLanguage(lang) {
 ### Optional Future: API-Synced
 
 **When to add (Phase 2+):**
+
 - After auth integration is stable
 - When users ask for cross-device language sync
 - Requires: `PATCH /users/me { preferred_language: 'vi' }`
 
 **Implementation:**
+
 ```typescript
 setLanguage: async (language: Language) => {
   set({ language });
   localStorage.setItem('language', language);
-  
+
   // Sync to API only if user is authenticated
   const token = localStorage.getItem('accessToken');
   if (token) {
@@ -602,7 +630,7 @@ setLanguage: async (language: Language) => {
       // Graceful degradation: language still changes locally
     }
   }
-}
+};
 ```
 
 ---
@@ -621,6 +649,7 @@ const { t } = useTranslation('common');
 ```
 
 ### No Changes to:
+
 - ✅ React Router structure
 - ✅ React Query cache invalidation
 - ✅ Zustand store patterns
@@ -628,6 +657,7 @@ const { t } = useTranslation('common');
 - ✅ Component props (translations are internal)
 
 ### Changes to:
+
 - ✅ AppProvider (add I18nextProvider, LanguageConsumer)
 - ✅ Any component with hardcoded strings
 - ✅ Settings feature (add language switcher)
@@ -684,11 +714,11 @@ it('updates translations when language changes', () => {
   const { getByText, rerender } = renderWithI18n(
     <LanguageSwitcher />
   );
-  
+
   // Start with English
   fireEvent.click(getByText('English'));
   expect(useLanguageStore.getState().language).toBe('en');
-  
+
   // Switch to Vietnamese
   fireEvent.click(getByText('Tiếng Việt'));
   expect(useLanguageStore.getState().language).toBe('vi');
@@ -699,35 +729,36 @@ it('updates translations when language changes', () => {
 
 ## Known Constraints & Assumptions
 
-| Constraint | How Handled | Notes |
-|-----------|-----------|--------|
-| Only 2 languages (EN + VI) | JSON per language | Future: add languages by adding JSON files |
-| No RTL layout | Standard left-to-right | Vietnamese is LTR |
-| No plural rules | Single form per key | Plurals handled by backend return |
-| No date/time formatting | Keep as-is | Backend returns pre-formatted strings |
-| No currency formatting | Keep as-is | Each locale reads API values |
-| Translations are static | Loaded once at app init | No dynamic translation updates |
-| Language preference is user preference, not content language | localStorage + Zustand | API could store preference per user |
+| Constraint                                                   | How Handled             | Notes                                      |
+| ------------------------------------------------------------ | ----------------------- | ------------------------------------------ |
+| Only 2 languages (EN + VI)                                   | JSON per language       | Future: add languages by adding JSON files |
+| No RTL layout                                                | Standard left-to-right  | Vietnamese is LTR                          |
+| No plural rules                                              | Single form per key     | Plurals handled by backend return          |
+| No date/time formatting                                      | Keep as-is              | Backend returns pre-formatted strings      |
+| No currency formatting                                       | Keep as-is              | Each locale reads API values               |
+| Translations are static                                      | Loaded once at app init | No dynamic translation updates             |
+| Language preference is user preference, not content language | localStorage + Zustand  | API could store preference per user        |
 
 ---
 
 ## Confidence Assessment
 
-| Area | Level | Reason |
-|------|-------|--------|
-| **Provider Placement** | HIGH | Verified: After auth (needed for API sync), before routes (needed for components). Matches React best practices. |
-| **Zustand + localStorage** | HIGH | Consistent with WeTalk's auth pattern. Token stored in localStorage, auth state in Zustand. Same approach for language. |
-| **react-i18next Integration** | HIGH | Industry standard. Hooks-based, compatible with React Router/Query. No conflicts with existing setup. |
-| **Translation Organization** | HIGH | Feature-based matches `src/features/` structure. Reduces bundle size, enables team parallelization. |
-| **Component Impact** | HIGH | Minimal: just add `useTranslation()` hook and `t()` calls. No API changes needed. |
-| **Storage Decision** | MEDIUM | localStorage works for MVP. API sync is enhancement (Phase 2+). Decision point exists if cross-device sync becomes requirement. |
-| **Testing** | MEDIUM | Vitest + react-i18next mocking is standard pattern. Implementation needs validation in mocha tests. |
+| Area                          | Level  | Reason                                                                                                                          |
+| ----------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Provider Placement**        | HIGH   | Verified: After auth (needed for API sync), before routes (needed for components). Matches React best practices.                |
+| **Zustand + localStorage**    | HIGH   | Consistent with WeTalk's auth pattern. Token stored in localStorage, auth state in Zustand. Same approach for language.         |
+| **react-i18next Integration** | HIGH   | Industry standard. Hooks-based, compatible with React Router/Query. No conflicts with existing setup.                           |
+| **Translation Organization**  | HIGH   | Feature-based matches `src/features/` structure. Reduces bundle size, enables team parallelization.                             |
+| **Component Impact**          | HIGH   | Minimal: just add `useTranslation()` hook and `t()` calls. No API changes needed.                                               |
+| **Storage Decision**          | MEDIUM | localStorage works for MVP. API sync is enhancement (Phase 2+). Decision point exists if cross-device sync becomes requirement. |
+| **Testing**                   | MEDIUM | Vitest + react-i18next mocking is standard pattern. Implementation needs validation in mocha tests.                             |
 
 ---
 
 ## Roadmap Implications
 
 ### Phase 1: Setup & Infrastructure
+
 - Install libraries: `i18next`, `react-i18next`
 - Create Zustand language store
 - Create i18n config + JSON structure
@@ -736,6 +767,7 @@ it('updates translations when language changes', () => {
 - Dependencies: None; can run in parallel with other phases
 
 ### Phase 2: Extract English Strings
+
 - Audit codebase for hardcoded English
 - Extract into `src/locales/en/*.json`
 - No component changes yet
@@ -743,6 +775,7 @@ it('updates translations when language changes', () => {
 - ~80% scattered throughout components (requires careful review)
 
 ### Phase 3: Integrate Translations
+
 - Add `useTranslation()` to all components with strings
 - Replace hardcoded strings with `t()` calls
 - Update types if using const strings
@@ -750,11 +783,13 @@ it('updates translations when language changes', () => {
 - This is bulk work—can delegate to team
 
 ### Phase 4: Vietnamese Translations
+
 - Translate all JSONs (1000+ keys)
 - QA pass: Review context, verify idioms
 - Add Vietnamese translator partner
 
 ### Phase 5: Settings UI (Language Switcher)
+
 - Add LanguageSwitcher component to settings
 - Wire to `useLanguageStore`
 - Test persistence across sessions
@@ -776,14 +811,15 @@ Before proceeding, confirm:
 ## Sources & References
 
 **High Confidence (verified against WeTalk architecture):**
+
 - WeTalk provider pattern in `src/app/provider.tsx`
 - Authentication storage in `src/lib/auth.tsx`
 - Zustand pattern in `src/features/*/stores/*.ts`
 - React Query setup in `src/lib/react-query.ts`
 
 **External Standards:**
+
 - react-i18next documentation: https://react.i18next.com/
 - i18next architecture: https://www.i18next.com/
 - React Router + i18n patterns: Common practice (no URL-based language routing for preference storage)
 - Zustand persistence: Built-in subscriber pattern with localStorage
-

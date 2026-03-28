@@ -21,13 +21,13 @@ Internationalization (i18n) for WeTalk is a **well-established, low-risk feature
 
 ### MVP vs. Nice-to-Have
 
-| Scope | Effort | Deliverable |
-|-------|--------|-------------|
-| **MVP (4 weeks)** | 1 dev + 1 translator | English + Vietnamese UI, clean architecture for scaling |
+| Scope                   | Effort               | Deliverable                                                  |
+| ----------------------- | -------------------- | ------------------------------------------------------------ |
+| **MVP (4 weeks)**       | 1 dev + 1 translator | English + Vietnamese UI, clean architecture for scaling      |
 | **Scale to 5-10 langs** | +1 week per language | Repeatable process (translate namespace files, test, deploy) |
-| **TMS Integration** | 3 days | Locize setup for non-dev translation collaboration |
-| **Analytics** | 2-3 weeks | Track missing translations, language usage (from Locize) |
-| **SEO Optimization** | 1-2 weeks | hreflang tags, language routing for organic reach |
+| **TMS Integration**     | 3 days               | Locize setup for non-dev translation collaboration           |
+| **Analytics**           | 2-3 weeks            | Track missing translations, language usage (from Locize)     |
+| **SEO Optimization**    | 1-2 weeks            | hreflang tags, language routing for organic reach            |
 
 ## Key Findings
 
@@ -42,6 +42,7 @@ Internationalization (i18n) for WeTalk is a **well-established, low-risk feature
 ### Phase Structure Recommendation
 
 **Phase 1: Infrastructure & MVP Content (Weeks 1-4)**
+
 - [ ] i18next setup with language detection + persistence
 - [ ] Component integration (useTranslation hooks in all UI)
 - [ ] Namespace organization matching features
@@ -50,11 +51,13 @@ Internationalization (i18n) for WeTalk is a **well-established, low-risk feature
 - [ ] Tests for language switching
 
 **Why this order:**
+
 1. Infra first = unblock all feature teams to use hooks immediately
 2. Content extraction = can happen while building (concurrent work)
 3. Translation = external (translator can work in parallel)
 
 **Phase 2: User Preferences & Polish (Week 5-6)**
+
 - [ ] Language switcher UI in header + settings
 - [ ] Persist choice to user profile
 - [ ] Date/time formatting by locale
@@ -63,18 +66,21 @@ Internationalization (i18n) for WeTalk is a **well-established, low-risk feature
 - [ ] Documentation
 
 **Phase 3: Scale Infrastructure (After MVP - if needed)**
+
 - [ ] Add 3rd language (Japanese, Korean, Spanish—TBD by roadmap)
 - [ ] Locize integration (translation management platform)
 - [ ] i18next-cli for key extraction automation
 - [ ] Missing key analytics & reporting
 
 **Phase 4: Full Localization (After Phase 3 - optional)**
+
 - [ ] RTL language support (Arabic, Hebrew)
 - [ ] SEO optimization (hreflang, /lang/ routing)
 - [ ] Machine translation fallback API
 - [ ] Admin dashboard for translation status
 
 **Research flags for phases:**
+
 - **Phase 1:** Standard patterns; no further research needed. Start building.
 - **Phase 2:** Straightforward; date-fns already in stack, just add locale modules
 - **Phase 3:** Need to confirm which 3 languages (product decision, not tech); Locize setup is documented
@@ -82,13 +88,13 @@ Internationalization (i18n) for WeTalk is a **well-established, low-risk feature
 
 ## Confidence Assessment
 
-| Area | Confidence | Notes |
-|------|------------|-------|
-| **Stack** | HIGH | i18next is ecosystem standard; documented, mature, 8.5k stars; react-i18next widely used |
-| **Features** | HIGH | Table stakes vs. differentiators clear from analysis of 100+ production apps |
-| **Architecture** | HIGH | Namespace approach proven; aligns with WeTalk feature folder structure naturally |
-| **Pitfalls** | HIGH | Common mistakes well-documented; over-scoping is known problem (flagged in analysis) |
-| **Timeline** | MEDIUM | 4-week MVP is achievable; translator availability is actual blocker (not tech) |
+| Area             | Confidence | Notes                                                                                    |
+| ---------------- | ---------- | ---------------------------------------------------------------------------------------- |
+| **Stack**        | HIGH       | i18next is ecosystem standard; documented, mature, 8.5k stars; react-i18next widely used |
+| **Features**     | HIGH       | Table stakes vs. differentiators clear from analysis of 100+ production apps             |
+| **Architecture** | HIGH       | Namespace approach proven; aligns with WeTalk feature folder structure naturally         |
+| **Pitfalls**     | HIGH       | Common mistakes well-documented; over-scoping is known problem (flagged in analysis)     |
+| **Timeline**     | MEDIUM     | 4-week MVP is achievable; translator availability is actual blocker (not tech)           |
 
 ## Gaps to Address
 

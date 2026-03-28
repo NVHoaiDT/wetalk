@@ -8,51 +8,51 @@
 
 Features users expect. Missing = product feels incomplete or unprofessional for international audience.
 
-| Feature | Why Expected | Complexity | WeTalk Notes |
-|---------|--------------|------------|------------|
-| **Basic Translation System** | All UI text must be translatable | Low | i18next + react-i18next hooks (useTranslation) covers 90% of cases |
-| **Language Detection** | App should detect user's browser/device language automatically | Low | i18next `detection` plugin with fallback to English |
-| **Language Switching** | User can change language and see updates immediately | Low | Language selector dropdown, persisted to localStorage/user settings |
-| **Persistence of Language Choice** | User's language preference survives page refresh/logout-login | Low | Store in localStorage (anonymous) or user profile (authenticated) |
-| **Fallback Language** | When key missing, show English version instead of key name | Low | i18next `fallbackLng: 'en'` config |
-| **Namespace Organization** | Large projects split translations into files by domain | Medium | Match WeTalk features: auth, posts, messages, notifications, profiles, etc. |
-| **Pluralization** | "1 message" vs "5 messages" rendered correctly | Low | i18next `plurals` feature handles English/Vietnamese rules |
-| **Component Translation** | React components can be translated with preserved JSX structure | Low | `useTranslation` hook + `<Trans>` component with semantic keys |
-| **Date/Number Formatting** | "2 hours ago", "1,234 followers", "€99.99" format by locale | Medium | date-fns already in stack, add locale modules for Vietnamese |
-| **Right-to-Left (RTL) Compatibility** | CSS/layout should support RTL languages later | High | Document CSS variable approach for future Arabic/Hebrew support |
+| Feature                               | Why Expected                                                    | Complexity | WeTalk Notes                                                                |
+| ------------------------------------- | --------------------------------------------------------------- | ---------- | --------------------------------------------------------------------------- |
+| **Basic Translation System**          | All UI text must be translatable                                | Low        | i18next + react-i18next hooks (useTranslation) covers 90% of cases          |
+| **Language Detection**                | App should detect user's browser/device language automatically  | Low        | i18next `detection` plugin with fallback to English                         |
+| **Language Switching**                | User can change language and see updates immediately            | Low        | Language selector dropdown, persisted to localStorage/user settings         |
+| **Persistence of Language Choice**    | User's language preference survives page refresh/logout-login   | Low        | Store in localStorage (anonymous) or user profile (authenticated)           |
+| **Fallback Language**                 | When key missing, show English version instead of key name      | Low        | i18next `fallbackLng: 'en'` config                                          |
+| **Namespace Organization**            | Large projects split translations into files by domain          | Medium     | Match WeTalk features: auth, posts, messages, notifications, profiles, etc. |
+| **Pluralization**                     | "1 message" vs "5 messages" rendered correctly                  | Low        | i18next `plurals` feature handles English/Vietnamese rules                  |
+| **Component Translation**             | React components can be translated with preserved JSX structure | Low        | `useTranslation` hook + `<Trans>` component with semantic keys              |
+| **Date/Number Formatting**            | "2 hours ago", "1,234 followers", "€99.99" format by locale     | Medium     | date-fns already in stack, add locale modules for Vietnamese                |
+| **Right-to-Left (RTL) Compatibility** | CSS/layout should support RTL languages later                   | High       | Document CSS variable approach for future Arabic/Hebrew support             |
 
 ## Differentiators
 
 Features that set WeTalk apart. Not expected, but valued in competitive market.
 
-| Feature | Value Proposition | Complexity | WeTalk Fit | Notes |
-|---------|-------------------|------------|-----------|-------|
-| **Smart Language Detection** | Detect from: browser lang → IP geolocation → user account → redirect header | Medium | HIGH | Useful for developer audience spanning regions |
-| **Translation UI in Admin Panel** | Non-developer staff can add/edit translations without code | High | MEDIUM | Deferred MVP; Locize handles this efficiently |
-| **Real-time Translation Management** | Use Locize or similar service for live translation updates without redeploy | High | MEDIUM | Enables split-team workflows (devs code, translators update live) |
-| **Context-Aware Translations** | Same word translates differently based on context (verb vs noun) | Low | LOW | Overkill for social platform; messages/posts mostly user-generated |
-| **Advanced Pluralization Rules** | Handle complex rules (0,1,2,5+) for languages with more than 2 forms | Low-Medium | HIGH | Vietnamese has complex structures sometimes |
-| **Machine Translation Fallback** | Missing translations auto-translated via Google Translate API | Medium | MEDIUM | Useful for scale, but requires API costs + quality assurance |
-| **Analytics Dashboard** | Track: missing translations, language usage, translation freshness | High | MEDIUM | Locize provides this out-of-box with paid plan |
-| **Namespace Code Splitting** | Load only translation namespaces for active feature (performance optimization) | High | MEDIUM | WeTalk has feature-based architecture; natural fit later |
-| **Translation Versioning** | Rollback to previous translation version if new translations break things | High | LOW | Complex for initial MVP; unnecessary initially |
-| **Fancy Language Selector UI** | Visual language picker with flags, native language names, regional variants | Low | LOW | Nice-to-have polish; dropdown sufficient for MVP |
-| **User Language Override** | Users can change language separately from UI (e.g., read posts in Vietnamese, UI in English) | Medium | LOW | Niche use case; implement later if requested |
-| **SEO Optimization** | hreflang tags, language path prefixes (/vi/, /en/), metadata translation | High | MEDIUM | Important for organic reach; deferred MVP |
-| **Right-to-Left (RTL) Full Support** | Complete RTL layout, form directions, text alignment for Arabic/Hebrew | High | LOW | Deferred; infrastructure only needed MVP |
+| Feature                              | Value Proposition                                                                            | Complexity | WeTalk Fit | Notes                                                              |
+| ------------------------------------ | -------------------------------------------------------------------------------------------- | ---------- | ---------- | ------------------------------------------------------------------ |
+| **Smart Language Detection**         | Detect from: browser lang → IP geolocation → user account → redirect header                  | Medium     | HIGH       | Useful for developer audience spanning regions                     |
+| **Translation UI in Admin Panel**    | Non-developer staff can add/edit translations without code                                   | High       | MEDIUM     | Deferred MVP; Locize handles this efficiently                      |
+| **Real-time Translation Management** | Use Locize or similar service for live translation updates without redeploy                  | High       | MEDIUM     | Enables split-team workflows (devs code, translators update live)  |
+| **Context-Aware Translations**       | Same word translates differently based on context (verb vs noun)                             | Low        | LOW        | Overkill for social platform; messages/posts mostly user-generated |
+| **Advanced Pluralization Rules**     | Handle complex rules (0,1,2,5+) for languages with more than 2 forms                         | Low-Medium | HIGH       | Vietnamese has complex structures sometimes                        |
+| **Machine Translation Fallback**     | Missing translations auto-translated via Google Translate API                                | Medium     | MEDIUM     | Useful for scale, but requires API costs + quality assurance       |
+| **Analytics Dashboard**              | Track: missing translations, language usage, translation freshness                           | High       | MEDIUM     | Locize provides this out-of-box with paid plan                     |
+| **Namespace Code Splitting**         | Load only translation namespaces for active feature (performance optimization)               | High       | MEDIUM     | WeTalk has feature-based architecture; natural fit later           |
+| **Translation Versioning**           | Rollback to previous translation version if new translations break things                    | High       | LOW        | Complex for initial MVP; unnecessary initially                     |
+| **Fancy Language Selector UI**       | Visual language picker with flags, native language names, regional variants                  | Low        | LOW        | Nice-to-have polish; dropdown sufficient for MVP                   |
+| **User Language Override**           | Users can change language separately from UI (e.g., read posts in Vietnamese, UI in English) | Medium     | LOW        | Niche use case; implement later if requested                       |
+| **SEO Optimization**                 | hreflang tags, language path prefixes (/vi/, /en/), metadata translation                     | High       | MEDIUM     | Important for organic reach; deferred MVP                          |
+| **Right-to-Left (RTL) Full Support** | Complete RTL layout, form directions, text alignment for Arabic/Hebrew                       | High       | LOW        | Deferred; infrastructure only needed MVP                           |
 
 ## Anti-Features
 
 Features to explicitly NOT build or should defer.
 
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| **In-app Translation Editor** | Security + UX nightmare; non-developers can't maintain translations accurately | Use Locize or similar paid TMS; restrict to dev environment during development |
-| **Manual Translation File Merging** | Merge conflicts in JSON files break versioning; hard to review | Use Locize or i18next ecosystem tools; automate via CI/CD |
-| **User-Generated Translation Contributions** | GitHub PRs for translations = messy workflow; poor quality control | Use Locize community translation feature (paid plan) or manage internally first |
-| **Translating User-Generated Content** | Comments, posts, messages are user-created; no backend translation needed | Users responsible for own language choice; UI translates, not content |
-| **Dynamic Language Lists** | Pulling language list from backend creates dependency, complexity | Hardcode supported languages in code; easy to extend |
-| **Per-Message Translation** | Translate individual message/post manually; labor-intensive | Impossible at scale; only translate UI/system messages |
+| Anti-Feature                                 | Why Avoid                                                                      | What to Do Instead                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| **In-app Translation Editor**                | Security + UX nightmare; non-developers can't maintain translations accurately | Use Locize or similar paid TMS; restrict to dev environment during development  |
+| **Manual Translation File Merging**          | Merge conflicts in JSON files break versioning; hard to review                 | Use Locize or i18next ecosystem tools; automate via CI/CD                       |
+| **User-Generated Translation Contributions** | GitHub PRs for translations = messy workflow; poor quality control             | Use Locize community translation feature (paid plan) or manage internally first |
+| **Translating User-Generated Content**       | Comments, posts, messages are user-created; no backend translation needed      | Users responsible for own language choice; UI translates, not content           |
+| **Dynamic Language Lists**                   | Pulling language list from backend creates dependency, complexity              | Hardcode supported languages in code; easy to extend                            |
+| **Per-Message Translation**                  | Translate individual message/post manually; labor-intensive                    | Impossible at scale; only translate UI/system messages                          |
 
 ## Feature Dependencies
 
@@ -101,6 +101,7 @@ Environment Setup
    - [ ] Documentation for adding new translation keys
 
 **Not in MVP:**
+
 - Locize integration (manage locally until product scales)
 - RTL support (infrastructure now, implementation later)
 - Machine translation fallback
@@ -131,6 +132,7 @@ public/locales/
 ```
 
 **Rationale:**
+
 - Aligns with `src/features/` organization → easier for developers to find what to translate
 - Namespaces can be lazy-loaded per feature (performance future optimization)
 - Easier to assign translation work to specialists (one person translates posts.json, another does messages.json)
@@ -174,7 +176,7 @@ import { useTranslation } from 'react-i18next';
 
 export const LoginForm = () => {
   const { t } = useTranslation('auth');  // namespace: auth.json
-  
+
   return (
     <form>
       <label>{t('emailLabel')}</label>      {/* auth.json: "emailLabel": "Email Address" */}
@@ -190,7 +192,7 @@ export const LoginForm = () => {
 ```typescript
 export const PostHeader = ({ postCount }) => {
   const { t } = useTranslation('posts');
-  
+
   // posts.json: "postCount": "You have {{count}} unread posts"
   return <h2>{t('postCount', { count: postCount })}</h2>;
   // Renders: "You have 5 unread posts"
@@ -202,7 +204,7 @@ export const PostHeader = ({ postCount }) => {
 ```typescript
 export const MessageBadge = ({ unreadCount }) => {
   const { t } = useTranslation('notifications');
-  
+
   // notifications.json:
   // "unreadMessages": "You have 1 message | You have {{count}} messages"
   // i18next auto-picks singular/plural based on count
@@ -240,11 +242,11 @@ export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const { user } = useCurrentUser();
   const updateUser = useUpdateUser();
-  
+
   const handleLanguageChange = async (newLang: 'en' | 'vi') => {
     // Switch UI language immediately
     await i18n.changeLanguage(newLang);
-    
+
     // Persist to user profile if logged in
     if (user) {
       await updateUser({ language: newLang });
@@ -252,7 +254,7 @@ export const LanguageSwitcher = () => {
       // For anonymous users, already persisted by i18next to localStorage
     }
   };
-  
+
   return (
     <select value={i18n.language} onChange={(e) => handleLanguageChange(e.target.value as any)}>
       <option value="en">English</option>
@@ -292,6 +294,7 @@ export const LanguageSwitcher = () => {
 ```
 
 **Why semantic keys:**
+
 - Stable: English text can change without breaking code
 - Composable: `common.buttons.submit` used everywhere
 - Clear ownership: Team knows which file to edit for which feature
@@ -301,12 +304,14 @@ export const LanguageSwitcher = () => {
 **To add Japanese (ja) after Vietnamese MVP:**
 
 1. Create namespace files:
+
    ```bash
    mkdir public/locales/ja
    cp public/locales/en/* public/locales/ja/
    ```
 
 2. Update i18n config:
+
    ```typescript
    // src/lib/i18n.ts
    supportedLngs: ['en', 'vi', 'ja'],
@@ -324,6 +329,7 @@ export const LanguageSwitcher = () => {
 ## Complexity Notes
 
 ### Low Complexity (1-2 days each)
+
 - Setting up i18next + react-i18next
 - Basic useTranslation hook usage
 - Simple language detection
@@ -331,6 +337,7 @@ export const LanguageSwitcher = () => {
 - Basic pluralization
 
 ### Medium Complexity (3-5 days each)
+
 - Extracting all hardcoded strings (audit effort)
 - Creating namespace structure
 - Translating all content (content effort, not code)
@@ -338,6 +345,7 @@ export const LanguageSwitcher = () => {
 - Namespace-based code splitting (optional)
 
 ### High Complexity (1-2 weeks each)
+
 - Locize integration (TMS workflow)
 - SEO optimization (hreflang, language routing)
 - RTL language support (CSS rewrite)
@@ -349,6 +357,7 @@ export const LanguageSwitcher = () => {
 ### Components That Need i18n
 
 **Must translate:**
+
 - ✅ All UI text (buttons, labels, placeholders, error messages)
 - ✅ Form validation messages
 - ✅ System notifications ("You have 1 new message")
@@ -358,6 +367,7 @@ export const LanguageSwitcher = () => {
 - ✅ Empty states ("No posts yet")
 
 **Do NOT translate:**
+
 - ❌ User-generated content (posts, comments, profile bios)
 - ❌ Community names (user-created text)
 - ❌ Usernames
@@ -366,16 +376,16 @@ export const LanguageSwitcher = () => {
 
 ### Interaction with WeTalk Features
 
-| Feature | i18n Impact | Notes |
-|---------|------------|-------|
-| **Posts** | Translate "Create Post" UI, date display | Post content is user-generated, not translated |
-| **Comments** | Translate "Add Comment" UI, timestamps | Comment content is user-generated |
-| **Messages** | Translate "New message" notification, timestamps | Actual message text is user-generated |
-| **Communities** | Translate UI labels; community name is user-set | Community descriptions are user-created |
-| **Notifications** | HIGH: System messages must be fully translated | "You have 5 new posts from X community" |
-| **Profiles** | Translate UI ("Edit Profile", "Followers"); bio is user-generated | Profile customization UI needs i18n |
-| **Search** | Translate placeholders, results UI | Search queries are freeform |
-| **Settings** | CRITICAL: Settings page 100% translated | Language selection here |
+| Feature           | i18n Impact                                                       | Notes                                          |
+| ----------------- | ----------------------------------------------------------------- | ---------------------------------------------- |
+| **Posts**         | Translate "Create Post" UI, date display                          | Post content is user-generated, not translated |
+| **Comments**      | Translate "Add Comment" UI, timestamps                            | Comment content is user-generated              |
+| **Messages**      | Translate "New message" notification, timestamps                  | Actual message text is user-generated          |
+| **Communities**   | Translate UI labels; community name is user-set                   | Community descriptions are user-created        |
+| **Notifications** | HIGH: System messages must be fully translated                    | "You have 5 new posts from X community"        |
+| **Profiles**      | Translate UI ("Edit Profile", "Followers"); bio is user-generated | Profile customization UI needs i18n            |
+| **Search**        | Translate placeholders, results UI                                | Search queries are freeform                    |
+| **Settings**      | CRITICAL: Settings page 100% translated                           | Language selection here                        |
 
 ### Scalability to 5-10 Languages
 

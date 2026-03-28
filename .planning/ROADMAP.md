@@ -34,6 +34,7 @@ Nothing (foundation phase)
 I18N-01, I18N-02, I18N-03, I18N-04, I18N-05, I18N-06
 
 **Success Criteria (what must be TRUE):**
+
 1. i18next v26.0.1 and react-i18next v17.0.1 installed and configured
 2. i18n provider wraps entire app component tree (after Auth, before Routes)
 3. Language detection works: browser locale auto-detected on first visit
@@ -62,6 +63,7 @@ Phase 1 (for namespace structure reference)
 I18N-07, I18N-08, I18N-09, I18N-10
 
 **Success Criteria (what must be TRUE):**
+
 1. All UI strings (>500 keys) identified and documented in audit report
 2. English translations extracted to `public/locales/en/` JSON files (feature-based namespaces)
 3. i18next-scanner successfully identifies all keys used in codebase
@@ -90,6 +92,7 @@ Phase 1 (infrastructure ready), Phase 2 (all keys identified)
 I18N-11, I18N-12, I18N-13, I18N-14
 
 **Success Criteria (what must be TRUE):**
+
 1. All components use `useTranslation()` hook (no hardcoded English strings visible to users)
 2. Every hardcoded string replaced with `t('key')` call at component render level
 3. Component test suite configured with i18n provider mock (no translation loading during tests)
@@ -118,6 +121,7 @@ Phase 1 (persistence infrastructure), Phase 3 (components ready to respond to la
 I18N-15, I18N-16, I18N-17, I18N-18
 
 **Success Criteria (what must be TRUE):**
+
 1. Language switcher UI visible in Settings or navigation header
 2. User can select "English" or "Tiếng Việt" and UI updates immediately
 3. Selected language persists after browser refresh (localStorage + Zustand)
@@ -146,6 +150,7 @@ Phase 2 (all keys identified), Phase 4 (language switcher in place for testing)
 I18N-19, I18N-20, I18N-21, I18N-22
 
 **Success Criteria (what must be TRUE):**
+
 1. 100% of English keys have Vietnamese translations (zero missing keys)
 2. Vietnamese tone is conversational and community-focused (matches WeTalk brand)
 3. Terminology consistent across all features (glossary applied)
@@ -174,6 +179,7 @@ Phase 3 (components integrated), Phase 5 (Vietnamese translations complete)
 I18N-23, I18N-24, I18N-25, I18N-26, I18N-27
 
 **Success Criteria (what must be TRUE):**
+
 1. Unit test passes: All translation keys have both English and Vietnamese values
 2. E2E test passes: Language switcher toggles UI between English ↔ Vietnamese
 3. Critical workflows tested in both languages: Auth, Post Creation, Messaging, Notifications
@@ -204,6 +210,7 @@ All previous phases (documentation reflects final implementation)
 I18N-28, I18N-29, I18N-30
 
 **Success Criteria (what must be TRUE):**
+
 1. Developer setup guide published (how to add translations to new features)
 2. Translation key naming convention documented with examples
 3. Namespace structure explained (feature-based organization rationale)
@@ -222,31 +229,31 @@ Not Started
 
 ## Progress Table
 
-| Phase | Requirements | Success Criteria | Status | Completed |
-|-------|--------------|------------------|--------|-----------|
-| **1. Foundation** | 6 | 7 | Not Started | - |
-| **2. String Extraction** | 4 | 7 | Not Started | - |
-| **3. Component Integration** | 4 | 7 | Not Started | - |
-| **4. Language Switching** | 4 | 7 | Not Started | - |
-| **5. Vietnamese Translations** | 4 | 7 | Not Started | - |
-| **6. Testing & Validation** | 5 | 7 | Not Started | - |
-| **7. Documentation** | 3 | 7 | Not Started | - |
-| **TOTAL** | **30** | **49** | **0/7** | - |
+| Phase                          | Requirements | Success Criteria | Status      | Completed |
+| ------------------------------ | ------------ | ---------------- | ----------- | --------- |
+| **1. Foundation**              | 6            | 7                | Not Started | -         |
+| **2. String Extraction**       | 4            | 7                | Not Started | -         |
+| **3. Component Integration**   | 4            | 7                | Not Started | -         |
+| **4. Language Switching**      | 4            | 7                | Not Started | -         |
+| **5. Vietnamese Translations** | 4            | 7                | Not Started | -         |
+| **6. Testing & Validation**    | 5            | 7                | Not Started | -         |
+| **7. Documentation**           | 3            | 7                | Not Started | -         |
+| **TOTAL**                      | **30**       | **49**           | **0/7**     | -         |
 
 ---
 
 ## Requirement Coverage Matrix
 
-| Phase | Requirements | Count |
-|-------|--------------|-------|
-| Phase 1 | I18N-01, I18N-02, I18N-03, I18N-04, I18N-05, I18N-06 | 6 |
-| Phase 2 | I18N-07, I18N-08, I18N-09, I18N-10 | 4 |
-| Phase 3 | I18N-11, I18N-12, I18N-13, I18N-14 | 4 |
-| Phase 4 | I18N-15, I18N-16, I18N-17, I18N-18 | 4 |
-| Phase 5 | I18N-19, I18N-20, I18N-21, I18N-22 | 4 |
-| Phase 6 | I18N-23, I18N-24, I18N-25, I18N-26, I18N-27 | 5 |
-| Phase 7 | I18N-28, I18N-29, I18N-30 | 3 |
-| **COVERAGE** | **All 30 v1.0 requirements mapped** | **100%** ✓ |
+| Phase        | Requirements                                         | Count      |
+| ------------ | ---------------------------------------------------- | ---------- |
+| Phase 1      | I18N-01, I18N-02, I18N-03, I18N-04, I18N-05, I18N-06 | 6          |
+| Phase 2      | I18N-07, I18N-08, I18N-09, I18N-10                   | 4          |
+| Phase 3      | I18N-11, I18N-12, I18N-13, I18N-14                   | 4          |
+| Phase 4      | I18N-15, I18N-16, I18N-17, I18N-18                   | 4          |
+| Phase 5      | I18N-19, I18N-20, I18N-21, I18N-22                   | 4          |
+| Phase 6      | I18N-23, I18N-24, I18N-25, I18N-26, I18N-27          | 5          |
+| Phase 7      | I18N-28, I18N-29, I18N-30                            | 3          |
+| **COVERAGE** | **All 30 v1.0 requirements mapped**                  | **100%** ✓ |
 
 ---
 

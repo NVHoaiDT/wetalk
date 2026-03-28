@@ -30,12 +30,14 @@ These pitfalls cause complete feature breakage or security issues if not address
 English strings appear hardcoded throughout the app when translation keys are missing or loading fails. Users see a mix of English and Vietnamese, breaking UX.
 
 **Why it happens:**
+
 - Developers don't anticipate all translation key failures
 - Fallback UI doesn't specify a clear locale
 - Missing pluralization rules go unnoticed until QA
 - Translation files incomplete but app shipped anyway
 
 **Example:**
+
 ```typescript
 // src/features/posts/components/create-post.tsx
 <button>
@@ -47,12 +49,14 @@ English strings appear hardcoded throughout the app when translation keys are mi
 ```
 
 **Consequences:**
+
 - **High:** Broken user experience with mixed languages
 - **High:** Users see incomplete translations as app is "broken"
 - **Medium:** Untranslated strings make app look unprofessional
 - **Medium:** Difficult to identify which translations are missing
 
 **Prevention:**
+
 - DO: Use strict mode in i18n library where missing keys throw errors in dev
 - DO: Maintain a "Missing Translations" test that fails if fallback language is used
 - DO: Before any language launch, audit with "find untranslated strings" check
@@ -66,10 +70,12 @@ English strings appear hardcoded throughout the app when translation keys are mi
 test('Vietnamese translation complete', () => {
   const vn = i18n.getResourceBundle('vi', 'translations');
   const en = i18n.getResourceBundle('en', 'translations');
-  
+
   const missingKeys = getMissingKeys(vn, en);
-  expect(missingKeys).toEqual([], 
-    `Missing keys in Vietnamese: ${missingKeys.join(', ')}`);
+  expect(missingKeys).toEqual(
+    [],
+    `Missing keys in Vietnamese: ${missingKeys.join(', ')}`,
+  );
 });
 ```
 
@@ -85,15 +91,17 @@ test('Vietnamese translation complete', () => {
 Translation strings hardcode user names, numbers, or variables instead of using interpolation. When strings need modification (accent marks, ordering), translations break.
 
 **Why it happens:**
+
 - Developers concatenate strings: `t('hello') + " " + userName`
 - Interpolation template not used in translation system
 - Complex pluralization rules embedded in component logic
 - Developers assume English word order applies to all languages
 
 **Example — BAD:**
+
 ```typescript
 // Component concatenates strings
-const message = t('greetings.hello') + " " + userName + "!";
+const message = t('greetings.hello') + ' ' + userName + '!';
 // Translation file: { "greetings.hello": "Xin chào" }
 // Renders: "Xin chào userName!" ❌ Fixed word order
 
@@ -102,6 +110,7 @@ const message = t('greetings.hello') + " " + userName + "!";
 ```
 
 **Example — GOOD:**
+
 ```typescript
 // Use interpolation template
 const message = t('greetings.hello', { name: userName });
@@ -110,12 +119,14 @@ const message = t('greetings.hello', { name: userName });
 ```
 
 **Consequences:**
+
 - **High:** Translation strings inflexible for grammar differences
 - **High:** Scaling to 3rd language requires code rewrite if interpolation missing
 - **Medium:** Pluralization logic duplicated in components
 - **Medium:** Number/date formatting hardcoded instead of locale-aware
 
 **Prevention:**
+
 - DO: Always use interpolation templates `t('key', { var: value })`
 - DO: Extract all number/date formatting to locale-aware formatters
 - DO: Use pluralization rules: `t('items.count', { count: itemCount })`
@@ -123,6 +134,7 @@ const message = t('greetings.hello', { name: userName });
 - DO: Create a linting rule to catch string concatenation with `t()` calls
 
 **Pluralization Example:**
+
 ```typescript
 // GOOD: Plural forms with count parameter
 i18n config:
@@ -136,10 +148,11 @@ Usage:
 ```
 
 **Testing Strategy:**
+
 ```typescript
 test('All interpolation templates in translation keys', () => {
   const keys = getAllTranslationKeys();
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const hasTemplate = /{{.*}}/.test(i18n.t(key));
     if (hasTemplate) {
       // Verify template variables are valid
@@ -162,12 +175,14 @@ test('All interpolation templates in translation keys', () => {
 A translation key is added in code but translator forgets to add the Vietnamese equivalent. App launches with English text in Vietnamese mode because fallback chain hides the error.
 
 **Why it happens:**
+
 - No automated sync between development code and translation files
 - Translator works from incomplete requirements list
 - "Missing key" detection only happens at runtime after user clicks that feature
 - Translation file validation mixes old/legacy/unused keys
 
 **Example:**
+
 ```typescript
 // New feature added:
 <p>{t('posts.newFeature.aiSummary')}</p>  // ← Added this key
@@ -177,12 +192,14 @@ A translation key is added in code but translator forgets to add the Vietnamese 
 ```
 
 **Consequences:**
+
 - **High:** Features launch with English text in translated UI
 - **High:** No visibility into missing translations until user reports
 - **Medium:** Translation validation happens too late (post-deployment)
 - **Medium:** Manual tracking of translation keys error-prone
 
 **Prevention:**
+
 - DO: Automated extraction of i18n keys from source code
 - DO: CI/CD check comparing code keys vs. translation files
 - DO: Strict failure if any key missing (no silent fallback)
@@ -190,6 +207,7 @@ A translation key is added in code but translator forgets to add the Vietnamese 
 - DO: Use TypeScript + type-safe i18n library to catch missing keys at compile time
 
 **Type-Safe i18n Example (i18next with TypeScript):**
+
 ```typescript
 // i18n.d.ts - auto-generated from translation files
 declare module 'i18next' {
@@ -212,6 +230,7 @@ t('posts.newFeature.notRealKey') ✗ TypeScript Error!
 ```
 
 **CI/CD Validation:**
+
 ```bash
 # Script to fail build if keys missing
 npm run i18n:check-coverage
@@ -230,12 +249,14 @@ npm run i18n:check-coverage
 English has 2 plural forms (singular/plural). Vietnamese only has 1. But translation system configured for English, so Vietnamese translator doesn't know what to do with plural rules, or has to create duplicate entries.
 
 **Why it happens:**
+
 - Pluralization rules assumed English plural logic
 - Different languages have completely different plural forms (Polish has 3!)
 - Translator receives keys like `posts.count_one`, `posts.count_other` but Vietnamese doesn't distinguish
 - No testing of plural edge cases (0, 1, 2, plural)
 
 **Example:**
+
 ```typescript
 i18n config (assuming English pluralization):
 {
@@ -248,17 +269,20 @@ Translator sees _one and _other keys and doesn't understand why.
 ```
 
 **Consequences:**
+
 - **High:** Confusing for translators unfamiliar with English plural rules
 - **Medium:** Wasted translation effort on superfluous plural forms
 - **Low:** Minor grammar issue if singular/plural forms differ slightly
 
 **Prevention:**
+
 - DO: Research pluralization rules for each language
 - DO: Configure i18n library correctly for each language's plural rules
 - DO: Document plural forms needed per language
 - DON'T: Assume English plural rules apply universally
 
 **Pluralization Configuration (i18next):**
+
 ```typescript
 // src/lib/i18n.ts
 import { pluralRules } from 'i18next';
@@ -268,19 +292,20 @@ import { pluralRules } from 'i18next';
 i18n.init({
   lng: 'vi',
   pluralRules: {
-    'vi': () => 'other' // Always use "other" form, never "one"
+    vi: () => 'other', // Always use "other" form, never "one"
   },
   resources: {
     vi: {
       translation: {
-        'items': '{{count}} mục'  // Single form handles all counts
-      }
-    }
-  }
+        items: '{{count}} mục', // Single form handles all counts
+      },
+    },
+  },
 });
 ```
 
 **Edge Case Testing:**
+
 ```typescript
 test('Pluralization handles edge cases', () => {
   expect(t('items', { count: 0 })).toBe('0 mục');
@@ -304,12 +329,14 @@ test('Pluralization handles edge cases', () => {
 i18n provider or I18nContext wrapper not placed at correct tree level. Child components don't have access to `useTranslation()` hook, or language switch doesn't update all descendant components.
 
 **Why it happens:**
+
 - Provider placed too deep in tree (after feature-specific providers)
 - Provider wrapping per-route instead of global app
 - Multiple provider instances competing for state
 - Zustand store not integrated with i18n state
 
 **Example:**
+
 ```typescript
 // ❌ WRONG - i18n provider inside route component
 function App() {
@@ -331,6 +358,7 @@ function App() {
 ```
 
 **Example — GOOD:**
+
 ```typescript
 // ✓ CORRECT - i18n provider at root level
 function App() {
@@ -350,18 +378,21 @@ function App() {
 ```
 
 **Consequences:**
+
 - **Medium:** Language switch doesn't propagate to all components
 - **Medium:** Some pages remain in previous language after switch
 - **Medium:** Inconsistent translations across different sections
 - **Low:** Developer confusion about why `useTranslation()` fails in some components
 
 **Prevention:**
+
 - DO: Place I18nextProvider at \`<App/>\` root level, before any route wrapping
 - DO: Verify language change fires re-render using React DevTools Profiler
 - DO: Test that language toggle updates every feature simultaneously
 - DO: Document provider setup in project README
 
 **Integration with Zustand:**
+
 ```typescript
 // src/lib/i18n.ts
 import { create } from 'zustand';
@@ -377,13 +408,14 @@ export const useLanguageStore = create((set) => ({
 ```
 
 **Testing:**
+
 ```typescript
 test('Language change propagates to all components', async () => {
   const { getByRole } = render(<App />);
   const languageToggle = getByRole('button', { name: /language/i });
-  
+
   fireEvent.click(languageToggle); // Switch to Vietnamese
-  
+
   // All text should update
   expect(getByText('Xin chào')).toBeInTheDocument();
   expect(getByText('Đăng xuất')).toBeInTheDocument(); // Logout button
@@ -402,27 +434,30 @@ test('Language change propagates to all components', async () => {
 All translation files bundled inline, bloating JavaScript bundle. Or, translations loaded asynchronously but component renders before load completes, showing untranslated text momentarily.
 
 **Why it happens:**
+
 - All translations (all languages) bundled in main.js
 - Translation fetch delayed, component renders with `undefined` first
 - No loading state or fallback UI during translation fetch
 - Namespace-based translation loading not implemented
 
 **Example:**
+
 ```typescript
 // ❌ Bundle bloat - all languages in main.js
 i18n.init({
   resources: {
     en: { translation: englishKeys }, // ← 50KB
     vi: { translation: vietnameseKeys }, // ← 50KB
-    ja: { translation: japaneseKeys },  // ← 50KB
+    ja: { translation: japaneseKeys }, // ← 50KB
     // ...
-  }
+  },
 });
 
 // Bundle size: main.js += 200KB for languages that user may never use!
 ```
 
 **Example — Loading Race Condition:**
+
 ```typescript
 // ❌ Async load without handling loading state
 function PostsList() {
@@ -438,6 +473,7 @@ function PostsList() {
 ```
 
 **Consequences:**
+
 - **High:** Unused translations bloat bundle (50-100KB+ for large apps)
 - **High:** Users with slow networks see untranslated placeholders
 - **Medium:** JavaScript parse/evaluation time increases (slower initial load)
@@ -445,6 +481,7 @@ function PostsList() {
 - **Low:** Confusing UX flicker (English text briefly visible, then Vietnamese)
 
 **Prevention:**
+
 - DO: Lazy-load translations per language, not all at once
 - DO: Use code splitting for language-specific bundles
 - DO: Add loading state/skeleton while translations load
@@ -453,27 +490,27 @@ function PostsList() {
 - DON'T: Include all languages in main bundle
 
 **Lazy Loading Setup (i18next):**
+
 ```typescript
 // src/lib/i18n.ts
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-i18n
-  .use(LanguageDetector)
-  .init({
-    fallbackLng: 'en',
-    ns: ['translation', 'common', 'posts', 'messages'], // Namespace split
-    defaultNS: 'translation',
-    backend: {
-      loadPath: '/locales/{{lng}}/{{ns}}.json' // Load per language + namespace
-    },
-  });
+i18n.use(LanguageDetector).init({
+  fallbackLng: 'en',
+  ns: ['translation', 'common', 'posts', 'messages'], // Namespace split
+  defaultNS: 'translation',
+  backend: {
+    loadPath: '/locales/{{lng}}/{{ns}}.json', // Load per language + namespace
+  },
+});
 
 // Preload Vietnamese (most common language after English)
 i18n.loadNamespace('vi');
 ```
 
 **Module Loading for Bundle Optimization:**
+
 ```typescript
 // Load translation bundles as separate code chunks
 const enTranslations = () => import('/locales/en/translation.json');
@@ -499,12 +536,14 @@ i18n.on('languageChanged', async (lng) => {
 Vietnamese translations longer than English, causing UI to break. Buttons overflow, text gets cut off, layout shifts when language changes.
 
 **Why it happens:**
+
 - English text "Create" (6 chars) → Vietnamese "Tạo một bài viết mới" (20 chars)
 - Fixed-width containers assume English length
 - No QA process checking translations fit the UI
 - Text truncation not consistent across features
 
 **Example:**
+
 ```typescript
 // UI assumes English button width
 <button className="w-20">  {/* Fixed width 80px */}
@@ -517,12 +556,14 @@ Vietnamese translations longer than English, causing UI to break. Buttons overfl
 ```
 
 **Consequences:**
+
 - **Medium:** UI breaks when language switches
 - **Medium:** Text truncation or overflow obscures meaning
 - **Medium:** Layout shifts when user adds item (Vietnamese longer, pushes UI)
 - **Low:** Looks unprofessional in production
 
 **Prevention:**
+
 - DO: Use flexible layouts (Tailwind `max-w-xs` instead of fixed width)
 - DO: QA review of translations for text length fit
 - DO: Create a visual regression test comparing English vs. Vietnamese layout
@@ -530,6 +571,7 @@ Vietnamese translations longer than English, causing UI to break. Buttons overfl
 - DO: Document UI text length limits for translators (e.g., button max 20 chars)
 
 **Layout Pattern (Tailwind):**
+
 ```typescript
 // ✓ GOOD - Flexible container
 <button className="px-4 py-2 max-w-xs truncate">
@@ -543,14 +585,15 @@ Vietnamese translations longer than English, causing UI to break. Buttons overfl
 ```
 
 **Testing Visual Regression:**
+
 ```typescript
 test('Buttons fit content in both languages', async () => {
   const { getByRole } = render(<CreateButton />);
   const button = getByRole('button');
-  
+
   // English
   expect(button).not.toHaveOverflowingContent();
-  
+
   // Switch to Vietnamese
   await switchLanguage('vi');
   expect(button).not.toHaveOverflowingContent();
@@ -569,12 +612,14 @@ test('Buttons fit content in both languages', async () => {
 Code changes a string key name or structure, but translation file not updated. Developer and translator work on different assumptions about key names, resulting in duplicated or missing translations.
 
 **Why it happens:**
+
 - Refactoring changes key structure: `posts.create` → `features.posts.actions.create`
 - Developer removes unused key but doesn't update translation file
 - Translator works from old translation template
 - No version sync between code and translations (git ignores translation files)
 
 **Example:**
+
 ```typescript
 // Developer refactors key naming:
 // OLD: t('posts.create')
@@ -587,12 +632,14 @@ Code changes a string key name or structure, but translation file not updated. D
 ```
 
 **Consequences:**
+
 - **Medium:** Translation file bloat with unused/old keys
 - **Medium:** Translator confusion about which keys are active
 - **Medium:** Difficulty tracking which translations are outdated
 - **Low:** Unclear which keys were renamed vs. which are legitimately new
 
 **Prevention:**
+
 - DO: Remove old translation keys when refactoring
 - DO: Use Git to track both code and translation file changes together
 - DO: Require matching commits: "Refactor: rename posts key + update translations"
@@ -600,6 +647,7 @@ Code changes a string key name or structure, but translation file not updated. D
 - DO: Use i18n key deprecation warnings in development
 
 **Dead Key Detection Script:**
+
 ```bash
 # Find unused translation keys in code
 # Compare translation file keys vs. actual t() calls in JSX
@@ -628,15 +676,17 @@ echo "Unused keys: $(cat unused-keys.txt)"
 Dates, numbers, and currency formatted using English rules (`1,000.50` instead of `1.000,50`), or dates shown as `3/28/2026` (US format) instead of `28/03/2026` (global format).
 
 **Why it happens:**
+
 - Using `Date.toString()` instead of locale-aware formatter
 - Currency hardcoded as `$` instead of using Intl.NumberFormat
 - Number.toFixed() doesn't account for locale decimal separator
 - `.toLocaleDateString()` not called
 
 **Example:**
+
 ```typescript
 // ❌ WRONG - English format hardcoded
-const price = 1000.50;
+const price = 1000.5;
 const formatted = `$${price.toFixed(2)}`; // Renders: "$1000.50"
 // In Vietnamese, should be: "₫1.000,50"
 
@@ -652,45 +702,49 @@ console.log(count); // Shows: 1000000
 ```
 
 **Example — GOOD:**
+
 ```typescript
 // ✓ Use Intl for locale-aware formatting
-const price = 1000.50;
+const price = 1000.5;
 const formatted = new Intl.NumberFormat('vi-VN', {
   style: 'currency',
-  currency: 'VND'
+  currency: 'VND',
 }).format(price);
 // Renders: "1.000,50 ₫"
 
 const dateStr = new Intl.DateTimeFormat('vi-VN', {
   year: 'numeric',
   month: '2-digit',
-  day: '2-digit'
+  day: '2-digit',
 }).format(date);
 // Renders: "28/03/2026"
 ```
 
 **Consequences:**
+
 - **Medium:** Dates ambiguous to international users (3/4/2026 = March or April?)
 - **Medium:** Numbers hard to read in large quantities without thousand separators
 - **Medium:** Currency symbol wrong or price formatting confusing
 - **Low:** Looks unprofessional for translated app
 
 **Prevention:**
+
 - DO: Create locale-aware formatter utilities:
+
   ```typescript
   // src/lib/locale-formatters.ts
   export const formatPrice = (amount: number, locale?: string) => {
     return new Intl.NumberFormat(locale || i18n.language, {
       style: 'currency',
-      currency: 'VND'
+      currency: 'VND',
     }).format(amount);
   };
-  
+
   export const formatDate = (date: Date, locale?: string) => {
     return new Intl.DateTimeFormat(locale || i18n.language, {
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit'
+      day: '2-digit',
     }).format(date);
   };
   ```
@@ -700,6 +754,7 @@ const dateStr = new Intl.DateTimeFormat('vi-VN', {
 - DON'T: Use native `toString()` or `toLocaleDateString()` without i18n context
 
 **Testing:**
+
 ```typescript
 test('Numbers formatted correctly for Vietnamese', () => {
   i18n.changeLanguage('vi');
@@ -726,12 +781,14 @@ test('Numbers formatted correctly for English', () => {
 `useTranslation()` called in component that's not wrapped by I18nContext, causing "hook called outside context" error. Or hook called conditionally, causing React Hook rules violation.
 
 **Why it happens:**
+
 - Component used outside I18nContext provider
 - Conditional hook usage: `if (showTranslated) { const { t } = useTranslation(); }`
 - Hook called in event handler instead of top-level
 - Attempting to use hook in class components
 
 **Example:**
+
 ```typescript
 // ❌ WRONG - Conditional hook usage
 function PostList({ translateUI }: { translateUI: boolean }) {
@@ -753,12 +810,13 @@ function Button() {
 ```
 
 **Example — GOOD:**
+
 ```typescript
 // ✓ CORRECT - Hook at top level
 function PostList() {
   const { t } = useTranslation(); // Hook called at top level
   const [showTranslated, setShowTranslated] = useState(true);
-  
+
   return (
     <div>
       {showTranslated && <p>{t('posts.title')}</p>}
@@ -778,17 +836,20 @@ function Button() {
 ```
 
 **Consequences:**
+
 - **Medium:** Runtime error when component tries to use hook
 - **Medium:** Entire feature broken because component fails to render
 - **Low:** Developer confusion about when to use hook vs. direct i18n instance
 
 **Prevention:**
+
 - DO: Always call `useTranslation()` at component top level
 - DO: For event handlers, use `i18n.t()` directly instead of hook
 - DO: Use ESLint rule `react-hooks/rules-of-hooks` (already default in React)
 - DO: For context detection, wrap with I18nContext error boundary
 
 **Linting:**
+
 ```json
 // .eslintrc.json
 {
@@ -800,6 +861,7 @@ function Button() {
 ```
 
 **Context Error Boundary:**
+
 ```typescript
 // For components that might be used outside context, provide fallback
 function useTranslationSafe() {
@@ -826,12 +888,14 @@ function useTranslationSafe() {
 System notifications, error messages from browsers, native dialogs, or external libraries (React Query errors, form validation messages) shown in English even when language is Vietnamese.
 
 **Why it happens:**
+
 - Browser's native dialogs use system language, not app language
 - Third-party libraries (React Query, form validators) have English defaults
 - Error messages from async operations not wrapped in translation
 - Success/error toasts hardcoded without i18n
 
 **Example:**
+
 ```typescript
 // ❌ WRONG - React Query error not translated
 const { isLoading, error } = useQuery({
@@ -855,12 +919,14 @@ toast.error('Failed to create post');  // Always English!
 ```
 
 **Consequences:**
+
 - **Medium:** Users see English error messages while UI is Vietnamese
 - **Medium:** Undermines translated app (users see English in error states)
 - **Medium:** Poor UX when validation/error states trigger English text
 - **Low:** Complicates QA testing for language switch
 
 **Prevention:**
+
 - DO: Create i18n wrapper for React Query errors
 - DO: Create custom form validation with i18n messages
 - DO: Translate all toast/notification messages
@@ -868,6 +934,7 @@ toast.error('Failed to create post');  // Always English!
 - DO: Test error states with language set to Vietnamese
 
 **React Query Error Translation:**
+
 ```typescript
 // src/lib/react-query.ts
 const queryClient = new QueryClient({
@@ -891,6 +958,7 @@ function getErrorMessage(error: Error): string {
 ```
 
 **Form Validation Translation:**
+
 ```typescript
 // Using react-hook-form with i18n
 const { register, formState: { errors } } = useForm({
@@ -919,12 +987,14 @@ const schema = z.object({
 Translators only translate visible text, missing `aria-label`, `title`, `alt` attributes and other hidden strings. Screen readers and tooltips remain in English.
 
 **Why it happens:**
+
 - Translator sees component template but misses attributes
 - `aria-label` strings not in centralized translation file
 - Alt text hardcoded without i18n key
 - Title attributes for hover tooltips not translated
 
 **Example:**
+
 ```typescript
 // ❌ WRONG - Alt text not translated
 <img
@@ -944,18 +1014,21 @@ Translators only translate visible text, missing `aria-label`, `title`, `alt` at
 ```
 
 **Consequences:**
+
 - **Medium:** Accessibility broken for non-English users using screen readers
 - **Medium:** Tooltips shown in English
 - **Low:** Incomplete translation experience
 - **Low:** Alt text in English when image is from Vietnamese speaker
 
 **Prevention:**
+
 - DO: Include all HTML attributes in translation scope
 - DO: Create linting rule to detect untranslated attributes
 - DO: Add translation keys for all `aria-label`, `alt`, `title` attributes
 - DO: In code review, specifically check for non-translated attributes
 
 **Example — GOOD:**
+
 ```typescript
 // ✓ All attributes translated
 function LikeButton() {
@@ -988,6 +1061,7 @@ function LikeButton() {
 ```
 
 **Linting Rule (ESLint custom):**
+
 ```typescript
 // eslint-plugin-i18n-accessibility.js
 module.exports = {
@@ -1001,15 +1075,15 @@ module.exports = {
               if (value !== 't' && value !== 'i18n.t') {
                 context.report({
                   node,
-                  message: 'aria-label must use i18n translation (t) function'
+                  message: 'aria-label must use i18n translation (t) function',
                 });
               }
             }
-          }
+          },
         };
-      }
-    }
-  }
+      },
+    },
+  },
 };
 ```
 
@@ -1025,12 +1099,14 @@ module.exports = {
 When user switches language, real-time updates (SSE messages, notifications, live comments) continue in original language. Server-side event messages not re-rendered when language changes.
 
 **Why it happens:**
+
 - SSE connection and WebSocket listeners not subscribed to language changes
 - Real-time received data contains pre-formatted English strings from server
 - Component receiving SSE update doesn't re-render when language changes
 - Translation applied once at render time, not updated on language switch
 
 **Example:**
+
 ```typescript
 // ❌ WRONG - SSE message formatted at receive time
 useEffect(() => {
@@ -1046,6 +1122,7 @@ useEffect(() => {
 ```
 
 **Example — GOOD:**
+
 ```typescript
 // ✓ CORRECT - Store raw data, translate at render time
 useEffect(() => {
@@ -1058,7 +1135,7 @@ useEffect(() => {
 // Template - re-renders when language changes
 function NotificationItem({ notification }: { notification: SSEData }) {
   const { t } = useTranslation();
-  
+
   // Text translated at render time
   return <p>{t('notifications.userLikedPost', { user: notification.username })}</p>;
 }
@@ -1067,12 +1144,14 @@ function NotificationItem({ notification }: { notification: SSEData }) {
 ```
 
 **Consequences:**
+
 - **Medium:** Real-time notifications shown in old language after switch
 - **Medium:** Confusing UX (some text English, some Vietnamese)
 - **Medium:** Users can't understand real-time updates after language switch
 - **Low:** SSE implementation must be refactored to support translations
 
 **Prevention:**
+
 - DO: Store raw event data, translate at render time (not at receive time)
 - DO: Design API responses to return only machine-readable data
 - DO: Use interpolation templates for formatted messages
@@ -1080,18 +1159,19 @@ function NotificationItem({ notification }: { notification: SSEData }) {
 - DON'T: Pre-format messages on server side in English
 
 **Testing Real-Time Language Switch:**
+
 ```typescript
 test('Language change updates real-time messages', async () => {
   const { getByText, rerender } = render(<NotificationsList />);
-  
+
   // Simulate SSE message in English
   simulateSSEMessage({ username: 'John', action: 'like' });
   expect(getByText('John liked your post')).toBeInTheDocument();
-  
+
   // Switch to Vietnamese
   await switchLanguage('vi');
   rerender(<NotificationsList />); // Force re-render
-  
+
   // Message should update to Vietnamese
   expect(getByText('John đã thích bài viết của bạn')).toBeInTheDocument();
 });
@@ -1109,6 +1189,7 @@ test('Language change updates real-time messages', async () => {
 Translation file has invalid JSON, missing closing braces, or encoding issues (UTF-8 BOM, wrong charset). App loads translation file but parsing fails, nothing translates.
 
 **Why it happens:**
+
 - Translator edited JSON file without proper JSON editor
 - Copy-paste from Word/Google Docs introduced formatting characters
 - Line ending issues (CRLF vs. LF) corrupting file
@@ -1116,6 +1197,7 @@ Translation file has invalid JSON, missing closing braces, or encoding issues (U
 - Missing quotes in JSON object keys
 
 **Example:**
+
 ```json
 // ❌ BROKEN - Missing comma after key
 {
@@ -1137,12 +1219,14 @@ Translation file has invalid JSON, missing closing braces, or encoding issues (U
 ```
 
 **Consequences:**
+
 - **High:** Entire app breaks when translation file corrupted
 - **High:** No fallback, users see blank UI or error
 - **Medium:** Difficult to debug (error might not point to JSON issue)
 - **Medium:** Translator doesn't know file is corrupted until app tested
 
 **Prevention:**
+
 - DO: Validate translation files in CI/CD before deployment
 - DO: Require translator to use JSON-aware editor (VS Code, JSONLint)
 - DO: Add pre-commit hook to validate JSON syntax
@@ -1151,6 +1235,7 @@ Translation file has invalid JSON, missing closing braces, or encoding issues (U
 - DON'T: Accept translations via copy-paste or Word documents
 
 **CI/CD Validation Script:**
+
 ```bash
 #!/bin/bash
 # Validate all translation JSON files before deploy
@@ -1166,6 +1251,7 @@ echo "All translation files valid ✓"
 ```
 
 **Pre-commit Hook:**
+
 ```bash
 #!/bin/bash
 # .husky/pre-commit - validate translations before each commit
@@ -1181,6 +1267,7 @@ done
 ```
 
 **JSON Schema Validation:**
+
 ```typescript
 // src/lib/i18n.ts
 import Ajv from 'ajv';
@@ -1191,7 +1278,7 @@ const schema = {
     posts: { type: 'object' },
     navigation: { type: 'object' },
     // ...
-  }
+  },
 };
 
 const ajv = new Ajv();
@@ -1215,12 +1302,14 @@ if (!validate(translationFile)) {
 Translation files grow to 2000+ keys with no logical organization. Finding a specific translation becomes difficult, duplicates are hard to spot, and performance suffers.
 
 **Why it happens:**
+
 - All translations in single `translation.json` file
 - No namespace separation by feature
 - Keys use inconsistent naming patterns
 - Unused/legacy keys never removed
 
 **Example:**
+
 ```json
 // ❌ POOR STRUCTURE - Flat, 2000+ keys
 {
@@ -1228,7 +1317,7 @@ Translation files grow to 2000+ keys with no logical organization. Finding a spe
   "editPost": "Chỉnh sửa bài viết",
   "deletePost": "Xóa bài viết",
   "postTitle": "Tiêu đề bài viết",
-  "postContent": "Nội dung bài viết",
+  "postContent": "Nội dung bài viết"
   // ... 1995 more keys in no particular order
 }
 
@@ -1237,6 +1326,7 @@ Translation files grow to 2000+ keys with no logical organization. Finding a spe
 ```
 
 **Example — GOOD:**
+
 ```json
 // ✓ GOOD STRUCTURE - Organized by feature, namespaced
 {
@@ -1264,12 +1354,14 @@ Translation files grow to 2000+ keys with no logical organization. Finding a spe
 ```
 
 **Consequences:**
+
 - **Low:** Hard to maintain large translation files
 - **Low:** Difficult for translator to find contextual strings
 - **Low:** Easy to introduce duplicates ("create", "createPost", "newPost", etc.)
 - **Low:** Translation file becomes slow to load if very large
 
 **Prevention:**
+
 - DO: Organize translations by feature/domain
 - DO: Use consistent naming (`actions.*`, `fields.*`, `messages.*`)
 - DO: Split large files into namespaces and lazy-load
@@ -1277,6 +1369,7 @@ Translation files grow to 2000+ keys with no logical organization. Finding a spe
 - DO: Periodically audit and consolidate duplicate keys
 
 **Recommended Structure:**
+
 ```
 locales/
 ├── en/
@@ -1289,12 +1382,14 @@ locales/
 ```
 
 **Naming Convention Documentation:**
+
 ```markdown
 # Translation Key Naming Guide
 
 ## Pattern: `feature.section.intent`
 
 Examples:
+
 - `posts.actions.create` — Action: create a post
 - `posts.fields.title` — Field label: post title
 - `posts.messages.created` — Success message after creation
@@ -1304,6 +1399,7 @@ Examples:
 - `navigation.breadcrumb.posts` — Breadcrumb text
 
 ## Reserved Sections
+
 - `.actions.*` — Buttons, action labels
 - `.fields.*` — Form field labels
 - `.messages.*` — Informational messages
@@ -1327,31 +1423,35 @@ Examples:
 Typo in translation key: `t('posts.crete')` instead of `t('posts.create')`. Key not found, shows fallback English.
 
 **Why it happens:**
+
 - Manual typos when typing translation keys
 - Auto-completion missed in IDE
 - Key renamed in translation file but typo left in code
 - Refactoring key changed several places but one missed
 
 **Consequences:**
+
 - **Low:** Single component shows English fallback
 - **Low:** Hard to spot in code review
 - **Low:** Difficult to debug (only visible at runtime)
 
 **Prevention:**
+
 - DO: Use type-safe i18n library (TypeScript + i18next typed)
 - DO: Enable IDE auto-completion for translation keys
 - DO: Use constant exports instead of string literals
 - DO: Linting to catch undefined translation keys
 
 **Type-Safe Keys:**
+
 ```typescript
 // src/i18n/keys.ts - Export all valid keys
 export const translationKeys = {
   posts: {
     create: 'posts.create',
     edit: 'posts.edit',
-    delete: 'posts.delete'
-  }
+    delete: 'posts.delete',
+  },
 } as const;
 
 // Usage
@@ -1369,15 +1469,18 @@ t(key);
 Some keys use camelCase (`userProfile`), others use snake_case (`user_profile`). Inconsistency makes keys harder to guess and navigate.
 
 **Why it happens:**
+
 - No agreed-upon naming convention
 - Different translators/developers follow different patterns
 - Keys created without reviewing existing keys
 
 **Consequences:**
+
 - **Low:** Inconsistent developer experience
 - **Low:** Harder to autocomplete keys if pattern unpredictable
 
 **Prevention:**
+
 - DO: Document and enforce camelCase for all keys
 - DO: Code review to catch inconsistent naming
 - DO: ESLint rule to enforce key naming pattern
@@ -1392,30 +1495,34 @@ Some keys use camelCase (`userProfile`), others use snake_case (`user_profile`).
 Empty state messages ("No posts found", "No comments") not translated. User sees English in Vietnamese UI.
 
 **Why it happens:**
+
 - Empty state UI designed late in development
 - Translator doesn't review every code path
 - Empty states considered low-priority
 - Strings in `<Empty />` component not extracted
 
 **Consequences:**
+
 - **Low:** Occasional English text in otherwise translated UI
 - **Low:** Incomplete translation experience
 
 **Prevention:**
+
 - DO: Include empty state strings in translation extraction
 - DO: QA specifically tests empty state text
 - DO: Nothing is "too minor" to translate
 
 **Example:**
+
 ```typescript
 // Don't forget to translate empty states
 function PostsList() {
   const { t } = useTranslation();
-  
+
   if (posts.length === 0) {
     return <p>{t('posts.emptyState')}</p>; // ✓ Translated
   }
-  
+
   return posts.map(post => <PostCard key={post.id} post={post} />);
 }
 ```
@@ -1428,16 +1535,19 @@ function PostsList() {
 Translations work in development but fail in production. Webpack/Vite bundle includes dev-only translation data.
 
 **Why it happens:**
+
 - Translation loader configured differently for dev vs. build
 - Relative paths work locally but break on production server
 - Translation files removed by build step
 - Static imports in dev, dynamic imports in production don't match
 
 **Consequences:**
+
 - **Low:** All translations fail in production
 - **Low:** App appears completely untranslated to users
 
 **Prevention:**
+
 - DO: Test production build locally before deploy
 - DO: Ensure translation loader path consistent between dev and prod
 - DO: Use absolute paths for translation files
@@ -1453,22 +1563,26 @@ Translations work in development but fail in production. Webpack/Vite bundle inc
 Previous release's Vietnamese translations still loaded, even though source code updated. Users see outdated translations.
 
 **Why it happens:**
+
 - Browser cache not cleared (old translation file cached)
 - Translator uploaded old file
 - Translation file version mismatch
 - Service worker caching old translations
 
 **Consequences:**
+
 - **Low:** Users see outdated instructions
 - **Low:** If translations critical to feature, users confused
 
 **Prevention:**
+
 - DO: Use cache-breaking (versioned translation files or hash-based names)
 - DO: Cache-control headers on translation files
 - DO: Clear cache when deploying new translations
 - DO: Version translation files: `translation-v1.2.3.json`
 
 **Service Worker Cache Busting:**
+
 ```typescript
 // src/service-worker.ts
 const CACHE_NAME = 'wetalk-v' + APP_VERSION;
@@ -1483,11 +1597,13 @@ const urlsToCache = [
 ## Pitfall Summary by Category
 
 ### String Extraction Pitfalls
+
 1. Untranslated strings in fallback path
 2. Missing translation keys not detected
 3. Hardcoded console logging (existing tech debt)
 
 ### Translation Management Pitfalls
+
 4. Dynamic content not interpolated
 5. Pluralization rules not handled
 6. Translation files out of sync with code
@@ -1495,6 +1611,7 @@ const urlsToCache = [
 8. Namespace bloat
 
 ### Component Integration Pitfalls
+
 5. Context provider not placed correctly
 6. useTranslation() hook called at wrong level
 7. Lazy translation loading not handled
@@ -1503,16 +1620,18 @@ const urlsToCache = [
 10. Missing translations for attributes (aria, alt, title)
 
 ### Scaling Pitfalls
+
 7. Text length validation for different languages
-9. Number, date, currency not localized
-11. Inconsistent translation keys / typos
-12. Testing not covering both languages
+8. Number, date, currency not localized
+9. Inconsistent translation keys / typos
+10. Testing not covering both languages
 
 ---
 
 ## Prevention Checklist by Phase
 
 ### Phase 1: Planning & Structure
+
 - [ ] Decide on i18n library (i18next recommended for React)
 - [ ] Plan namespace structure (feature-based)
 - [ ] Document translation key naming conventions
@@ -1522,6 +1641,7 @@ const urlsToCache = [
 - [ ] Plan for Vietnamese-only in Phase 1, extensible to 3rd language later
 
 ### Phase 2: String Extraction & Key Creation
+
 - [ ] Audit codebase for all hardcoded strings
 - [ ] Automated extraction tool (not manual grep)
 - [ ] Create English translation file with all keys
@@ -1531,6 +1651,7 @@ const urlsToCache = [
 - [ ] Remove/translate all console.log statements (existing tech debt)
 
 ### Phase 3: Implementation
+
 - [ ] Wrap app with I18nProvider at root level
 - [ ] Replace all hardcoded strings with `t()` calls
 - [ ] Implement useTranslation() hook properly
@@ -1541,12 +1662,14 @@ const urlsToCache = [
 - [ ] Lazy-load translations per language (not all at once)
 
 ### Phase 4: Real-Time Features
+
 - [ ] Refactor SSE/WebSocket message handling to separate data from formatting
 - [ ] Ensure real-time messages translated at render time
 - [ ] Test language switch while receiving real-time updates
 - [ ] Translate error messages from API responses
 
 ### Phase 5: Vietnamese Translation
+
 - [ ] Provide translator with organized key list
 - [ ] Provide context/UI screenshots for each key
 - [ ] Ensure translator uses proper editor with UTF-8 encoding
@@ -1556,6 +1679,7 @@ const urlsToCache = [
 - [ ] QA testing edge cases (empty states, errors, validation)
 
 ### Phase 6: Testing & QA
+
 - [ ] Automated test: all keys translated
 - [ ] Automated test: no missing keys detected
 - [ ] Automated test: language toggle updates entire UI
@@ -1566,6 +1690,7 @@ const urlsToCache = [
 - [ ] Accessibility audit: Screen reader works in Vietnamese
 
 ### Phase 7: Deployment & Monitoring
+
 - [ ] Test production build with Vietnamese
 - [ ] Verify translation files deployed and accessible
 - [ ] Monitor for untranslated key warnings in production logs
@@ -1603,6 +1728,7 @@ The following existing issues should be fixed BEFORE adding i18n:
 ## Integration with WeTalk Tech Stack
 
 ###React 18 + Zustand
+
 - **Consideration:** Zustand stores should dispatch language change events
 - **Pattern:** Language as global store state, accessible from anywhere
 - **Gotcha:** Ensure Zustand store triggers re-renders when language changes
@@ -1619,6 +1745,7 @@ export const useLanguageStore = create((set, get) => ({
 ```
 
 ### React Query
+
 - **Consideration:** Query errors must be translated
 - **Pattern:** Wrap error display with `t()` in error boundary
 - **Gotcha:** API error messages are English, need translation mapping
@@ -1636,11 +1763,13 @@ queryClient.setDefaultOptions({
 ```
 
 ### Tailwind CSS
+
 - **Consideration:** Fixed-width containers need flexibility for translation text
 - **Pattern:** Use `max-w-*` and responsive classes, not fixed widths
 - **Gotcha:** Vietnamese text can be 20-30% longer than English
 
 ### SSE (Server-Side Events)
+
 - **Consideration:** Real-time messages must be translated at render time
 - **Pattern:** Store raw data, translate in component template
 - **Gotcha:** Language change must force re-render of active SSE messages
@@ -1699,6 +1828,7 @@ test('All aria-labels translated', () => {
 ## Summary
 
 **Highest Risk Pitfalls (focus testing here):**
+
 1. Untranslated strings appearing in fallback path
 2. Missing translation keys not detected in CI
 3. Real-time messages not updating with language switch
@@ -1706,18 +1836,19 @@ test('All aria-labels translated', () => {
 5. Context provider placed incorrectly (partial updates)
 
 **Most Common Mistakes:**
+
 - Hardcoding strings instead of using `t()`
 - Forgetting attribute translations (aria-label, alt)
 - Not testing with Vietnamese language throughout development
 - Pre-formatting messages instead of translating at render time
 
 **Best Practices for WeTalk:**
+
 - Use i18next with TypeScript type safety
-- Organize translations by feature (posts.*, messages.*, etc.)
+- Organize translations by feature (posts._, messages._, etc.)
 - Lazy-load Vietnamese synchronously, load other languages only if needed
 - Store language preference in Zustand (global accessible)
 - Translate errors from React Query, form validation, SSE
 - Test language switch continuously during development
 - Fix console.log tech debt BEFORE extracting strings
 - Validate translation file format and key coverage in CI/CD
-
