@@ -1,0 +1,19 @@
+{
+  "action": {
+    "send": "Send"
+  },
+  "label": {
+    "chatbot": "Chat with AI",
+    "aiAssistant": "AI Assistant"
+  },
+  "placeholder": {
+    "askAnything": "Ask me anything..."
+  },
+  "error": {
+    "failedToRespond": "Failed to get AI response",
+    "connectionError": "Connection to AI service lost"
+  },
+  "validation": {
+    "thinking": "AI is thinking..."
+  }
+}

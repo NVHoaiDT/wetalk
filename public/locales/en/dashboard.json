@@ -1,0 +1,20 @@
+{
+  "action": {
+    "createPost": "Create Post"
+  },
+  "label": {
+    "dashboard": "Dashboard",
+    "feed": "Feed",
+    "trending": "Trending",
+    "yourPosts": "Your Posts",
+    "savedPosts": "Saved Posts",
+    "recommendations": "Recommendations"
+  },
+  "error": {
+    "failedToLoadFeed": "Failed to load feed",
+    "failedToLoadTrending": "Failed to load trending posts"
+  },
+  "validation": {
+    "loadingFeed": "Loading your feed..."
+  }
+}

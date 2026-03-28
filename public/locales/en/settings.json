@@ -1,0 +1,21 @@
+{
+  "action": {
+    "saveChanges": "Save Changes",
+    "changePassword": "Change Password"
+  },
+  "label": {
+    "accountSettings": "Account Settings",
+    "privacySettings": "Privacy Settings",
+    "notificationSettings": "Notification Settings",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password"
+  },
+  "placeholder": {
+    "currentPassword": "Enter current password",
+    "newPassword": "Enter new password (min 5 characters)"
+  },
+  "error": {
+    "failedToUpdate": "Failed to update settings",
+    "incorrectPassword": "Current password is incorrect"
+  }
+}

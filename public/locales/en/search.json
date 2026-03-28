@@ -1,0 +1,19 @@
+{
+  "action": {
+    "search": "Search"
+  },
+  "label": {
+    "searchResults": "Search Results"
+  },
+  "placeholder": {
+    "searchPostsCommunities": "Search posts, communities..."
+  },
+  "error": {
+    "noResults": "No results found",
+    "failedToSearch": "Failed to perform search"
+  },
+  "validation": {
+    "searching": "Searching...",
+    "searchMinLength": "Enter at least 2 characters"
+  }
+}

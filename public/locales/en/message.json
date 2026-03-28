@@ -1,0 +1,31 @@
+{
+  "action": {
+    "send": "Send",
+    "reply": "Reply",
+    "delete": "Delete",
+    "markAsRead": "Mark as Read",
+    "startConversation": "Start Conversation"
+  },
+  "label": {
+    "messages": "Messages",
+    "conversations": "Conversations",
+    "senderName": "From",
+    "recipientName": "To",
+    "timestamp": "Sent at",
+    "unreadCount": "Unread"
+  },
+  "placeholder": {
+    "typeMessage": "Type a message...",
+    "searchConversations": "Search conversations..."
+  },
+  "error": {
+    "failedToSend": "Failed to send message",
+    "messageNotFound": "Message not found",
+    "userNotFound": "User not found",
+    "failedToDelete": "Failed to delete message"
+  },
+  "validation": {
+    "messageTooLong": "Message is too long",
+    "emptyMessage": "Message cannot be empty"
+  }
+}

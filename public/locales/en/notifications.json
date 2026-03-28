@@ -1,0 +1,21 @@
+{
+  "action": {
+    "markAsRead": "Mark as Read",
+    "delete": "Delete",
+    "deleteAll": "Clear All"
+  },
+  "label": {
+    "notifications": "Notifications",
+    "unread": "Unread"
+  },
+  "error": {
+    "failedToDelete": "Failed to delete notification",
+    "failedToMarkAsRead": "Failed to mark as read"
+  },
+  "modal": {
+    "deleteNotification": {
+      "title": "Delete Unread Notification?",
+      "description": "This notification will be permanently removed."
+    }
+  }
+}

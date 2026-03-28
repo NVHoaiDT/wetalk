@@ -1,0 +1,30 @@
+{
+  "action": {
+    "edit": "Edit Comment",
+    "delete": "Delete Comment",
+    "reply": "Reply"
+  },
+  "label": {
+    "comment": "Comment",
+    "comments": "Comments",
+    "author": "Commented by",
+    "timestamp": "Commented on"
+  },
+  "placeholder": {
+    "reportDescription": "Provide any additional context that might help us review this report..."
+  },
+  "error": {
+    "failedToCreate": "Failed to create comment",
+    "failedToEdit": "Failed to update comment",
+    "failedToDelete": "Failed to delete comment"
+  },
+  "modal": {
+    "editComment": {
+      "title": "Edit Comment"
+    },
+    "deleteConfirmation": {
+      "title": "Delete Comment?",
+      "description": "This action cannot be undone."
+    }
+  }
+}

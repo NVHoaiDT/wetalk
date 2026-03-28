@@ -1,0 +1,50 @@
+{
+  "action": {
+    "create": "Create Post",
+    "edit": "Edit Post",
+    "delete": "Delete Post",
+    "share": "Share Post",
+    "publish": "Publish",
+    "save": "Save Draft",
+    "report": "Report"
+  },
+  "label": {
+    "title": "Post Title",
+    "content": "Post Content",
+    "author": "Posted by",
+    "timestamp": "Posted on",
+    "likes": "Likes",
+    "comments": "Comments",
+    "shares": "Shares"
+  },
+  "placeholder": {
+    "titleInput": "An interesting title...",
+    "contentInput": "What's on your mind?",
+    "charCount": "{count}/300"
+  },
+  "error": {
+    "titleRequired": "Post title is required",
+    "contentTooShort": "Post content must be at least 10 characters",
+    "failedToCreate": "Failed to create post. Please try again.",
+    "failedToUpdate": "Failed to update post",
+    "failedToDelete": "Failed to delete post",
+    "uploadFailed": "Upload Failed"
+  },
+  "validation": {
+    "pendingApproval": "Your post is pending community approval",
+    "deletionPending": "Post deletion is being processed",
+    "uploading": "Uploading media files..."
+  },
+  "modal": {
+    "deleteConfirmation": {
+      "title": "Delete Post?",
+      "description": "This action cannot be undone."
+    },
+    "shareToChat": {
+      "title": "Share to Chat"
+    }
+  },
+  "help": {
+    "postVisibility": "Choose who can see this post"
+  }
+}

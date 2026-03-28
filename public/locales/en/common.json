@@ -1,7 +1,42 @@
 {
-  "_meta": {
-    "language": "en",
-    "namespace": "common",
-    "version": "1.0"
+  "button": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "edit": "Edit",
+    "view": "View",
+    "create": "Create",
+    "add": "Add",
+    "send": "Send",
+    "reply": "Reply"
+  },
+  "label": {
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "emptyState": "Nothing here yet"
+  },
+  "error": {
+    "networkError": "Network error. Please try again.",
+    "unauthorized": "You don't have permission to do that.",
+    "notFound": "Not found.",
+    "serverError": "Server error. Please try again later.",
+    "unknown": "Something went wrong. Please try again."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "passwordTooWeak": "Password must be at least 8 characters.",
+    "passwordMismatch": "Passwords do not match."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of"
   }
 }

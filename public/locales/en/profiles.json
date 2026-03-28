@@ -1,0 +1,24 @@
+{
+  "action": {
+    "editProfile": "Edit Profile",
+    "viewProfile": "View Profile",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
+  },
+  "label": {
+    "profiles": "Profiles",
+    "profileName": "Profile Name",
+    "bio": "Bio",
+    "location": "Location",
+    "joinDate": "Joined",
+    "followers": "Followers",
+    "following": "Following"
+  },
+  "placeholder": {
+    "bioInput": "Tell us about yourself"
+  },
+  "error": {
+    "failedToUpdate": "Failed to update profile",
+    "profileNotFound": "Profile not found"
+  }
+}

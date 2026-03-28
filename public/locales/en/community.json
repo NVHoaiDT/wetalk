@@ -1,0 +1,51 @@
+{
+  "action": {
+    "create": "Create Community",
+    "join": "Join",
+    "leave": "Leave",
+    "invite": "Invite Members",
+    "settings": "Settings",
+    "managePosts": "Manage Posts",
+    "manageMembers": "Manage Members"
+  },
+  "label": {
+    "communityName": "Community Name",
+    "communityDescription": "Community Description",
+    "members": "Members",
+    "rules": "Rules",
+    "role": "Role"
+  },
+  "placeholder": {
+    "searchPosts": "Search posts by title...",
+    "searchMembers": "Search members",
+    "roleDescription": "Explain why this action is being taken..."
+  },
+  "error": {
+    "failedToCreate": "Failed to create community",
+    "failedToJoin": "Failed to join community",
+    "failedToLeave": "Failed to leave community",
+    "failedToInvite": "Failed to send invite",
+    "communityNotFound": "Community not found"
+  },
+  "modal": {
+    "communitySettings": {
+      "title": "Community Settings"
+    },
+    "setModerator": {
+      "title": "Set Moderator Role",
+      "description": "Change the role for {name} in this community."
+    }
+  },
+  "select": {
+    "status": {
+      "all": "All Members",
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "sortby": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "karma": "Karma"
+    }
+  }
+}

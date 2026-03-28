@@ -1,0 +1,20 @@
+{
+  "action": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "block": "Block",
+    "report": "Report"
+  },
+  "label": {
+    "users": "Users",
+    "username": "Username",
+    "joinDate": "Joined",
+    "karma": "Karma",
+    "posts": "Posts"
+  },
+  "error": {
+    "userNotFound": "User not found",
+    "failedToFollow": "Failed to follow user",
+    "failedToUnfollow": "Failed to unfollow user"
+  }
+}
