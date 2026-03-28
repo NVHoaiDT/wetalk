@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import { useEffect, useRef, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -15,6 +16,7 @@ import { MessageInput } from './message-input';
 import { MessageItem } from './message-item';
 
 export const ChatPanel = () => {
+  const { t } = useTranslation('message');
   const { selectedConversationId, selectConversation, selectedRecipient } =
     useMessages();
   const messagesEndRef = useRef<HTMLDivElement>(null);

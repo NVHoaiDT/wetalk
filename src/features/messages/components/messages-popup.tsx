@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 
@@ -9,6 +10,7 @@ import { ChatPanel } from './chat-panel';
 import { ConversationsPanel } from './conversations-panel';
 
 export const MessagesPopup = () => {
+  const { t } = useTranslation('message');
   const { isOpen, closeMessages } = useMessages();
 
   // Connect to SSE when popup is open

@@ -1,5 +1,6 @@
 import { Plus, Search } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -11,6 +12,7 @@ import { useMessages } from '../stores/messages-store';
 import { ConversationItem } from './conversation-item';
 
 export const ConversationsPanel = () => {
+  const { t } = useTranslation('message');
   const { selectedConversationId, selectConversation, selectRecipient } =
     useMessages();
   const [searchQuery, setSearchQuery] = useState('');

@@ -1,5 +1,6 @@
 import { Image, Send, X } from 'lucide-react';
 import { FormEvent, KeyboardEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { MediaUploader } from '@/components/ui/media-uploader';
@@ -19,8 +20,9 @@ type MessageInputProps = {
 export const MessageInput = ({
   onSend,
   disabled = false,
-  placeholder = 'Type a message...',
+  placeholder = undefined,
 }: MessageInputProps) => {
+  const { t } = useTranslation('message');
   const [content, setContent] = useState('');
   const [attachments, setAttachments] = useState<
     Array<{ fileType: 'image' | 'video'; fileUrl: string }>
@@ -98,7 +100,7 @@ export const MessageInput = ({
       {isUploaderOpen && (
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <div className="mb-2 flex items-center justify-between">
-            <h4 className="text-sm font-medium text-gray-700">Upload Media</h4>
+            <h4 className="text-sm font-medium text-gray-700">{t('action.uploadMedia')}</h4>
             <button
               type="button"
               onClick={() => setIsUploaderOpen(false)}
@@ -122,7 +124,7 @@ export const MessageInput = ({
             onError={(error) => {
               addNotification({
                 type: 'error',
-                title: 'Upload Failed',
+                title: t('error.uploadFailed'),
                 message: error.message,
               });
             }}
@@ -152,7 +154,7 @@ export const MessageInput = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={placeholder || t('placeholder.typeMessage')}
           disabled={disabled || isUploading}
           rows={1}
           className={cn(

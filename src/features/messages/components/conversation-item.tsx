@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 import { Conversation } from '@/types/api';
 import { cn } from '@/utils/cn';
@@ -14,6 +15,7 @@ export const ConversationItem = ({
   isActive,
   onClick,
 }: ConversationItemProps) => {
+  const { t } = useTranslation('message');
   const hasUnread = conversation.unreadCount > 0;
 
   return (

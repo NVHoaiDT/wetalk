@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { ExternalLink, Trash2 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { MessageMediaViewer } from '@/components/ui/message-media-viewer';
 import { useNotifications } from '@/components/ui/notifications';
@@ -15,6 +16,7 @@ type MessageItemProps = {
 };
 
 export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
+  const { t } = useTranslation('message');
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
