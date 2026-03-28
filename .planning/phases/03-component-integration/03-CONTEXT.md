@@ -22,12 +22,14 @@ Wire all React components with `useTranslation()` hook. Replace hardcoded Englis
 **Decision:** Feature-first, sequential component wiring (not all-at-once refactoring)
 
 **Rationale:**
+
 - Phase 2 provides JSON keys organized by feature
 - Each feature can be integrated independently
 - Enables parallel team work (multiple features simultaneously)
 - Reduces integration complexity (single feature per task)
 
 **Implementation:**
+
 - Task 1: Audit and identify all components in src/components/ and src/features/ (determine scope)
 - Task 2: Create integration pattern (custom hook for mocking, provider wrapper for tests)
 - Waves 1-4: Wire feature-by-feature (auth → messages → posts → communities → others)
@@ -41,11 +43,13 @@ Wire all React components with `useTranslation()` hook. Replace hardcoded Englis
 **Decision:** Import `useTranslation()` at component level, use `t('key')` for all UI strings
 
 **Rationale:**
+
 - Standard React pattern (matches react-i18next conventions)
 - Simple to audit (grep for `t(` finds all usages)
 - Enables namespace scoping (e.g., `useTranslation('posts')`)
 
 **Implementation:**
+
 ```typescript
 // Pattern for all components
 import { useTranslation } from 'react-i18next';
@@ -65,11 +69,13 @@ export function MyComponent() {
 **Decision:** Mock translations in Vitest setup; no actual i18n loading in component tests
 
 **Rationale:**
+
 - Component tests should test UI logic, not translation system
 - Mocking prevents test flakiness (no external file I/O)
 - Simplifies test maintenance (no translation key tracking)
 
 **Implementation:**
+
 ```typescript
 // In setup-tests.ts, mock useTranslation before component tests run
 vi.mock('react-i18next', () => ({
@@ -93,14 +99,16 @@ vi.mock('react-i18next', () => ({
 
 ### D-04: Component Audit & Wiring Scope
 
-**Decision:** Include all UI components (src/components/) + all feature components (src/features/*/components/)
+**Decision:** Include all UI components (src/components/) + all feature components (src/features/\*/components/)
 
 **Rationale:**
+
 - Comprehensive coverage prevents "forgotten" components with hardcoded strings
 - Phase 2 audit identified 520+ strings — all have corresponding JSON keys
 - No component should be omitted
 
 **Implementation:**
+
 - Task 1: Scan src/components/ and src/features/ for all .tsx files (100+ components estimated)
 - Create master list with component count per feature
 - Wire in feature priority order (auth first, then messages, posts, communities, etc.)
@@ -114,11 +122,13 @@ vi.mock('react-i18next', () => ({
 **Decision:** Post-wiring verification: scan codebase for remaining hardcoded English strings
 
 **Rationale:**
+
 - Ensures no strings were missed during manual wiring
 - Automated check prevents regression
 - Confidence that Phase 3 goal is truly achieved
 
 **Implementation:**
+
 - Task (Wave 4): Run regex scanner to find remaining hardcoded patterns
   - Pattern: `['"][A-Z][a-zA-Z ]+['"]` (capitalized English strings)
   - Exclude comments, errors, constants

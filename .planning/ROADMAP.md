@@ -132,6 +132,7 @@ Phase 1 must be complete, Phase 2 provides reference for namespaces
 Planning Complete (2026-03-29)
 
 **Plans:**
+
 - 03-01-PLAN.md — Wave 1: Test infrastructure and component audit (2 tasks)
 - 03-02-PLAN.md — Wave 2: High-priority features - auth, messages, critical posts (3 tasks, 16 components, 53 keys)
 - 03-03-PLAN.md — Wave 3: Large features - posts, communities, profiles, dashboard (3 tasks, 60+ components, 67 keys)
