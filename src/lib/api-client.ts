@@ -210,3 +210,75 @@ apiAI.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+// ---------------------
+export const apiAcademy = Axios.create({
+  baseURL: env.API_ACADEMY_URL,
+});
+
+apiAcademy.interceptors.request.use(authRequestInterceptor);
+
+apiAcademy.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  async (error) => {
+    const message = error.response?.data?.message || error.message;
+
+    useNotifications.getState().addNotification({
+      type: 'error',
+      title: 'Reminder',
+      message,
+    });
+
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      console.log('Unauthorized (Academy API), attempting to refresh token');
+
+      try {
+        const response = await Axios.post(
+          `${env.API_URL}/auth/refresh`,
+          {},
+          {
+            withCredentials: true,
+          },
+        );
+
+        console.log('Token refresh response:', response);
+
+        const newAccessToken = response.data?.data?.accessToken;
+
+        if (newAccessToken) {
+          console.log(
+            'Token refreshed successfully, retrying original request',
+          );
+          localStorage.setItem('accessToken', newAccessToken);
+
+          // Update the authorization header with new token
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          // Retry the original request
+          return apiAcademy(originalRequest);
+        }
+      } catch (refreshError) {
+        console.log('Token refresh failed (Academy API), redirecting to login');
+        console.error(refreshError);
+
+        localStorage.removeItem('accessToken');
+
+        const currentPath = window.location.pathname;
+
+        // if (!currentPath.startsWith('/auth')) {
+        //   window.location.href = paths.auth.login.getHref(currentPath);
+        // }
+        // return Promise.reject(refreshError);
+        return null;
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);

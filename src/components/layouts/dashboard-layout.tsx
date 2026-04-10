@@ -10,6 +10,7 @@ import {
   Hash,
   TrendingUp,
   Bell,
+  GraduationCap,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router';
@@ -113,6 +114,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigation = [
     { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
     { name: 'Communities', to: paths.app.communities.getHref(), icon: Users },
+    { name: 'Academy', to: paths.app.academy.getHref(), icon: GraduationCap },
   ].filter(Boolean) as SideNavigationItem[];
 
   return (

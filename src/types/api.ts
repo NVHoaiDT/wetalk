@@ -448,6 +448,93 @@ export type SearchUsersResponse = {
   pagination: Pagination;
 };
 
+/* ____________________Academy____________________ */
+export type TopicAuthor = {
+  userId: number;
+  avatar: string;
+  name: string;
+};
+
+export type Topic = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  author: TopicAuthor;
+  createdAt: string;
+};
+
+export type Lesson = {
+  id: string;
+  topicId: string;
+  slug: string;
+  title: string;
+  orderIndex: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ContentSection = {
+  id?: number;
+  type: 'text' | 'media' | 'code';
+  content?: string;
+  language?: string;
+  url?: string;
+};
+
+export type LessonContent = {
+  id: string;
+  lessonId: string;
+  sections: ContentSection[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type QuizQuestion = {
+  question: string;
+  point: number;
+  options: string[];
+  correctAnswer: string;
+};
+
+export type Quiz = {
+  id: string;
+  lessonId: string;
+  title: string;
+  questions: QuizQuestion[];
+  timeLimit: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type QuizSummary = {
+  id: string;
+  title: string;
+  timeLimit: number;
+};
+
+export type QuizSubmission = {
+  id: string;
+  quizId: string;
+  userId: string;
+  answers: string[];
+  totalTime: number;
+  totalScore: number;
+  submittedAt: string;
+};
+
+export type Judge0Result = {
+  token: string;
+  stdout: string | null;
+  stderr: string | null;
+  compile_output: string | null;
+  message: string | null;
+  time: string | null;
+  memory: number | null;
+  status_id: number;
+  status_description: string;
+};
+
 export type BanRestriction = {
   id: number;
   restrictionType: 'temporary_ban' | 'warning' | 'permanent_ban';
