@@ -15,11 +15,9 @@ type UseRefreshTokenOptions = {
   onSuccess?: (data: { data: { accessToken: string } }) => void;
 };
 
-export const useRefreshToken = ({
-  onSuccess,
-}: UseRefreshTokenOptions = {}) => {
+export const useRefreshToken = ({ onSuccess }: UseRefreshTokenOptions = {}) => {
   const queryClient = useQueryClient();
-  console.log("Invoke refresh token mutation");
+  console.log('Invoke refresh token mutation');
 
   return useMutation({
     mutationKey: ['refresh-token'],
@@ -62,6 +60,7 @@ export const useUser = (userId: number, options?: { enabled?: boolean }) => {
   });
 };
 
+/* Todo delete refresh token */
 /* ____________________Logout____________________ */
 const logout = async (): Promise<void> => {
   return api.post('/auth/logout');
@@ -73,6 +72,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
+      localStorage.removeItem('accessToken');
       queryClient.setQueryData(['user'], null);
       queryClient.setQueryData(['user-login'], null);
 

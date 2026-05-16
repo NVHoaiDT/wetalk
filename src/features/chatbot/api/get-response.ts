@@ -37,7 +37,7 @@ import { useMutation } from '@tanstack/react-query';
 import z from 'zod';
 
 import { MutationConfig } from '@/lib/react-query';
-import { ChatbotChunk, ChatbotStreamEvent } from '@/types/api';
+import { ChatbotChunk } from '@/types/api';
 
 export const getChatbotResponseInput = z.object({
   message: z.string().min(1, 'Message is required'),
@@ -61,10 +61,11 @@ export const getChatbotResponse = async ({
   data: GetChatbotResponseInput;
   callbacks?: StreamCallbacks;
 }): Promise<void> => {
-  const baseUrl = import.meta.env.VITE_APP_API_URL || 'http://localhost:8045';
+  const baseUrl =
+    import.meta.env.VITE_APP_API_GATEWAY_URL || 'http://160.191.242.73:8080';
   const token = localStorage.getItem('accessToken');
 
-  const response = await fetch(`${baseUrl}/chatbot/stream`, {
+  const response = await fetch(`${baseUrl}/wetalk-ai/chat/stream`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

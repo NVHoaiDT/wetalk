@@ -11,11 +11,13 @@ import { useAddRecentSearch } from '@/features/search/api/add-recent-search';
 import { useClearRecentSearches } from '@/features/search/api/clear-recent-searches';
 import { useDeleteRecentSearch } from '@/features/search/api/delete-recent-search';
 import { useRecentSearches } from '@/features/search/api/get-recent-searches';
+import { useSearchSuggestions } from '@/features/search/api/get-search-suggestions';
 import { cn } from '@/utils/cn';
 
 export const Search = () => {
   const navigate = useNavigate();
   const [query, setQuery] = React.useState('');
+  const [debouncedQuery, setDebouncedQuery] = React.useState('');
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [showSuggestions, setShowSuggestions] = React.useState(false);
 
@@ -23,6 +25,21 @@ export const Search = () => {
   const addRecentSearchMutation = useAddRecentSearch();
   const deleteRecentSearchMutation = useDeleteRecentSearch();
   const clearRecentSearchesMutation = useClearRecentSearches();
+
+  // Debounce the query by 400ms to avoid spamming the RAG search API
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const { data: suggestions, isFetching: isFetchingSuggestions } =
+    useSearchSuggestions(debouncedQuery);
+
+  const suggestedPosts = suggestions?.data?.posts?.slice(0, 3) ?? [];
+  const suggestedCommunities =
+    suggestions?.data?.communities?.slice(0, 2) ?? [];
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -110,22 +127,109 @@ export const Search = () => {
         >
           <div className="p-1.5">
             {query ? (
-              // Current search query suggestion
-              <Link
-                to={paths.app.search.getHref(query)}
-                className={cn(
-                  'flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm',
-                  'transition-colors hover:bg-accent',
-                  'text-muted-foreground hover:text-blue-600',
+              <div className="space-y-0.5">
+                {/* Navigate to full search results */}
+                <Link
+                  to={paths.app.search.getHref(query)}
+                  className={cn(
+                    'flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm',
+                    'transition-colors hover:bg-accent',
+                    'text-muted-foreground hover:text-blue-600',
+                  )}
+                  onClick={() => handleSearch(query)}
+                >
+                  <MagnifyingGlassIcon className="size-4 shrink-0" />
+                  <span className="font-medium">{query}</span>
+                  <span className="ml-auto text-xs text-muted-foreground/60">
+                    Press Enter
+                  </span>
+                </Link>
+
+                {isFetchingSuggestions && (
+                  <div className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground">
+                    <span className="inline-block size-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Searching…
+                  </div>
                 )}
-                onClick={() => handleSearch(query)}
-              >
-                <MagnifyingGlassIcon className="size-4" />
-                <span className="font-medium">{query}</span>
-                <span className="ml-auto text-xs text-muted-foreground/60">
-                  Press Enter to search
-                </span>
-              </Link>
+
+                {!isFetchingSuggestions && suggestedPosts.length > 0 && (
+                  <>
+                    <div className="px-3 pb-1 pt-2">
+                      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/70">
+                        Posts
+                      </span>
+                    </div>
+                    {suggestedPosts.map((post) => (
+                      <Link
+                        key={post.id}
+                        to={paths.app.post.getHref(post.id)}
+                        onClick={() => setShowSuggestions(false)}
+                        className={cn(
+                          'flex w-full items-start gap-3 rounded-md px-3 py-2 text-sm',
+                          'transition-colors hover:bg-accent',
+                        )}
+                      >
+                        {post.communityAvatar ? (
+                          <img
+                            src={post.communityAvatar}
+                            alt={post.communityName}
+                            className="mt-0.5 size-5 shrink-0 rounded-full object-cover"
+                          />
+                        ) : (
+                          <MagnifyingGlassIcon className="mt-0.5 size-5 shrink-0 text-muted-foreground/60" />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-foreground">
+                            {post.title}
+                          </p>
+                          <p className="text-xs text-muted-foreground/70">
+                            {post.communityName} · {post.authorName}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </>
+                )}
+
+                {!isFetchingSuggestions && suggestedCommunities.length > 0 && (
+                  <>
+                    <div className="px-3 pb-1 pt-2">
+                      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/70">
+                        Communities
+                      </span>
+                    </div>
+                    {suggestedCommunities.map((community) => (
+                      <Link
+                        key={community.id}
+                        to={paths.app.community.getHref(community.id)}
+                        onClick={() => setShowSuggestions(false)}
+                        className={cn(
+                          'flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm',
+                          'transition-colors hover:bg-accent',
+                        )}
+                      >
+                        {community.communityAvatar ? (
+                          <img
+                            src={community.communityAvatar}
+                            alt={community.name}
+                            className="size-6 shrink-0 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="size-6 shrink-0 rounded-full bg-accent" />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-foreground">
+                            {community.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground/70">
+                            {community.totalMembers} members
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </>
+                )}
+              </div>
             ) : recentSearches.length > 0 ? (
               // Recent searches
               <>
