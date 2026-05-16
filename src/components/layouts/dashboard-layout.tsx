@@ -112,7 +112,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const currentUser = currrentUserQuery.data?.data;
 
   const navigation = [
-    { name: 'Dashboard', to: paths.app.dashboard.getHref(), icon: Home },
+    { name: 'Home', to: paths.app.dashboard.getHref(), icon: Home },
     { name: 'Communities', to: paths.app.communities.getHref(), icon: Users },
     { name: 'Academy', to: paths.app.academy.getHref(), icon: GraduationCap },
   ].filter(Boolean) as SideNavigationItem[];

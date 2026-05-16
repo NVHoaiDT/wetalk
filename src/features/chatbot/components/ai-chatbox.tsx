@@ -302,7 +302,7 @@ export const AiChatbox = () => {
                         <div
                           className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                             message.role === 'user'
-                              ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white'
+                              ? 'bg-gradient-to-r from-purple-200/50 to-indigo-300/50 text-white'
                               : 'bg-white text-gray-800 shadow-sm'
                           }`}
                         >
