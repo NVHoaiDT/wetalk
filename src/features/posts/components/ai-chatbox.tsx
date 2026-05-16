@@ -5,17 +5,18 @@ import { useState, useEffect } from 'react';
 import { useSummaryPost } from '../api/get-summary-post';
 
 interface AiChatboxProps {
+  title: string;
   content: string;
 }
 
-export const AiChatbox = ({ content }: AiChatboxProps) => {
+export const AiChatbox = ({ title, content }: AiChatboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showFullSummary, setShowFullSummary] = useState(false);
 
   // Only fetch summary when chatbox is opened
   const summaryPostQuery = useSummaryPost(
-    { text: content },
-    { enabled: isOpen && !!content },
+    { data: { title, content } },
+    { enabled: isOpen && !!content && !!title },
   );
 
   const handleToggle = () => {
@@ -31,7 +32,7 @@ export const AiChatbox = ({ content }: AiChatboxProps) => {
 
   // Reset showFullSummary when summary data arrives
   useEffect(() => {
-    if (summaryPostQuery.data?.summary && isOpen) {
+    if (summaryPostQuery.data?.data?.summary && isOpen) {
       setShowFullSummary(true);
     }
   }, [summaryPostQuery.data, isOpen]);
@@ -152,7 +153,7 @@ export const AiChatbox = ({ content }: AiChatboxProps) => {
                     </div>
                   </div>
                 </motion.div>
-              ) : summaryPostQuery.data?.summary ? (
+              ) : summaryPostQuery.data?.data.summary ? (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -186,7 +187,7 @@ export const AiChatbox = ({ content }: AiChatboxProps) => {
                         transition={{ duration: 0.5 }}
                         className="text-sm leading-relaxed text-gray-800"
                       >
-                        {summaryPostQuery.data.summary}
+                        {summaryPostQuery.data.data.summary}
                       </motion.p>
                     ) : (
                       <div className="flex items-center gap-2">

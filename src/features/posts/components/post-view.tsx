@@ -112,7 +112,7 @@ export const PostView = ({ id }: { id: number }) => {
   return (
     <article className="w-full rounded-xl border border-slate-200 shadow-sm">
       {/* AI Summary Chatbox */}
-      <AiChatbox content={post.content} />
+      <AiChatbox title={post.title} content={post.content} />
 
       {/* Post Header */}
       <div className="overflow-hidden rounded-xl bg-white shadow-sm">

@@ -2,44 +2,21 @@
 Endpoint: POST API_AI/summarize
 Body:
 {
-    "text": "Mình pass căn góc 3PN 2WC - HT Pearl. Ban công và hai phòng ngủ có cửa sổ hướng về hồ đá, rất mát mẻ. Phòng ngủ còn lại view Landmark 81.Nội thất gồm:+ 3 máy lạnh (mỗi phòng ngủ một máy lạnh)+ 2 giường có nệm, ga, gối đầy đủ+ 2 bộ bàn ghế bằng gỗ (có kệ sách)+ 3 tủ quần áo+ 1 bếp từ+ 1 máy hút mùi+ 1 dàn phơi+ full rèm cửa+ 1 lò vi sóng+ 1 bộ sofa. Có thể dọn vào ở vào cuối tháng 11 hoặc đầu tháng 12. Giá mình đang thuê là 9tr5/tháng - cọc 2 tháng. Liên hệ: 0362826041(Gọi điện) / 0914484221(Zalo) hoặc mn có thể nhắn tin trực tiếp qua Facebook của mình/các bạn được tag",
-    "src_lang": "vi", --> fixed value
-    "tgt_lang": "vi", --> fixed value
-    "max_input_length": 512,
-    "max_summary_length": 128
+    "title": "Cho thuê căn góc 3PN 2WC tại HT Pearl, view hồ đá và Landmark 81",
+    "content": "<p>Mình cho thuê căn góc 3PN 2WC tại HT Pearl với nội thất đầy đủ, view hồ đá và Landmark 81. Giá thuê 9tr5/tháng, liên hệ qua số điện thoại hoặc Facebook...</p>"
 }
 Response:
 {
     "summary": "Mình cho thuê căn góc 3PN 2WC tại HT Pearl với nội thất đầy đủ, view hồ đá và Landmark 81. Giá thuê 9tr5/tháng, liên hệ qua số điện thoại hoặc Facebook..."
 }
-
-Backend note:
-If content lenght around 500 - 600 words:
-    max_input_length: 512
-    max_summary_length: 128
-If content lenght longer, scale up...
 */
 
 import { queryOptions, useQuery } from '@tanstack/react-query';
+import z from 'zod';
 
-import { fancyLog } from '@/helper/fancy-log';
 import { apiAI } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 import { SummayPost } from '@/types/api';
-
-const calculateTokenLengths = (text: string) => {
-  const wordCount = text.split(' ').length;
-  if (wordCount < 512) {
-    return { maxInputLength: 512, maxSummaryLength: 256 };
-  }
-  if (wordCount < 1024) {
-    return { maxInputLength: 1024, maxSummaryLength: 512 };
-  }
-  if (wordCount < 2048) {
-    return { maxInputLength: 2048, maxSummaryLength: 1024 };
-  }
-  return { maxInputLength: 4096, maxSummaryLength: 2048 };
-};
 
 const getPlainTextFromHTML = (html: string): string => {
   // Create a temporary div element to parse HTML
@@ -60,47 +37,47 @@ const getPlainTextFromHTML = (html: string): string => {
     .trim();
 };
 
-export const getSummaryPost = ({
-  text,
-}: {
-  text: string;
-}): Promise<SummayPost> => {
-  const { maxInputLength, maxSummaryLength } = calculateTokenLengths(text);
-  const plainText = getPlainTextFromHTML(text);
+const getSummaryPostInput = z.object({
+  title: z.string(),
+  content: z.string(),
+});
 
-  fancyLog('Plain Text for Summarization:', plainText);
+export type GetSummaryPostInput = z.infer<typeof getSummaryPostInput>;
+
+export const getSummaryPost = ({
+  title,
+  content,
+}: GetSummaryPostInput): Promise<{ data: SummayPost }> => {
+  const plainTextContent = getPlainTextFromHTML(content);
 
   return apiAI.post('/summarize', {
-    text: plainText,
-    src_lang: 'vi',
-    tgt_lang: 'vi',
-    max_input_length: maxInputLength,
-    max_summary_length: maxSummaryLength,
+    title,
+    content: plainTextContent,
   });
 };
 
-export const getSummaryPostQueryOptions = (text: string) => {
+export const getSummaryPostQueryOptions = (data: GetSummaryPostInput) => {
   return queryOptions({
     /* 
         We don't need to cache this because we we user get new data every time 
         How can i even not cache this?
     */
-    queryKey: ['posts', 'summary', text],
-    queryFn: () => getSummaryPost({ text }),
+    queryKey: ['posts', 'summary', data],
+    queryFn: () => getSummaryPost(data),
   });
 };
 
 type UseSummaryPostOptions = {
-  text: string;
+  data: GetSummaryPostInput;
   queryConfig?: QueryConfig<typeof getSummaryPostQueryOptions>;
 };
 
 export const useSummaryPost = (
-  { text, queryConfig }: UseSummaryPostOptions,
+  { data, queryConfig }: UseSummaryPostOptions,
   additionalConfig?: { enabled?: boolean },
 ) => {
   return useQuery({
-    ...getSummaryPostQueryOptions(text),
+    ...getSummaryPostQueryOptions(data),
     ...queryConfig,
     ...additionalConfig,
   });

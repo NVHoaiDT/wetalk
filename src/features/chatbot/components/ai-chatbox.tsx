@@ -31,12 +31,12 @@ type SuggestionType = {
 const suggestions: SuggestionType[] = [
   {
     id: 'summary',
-    text: 'Summarize posts',
+    text: 'Find post that involve Go language',
     icon: <Lightbulb className="size-4" />,
   },
   {
-    id: 'analytics',
-    text: 'Analyze community',
+    id: 'policies',
+    text: 'Explain WeTalk policies',
     icon: <TrendingUp className="size-4" />,
   },
 ];
