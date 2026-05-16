@@ -95,6 +95,19 @@ export const paths = {
       path: 'settings',
       getHref: () => '/app/settings',
     },
+    academy: {
+      path: 'academy',
+      getHref: () => '/app/academy',
+    },
+    academyTopic: {
+      path: 'academy/topics/:topicSlug',
+      getHref: (slug: string) => `/app/academy/topics/${slug}`,
+    },
+    academyLesson: {
+      path: 'academy/topics/:topicSlug/lessons/:lessonSlug',
+      getHref: (topicSlug: string, lessonSlug: string) =>
+        `/app/academy/topics/${topicSlug}/lessons/${lessonSlug}`,
+    },
     notFound: {
       path: 'not-found',
       getHref: () => '/app/not-found',

@@ -116,6 +116,21 @@ export const createAppRouter = (queryClient: QueryClient) =>
           path: paths.app.settings.path,
           lazy: () => import('./routes/app/setting').then(convert(queryClient)),
         },
+        {
+          path: paths.app.academy.path,
+          lazy: () =>
+            import('./routes/app/academy/academy').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.academyTopic.path,
+          lazy: () =>
+            import('./routes/app/academy/topic').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.academyLesson.path,
+          lazy: () =>
+            import('./routes/app/academy/lesson').then(convert(queryClient)),
+        },
       ],
     },
     {
