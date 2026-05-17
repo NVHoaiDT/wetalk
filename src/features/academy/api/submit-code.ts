@@ -6,10 +6,10 @@ import { MutationConfig } from '@/lib/react-query';
 import { Judge0Result } from '@/types/api';
 
 export const submitCodeInputSchema = z.object({
-  source_code: z.string().min(1, 'Source code is required'),
-  language_id: z.number().min(1, 'Language ID is required'),
+  sourceCode: z.string().min(1, 'Source code is required'),
+  languageId: z.number().min(1, 'Language ID is required'),
   stdin: z.string().optional(),
-  expected_output: z.string().optional(),
+  expectedOutput: z.string().optional(),
 });
 
 export type SubmitCodeInput = z.infer<typeof submitCodeInputSchema>;

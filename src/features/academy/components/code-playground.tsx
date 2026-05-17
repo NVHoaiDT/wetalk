@@ -49,8 +49,8 @@ export const CodePlayground = () => {
   const handleRun = () => {
     submitCodeMutation.mutate({
       data: {
-        source_code: sourceCode,
-        language_id: languageId,
+        sourceCode: sourceCode,
+        languageId: languageId,
         stdin: stdin || undefined,
       },
     });
