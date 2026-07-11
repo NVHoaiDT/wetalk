@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { Edit, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -87,7 +88,9 @@ export const UpdateProfile = () => {
             avatar: user?.avatar ?? '',
             coverImage: user?.coverImage ?? '',
             bio: user?.bio ?? '',
-            dateOfBirth: user?.dateOfBirth ?? '',
+            dateOfBirth: user?.dateOfBirth
+              ? new Date(user.dateOfBirth)
+              : undefined,
             gender: user?.gender ?? '',
             phone: user?.phone ?? '',
             address: user?.address ?? '',
@@ -98,6 +101,7 @@ export const UpdateProfile = () => {
         {({ register, formState, setValue, watch }) => {
           const avatarUrl = watch('avatar');
           const coverImageUrl = watch('coverImage');
+          const dateOfBirth = watch('dateOfBirth');
           fancyLog('Avatar-URL:', avatarUrl);
           fancyLog('Cover-Image-URL:', coverImageUrl);
           return (
@@ -112,10 +116,19 @@ export const UpdateProfile = () => {
                 error={formState.errors['bio']}
                 registration={register('bio')}
               />
-              <Textarea
+              <Input
+                type="date"
                 label="Date of Birth"
                 error={formState.errors['dateOfBirth']}
-                registration={register('dateOfBirth')}
+                registration={{}}
+                value={dateOfBirth ? format(dateOfBirth, 'yyyy-MM-dd') : ''}
+                onChange={(e) => {
+                  setValue(
+                    'dateOfBirth',
+                    e.target.value ? new Date(e.target.value) : undefined,
+                    { shouldValidate: true },
+                  );
+                }}
               />
               <Textarea
                 label="Gender"

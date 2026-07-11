@@ -80,6 +80,11 @@ export const ProfileHeader = ({ user, isOwnProfile }: ProfileHeaderProps) => {
           <p className="text-sm text-gray-600 sm:text-base">
             u/{user.username}
           </p>
+          {user.bio && (
+            <p className="mt-2 whitespace-pre-line text-sm text-gray-700 sm:text-base">
+              {user.bio}
+            </p>
+          )}
         </div>
       </div>
     </div>
