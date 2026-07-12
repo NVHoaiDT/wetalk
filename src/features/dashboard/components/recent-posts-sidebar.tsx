@@ -87,6 +87,7 @@ export const RecentPostsSidebar = () => {
                     className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-bold text-white"
                     alt={post.community.name}
                     src={
+                      post.community.avatar ||
                       'https://b.thumbs.redditmedia.com/J_fCwTYJkoM-way-eaOHv8AOHoF_jNXNqOvPrQ7bINY.png'
                     }
                   ></img>
@@ -134,14 +135,13 @@ export const RecentPostsSidebar = () => {
         </div>
       )}
 
-      {/* View All Link */}
+      {/* Decorative Footer */}
       {posts.length > 0 && (
-        <Link
-          to={paths.app.dashboard.getHref()}
-          className="mt-4 block text-center text-sm font-medium text-blue-600 hover:text-blue-700"
-        >
-          View all posts →
-        </Link>
+        <div className="mt-4 flex items-center gap-2" aria-hidden="true">
+          <div className="h-px flex-1 bg-gray-200" />
+          <span className="size-1.5 rounded-full bg-gray-300" />
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
       )}
     </div>
   );
