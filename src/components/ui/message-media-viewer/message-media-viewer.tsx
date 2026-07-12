@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
+import { getVideoUrl, isVideoUrl } from '@/utils/cloudinary';
 import { cn } from '@/utils/cn';
 
 type MessageMediaViewerProps = {
@@ -53,7 +54,7 @@ export const MessageMediaViewer = ({
         )}
       >
         {attachments.slice(0, 4).map((url, index) => {
-          const isVideo = url.includes('videos/') || url.endsWith('.mp4');
+          const isVideo = isVideoUrl(url);
           const isLastItem = index === 3 && attachments.length > 4;
           const remainingCount = attachments.length - 4;
 
@@ -68,7 +69,7 @@ export const MessageMediaViewer = ({
             >
               {isVideo ? (
                 <video
-                  src={url}
+                  src={getVideoUrl(url)}
                   className="size-full object-cover transition-opacity hover:opacity-90"
                   preload="metadata"
                 />
@@ -168,10 +169,9 @@ export const MessageMediaViewer = ({
             className="max-h-[90vh] max-w-[90vw]"
             onClick={(e) => e.stopPropagation()}
           >
-            {attachments[lightboxIndex].includes('videos/') ||
-            attachments[lightboxIndex].endsWith('.mp4') ? (
+            {isVideoUrl(attachments[lightboxIndex]) ? (
               <video
-                src={attachments[lightboxIndex]}
+                src={getVideoUrl(attachments[lightboxIndex])}
                 controls
                 className="max-h-[90vh] max-w-[90vw] rounded-lg"
                 autoPlay

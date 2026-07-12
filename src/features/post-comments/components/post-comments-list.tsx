@@ -151,47 +151,36 @@ const Comment = ({
                 )}
               </Button>
             )}
-            {level === 0 && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 text-gray-600 hover:text-blue-600"
-                  >
-                    <MoreVertical className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-2 text-gray-600 hover:text-blue-600"
+                >
+                  <MoreVertical className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" side="top">
-                  <Authorization
-                    policyCheck={POLICIES['comment:author'](
-                      user as User,
-                      comment,
-                    )}
+              <DropdownMenuContent align="end" side="top">
+                <Authorization
+                  policyCheck={POLICIES['comment:author'](
+                    user as User,
+                    comment,
+                  )}
+                >
+                  <DropdownMenuItem
+                    onSelect={(e) => {
+                      e.preventDefault();
+                    }}
+                    className="cursor-pointer text-blue-600 hover:text-blue-700"
                   >
-                    <DropdownMenuItem
-                      onSelect={(e) => {
-                        e.preventDefault();
-                      }}
-                      className="cursor-pointer text-blue-600 hover:text-blue-700"
-                    >
-                      <EditPostComment
-                        id={comment.id}
-                        initialContent={comment.content}
-                        initialMediaUrl={comment.mediaUrl}
-                      />
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem
-                      onSelect={(e) => {
-                        e.preventDefault();
-                      }}
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <DeletePostComment id={comment.id} />
-                    </DropdownMenuItem>
-                  </Authorization>
+                    <EditPostComment
+                      id={comment.id}
+                      initialContent={comment.content}
+                      initialMediaUrl={comment.mediaUrl}
+                    />
+                  </DropdownMenuItem>
 
                   <DropdownMenuItem
                     onSelect={(e) => {
@@ -199,11 +188,20 @@ const Comment = ({
                     }}
                     className="text-red-600 hover:text-red-700"
                   >
-                    <ReportPostComment commentId={comment.id} />
+                    <DeletePostComment id={comment.id} />
                   </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+                </Authorization>
+
+                <DropdownMenuItem
+                  onSelect={(e) => {
+                    e.preventDefault();
+                  }}
+                  className="text-red-600 hover:text-red-700"
+                >
+                  <ReportPostComment commentId={comment.id} />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Reply Form */}

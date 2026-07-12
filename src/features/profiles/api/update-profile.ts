@@ -11,8 +11,15 @@ export const updateProfileInputSchema = z.object({
   coverImage: z.string().optional(),
   bio: z.string(),
   dateOfBirth: z.coerce.date().optional(),
-  gender: z.string().optional(),
-  phone: z.string().optional(),
+  gender: z
+    .union([z.enum(['male', 'female', 'others']), z.literal('')])
+    .optional(),
+  phone: z
+    .string()
+    .optional()
+    .refine((value) => !value || /^\+?[0-9]{7,15}$/.test(value), {
+      message: 'Invalid phone number',
+    }),
   address: z.string().optional(),
 });
 

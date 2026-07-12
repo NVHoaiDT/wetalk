@@ -2,6 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ExternalLink, Trash2 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
+import { MDPreview } from '@/components/ui/md-preview';
 import { MessageMediaViewer } from '@/components/ui/message-media-viewer';
 import { useNotifications } from '@/components/ui/notifications';
 import { Message } from '@/types/api';
@@ -136,9 +137,11 @@ export const MessageItem = ({ message, isOwn }: MessageItemProps) => {
 
                   {/* Post Content Preview */}
                   {message.metadata.content && (
-                    <p className="mb-2 line-clamp-2 text-xs text-gray-600">
-                      {message.metadata.content}
-                    </p>
+                    <MDPreview
+                      value={message.metadata.content}
+                      maxLines={2}
+                      className="mb-2 text-xs text-gray-600"
+                    />
                   )}
 
                   {/* Post Media */}

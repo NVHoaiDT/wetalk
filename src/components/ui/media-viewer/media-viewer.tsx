@@ -15,21 +15,21 @@ import {
 import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
+import { getVideoUrl, VideoQuality } from '@/utils/cloudinary';
+
 type MediaViewerProps = {
   mediaUrls: string[];
   title: string;
   className?: string;
 };
 
-type VideoQuality = '360p' | '480p' | '720p' | '1080p' | 'auto';
-
-const QUALITY_TRANSFORMATIONS: Record<VideoQuality, string> = {
-  '360p': 'q_auto,f_auto,h_360,br_500k',
-  '480p': 'q_auto,f_auto,h_480,br_1000k',
-  '720p': 'q_auto,f_auto,h_720,br_2000k',
-  '1080p': 'q_auto,f_auto,h_1080,br_3500k',
-  auto: 'q_auto,f_auto',
-};
+const VIDEO_QUALITIES: VideoQuality[] = [
+  '360p',
+  '480p',
+  '720p',
+  '1080p',
+  'auto',
+];
 
 export const MediaViewer = ({
   mediaUrls,
@@ -80,11 +80,6 @@ export const MediaViewer = ({
 
   // Guard against undefined currentMedia
   if (!currentMedia) return null;
-
-  const getVideoUrl = (publicId: string, quality: VideoQuality) => {
-    const transformation = QUALITY_TRANSFORMATIONS[quality];
-    return `https://res.cloudinary.com/dd2dhsems/video/upload/${transformation}/${publicId}`;
-  };
 
   return (
     <>
@@ -193,38 +188,36 @@ export const MediaViewer = ({
               {/* Quality menu dropdown */}
               {showQualityMenu && (
                 <div className="absolute left-0 top-full z-10 mt-1 min-w-[120px] overflow-hidden rounded-lg bg-black/90 shadow-lg">
-                  {(Object.keys(QUALITY_TRANSFORMATIONS) as VideoQuality[]).map(
-                    (quality) => (
-                      <button
-                        key={quality}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setVideoQuality(quality);
-                          setShowQualityMenu(false);
-                        }}
-                        className={`block w-full px-4 py-2 text-left text-xs font-medium transition-colors hover:bg-white/10 ${
-                          videoQuality === quality
-                            ? 'bg-white/20 text-white'
-                            : 'text-white/80'
-                        }`}
-                      >
-                        <span className="uppercase">{quality}</span>
-                        {videoQuality === quality && (
-                          <svg
-                            className="ml-2 inline size-3"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        )}
-                      </button>
-                    ),
-                  )}
+                  {VIDEO_QUALITIES.map((quality) => (
+                    <button
+                      key={quality}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setVideoQuality(quality);
+                        setShowQualityMenu(false);
+                      }}
+                      className={`block w-full px-4 py-2 text-left text-xs font-medium transition-colors hover:bg-white/10 ${
+                        videoQuality === quality
+                          ? 'bg-white/20 text-white'
+                          : 'text-white/80'
+                      }`}
+                    >
+                      <span className="uppercase">{quality}</span>
+                      {videoQuality === quality && (
+                        <svg
+                          className="ml-2 inline size-3"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -429,11 +422,7 @@ export const MediaViewer = ({
                       {/* Quality menu dropdown */}
                       {showQualityMenu && (
                         <div className="absolute left-0 top-full z-10 mt-1 min-w-[120px] overflow-hidden rounded-lg bg-black/90 shadow-lg">
-                          {(
-                            Object.keys(
-                              QUALITY_TRANSFORMATIONS,
-                            ) as VideoQuality[]
-                          ).map((quality) => (
+                          {VIDEO_QUALITIES.map((quality) => (
                             <button
                               key={quality}
                               onClick={(e) => {

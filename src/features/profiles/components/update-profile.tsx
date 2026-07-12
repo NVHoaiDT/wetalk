@@ -3,7 +3,13 @@ import { Edit, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
+import {
+  Form,
+  FormDrawer,
+  Input,
+  Select,
+  Textarea,
+} from '@/components/ui/form';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { Spinner } from '@/components/ui/spinner';
@@ -91,7 +97,7 @@ export const UpdateProfile = () => {
             dateOfBirth: user?.dateOfBirth
               ? new Date(user.dateOfBirth)
               : undefined,
-            gender: user?.gender ?? '',
+            gender: (user?.gender ?? '') as 'male' | 'female' | 'others' | '',
             phone: user?.phone ?? '',
             address: user?.address ?? '',
           },
@@ -102,6 +108,7 @@ export const UpdateProfile = () => {
           const avatarUrl = watch('avatar');
           const coverImageUrl = watch('coverImage');
           const dateOfBirth = watch('dateOfBirth');
+          const phone = watch('phone');
           fancyLog('Avatar-URL:', avatarUrl);
           fancyLog('Cover-Image-URL:', coverImageUrl);
           return (
@@ -130,15 +137,27 @@ export const UpdateProfile = () => {
                   );
                 }}
               />
-              <Textarea
+              <Select
                 label="Gender"
                 error={formState.errors['gender']}
                 registration={register('gender')}
+                options={[
+                  { label: 'Select gender', value: '' },
+                  { label: 'Male', value: 'male' },
+                  { label: 'Female', value: 'female' },
+                  { label: 'Others', value: 'others' },
+                ]}
               />
-              <Textarea
+              <Input
+                type="tel"
                 label="Phone"
                 error={formState.errors['phone']}
-                registration={register('phone')}
+                registration={{}}
+                value={phone ?? ''}
+                onChange={(e) => {
+                  const filtered = e.target.value.replace(/[^0-9+]/g, '');
+                  setValue('phone', filtered, { shouldValidate: true });
+                }}
               />
               <Textarea
                 label="Address"

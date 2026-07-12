@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MediaUploader } from '@/components/ui/media-uploader';
 import { useNotifications } from '@/components/ui/notifications';
 import { fancyLog } from '@/helper/fancy-log';
+import { getVideoUrl, isVideoUrl } from '@/utils/cloudinary';
 import { cn } from '@/utils/cn';
 
 type MessageInputProps = {
@@ -67,7 +68,7 @@ export const MessageInput = ({
                 <div className="size-16 overflow-hidden rounded-lg border border-gray-200">
                   {isVideo ? (
                     <video
-                      src={attachment.fileUrl}
+                      src={getVideoUrl(attachment.fileUrl)}
                       className="size-full object-cover"
                       preload="metadata"
                     >
@@ -111,9 +112,9 @@ export const MessageInput = ({
             onChange={(urls) => {
               // Convert URLs to attachment objects with fileType
               const newAttachments = urls.map((url) => ({
-                fileType: (url.includes('videos/') || url.endsWith('.mp4')
-                  ? 'video'
-                  : 'image') as 'image' | 'video',
+                fileType: (isVideoUrl(url) ? 'video' : 'image') as
+                  | 'image'
+                  | 'video',
                 fileUrl: url,
               }));
               setAttachments(newAttachments);

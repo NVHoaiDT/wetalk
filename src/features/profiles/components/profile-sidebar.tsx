@@ -1,10 +1,4 @@
-import {
-  MessageSquare,
-  Calendar,
-  Award,
-  Share2,
-  MessageCircle,
-} from 'lucide-react';
+import { MessageSquare, Award, Share2, MessageCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -229,14 +223,6 @@ export const ProfileSidebar = ({ user, isOwnProfile }: ProfileSidebarProps) => {
             </Button> */}
             <UpdateProfile />
             <BadgeHistoryDialog badges={userBadget || []} />
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full justify-start"
-              icon={<Calendar className="size-4" />}
-            >
-              View History
-            </Button>
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+  ArrowLeft,
   Bot,
   Lightbulb,
   Loader2,
@@ -220,6 +221,13 @@ export const AiChatbox = () => {
               {/* Header */}
               <div className="flex items-center justify-between bg-gradient-to-r from-purple-500 to-indigo-600 px-5 py-4 text-white">
                 <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleToggle}
+                    aria-label="Back to WeTalk"
+                    className="flex items-center gap-1 rounded-full p-1.5 transition-colors hover:bg-white/20"
+                  >
+                    <ArrowLeft className="size-5" />
+                  </button>
                   <div className="flex size-10 items-center justify-center rounded-full bg-white/20">
                     <Bot className="size-5" />
                   </div>
@@ -232,6 +240,7 @@ export const AiChatbox = () => {
                 </div>
                 <button
                   onClick={handleToggle}
+                  aria-label="Close"
                   className="rounded-full p-1.5 transition-colors hover:bg-white/20"
                 >
                   <X className="size-5" />
